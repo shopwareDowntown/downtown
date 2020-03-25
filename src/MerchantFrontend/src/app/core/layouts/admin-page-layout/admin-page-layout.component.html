@@ -1,0 +1,60 @@
+<clr-main-container>
+
+  <!-- Header Toolbar -->
+  <clr-header class="header-5">
+    <!-- Branding -->
+    <div class="branding">
+      <a routerLink="/" class="logo-and-title">
+        <clr-icon class="is-white" shape="store"></clr-icon> <!-- can be replaced with favicon -->
+        <span class="title">Your Portal</span>
+      </a>
+    </div>
+
+    <!-- Toolbar Navigation -->
+    <div class="header-nav" [clr-nav-level]="1">
+      <a *ngFor="let nav of navigation"
+         class="nav-link"
+         [routerLink]="nav.route"
+         routerLinkActive='active'
+         [routerLinkActiveOptions]="{ exact: true }">
+        {{nav.title}}
+      </a>
+    </div>
+
+
+  </clr-header>
+
+  <!-- Content Area-->
+  <div class="content-container">
+
+    <!-- Content -->
+    <div class="content-area">
+      <router-outlet #content></router-outlet>
+    </div>
+    <!-- Sidebar Navigation -->
+    <clr-vertical-nav [clrVerticalNavCollapsible]="collapsible"
+                      [(clrVerticalNavCollapsed)]="collapsed"
+                      [clr-nav-level]="2">
+      <ng-container *ngFor="let nav of navigation">
+        <!-- Navigation with children -->
+        <clr-vertical-nav-group *ngIf="nav.hasChildren()">
+          <clr-icon clrVerticalNavIcon [attr.shape]="nav.iconName"></clr-icon>
+          {{nav.title}}
+          <!-- Navigation Children -->
+          <clr-vertical-nav-group-children>
+            <a clrVerticalNavLink *ngFor="let child of nav.getChildren()" routerLink='{{child.route}}'
+               routerLinkActive='active'>
+              {{child.title}}
+            </a>
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+        <!-- Navigation without children -->
+        <a clrVerticalNavLink *ngIf="!nav.hasChildren()" routerLink='{{nav.route}}' routerLinkActive='active'>
+          <clr-icon *ngIf="nav.iconName" [attr.shape]="nav.iconName" clrVerticalNavIcon></clr-icon>
+          {{nav.title}}
+        </a>
+      </ng-container>
+    </clr-vertical-nav>
+  </div>
+
+</clr-main-container>
