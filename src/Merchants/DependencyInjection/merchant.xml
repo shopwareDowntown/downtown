@@ -12,8 +12,30 @@
             <tag name="shopware.entity.definition" entity="merchant"/>
         </service>
 
+        <service id="Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantProduct\MerchantProductDefinition">
+            <tag name="shopware.entity.definition" entity="merchant_product"/>
+        </service>
+
         <service id="Shopware\Production\Merchants\Content\Merchant\CustomerEntityExtension">
             <tag name="shopware.entity.extension"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\CategoryEntityExtension">
+            <tag name="shopware.entity.extension"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Services\NavigationLoader" decorates="Shopware\Core\Content\Category\Service\NavigationLoader">
+            <argument type="service" id="Doctrine\DBAL\Connection"/>
+            <argument type="service" id="sales_channel.category.repository"/>
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="router.default"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Storefront\Controller\MerchantController" public="true">
+            <argument type="service" id="twig"/>
+            <argument type="service" id="sales_channel.product.repository"/>
+            <argument type="service" id="merchant.repository"/>
+            <argument type="service" id="Shopware\Storefront\Page\GenericPageLoader"/>
         </service>
     </services>
 </container>

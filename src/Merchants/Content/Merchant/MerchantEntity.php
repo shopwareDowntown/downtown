@@ -2,36 +2,181 @@
 
 namespace Shopware\Production\Merchants\Content\Merchant;
 
+use FontLib\Table\Type\name;
 use Shopware\Core\Checkout\Customer\CustomerCollection;
+use Shopware\Core\Checkout\Customer\CustomerEntity;
+use Shopware\Core\Content\Category\CategoryEntity;
+use Shopware\Core\Content\Product\ProductCollection;
 use Shopware\Core\Framework\DataAbstractionLayer\Entity;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityIdTrait;
+use Shopware\Core\System\SalesChannel\SalesChannelEntity;
 
 class MerchantEntity extends Entity
 {
     use EntityIdTrait;
 
     /**
-     * @var null|string
+     * @var string|null
      */
-    public $customerId;
+    protected $name;
 
     /**
-     * @var null|string
+     * @var string|null
      */
-    public $name;
+    protected $website;
 
     /**
-     * @var null|string
+     * @var string|null
      */
-    public $website;
+    protected $description;
 
     /**
-     * @var null|string
+     * @var string|null
      */
-    public $phoneNumber;
+    protected $phoneNumber;
 
     /**
-     * @var null|CustomerCollection
+     * @var string|null
      */
-    protected $customers;
+    protected $customerId;
+
+    /**
+     * @var CustomerEntity|null
+     */
+    protected $customer;
+
+    /**
+     * @var string|null
+     */
+    protected $salesChannelId;
+
+    /**
+     * @var SalesChannelEntity|null
+     */
+    protected $salesChannel;
+
+    /**
+     * @var string|null
+     */
+    protected $categoryId;
+
+    /**
+     * @var CategoryEntity|null
+     */
+    protected $category;
+
+    /**
+     * @var ProductCollection|null
+     */
+    protected $products;
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function getWebsite(): ?string
+    {
+        return $this->website;
+    }
+
+    public function setWebsite(?string $website): void
+    {
+        $this->website = $website;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
+    }
+
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phoneNumber;
+    }
+
+    public function setPhoneNumber(?string $phoneNumber): void
+    {
+        $this->phoneNumber = $phoneNumber;
+    }
+
+    public function getCustomerId(): ?string
+    {
+        return $this->customerId;
+    }
+
+    public function setCustomerId(?string $customerId): void
+    {
+        $this->customerId = $customerId;
+    }
+
+    public function getCustomer(): ?CustomerEntity
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(?CustomerEntity $customer): void
+    {
+        $this->customer = $customer;
+    }
+
+    public function getSalesChannelId(): ?string
+    {
+        return $this->salesChannelId;
+    }
+
+    public function setSalesChannelId(?string $salesChannelId): void
+    {
+        $this->salesChannelId = $salesChannelId;
+    }
+
+    public function getSalesChannel(): ?SalesChannelEntity
+    {
+        return $this->salesChannel;
+    }
+
+    public function setSalesChannel(?SalesChannelEntity $salesChannel): void
+    {
+        $this->salesChannel = $salesChannel;
+    }
+
+    public function getCategoryId(): ?string
+    {
+        return $this->categoryId;
+    }
+
+    public function setCategoryId(?string $categoryId): void
+    {
+        $this->categoryId = $categoryId;
+    }
+
+    public function getCategory(): ?CategoryEntity
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?CategoryEntity $category): void
+    {
+        $this->category = $category;
+    }
+
+    public function getProducts(): ?ProductCollection
+    {
+        return $this->products;
+    }
+
+    public function setProducts(?ProductCollection $products): void
+    {
+        $this->products = $products;
+    }
 }
