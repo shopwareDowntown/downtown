@@ -8,6 +8,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
 use Shopware\Core\Framework\Migration\MigrationStep;
 use Shopware\Core\Framework\Plugin\KernelPluginLoader\KernelPluginLoader;
+use Shopware\Production\Merchants\MerchantBundle;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\Routing\RouteCollectionBuilder;
@@ -47,5 +48,12 @@ class Kernel extends \Shopware\Core\Kernel
         if (!$reflection->isPrivate()) {
             call_user_func('parent::initializeDatabaseConnectionVariables');
         }
+    }
+
+    public function registerBundles()
+    {
+        yield from parent::registerBundles();
+
+        yield new MerchantBundle();
     }
 }
