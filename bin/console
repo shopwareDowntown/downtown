@@ -1,0 +1,75 @@
+#!/usr/bin/env php
+<?php declare(strict_types=1);
+
+use PackageVersions\Versions;
+use Shopware\Core\Framework\Plugin\KernelPluginLoader\DbalKernelPluginLoader;
+use Shopware\Production\Kernel;
+use Shopware\Core\Framework\Plugin\KernelPluginLoader\StaticKernelPluginLoader;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Debug\Debug;
+use Symfony\Component\Dotenv\Dotenv;
+
+if (PHP_VERSION_ID < 70200) {
+    echo 'Your cli is running PHP version ' . PHP_VERSION . ' but Shopware 6 requires at least PHP 7.2.0' . PHP_EOL;
+    exit();
+}
+
+set_time_limit(0);
+
+$classLoader = require __DIR__ . '/../vendor/autoload.php';
+
+if (!class_exists(Application::class)) {
+    throw new RuntimeException('You need to add "symfony/framework-bundle" as a Composer dependency.');
+}
+
+$envFile = __DIR__ . '/../.env';
+
+if (class_exists(Dotenv::class) && is_readable($envFile) && !is_dir($envFile)) {
+    (new Dotenv(true))->load(__DIR__ . '/../.env');
+}
+
+if (!isset($_SERVER['PROJECT_ROOT'])) {
+    $_SERVER['PROJECT_ROOT'] = dirname(__DIR__);
+}
+
+$input = new ArgvInput();
+$env = $input->getParameterOption(['--env', '-e'], $_SERVER['APP_ENV'] ?? 'dev', true);
+$debug = (bool) ($_SERVER['APP_DEBUG'] ?? ($env !== 'prod')) && !$input->hasParameterOption('--no-debug', true);
+
+if ($debug) {
+    umask(0000);
+
+    if (class_exists(Debug::class)) {
+        Debug::enable();
+    }
+}
+
+$pluginLoader = new StaticKernelPluginLoader($classLoader, null);
+
+$shopwareVersion = Versions::getVersion('shopware/core');
+
+if ($input->getFirstArgument() === 'system:install') {
+    $_SERVER['INSTALL'] = true;
+}
+
+if (!isset($_SERVER['DATABASE_URL'])) {
+    // fake DATABASE_URL
+    $_SERVER['DATABASE_URL'] = Kernel::PLACEHOLDER_DATABASE_URL;
+} else if (!isset($_SERVER['INSTALL'])) {
+    $pluginLoader = new DbalKernelPluginLoader($classLoader, null, \Shopware\Core\Kernel::getConnection());
+}
+
+if (class_exists('Shopware\Core\HttpKernel')) {
+    $kernel = new \Shopware\Production\HttpKernel($env, $debug, $classLoader);
+    $kernel->setPluginLoader($pluginLoader);
+
+    $application = new Application($kernel->getKernel());
+    $application->run($input);
+
+    return;
+}
+
+$kernel = new Kernel($env, $debug, $pluginLoader, $_SERVER['SW_CACHE_ID'] ?? null, $shopwareVersion);
+$application = new Application($kernel);
+$application->run($input);

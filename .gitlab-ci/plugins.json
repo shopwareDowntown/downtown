@@ -1,0 +1,124 @@
+{
+    "Framework": {
+        "basePath": "repos\/core\/Framework\/",
+        "views": [
+            "Resources\/views"
+        ],
+        "administration": {
+            "path": "Resources\/app\/administration\/src",
+            "entryFilePath": null,
+            "webpack": null
+        },
+        "storefront": {
+            "path": "Resources\/app\/storefront\/src",
+            "entryFilePath": null,
+            "webpack": null,
+            "styleFiles": []
+        }
+    },
+    "System": {
+        "basePath": "repos\/core\/System\/",
+        "views": [
+            "Resources\/views"
+        ],
+        "administration": {
+            "path": "Resources\/app\/administration\/src",
+            "entryFilePath": null,
+            "webpack": null
+        },
+        "storefront": {
+            "path": "Resources\/app\/storefront\/src",
+            "entryFilePath": null,
+            "webpack": null,
+            "styleFiles": []
+        }
+    },
+    "Content": {
+        "basePath": "repos\/core\/Content\/",
+        "views": [
+            "Resources\/views"
+        ],
+        "administration": {
+            "path": "Resources\/app\/administration\/src",
+            "entryFilePath": null,
+            "webpack": null
+        },
+        "storefront": {
+            "path": "Resources\/app\/storefront\/src",
+            "entryFilePath": null,
+            "webpack": null,
+            "styleFiles": []
+        }
+    },
+    "Checkout": {
+        "basePath": "repos\/core\/Checkout\/",
+        "views": [
+            "Resources\/views"
+        ],
+        "administration": {
+            "path": "Resources\/app\/administration\/src",
+            "entryFilePath": null,
+            "webpack": null
+        },
+        "storefront": {
+            "path": "Resources\/app\/storefront\/src",
+            "entryFilePath": null,
+            "webpack": null,
+            "styleFiles": []
+        }
+    },
+    "Administration": {
+        "basePath": "repos\/administration\/",
+        "views": [
+            "Resources\/views"
+        ],
+        "administration": {
+            "path": "Resources\/app\/administration\/src",
+            "entryFilePath": null,
+            "webpack": null
+        },
+        "storefront": {
+            "path": "Resources\/app\/storefront\/src",
+            "entryFilePath": null,
+            "webpack": null,
+            "styleFiles": []
+        }
+    },
+    "Storefront": {
+        "basePath": "repos\/storefront\/",
+        "views": [
+            "Resources\/views"
+        ],
+        "administration": {
+            "path": "Resources\/app\/administration\/src",
+            "entryFilePath": "Resources\/app\/administration\/src\/main.js",
+            "webpack": null
+        },
+        "storefront": {
+            "path": "Resources\/app\/storefront\/src",
+            "entryFilePath": "Resources\/app\/storefront\/src\/main.js",
+            "webpack": null,
+            "styleFiles": [
+                "repos\/storefront\/Resources\/app\/storefront\/src\/scss\/base.scss",
+                "@Plugins"
+            ]
+        }
+    },
+    "Elasticsearch": {
+        "basePath": "repos\/elasticsearch\/",
+        "views": [
+            "Resources\/views"
+        ],
+        "administration": {
+            "path": "Resources\/app\/administration\/src",
+            "entryFilePath": null,
+            "webpack": null
+        },
+        "storefront": {
+            "path": "Resources\/app\/storefront\/src",
+            "entryFilePath": null,
+            "webpack": null,
+            "styleFiles": []
+        }
+    }
+}
