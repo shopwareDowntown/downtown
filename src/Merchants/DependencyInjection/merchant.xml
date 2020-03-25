@@ -7,5 +7,13 @@
         <service id="Shopware\Production\Merchants\Content\Merchant\Api\AuthoritiesController" public="true">
             <argument type="service" id="sales_channel.repository"/>
         </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\MerchantDefinition">
+            <tag name="shopware.entity.definition" entity="merchant"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\CustomerEntityExtension">
+            <tag name="shopware.entity.extension"/>
+        </service>
     </services>
 </container>
