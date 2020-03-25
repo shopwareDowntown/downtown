@@ -17,11 +17,13 @@ import { OrganizationLoginModule } from './views/organization-login/organization
 @NgModule({
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    ClarityModule,
     BrowserAnimationsModule,
+    ClarityModule,
+    AppRoutingModule,
     CoreModule,
     SharedModule,
+
+    // Pages
     DashboardModule,
     MerchantDetailsModule,
     MerchantRegisterModule,
