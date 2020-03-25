@@ -1,15 +1,15 @@
 <?php
 
-namespace Shopware\Production\Merchants;
+namespace Shopware\Production\Portal;
 
 use Shopware\Core\Framework\Bundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
-class MerchantBundle extends Bundle
+class PortalBundle extends Bundle
 {
-    protected $name = 'Merchant';
+    protected $name = 'PortalBundle';
 
     /**
      * {@inheritdoc}
@@ -19,8 +19,7 @@ class MerchantBundle extends Bundle
         parent::build($container);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/DependencyInjection/'));
-        $loader->load('merchant.xml');
-        $loader->load('commands.xml');
+        $loader->load('snippets.xml');
         $this->registerMigrationPath($container);
     }
 }

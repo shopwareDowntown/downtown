@@ -45,7 +45,8 @@ class AuthoritiesController
             $result[] = [
                 'id' => $item->getId(),
                 'name' => $item->getName(),
-                'domain' => $item->getDomains()->first()->getUrl()
+                'domain' => $item->getDomains()->first()->getUrl(),
+                'accessKey' => $item->getAccessKey(),
             ];
         }
 

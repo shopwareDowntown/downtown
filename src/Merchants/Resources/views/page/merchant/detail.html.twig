@@ -1,0 +1,70 @@
+{% sw_extends '@Storefront/storefront/base.html.twig' %}
+
+{% block base_content %}
+    <div class="row">
+        <div class="col-9">
+            <h4>{{ page.merchant.name }}</h4>
+            <p>
+                {{ page.merchant.description}}
+            </p>
+        </div>
+        <div class="col-3">
+            <h4>{{ 'merchant.contactInformation'|trans }}</h4>
+            <p>
+                {% if page.merchant.website %}
+                    {{ 'merchant.website'|trans }} {{ page.merchant.website }}<br>
+                {% endif %}
+                {% if merchant.website %}
+                    {{ 'merchant.phoneNumber'|trans }} {{ page.merchant.phoneNumber }}<br>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    {% if page.merchant.products.count %}
+        <h4>{{ 'merchant.ourProducts'|trans }}</h4>
+
+        {% set config = {
+            'title': {
+                'value': null
+            },
+            'border': {
+                'value': false
+            },
+            'rotate': {
+                'value': false
+            },
+            'products': {
+                'value': page.merchant.products
+            },
+            'boxLayout': {
+                'value': 'standard'
+            },
+            'elMinWidth': {
+                'value': '300px'
+            },
+            'navigation': {
+                'value': true
+            },
+            'displayMode': {
+                'value': 'minimal'
+            },
+            'verticalAlign': {
+                'value': 'top'
+            },
+        } %}
+
+        {% sw_include "@Storefront/storefront/element/cms-element-product-slider.html.twig" with {
+            sliderConfig: config,
+            element: {
+                'data': {
+                    'products': {
+                        elements: page.merchant.products
+                    }
+                },
+                type: 'product-slider'
+            }
+        } only %}
+    {% endif %}
+
+{% endblock %}
