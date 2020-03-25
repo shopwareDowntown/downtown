@@ -1,7 +1,21 @@
-<a routerLink="">Dashboard</a>
-<a routerLink="merchant/login">Merchant Login</a>
-<a routerLink="merchant/register">Merchant Register</a>
-<a routerLink="merchant/1">Merchant Details</a>
-<a routerLink="organization/login">Organization Login</a>
-<a routerLink="organization/register">Organization Register</a>
-<a routerLink="organization/1">Organization Details</a>
+<clr-header class="header-4">
+  <!-- Branding -->
+  <div class="branding">
+    <div class="nav-link">
+      <clr-icon shape="store"></clr-icon> <!-- can be replaced with favicon -->
+      <span class="title">Portal</span>
+    </div>
+  </div>
+
+  <!-- Toolbar Navigation -->
+  <div class="header-nav">
+    <a *ngFor="let nav of navigation"
+       class="nav-link"
+       [routerLink]="nav.route"
+       routerLinkActive='active'
+       [routerLinkActiveOptions]="{ exact: true }">
+      {{nav.title}}
+    </a>
+  </div>
+
+</clr-header>
