@@ -20,5 +20,6 @@ class MerchantBundle extends Bundle
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/DependencyInjection/'));
         $loader->load('merchant.xml');
+        $this->registerMigrationPath($container);
     }
 }
