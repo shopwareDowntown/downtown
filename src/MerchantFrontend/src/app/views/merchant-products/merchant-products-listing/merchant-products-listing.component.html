@@ -1,0 +1,35 @@
+<h1>
+  Products
+</h1>
+
+<!-- Datagrid Table -->
+<clr-datagrid [clrDgLoading]="loading">
+
+  <clr-dg-placeholder>No products found.</clr-dg-placeholder>
+
+  <!-- Columns -->
+  <clr-dg-column [clrDgField]="'name'">
+    Name
+    <clr-icon shape="tag" style="margin-left: 8px;"></clr-icon>
+  </clr-dg-column>
+  <clr-dg-column [clrDgField]="'description'">
+    Description
+    <clr-icon shape="clipboard" style="margin-left: 8px;"></clr-icon>
+  </clr-dg-column>
+
+  <!-- Row -->
+  <clr-dg-row *clrDgItems="let product of products" [clrDgItem]="product">
+    <clr-dg-cell>{{product.name}}</clr-dg-cell>
+    <clr-dg-cell>{{product.description}}</clr-dg-cell>
+  </clr-dg-row>
+
+  <!-- Footer -->
+  <clr-dg-footer>
+    <clr-dg-pagination #pagination [clrDgPageSize]="10">
+      <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Products per Page</clr-dg-page-size>
+      {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+      von {{pagination.totalItems}} Products
+    </clr-dg-pagination>
+  </clr-dg-footer>
+
+</clr-datagrid>

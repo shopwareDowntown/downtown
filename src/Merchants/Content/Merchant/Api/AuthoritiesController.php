@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Shopware\Production\Merchants\Content\Merchant\Api;
 
@@ -28,7 +28,7 @@ class AuthoritiesController
     }
 
     /**
-     * @Route(name="merchant-api.authorities.load", path="/merchant-api/authorities")
+     * @Route(name="merchant-api.authorities.load", path="/merchant-api/v{version}/authorities")
      */
     public function load(): JsonResponse
     {

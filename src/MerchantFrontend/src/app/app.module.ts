@@ -13,6 +13,9 @@ import { MerchantRegisterModule } from './views/merchant-register/merchant-regis
 import { OrganizationDetailsModule } from './views/organization-details/organization-details.module';
 import { OrganizationRegisterModule } from './views/organization-register/organization-register.module';
 import { OrganizationLoginModule } from './views/organization-login/organization-login.module';
+import { HttpClientModule } from '@angular/common/http';
+import { LocalDeliveryModule } from './views/local-delivery/local-delivery.module';
+
 
 @NgModule({
   imports: [
@@ -22,6 +25,7 @@ import { OrganizationLoginModule } from './views/organization-login/organization
     AppRoutingModule,
     CoreModule,
     SharedModule,
+    HttpClientModule,
 
     // Pages
     DashboardModule,
@@ -30,7 +34,8 @@ import { OrganizationLoginModule } from './views/organization-login/organization
     MerchantLoginModule,
     OrganizationDetailsModule,
     OrganizationRegisterModule,
-    OrganizationLoginModule
+    OrganizationLoginModule,
+    LocalDeliveryModule
   ],
   declarations: [
     AppComponent,

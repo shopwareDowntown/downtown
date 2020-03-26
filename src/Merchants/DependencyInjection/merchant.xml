@@ -8,12 +8,24 @@
             <argument type="service" id="sales_channel.repository"/>
         </service>
 
+        <service id="Shopware\Production\Merchants\Content\Merchant\Api\RegistrationController" public="true">
+            <argument type="service" id="Shopware\Production\Merchants\Content\Merchant\Services\RegistrationService"/>
+        </service>
+
         <service id="Shopware\Production\Merchants\Content\Merchant\MerchantDefinition">
             <tag name="shopware.entity.definition" entity="merchant"/>
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantProduct\MerchantProductDefinition">
             <tag name="shopware.entity.definition" entity="merchant_product"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantOrder\MerchantOrderDefinition">
+            <tag name="shopware.entity.definition" entity="merchant_order"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantShippingMethod\MerchantShippingMethodDefinition">
+            <tag name="shopware.entity.definition" entity="merchant_shipping_method"/>
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\CustomerEntityExtension">
@@ -24,6 +36,14 @@
             <tag name="shopware.entity.extension"/>
         </service>
 
+        <service id="Shopware\Production\Merchants\Content\Merchant\ProductEntityExtension">
+            <tag name="shopware.entity.extension"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\OrderEntityExtension">
+            <tag name="shopware.entity.extension"/>
+        </service>
+
         <service id="Shopware\Production\Merchants\Content\Merchant\Services\NavigationLoader" decorates="Shopware\Core\Content\Category\Service\NavigationLoader">
             <argument type="service" id="Doctrine\DBAL\Connection"/>
             <argument type="service" id="sales_channel.category.repository"/>
@@ -31,8 +51,14 @@
             <argument type="service" id="router.default"/>
         </service>
 
+        <service id="Shopware\Production\Merchants\Content\Merchant\Services\RegistrationService">
+            <argument type="service" id="merchant.repository"/>
+            <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
+            <argument type="service" id="sales_channel_domain.repository"/>
+            <argument type="service" id="event_dispatcher"/>
+        </service>
+
         <service id="Shopware\Production\Merchants\Content\Merchant\Storefront\Controller\MerchantController" public="true">
-            <argument type="service" id="twig"/>
             <argument type="service" id="sales_channel.product.repository"/>
             <argument type="service" id="merchant.repository"/>
             <argument type="service" id="Shopware\Storefront\Page\GenericPageLoader"/>
@@ -51,10 +77,54 @@
             <tag name="kernel.event_subscriber"/>
         </service>
 
-<!--        <service id="Shopware\Production\Merchants\Content\Merchant\Services\MerchantLogin" public="true">-->
-<!--            <argument type="service" id="merchant.repository"/>-->
+        <service id="Shopware\Production\Merchants\Content\Merchant\Services\MerchantSalesChannelContextService" public="true" decorates="Shopware\Core\System\SalesChannel\Context\SalesChannelContextService">
+            <argument type="service" id="merchant.repository"/>
+            <argument type="service" id="Shopware\Core\System\SalesChannel\Context\SalesChannelContextPersister"/>
+            <argument type="service" id="Shopware\Production\Merchants\Content\Merchant\Services\MerchantSalesChannelContextService.inner"/>
+        </service>
 
-<!--            <tag name="kernel.event_subscriber"/>-->
-<!--        </service>-->
+        <service id="Shopware\Production\Merchants\Content\Merchant\Services\MerchantLogin">
+            <argument type="service" id="merchant.repository"/>
+            <argument type="service" id="Shopware\Core\System\SalesChannel\Context\SalesChannelContextPersister"/>
+
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Subscriber\OrderPlacedSubscriber">
+            <argument type="service" id="product.repository"/>
+            <argument type="service" id="order.repository"/>
+            <argument type="service" id="twig"/>
+            <argument type="service" id="Shopware\Core\Content\MailTemplate\Service\MailSender"/>
+            <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
+            <tag name="kernel.event_listener"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Subscriber\ConfirmPageLoadedSubscriber">
+            <argument type="service" id="product.repository"/>
+            <tag name="kernel.event_listener"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Subscriber\FixContextTokenMerchantApiSubscriber">
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Services\CartValidator">
+            <argument type="service" id="product.repository"/>
+            <tag name="shopware.cart.validator"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Api\MerchantProductController" public="true">
+            <argument type="service" id="product.repository"/>
+            <argument type="service" id="tax.repository"/>
+            <argument type="service" id="customer.repository"/>
+            <argument type="service" id="media.repository"/>
+            <argument type="service" id="merchant.repository"/>
+            <argument type="service" id="Shopware\Core\System\NumberRange\ValueGenerator\NumberRangeValueGeneratorInterface"/>
+            <argument type="service" id="Shopware\Core\Content\Media\MediaService"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Api\OrderListController" public="true">
+            <argument type="service" id="merchant.repository"/>
+        </service>
     </services>
 </container>
