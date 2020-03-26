@@ -11,6 +11,8 @@ use Shopware\Core\Framework\Test\TestCaseBase\IntegrationTestBehaviour;
 use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\Framework\Validation\DataBag\DataBag;
 use Shopware\Core\System\SalesChannel\Context\SalesChannelContextService;
+use Shopware\Production\Merchants\Content\Merchant\Api\ProfileController;
+use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
 use Shopware\Production\Merchants\Content\Merchant\SalesChannelContextExtension;
 
 class MerchantTest extends TestCase
@@ -47,7 +49,18 @@ class MerchantTest extends TestCase
             ->get(SalesChannelContextService::class)
             ->get(Defaults::SALES_CHANNEL, $token);
 
-        self::assertInstanceOf(SalesChannelContextExtension::class, SalesChannelContextExtension::extract($salesChannelContext));
+        self::assertInstanceOf(MerchantEntity::class, SalesChannelContextExtension::extract($salesChannelContext));
+
+
+        $response = $this->getContainer()->get(ProfileController::class)->profile($salesChannelContext);
+
+        self::assertSame($merchantData['id'], json_decode($response->getContent())->id);
+
+//        $response = $this->getContainer()->get(ProfileController::class)->save(new DataBag([
+//            'fooooooooooo' => 'bar'
+//        ]), $salesChannelContext);
+//
+//        dump($response);
     }
 
     public function testCustomerDelete(): void
