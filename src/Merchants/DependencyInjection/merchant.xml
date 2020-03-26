@@ -16,11 +16,23 @@
             <tag name="shopware.entity.definition" entity="merchant_product"/>
         </service>
 
+        <service id="Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantOrder\MerchantOrderDefinition">
+            <tag name="shopware.entity.definition" entity="merchant_order"/>
+        </service>
+
         <service id="Shopware\Production\Merchants\Content\Merchant\CustomerEntityExtension">
             <tag name="shopware.entity.extension"/>
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\CategoryEntityExtension">
+            <tag name="shopware.entity.extension"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\ProductEntityExtension">
+            <tag name="shopware.entity.extension"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\OrderEntityExtension">
             <tag name="shopware.entity.extension"/>
         </service>
 
@@ -51,5 +63,19 @@
 
 <!--            <tag name="kernel.event_subscriber"/>-->
 <!--        </service>-->
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Subscriber\OrderPlacedSubscriber">
+            <argument type="service" id="product.repository"/>
+            <argument type="service" id="order.repository"/>
+            <argument type="service" id="twig"/>
+            <argument type="service" id="Shopware\Core\Content\MailTemplate\Service\MailSender"/>
+            <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
+            <tag name="kernel.event_listener"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Services\CartValidator">
+            <argument type="service" id="product.repository"/>
+            <tag name="shopware.cart.validator"/>
+        </service>
     </services>
 </container>
