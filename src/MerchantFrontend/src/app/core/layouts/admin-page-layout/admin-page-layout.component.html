@@ -12,7 +12,7 @@
 
     <!-- Toolbar Navigation -->
     <div class="header-nav" [clr-nav-level]="1">
-      <a *ngFor="let nav of navigation"
+      <a *ngFor="let nav of toolbarNav"
          class="nav-link"
          [routerLink]="nav.route"
          routerLinkActive='active'
@@ -35,7 +35,7 @@
     <clr-vertical-nav [clrVerticalNavCollapsible]="collapsible"
                       [(clrVerticalNavCollapsed)]="collapsed"
                       [clr-nav-level]="2">
-      <ng-container *ngFor="let nav of navigation">
+      <ng-container *ngFor="let nav of sidebarNav">
         <!-- Navigation with children -->
         <clr-vertical-nav-group *ngIf="nav.hasChildren()">
           <clr-icon clrVerticalNavIcon [attr.shape]="nav.iconName"></clr-icon>

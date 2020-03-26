@@ -8,6 +8,9 @@ export class NavigationItem {
   iconName: string;
   children: NavigationItem[];
 
+  // Switches to determine the menu location
+  private $sidebar: boolean;
+  private $toolbar: boolean;
 
   constructor(title: string,
               route: string,
@@ -17,6 +20,8 @@ export class NavigationItem {
     this.route = route;
     this.iconName = iconName;
     this.children = children;
+    this.$sidebar = false;
+    this.$toolbar = false;
   }
 
   public getChildren(): NavigationItem[] | null {
@@ -37,20 +42,39 @@ export class NavigationItem {
     return this;
   }
 
+  public toolbar(enabled: boolean = true): NavigationItem {
+    this.$toolbar = enabled;
+    return this;
+  }
+
+  public isToolbar(): boolean {
+    return this.$toolbar;
+  }
+
+  public sidebar(enabled: boolean = true): NavigationItem {
+    this.$sidebar = enabled;
+    return this;
+  }
+
+  public isSideBar(): boolean {
+    return this.$sidebar;
+  }
+
 }
 
 export const NAVIGATION_ADMIN = [
-  new NavigationItem('Dashboard', '').setIcon('unknown-status'),
-  new NavigationItem('Merchant Profile', '/merchant/profile').setIcon('unknown-status'),
-  new NavigationItem('Merchant Settings', '/merchant/settings').setIcon('unknown-status'),
-  new NavigationItem('Delivery', '/merchant/delivery').setIcon('unknown-status'),
+  new NavigationItem('Dashboard', '').setIcon('unknown-status').toolbar(),
+  new NavigationItem('Merchant Profile', '/merchant/profile').setIcon('unknown-status').sidebar(),
+  new NavigationItem('Merchant Settings', '/merchant/settings').setIcon('unknown-status').sidebar(),
+  new NavigationItem('Merchant Products', '/merchant/products').setIcon('shopping-bag').sidebar(),
+  new NavigationItem('Delivery', '/merchant/delivery').setIcon('unknown-status').sidebar(),
 ];
 
 export const NAVIGATION_LANDING = [
   new NavigationItem('Dashboard', ''),
-  new NavigationItem('Merchant Area', '/merchant/profile'), // TODO: Just for testing
-  new NavigationItem('Merchant Login', '/login/merchant'),
-  new NavigationItem('Merchant Register', '/register/merchant'),
-  new NavigationItem('Organisation Login', '/login/organization'),
-  new NavigationItem('Organisation Register', '/register/organization'),
+  new NavigationItem('Merchant Area', '/merchant/profile').toolbar(), // TODO: Just for testing
+  new NavigationItem('Merchant Login', '/login/merchant').toolbar(),
+  new NavigationItem('Merchant Register', '/register/merchant').toolbar(),
+  new NavigationItem('Organisation Login', '/login/organization').toolbar(),
+  new NavigationItem('Organisation Register', '/register/organization').toolbar(),
 ];

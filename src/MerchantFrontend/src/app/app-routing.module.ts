@@ -44,9 +44,10 @@ const routes: Routes = [
     path: 'merchant',
     component: AdminPageLayoutComponent,
     children: [
-      {path: ':id', component: MerchantDetailsComponent, canActivate: [AuthGuard]},
+      {path: 'detail/:id', component: MerchantDetailsComponent, canActivate: [AuthGuard]},
       {path: 'profile', component: MerchantDetailsComponent, canActivate: [AuthGuard]},
       {path: 'settings', component: MerchantDetailsComponent, canActivate: [AuthGuard]},
+      {path: 'products', loadChildren: () => import('./views/merchant-products/merchant-products.module').then(value => value.MerchantProductsModule), canActivate: [AuthGuard]},
       {path: 'delivery', component: LocalDeliveryComponent, canActivate: [AuthGuard]}
     ]
   },
@@ -55,7 +56,7 @@ const routes: Routes = [
     path: 'organization',
     component: AdminPageLayoutComponent,
     children: [
-      {path: ':id', component: OrganizationDetailsComponent, canActivate: [AuthGuard]},
+      {path: 'detail/:id', component: OrganizationDetailsComponent, canActivate: [AuthGuard]},
       {path: 'profile', component: OrganizationDetailsComponent, canActivate: [AuthGuard]},
       {path: 'settings', component: OrganizationDetailsComponent, canActivate: [AuthGuard]}
     ]
