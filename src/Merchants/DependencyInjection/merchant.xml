@@ -8,6 +8,10 @@
             <argument type="service" id="sales_channel.repository"/>
         </service>
 
+        <service id="Shopware\Production\Merchants\Content\Merchant\Api\RegistrationController" public="true">
+            <argument type="service" id="Shopware\Production\Merchants\Content\Merchant\Services\RegistrationService"/>
+        </service>
+
         <service id="Shopware\Production\Merchants\Content\Merchant\MerchantDefinition">
             <tag name="shopware.entity.definition" entity="merchant"/>
         </service>
@@ -41,6 +45,12 @@
             <argument type="service" id="sales_channel.category.repository"/>
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="router.default"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Services\RegistrationService">
+            <argument type="service" id="Shopware\Core\Checkout\Customer\SalesChannel\AccountRegistrationService"/>
+            <argument type="service" id="Doctrine\DBAL\Connection"/>
+            <argument type="service" id="merchant.repository"/>
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Storefront\Controller\MerchantController" public="true">
