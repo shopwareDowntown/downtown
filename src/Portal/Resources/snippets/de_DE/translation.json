@@ -3,7 +3,8 @@
         "contactInformation": "Kontaktinformation",
         "phoneNumber": "Telefonnummer:",
         "website": "Webseite:",
-        "ourProducts": "Unsere Angebote"
+        "ourProducts": "Unsere Angebote",
+        "email": "Email:"
     },
     "checkout": {
         "cartContainsMultipleMerchants": "Es können nur Produkte von einem Händler gleichzeitig gekauft werden"

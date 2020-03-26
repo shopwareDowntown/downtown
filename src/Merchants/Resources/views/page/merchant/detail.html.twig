@@ -2,22 +2,34 @@
 
 {% block base_content %}
     <div class="row">
-        <div class="col-9">
+        <div class="col-8">
             <h4>{{ page.merchant.name }}</h4>
             <p>
                 {{ page.merchant.description}}
             </p>
         </div>
-        <div class="col-3">
+        <div class="col-4">
             <h4>{{ 'merchant.contactInformation'|trans }}</h4>
-            <p>
-                {% if page.merchant.website %}
-                    {{ 'merchant.website'|trans }} {{ page.merchant.website }}<br>
-                {% endif %}
-                {% if merchant.website %}
-                    {{ 'merchant.phoneNumber'|trans }} {{ page.merchant.phoneNumber }}<br>
-                {% endif %}
-            </p>
+
+
+            <div class="row">
+                <div class="col-6">
+                    {% if page.merchant.website %}
+                    <p><strong>{{ 'merchant.website'|trans }}</strong><br>
+                        <a href="{{ page.merchant.website }}">{{ page.merchant.website }}</a></p>
+                    {% endif %}
+                    {% if page.merchant.email %}
+                    <p><strong>{{ 'merchant.email'|trans }}</strong><br>
+                        {{ page.merchant.email }}</p>
+                    {% endif %}
+                </div>
+                <div class="col-6">
+                    {% if page.merchant.phoneNumber %}
+                    <p><strong>{{ 'merchant.phoneNumber'|trans }}</strong><br>
+                        {{ page.merchant.phoneNumber }}</p>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 
