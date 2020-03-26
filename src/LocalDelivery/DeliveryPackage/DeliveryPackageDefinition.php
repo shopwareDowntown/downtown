@@ -43,10 +43,12 @@ class DeliveryPackageDefinition extends EntityDefinition
     {
         return new FieldCollection([
             (new IdField('id', 'id'))->addFlags(new PrimaryKey(), new Required()),
-            (new LongTextField('recipient', 'recipient'))->addFlags(new Required()),
             (new LongTextField('content', 'content'))->addFlags(new Required()),
             (new StringField('status', 'status'))->addFlags(new Required()),
             new LongTextField('comment', 'comment'),
+            (new StringField('zipcode', 'zipcode'))->addFlags(new Required()),
+            (new StringField('city', 'city'))->addFlags(new Required()),
+            (new StringField('street', 'street'))->addFlags(new Required()),
 
             new FkField('delivery_boy_id', 'deliveryBoyId', DeliveryBoyDefinition::class),
             new ManyToOneAssociationField('deliveryBoy', 'delivery_boy_id', DeliveryBoyDefinition::class),
