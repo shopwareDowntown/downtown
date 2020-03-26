@@ -40,9 +40,11 @@ class RegistrationService
     public function registerMerchant(RequestDataBag $requestDataBag, SalesChannelContext $salesChannelContext): string {
         $requestDataWithDefaultValues = $this->createDefaultDataForMerchant($requestDataBag);
 
+        $parameters = $requestDataBag->all();
+        $this->validateMerchantData($parameters);
+
         $customerId = $this->customerRegistrationService->register($requestDataWithDefaultValues, false, $salesChannelContext);
 
-        $parameters = $requestDataBag->all();
         $parameters['id'] = Uuid::randomHex();
         $parameters['customerId'] = $customerId;
         $parameters['salesChannelId'] = $salesChannelContext->getSalesChannel()->getId();
@@ -50,6 +52,10 @@ class RegistrationService
         $this->entityRepository->create([$parameters], $salesChannelContext->getContext());
 
         return $parameters['id'];
+    }
+
+    private function validateMerchantData(array $merchantData): void {
+
     }
 
     private function createDefaultDataForMerchant(RequestDataBag $requestDataBag): DataBag {
