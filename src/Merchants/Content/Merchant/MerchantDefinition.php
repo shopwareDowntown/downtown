@@ -15,6 +15,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\Runtime;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\IdField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\ManyToManyAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\OneToOneAssociationField;
+use Shopware\Core\Framework\DataAbstractionLayer\Field\PasswordField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\StringField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\TranslatedField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\TranslationsAssociationField;
@@ -49,7 +50,7 @@ class MerchantDefinition extends EntityDefinition
             (new BoolField('public', 'public')),
             (new StringField('name', 'name'))->addFlags(new Required()),
             (new StringField('email', 'email'))->addFlags(new Required()),
-            (new StringField('password', 'password'))->addFlags(new Runtime()),
+            (new PasswordField('password', 'password'))->addFlags(new Required()),
 
             new StringField('website', 'website'),
             new StringField('description', 'description'),
