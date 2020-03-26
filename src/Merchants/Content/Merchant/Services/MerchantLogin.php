@@ -13,7 +13,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class MerchantLogin implements EventSubscriberInterface
 {
-    const PERSISTSER_KEY = 'merchant_id';
 
     /**
      * @var EntityRepositoryInterface

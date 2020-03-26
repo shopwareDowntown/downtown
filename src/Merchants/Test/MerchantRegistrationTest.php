@@ -44,11 +44,12 @@ class MerchantRegistrationTest extends TestCase
                 'lastName' => 'not',
                 'firstName' => 'First name',
                 'salutationId' => $salutationId,
-                'name' => "foo"
+                'name' => "foo",
+                'salesChannelId' => Defaults::SALES_CHANNEL_TYPE_STOREFRONT
             ];
 
         $context = $this->getContainer()->get(SalesChannelContextFactory::class)
-            ->create(Uuid::randomHex(), Defaults::SALES_CHANNEL, [SalesChannelContextService::CUSTOMER_ID => $id1]);
+            ->create(Uuid::randomHex(), Defaults::SALES_CHANNEL_TYPE_STOREFRONT, [SalesChannelContextService::CUSTOMER_ID => $id1]);
 
         $request = new Request();
         $request->attributes->set(PlatformRequest::ATTRIBUTE_SALES_CHANNEL_CONTEXT_OBJECT, $context);

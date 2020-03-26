@@ -50,6 +50,35 @@ class MerchantTest extends TestCase
         self::assertInstanceOf(SalesChannelContextExtension::class, SalesChannelContextExtension::extract($salesChannelContext));
     }
 
+    public function testCustomerDelete(): void {
+        $merchantData = $this->getMerchantData();
+
+        $merchantRepository = $this->getContainer()->get('merchant.repository');
+
+        $merchantRepository
+            ->create([$merchantData], Context::createDefaultContext());
+
+        $result = $merchantRepository
+            ->search(new Criteria([$merchantData['id']]), Context::createDefaultContext());
+
+        $merchantId = $result->first()->getId();
+        $customerId = $result->first()->getCustomerId();
+
+        $customerResult = $this->getContainer()->get('customer.repository')
+            ->search(new Criteria([$customerId]), Context::createDefaultContext());
+        self::assertSame(1, $customerResult->count());
+
+        $merchantRepository->delete([['id' => $merchantId]], Context::createDefaultContext());
+
+        $result = $merchantRepository
+            ->search(new Criteria([$merchantData['id']]), Context::createDefaultContext());
+        self::assertSame(0, $result->count());
+
+        $customerResult = $this->getContainer()->get('customer.repository')
+            ->search(new Criteria([$customerId]), Context::createDefaultContext());
+        self::assertSame(0, $customerResult->count());
+    }
+
     private function getMerchantData(): array
     {
         $merchantId = Uuid::randomHex();
