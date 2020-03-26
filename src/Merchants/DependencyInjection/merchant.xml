@@ -24,6 +24,10 @@
             <tag name="shopware.entity.definition" entity="merchant_order"/>
         </service>
 
+        <service id="Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantShippingMethod\MerchantShippingMethodDefinition">
+            <tag name="shopware.entity.definition" entity="merchant_shipping_method"/>
+        </service>
+
         <service id="Shopware\Production\Merchants\Content\Merchant\CustomerEntityExtension">
             <tag name="shopware.entity.extension"/>
         </service>
@@ -93,6 +97,11 @@
             <argument type="service" id="twig"/>
             <argument type="service" id="Shopware\Core\Content\MailTemplate\Service\MailSender"/>
             <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
+            <tag name="kernel.event_listener"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Subscriber\ConfirmPageLoadedSubscriber">
+            <argument type="service" id="product.repository"/>
             <tag name="kernel.event_listener"/>
         </service>
 

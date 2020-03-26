@@ -2,9 +2,8 @@
 
 namespace Shopware\Production\Merchants\Content\Merchant;
 
-use FontLib\Table\Type\name;
-use Shopware\Core\Checkout\Customer\CustomerCollection;
 use Shopware\Core\Checkout\Customer\CustomerEntity;
+use Shopware\Core\Checkout\Shipping\ShippingMethodCollection;
 use Shopware\Core\Content\Category\CategoryEntity;
 use Shopware\Core\Content\Product\ProductCollection;
 use Shopware\Core\Framework\DataAbstractionLayer\Entity;
@@ -74,6 +73,11 @@ class MerchantEntity extends Entity
      * @var ProductCollection|null
      */
     protected $products;
+
+    /**
+     * @var ShippingMethodCollection
+     */
+    protected $shippingMethods;
 
     public function getName(): ?string
     {
@@ -193,5 +197,15 @@ class MerchantEntity extends Entity
     public function setProducts(?ProductCollection $products): void
     {
         $this->products = $products;
+    }
+
+    public function getShippingMethods(): ShippingMethodCollection
+    {
+        return $this->shippingMethods;
+    }
+
+    public function setShippingMethods(ShippingMethodCollection $shippingMethods): void
+    {
+        $this->shippingMethods = $shippingMethods;
     }
 }
