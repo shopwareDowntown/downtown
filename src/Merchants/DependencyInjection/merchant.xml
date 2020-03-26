@@ -59,7 +59,6 @@
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Storefront\Controller\MerchantController" public="true">
-            <argument type="service" id="twig"/>
             <argument type="service" id="sales_channel.product.repository"/>
             <argument type="service" id="merchant.repository"/>
             <argument type="service" id="Shopware\Storefront\Page\GenericPageLoader"/>
