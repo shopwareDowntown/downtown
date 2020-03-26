@@ -37,5 +37,19 @@
             <argument type="service" id="merchant.repository"/>
             <argument type="service" id="Shopware\Storefront\Page\GenericPageLoader"/>
         </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Services\CustomerSync" public="true">
+            <argument type="service" id="customer.repository"/>
+            <argument type="service" id="merchant.repository"/>
+            <argument type="service" id="Doctrine\DBAL\Connection"/>
+
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+<!--        <service id="Shopware\Production\Merchants\Content\Merchant\Services\MerchantLogin" public="true">-->
+<!--            <argument type="service" id="merchant.repository"/>-->
+
+<!--            <tag name="kernel.event_subscriber"/>-->
+<!--        </service>-->
     </services>
 </container>
