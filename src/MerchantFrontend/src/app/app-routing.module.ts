@@ -26,8 +26,8 @@ const routes: Routes = [
     path: 'login',
     component: AuthPageLayoutComponent,
     children: [
-      {path: 'merchant', component: MerchantLoginComponent, canActivate: [AuthGuard]},
-      {path: 'organization', component: OrganizationLoginComponent, canActivate: [AuthGuard]},
+      {path: 'merchant', component: MerchantLoginComponent },
+      {path: 'organization', component: OrganizationLoginComponent },
     ]
   },
 

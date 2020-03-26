@@ -18,6 +18,9 @@
       <span class="spinner spinner-inline"></span>
       <span class="ml-1">Logging in...</span>
     </div>
+    <div class="error active" *ngIf="loginFailed">
+      Invalid user name or password
+    </div>
 
     <button type="button" (click)="doLogin()" class="btn btn-primary"
             [disabled]="!username || !password || isLogging">LOGIN

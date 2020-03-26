@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
+import { LoginService } from '../../core/services/login.service';
 
 @Component({
   selector: 'portal-merchant-login',
@@ -11,8 +12,12 @@ export class MerchantLoginComponent implements OnInit {
   username: string;
   password: string;
   isLogging: boolean;
+  loginFailed = false;
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private loginService: LoginService
+  ) { }
 
   ngOnInit(): void {
   }
@@ -25,7 +30,13 @@ export class MerchantLoginComponent implements OnInit {
   }
 
   public doLogin() {
-    // TODO: Authentication
-    this.router.navigate(['/']);
+    this.loginFailed = false;
+    this.loginService.login(this.username, this.password)
+      .subscribe((result) => {
+        this.router.navigate(['/merchant/profile']);
+
+      },() => {
+        this.loginFailed = true;
+      });
   }
 }
