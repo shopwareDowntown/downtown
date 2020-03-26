@@ -87,7 +87,7 @@ class MerchantController
         $criteria->addFilter(new EqualsFilter('salesChannelId', $context->getSalesChannel()->getId()));
 
         $criteria = $this->criteriaLoader->getMerchantCriteria($criteria);
-        
+
         /** @var MerchantEntity $merchant */
         $merchant = $this->merchantRepository->search($criteria, $context->getContext())->first();
 
