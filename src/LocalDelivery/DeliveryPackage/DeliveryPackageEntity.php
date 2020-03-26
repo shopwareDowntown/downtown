@@ -29,17 +29,27 @@ class DeliveryPackageEntity extends Entity
     /**
      * @var string
      */
-    protected $recipient;
-
-    /**
-     * @var string
-     */
     protected $content;
 
     /**
      * @var string
      */
     protected $status;
+
+    /**
+     * @var string
+     */
+    protected $zipcode;
+
+    /**
+     * @var string
+     */
+    protected $city;
+
+    /**
+     * @var string
+     */
+    protected $street;
 
     public function getDeliveryBoyId(): ?string
     {
@@ -61,16 +71,6 @@ class DeliveryPackageEntity extends Entity
         $this->deliveryBoy = $deliveryBoy;
     }
 
-    public function getRecipient(): string
-    {
-        return $this->recipient;
-    }
-
-    public function setRecipient(string $recipient): void
-    {
-        $this->recipient = $recipient;
-    }
-
     public function getContent(): string
     {
         return $this->content;
@@ -89,5 +89,35 @@ class DeliveryPackageEntity extends Entity
     public function setStatus(string $status): void
     {
         $this->status = $status;
+    }
+
+    public function getZipcode(): string
+    {
+        return $this->zipcode;
+    }
+
+    public function setZipcode(string $zipcode): void
+    {
+        $this->zipcode = $zipcode;
+    }
+
+    public function getCity(): string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): void
+    {
+        $this->city = $city;
+    }
+
+    public function getStreet(): string
+    {
+        return $this->street;
+    }
+
+    public function setStreet(string $street): void
+    {
+        $this->street = $street;
     }
 }

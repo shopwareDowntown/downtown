@@ -9,6 +9,7 @@ namespace Shopware\Production\LocalDelivery\DeliveryBoy;
 
 use Shopware\Core\Framework\DataAbstractionLayer\Entity;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityIdTrait;
+use Shopware\Production\LocalDelivery\DeliveryPackage\DeliveryPackageEntity;
 
 class DeliveryBoyEntity extends Entity
 {
@@ -63,6 +64,11 @@ class DeliveryBoyEntity extends Entity
      * @var string
      */
     protected $phoneNumber;
+
+    /**
+     * @var DeliveryPackageEntity[]
+     */
+    protected $deliveryPackages;
 
     public function getTitle(): string
     {
@@ -162,5 +168,15 @@ class DeliveryBoyEntity extends Entity
     public function setPhoneNumber(string $phoneNumber): void
     {
         $this->phoneNumber = $phoneNumber;
+    }
+
+    public function getDeliveryPackages(): array
+    {
+        return $this->deliveryPackages;
+    }
+
+    public function setDeliveryPackages(array $deliveryPackages): void
+    {
+        $this->deliveryPackages = $deliveryPackages;
     }
 }
