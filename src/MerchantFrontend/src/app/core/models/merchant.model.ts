@@ -1,19 +1,26 @@
 import { Authority } from './authority.model';
 
 export interface Merchant {
-    id?: string;
-    authority?: Authority;
-    email: string;
-    password?: string;
-    name: string;
-    firstName: string;
-    lastName: string;
-    salutation: string;
-    street: string;
-    zipCode: string;
-    city: string;
-    country: string;
-    phoneNumber: string;
+  id?: string;
+  authority?: Authority;
+  publicCompanyName: string;
+  owner: string;
+  publicPhoneNumber: string;
+  publicEmail: string;
+  publicWebsite: string;
+  categoryId: string;
+  publicOpeningTimes: string;
+  publicDescription: string;
+  pictures: string[];
+  public: boolean;
+  firstName: string;
+  lastName: string;
+  street: string;
+  zip: string;
+  city: string;
+  country: string; // New interface for countries?
+  email: string;
+  password?: string;
 }
 
 export interface MerchantRegistration {

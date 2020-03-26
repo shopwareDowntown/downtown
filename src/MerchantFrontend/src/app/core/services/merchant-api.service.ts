@@ -6,6 +6,7 @@ import { Product } from '../models/product.model';
 import { Authority } from '../models/authority.model';
 import { StateService } from '../state/state.service';
 import { map, take } from 'rxjs/operators';
+import { Category } from '../models/category.model';
 import { environment } from "../../../environments/environment";
 
 @Injectable({
@@ -54,27 +55,41 @@ export class MerchantApiService {
     return this.http.get<any>(this.apiUrl + '/sales-channel-api/v1/customer', {headers: headers})
       .pipe(
         map((result: any) => {
-          let data = result.data;
+          let merchantData = result.data.extensions.merchants;
+
           return {
-            id: data.id as string,
-            email: data.email as string,
-            password: '',
-            name: data.company || '',
-            firstName: data.firstName,
-            lastName: data.lastName,
-            salutation: data.salutation.salutationKey || '',
-            street: data.defaultBillingAddress.street,
-            zipCode: data.defaultBillingAddress.zipcode,
-            city: data.defaultBillingAddress.city,
-            country: data.defaultBillingAddress.countryId,
-            phoneNumber: data.defaultBillingAddress.phoneNumber as string
-          };
+            id: merchantData.id as string,
+            publicCompanyName: merchantData.publicCompanyName || '',
+            owner: '?',
+            publicPhoneNumber: merchantData.publicPhoneNumber as string || '',
+            publicEmail: merchantData.publicEmail as string || '',
+            publicWebsite: merchantData.publicWebsite || '',
+            categoryId: merchantData.categoryId || '',
+            publicOpeningTimes: merchantData.publicOpeningTimes || '',
+            publicDescription: merchantData.publicDescription || '',
+            pictures: ['?'],
+            public: merchantData.public,
+            firstName: merchantData.firstName || '',
+            lastName: merchantData.lastName || '',
+            street: merchantData.street || '',
+            zip: merchantData.zip || '',
+            city: merchantData.city || '',
+            country: merchantData.country || '',
+            email: merchantData.email as string,
+            password: merchantData.password,
+          } as Merchant;
         })
       );
   }
 
   updateMerchant(merchant: Merchant): Observable<Merchant> {
-      return this.http.patch<Merchant>(this.apiUrl + '/merchant-api/profile', JSON.stringify(merchant), {headers: this.getHeaders() });
+      return this.http.patch<Merchant>(this.apiUrl + '/merchant-api/v1/profile', JSON.stringify(merchant), {headers: this.getHeaders() });
+  }
+
+  // category routes
+
+  getCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(this.apiUrl + '/merchant-api/vi/industries', {headers: this.getHeaders()});
   }
 
   // product routes
