@@ -56,7 +56,7 @@ class MerchantLogin implements EventSubscriberInterface
 
         $this->contextPersister->save(
             $customerLoginEvent->getContextToken(),
-            [self::PERSISTSER_KEY => $merchant->getId()]
+            [MerchantSalesChannelContextService::PERSISTSER_KEY => $merchant->getId()]
         );
     }
 
