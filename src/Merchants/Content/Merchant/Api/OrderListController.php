@@ -27,7 +27,7 @@ class OrderListController
     }
 
     /**
-     * @Route(name="merchant-api.orders.load", path="/merchant-api/orders")
+     * @Route(name="merchant-api.orders.load", path="/merchant-api/v{version}/orders")
      */
     public function load(SalesChannelContext $context): JsonResponse
     {

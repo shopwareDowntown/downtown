@@ -7,6 +7,7 @@ use Shopware\Core\Content\Media\MediaService;
 use Shopware\Core\Content\Product\Aggregate\ProductVisibility\ProductVisibilityDefinition;
 use Shopware\Core\Content\Product\ProductEntity;
 use Shopware\Core\Defaults;
+use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
@@ -16,6 +17,7 @@ use Shopware\Core\System\NumberRange\ValueGenerator\NumberRangeValueGeneratorInt
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Core\System\Tax\TaxEntity;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
+use Shopware\Production\Merchants\Content\Merchant\SalesChannelContextExtension;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -81,11 +83,13 @@ class MerchantProductController
     }
 
     /**
-     * @Route(name="merchant-api.merchant.product.read", path="/merchant-api/v1/merchant/{merchantId}", methods={"GET"})
+     * @Route(name="merchant-api.merchant.product.read", path="/merchant-api/v{version}/products", methods={"GET"})
      */
-    public function getList(string $merchantId, SalesChannelContext $context): JsonResponse
+    public function getList(SalesChannelContext $context): JsonResponse
     {
-        $criteria = new Criteria([$merchantId]);
+        $merchant = SalesChannelContextExtension::extract($context);
+
+        $criteria = new Criteria([$merchant->getId()]);
         $criteria->addAssociation('products');
         $criteria->addAssociation('products.cover');
 
@@ -96,8 +100,8 @@ class MerchantProductController
         foreach ($merchant->getProducts() as $key => $product) {
             $productData = [
                 'id' => $product->getId(),
-                'name' => $product->getName(),
-                'description' => $product->getDescription(),
+                'name' => $product->getTranslation('name'),
+                'description' => $product->getTranslation('description'),
                 'price' => $product->getPrice()->first()->getGross(),
                 'tax' => $product->getTax()->getTaxRate(),
             ];
@@ -114,10 +118,12 @@ class MerchantProductController
     }
 
     /**
-     * @Route(name="merchant-api.merchant.product.create", path="/merchant-api/v1/merchant/product/", methods={"POST"}, defaults={"csrf_protected"=false})
+     * @Route(name="merchant-api.merchant.product.create", path="/merchant-api/v1/products", methods={"POST"}, defaults={"csrf_protected"=false})
      */
     public function create(Request $request, SalesChannelContext $context): JsonResponse
     {
+        $merchant = SalesChannelContextExtension::extract($context);
+
         $missingFields = $this->checkForMissingFields($request);
 
         if ($missingFields) {
@@ -125,6 +131,7 @@ class MerchantProductController
         }
 
         $productData = [
+            'id' => Uuid::randomHex(),
             'name' => $request->request->get('name'),
             'description' => $request->request->get('description'),
             'stock' => $request->request->getInt('stock', 0),
@@ -143,6 +150,11 @@ class MerchantProductController
                     'visibility' => ProductVisibilityDefinition::VISIBILITY_ALL
                 ],
             ],
+            'merchants' => [
+                [
+                    'id' => $merchant->getId()
+                ]
+            ]
         ];
 
         $taxEntity = $this->getTaxFromRequest($request, $context);
@@ -153,11 +165,7 @@ class MerchantProductController
             $productData['cover'] = ['mediaId' => $mediaId];
         }
 
-        $entityWrittenContainerEvent = $this->productRepository->create([$productData], $context->getContext());
-        $entityWrittenEvent = $entityWrittenContainerEvent->getEventByEntityName('product');
-        $productData['id'] = $entityWrittenEvent->getIds()[0];
-
-        $this->addProductToMerchant($productData['id'], $context);
+        $this->productRepository->create([$productData], Context::createDefaultContext());
 
         return new JsonResponse(
             ['message' => 'Successfully created product!', 'data' => $productData]
@@ -165,7 +173,7 @@ class MerchantProductController
     }
 
     /**
-     * @Route(name="merchant-api.merchant.product.update", path="/merchant-api/v1/merchant/product/{productId}", methods={"POST"}, defaults={"csrf_protected"=false})
+     * @Route(name="merchant-api.merchant.product.update", path="/merchant-api/v1/products/{productId}", methods={"POST"}, defaults={"csrf_protected"=false})
      */
     public function update(Request $request, string $productId, SalesChannelContext $context): JsonResponse
     {
@@ -213,7 +221,7 @@ class MerchantProductController
 
         $productData['id'] = $productId;
 
-        $this->productRepository->update([$productData], $context->getContext());
+        $this->productRepository->update([$productData], Context::createDefaultContext());
 
         return new JsonResponse(
             ['message' => 'Successfully saved product!', 'data' => $productData]
@@ -221,7 +229,7 @@ class MerchantProductController
     }
 
     /**
-     * @Route(name="merchant-api.merchant.product.delete", path="/merchant-api/v1/merchant/product/{productId}", methods={"DELETE"})
+     * @Route(name="merchant-api.merchant.product.delete", path="/merchant-api/v1/products/{productId}", methods={"DELETE"})
      */
     public function delete(string $productId, SalesChannelContext $context): JsonResponse
     {
@@ -296,18 +304,6 @@ class MerchantProductController
         }
 
         return $missingFields;
-    }
-
-    private function addProductToMerchant(string $productId, SalesChannelContext $context): void
-    {
-        $this->productRepository->update([[
-            'id' => $productId,
-            'merchants' => [
-                [
-                    'id' => $this->getMerchantFromContext($context)->getId()
-                ]
-            ]
-        ]], $context->getContext());
     }
 
     private function getMerchantFromContext(SalesChannelContext $context): MerchantEntity

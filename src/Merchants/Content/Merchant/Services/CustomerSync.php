@@ -34,8 +34,7 @@ class CustomerSync implements EventSubscriberInterface
         EntityRepositoryInterface $customerRepository,
         EntityRepositoryInterface $merchantRepository,
         Connection $connection
-    )
-    {
+    ) {
         $this->customerRepository = $customerRepository;
         $this->merchantRepository = $merchantRepository;
         $this->connection = $connection;
@@ -174,6 +173,4 @@ class CustomerSync implements EventSubscriberInterface
         return (string)$this->connection
             ->fetchColumn('SELECT LOWER(HEX(id)) FROM country LIMIT 1');
     }
-
-
 }

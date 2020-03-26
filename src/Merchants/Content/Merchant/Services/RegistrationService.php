@@ -43,15 +43,15 @@ class RegistrationService
         SystemConfigService $systemConfigService,
         EntityRepositoryInterface $domainRepository,
         EventDispatcherInterface $eventDispatcher
-    )
-    {
+    ) {
         $this->entityRepository = $entityRepository;
         $this->systemConfigService = $systemConfigService;
         $this->domainRepository = $domainRepository;
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function registerMerchant(array $parameters, SalesChannelContext $salesChannelContext): string {
+    public function registerMerchant(array $parameters, SalesChannelContext $salesChannelContext): string
+    {
         $parameters['id'] = Uuid::randomHex();
 
         $this->entityRepository->create([$parameters], $salesChannelContext->getContext());
