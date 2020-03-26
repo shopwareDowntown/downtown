@@ -27,12 +27,13 @@ class RegistrationController
     }
 
     /**
-     * @Route(name="merchant-api.account.register.save", path="/merchant-api/register")
+     * @Route(name="merchant-api.account.register.save", path="/merchant-api/register", methods={"POST"}, defaults={"csrf_protected"=false})
      */
     public function register(RequestDataBag $requestData, SalesChannelContext $context): JsonResponse
     {
-        $merchantId = $this->registrationService->registerMerchant($requestData,  $context);
+        $data = $requestData->only('name', 'email', 'password', 'salesChannelId');
+        $this->registrationService->registerMerchant($data,  $context);
 
-        return new JsonResponse(['data' => $merchantId]);
+        return new JsonResponse(['success' => true]);
     }
 }
