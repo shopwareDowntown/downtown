@@ -33,6 +33,11 @@ class MerchantTest extends TestCase
         self::assertSame(1, $result->count());
         self::assertNotEmpty($result->first()->getCustomerId());
 
+        $this->getContainer()->get('customer.repository')->update([[
+            'id' => $result->first()->getCustomerId(),
+            'active' => true,
+        ]], Context::createDefaultContext());
+
         $token = $this->getContainer()
             ->get(AccountService::class)
             ->loginWithPassword(

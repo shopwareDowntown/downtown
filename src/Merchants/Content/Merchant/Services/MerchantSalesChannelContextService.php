@@ -2,17 +2,12 @@
 
 namespace Shopware\Production\Merchants\Content\Merchant\Services;
 
-use Shopware\Core\Checkout\Cart\Exception\CustomerNotLoggedInException;
-use Shopware\Core\Checkout\Customer\Event\CustomerLoginEvent;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
-use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\System\SalesChannel\Context\SalesChannelContextPersister;
 use Shopware\Core\System\SalesChannel\Context\SalesChannelContextServiceInterface;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
-use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
 use Shopware\Production\Merchants\Content\Merchant\SalesChannelContextExtension;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class MerchantSalesChannelContextService implements SalesChannelContextServiceInterface
 {

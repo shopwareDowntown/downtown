@@ -45,19 +45,15 @@ class MerchantRegistrationTest extends TestCase
                 'firstName' => 'First name',
                 'salutationId' => $salutationId,
                 'name' => "foo",
-                'salesChannelId' => Defaults::SALES_CHANNEL_TYPE_STOREFRONT
+                'salesChannelId' => Defaults::SALES_CHANNEL
             ];
 
-        $context = $this->getContainer()->get(SalesChannelContextFactory::class)
-            ->create(Uuid::randomHex(), Defaults::SALES_CHANNEL_TYPE_STOREFRONT, [SalesChannelContextService::CUSTOMER_ID => $id1]);
-
-        $request = new Request();
-        $request->attributes->set(PlatformRequest::ATTRIBUTE_SALES_CHANNEL_CONTEXT_OBJECT, $context);
-        $this->getContainer()->get('request_stack')->push($request);
+        $context = $this->getContainer()->get(SalesChannelContextService::class)
+            ->get(Defaults::SALES_CHANNEL, Uuid::randomHex());
 
         $jsonResponse = $this->getContainer()->get(RegistrationController::class)->register(new RequestDataBag($merchantData), $context);
         $result = (array) json_decode($jsonResponse->getContent());
 
-        self::assertNotNull($result['data']);
+        self::assertTrue($result['success']);
     }
 }

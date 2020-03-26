@@ -146,7 +146,7 @@ class MerchantProductController
             ],
             'visibilities' => [
                 [
-                    'salesChannelId' => $context->getSalesChannel()->getId(),
+                    'salesChannelId' => $merchant->getSalesChannelId(),
                     'visibility' => ProductVisibilityDefinition::VISIBILITY_ALL
                 ],
             ],

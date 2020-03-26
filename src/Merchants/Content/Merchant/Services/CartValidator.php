@@ -51,7 +51,6 @@ class CartValidator implements CartValidatorInterface
                 continue;
             }
 
-            $merchantId = $product->getExtension('merchants')->first()->getId();
             /** @var MerchantEntity $merchant */
             $merchant = $product->getExtension('merchants')->first();
 
