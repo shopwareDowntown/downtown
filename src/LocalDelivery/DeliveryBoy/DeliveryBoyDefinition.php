@@ -57,7 +57,7 @@ class DeliveryBoyDefinition extends EntityDefinition
             (new StringField('phone_number', 'phoneNumber'))->addFlags(new Required()),
 
             new FkField('delivery_package_id', 'deliveryPackageId', DeliveryPackageDefinition::class),
-            new OneToManyAssociationField('deliveryPackages', 'delivery_package_id', DeliveryPackageDefinition::class),
+            new OneToManyAssociationField('deliveryPackages', DeliveryPackageDefinition::class, 'delivery_package_id'),
         ]);
     }
 }
