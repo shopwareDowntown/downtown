@@ -43,6 +43,7 @@ export const NAVIGATION_ADMIN = [
   new NavigationItem('Dashboard', '').setIcon('unknown-status'),
   new NavigationItem('Merchant Profile', '/merchant/profile').setIcon('unknown-status'),
   new NavigationItem('Merchant Settings', '/merchant/settings').setIcon('unknown-status'),
+  new NavigationItem('Delivery', '/merchant/delivery').setIcon('unknown-status'),
 ];
 
 export const NAVIGATION_LANDING = [

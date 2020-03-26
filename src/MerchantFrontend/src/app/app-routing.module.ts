@@ -11,6 +11,7 @@ import {OrganizationRegisterComponent} from './views/organization-register/organ
 import {LandingPageLayoutComponent} from './core/layouts/landing-page-layout/landing-page-layout.component';
 import {AdminPageLayoutComponent} from './core/layouts/admin-page-layout/admin-page-layout.component';
 import {AuthPageLayoutComponent} from './core/layouts/auth-page-layout/auth-page-layout.component';
+import {LocalDeliveryComponent} from "./views/local-delivery/local-delivery.component";
 
 const routes: Routes = [
   {
@@ -45,7 +46,8 @@ const routes: Routes = [
     children: [
       {path: ':id', component: MerchantDetailsComponent, canActivate: [AuthGuard]},
       {path: 'profile', component: MerchantDetailsComponent, canActivate: [AuthGuard]},
-      {path: 'settings', component: MerchantDetailsComponent, canActivate: [AuthGuard]}
+      {path: 'settings', component: MerchantDetailsComponent, canActivate: [AuthGuard]},
+      {path: 'delivery', component: LocalDeliveryComponent, canActivate: [AuthGuard]}
     ]
   },
 
