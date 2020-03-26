@@ -3,6 +3,7 @@
 namespace Shopware\Production\Merchants\Content\Merchant;
 
 use Shopware\Core\Checkout\Customer\CustomerEntity;
+use Shopware\Core\Checkout\Order\OrderCollection;
 use Shopware\Core\Checkout\Shipping\ShippingMethodCollection;
 use Shopware\Core\Content\Category\CategoryEntity;
 use Shopware\Core\Content\Product\ProductCollection;
@@ -78,6 +79,11 @@ class MerchantEntity extends Entity
      * @var ShippingMethodCollection
      */
     protected $shippingMethods;
+
+    /**
+     * @var OrderCollection
+     */
+    protected $orders;
 
     public function getName(): ?string
     {
@@ -207,5 +213,15 @@ class MerchantEntity extends Entity
     public function setShippingMethods(ShippingMethodCollection $shippingMethods): void
     {
         $this->shippingMethods = $shippingMethods;
+    }
+
+    public function getOrders(): OrderCollection
+    {
+        return $this->orders;
+    }
+
+    public function setOrders(OrderCollection $orders): void
+    {
+        $this->orders = $orders;
     }
 }
