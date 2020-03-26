@@ -1,0 +1,65 @@
+Hallo {{ merchant.name }},<br><br>
+
+du hast eine neue Bestellung erhalten.<br>
+
+<h4>Gekaufte Produkte:</h4><br><br>
+
+<table width="80%" border="0" style="font-family:Arial, Helvetica, sans-serif; font-size:12px;">
+    <tr>
+        <td bgcolor="#F7F7F2" style="border-bottom:1px solid #cccccc;"><strong>Pos.</strong></td>
+        <td bgcolor="#F7F7F2" style="border-bottom:1px solid #cccccc;"><strong>Bezeichnung</strong></td>
+        <td bgcolor="#F7F7F2" style="border-bottom:1px solid #cccccc;"><strong>Menge</strong></td>
+        <td bgcolor="#F7F7F2" style="border-bottom:1px solid #cccccc;"><strong>Preis</strong></td>
+        <td bgcolor="#F7F7F2" style="border-bottom:1px solid #cccccc;"><strong>Summe</strong></td>
+    </tr>
+
+    {% for lineItem in order.lineItems %}
+        <tr>
+            <td style="border-bottom:1px solid #cccccc;">{{ loop.index }} </td>
+            <td style="border-bottom:1px solid #cccccc;">
+                {{ lineItem.label|u.wordwrap(80) }}<br>
+                {% if lineItem.payload.productNumber is defined %}Artikel-Nr: {{ lineItem.payload.productNumber|u.wordwrap(80) }}{% endif %}
+            </td>
+            <td style="border-bottom:1px solid #cccccc;">{{ lineItem.quantity }}</td>
+            <td style="border-bottom:1px solid #cccccc;">{{ lineItem.unitPrice|currency(currencyIsoCode) }}</td>
+            <td style="border-bottom:1px solid #cccccc;">{{ lineItem.totalPrice|currency(currencyIsoCode) }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% set delivery = order.deliveries.first %}
+<p>
+<br>
+<br>
+Versandkosten: {{order.deliveries.first.shippingCosts.totalPrice|currency(currencyIsoCode) }}<br>
+Gesamtkosten Netto: {{ order.amountNet|currency(currencyIsoCode) }}<br>
+{% for calculatedTax in order.price.calculatedTaxes %}
+    {% if order.taxStatus is same as('net') %}zzgl.{% else %}inkl.{% endif %} {{ calculatedTax.taxRate }}% MwSt. {{ calculatedTax.tax|currency(currencyIsoCode) }}<br>
+{% endfor %}
+<strong>Gesamtkosten Brutto: {{ order.amountTotal|currency(currencyIsoCode) }}</strong><br>
+<br>
+
+<strong>Gewählte Zahlungsart:</strong> {{ order.transactions.first.paymentMethod.name }}<br>
+{{ order.transactions.first.paymentMethod.description }}<br>
+<br>
+
+<strong>Gewählte Versandart:</strong> {{ delivery.shippingMethod.name }}<br>
+{{ delivery.shippingMethod.description }}<br>
+<br>
+
+{% set billingAddress = order.addresses.get(order.billingAddressId) %}
+<strong>Rechnungsadresse:</strong><br>
+{{ billingAddress.company }}<br>
+{{ billingAddress.firstName }} {{ billingAddress.lastName }}<br>
+{{ billingAddress.street }} <br>
+{{ billingAddress.zipcode }} {{ billingAddress.city }}<br>
+{{ billingAddress.country.name }}<br>
+<br>
+
+<strong>Lieferadresse:</strong><br>
+{{ delivery.shippingOrderAddress.company }}<br>
+{{ delivery.shippingOrderAddress.firstName }} {{ delivery.shippingOrderAddress.lastName }}<br>
+{{ delivery.shippingOrderAddress.street }} <br>
+{{ delivery.shippingOrderAddress.zipcode}} {{ delivery.shippingOrderAddress.city }}<br>
+{{ delivery.shippingOrderAddress.country.name }}<br>
+<br>

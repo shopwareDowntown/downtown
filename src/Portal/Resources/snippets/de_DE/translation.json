@@ -4,5 +4,8 @@
         "phoneNumber": "Telefonnummer:",
         "website": "Webseite:",
         "ourProducts": "Unsere Angebote"
+    },
+    "checkout": {
+        "cartContainsMultipleMerchants": "Es können nur Produkte von einem Händler gleichzeitig gekauft werden"
     }
 }

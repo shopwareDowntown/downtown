@@ -36,6 +36,11 @@ class MerchantEntity extends Entity
     protected $phoneNumber;
 
     /**
+     * @var string
+     */
+    protected $email;
+
+    /**
      * @var string|null
      */
     protected $customerId;
@@ -108,6 +113,16 @@ class MerchantEntity extends Entity
     public function setPhoneNumber(?string $phoneNumber): void
     {
         $this->phoneNumber = $phoneNumber;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
     }
 
     public function getCustomerId(): ?string
