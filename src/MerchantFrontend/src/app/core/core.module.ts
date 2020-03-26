@@ -1,16 +1,16 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { HeaderModule } from './header/header.module';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {LayoutsModule} from './layouts/layouts.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    HeaderModule
+    LayoutsModule
   ],
-  declarations: [
-  ],
+  declarations: [],
   exports: [
-    HeaderModule
+    LayoutsModule
   ],
 })
-export class CoreModule {}
+export class CoreModule {
+}

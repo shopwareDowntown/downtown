@@ -891,6 +891,42 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@clr/angular@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@clr/angular/-/angular-3.0.1.tgz#480bab2368c6ab38f9149b337ce7b514a1470441"
+  integrity sha512-rVTBHitHb9IWW8lKiKzIRYN6hra6SlpbkKaYp+X7LnBbPYdzjZtwVEH2Az+672pcRZFKcql7DG7G1dQiSKO/xA==
+
+"@clr/city@^1.0.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@clr/city/-/city-1.1.0.tgz#4a444cd12c626d66ffadab27e9d09bb3c8eca352"
+  integrity sha512-R+C4uywmXoTD01LINOt3O0cBRviQdbAVNxdVvOyuO3+rM9bvFroF7UZY0R1ue/xvKXlqJrEkNKZQODeKjzaAhA==
+
+"@clr/core@3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@clr/core/-/core-3.0.1.tgz#a6ec64606904ebd77e7135353078aef29f831958"
+  integrity sha512-eO8mpScH0G5ejklN35L+DPgfAapx8Mi0Zx6nmSC3oz4fIqOqM62F2Lk4/cBR26EzUFA56/RelDP74ZjnJbv4sQ==
+  dependencies:
+    css-vars-ponyfill "^2.1.2"
+    lit-element "^2.2.1"
+    lit-html "^1.1.2"
+    ramda "^0.26.1"
+    tslib "^1.10.0"
+  optionalDependencies:
+    "@clr/city" "^1.0.0"
+    "@webcomponents/custom-elements" "^1.3.1"
+    "@webcomponents/shadycss" "^1.9.3"
+    "@webcomponents/webcomponentsjs" "^2.4.0"
+
+"@clr/icons@3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@clr/icons/-/icons-3.0.1.tgz#eec5b366c9e60fe9e4cf78f59b7fed97a0121dc8"
+  integrity sha512-bQrVWe8tYpIwfunIt/IFsCEJ/gL3sbf1jzjyQ3BQFrp0EzqIkcQwb7oBP9I4aaMcUdc5VbS5CV8sYNFDgq2+9g==
+
+"@clr/ui@3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@clr/ui/-/ui-3.0.1.tgz#a296257094bd6a2bdd8a4d25fa78bbac58aa1a04"
+  integrity sha512-/g7ohS68dHFcz9FQSjy2MmcGQlKT7T/nK14sY+maSLUB8f1ht5fM4WJ/PGv2mPm7US4Ag8BXTQnWdXR6P/BMUw==
+
 "@istanbuljs/schema@^0.1.2":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@istanbuljs/schema/-/schema-0.1.2.tgz#26520bf09abe4a5644cd5414e37125a8954241dd"
@@ -1122,6 +1158,21 @@
     "@webassemblyjs/ast" "1.8.5"
     "@webassemblyjs/wast-parser" "1.8.5"
     "@xtuc/long" "4.2.2"
+
+"@webcomponents/custom-elements@^1.3.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@webcomponents/custom-elements/-/custom-elements-1.4.1.tgz#9803aaa2286a13a4ba200a7a2ea767871598eb60"
+  integrity sha512-vNCS1+3sxJOpoIsBjUQiXjGLngakEAGOD5Ale+6ikg6OZG5qI5O39frm3raPhud/IwnF4vec5ags05YBsgzcuA==
+
+"@webcomponents/shadycss@^1.9.3":
+  version "1.9.6"
+  resolved "https://registry.yarnpkg.com/@webcomponents/shadycss/-/shadycss-1.9.6.tgz#a8c5db867e49200a05cf8d5008029c09b7861979"
+  integrity sha512-5fFjvP0jQJZoXK6YzYeYcIDGJ5oEsdjr1L9VaYLw5yxNd4aRz4srMpwCwldeNG0A6Hvr9igbG7fCsBeiiCXd7A==
+
+"@webcomponents/webcomponentsjs@^2.0.0", "@webcomponents/webcomponentsjs@^2.4.0":
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/@webcomponents/webcomponentsjs/-/webcomponentsjs-2.4.3.tgz#384f4f6d54563ba465fb4df21fe89e78a76fc530"
+  integrity sha512-cV4+sAmshf8ysU2USutrSRYQkJzEYKHsRCGa0CkMElGpG5747VHtkfsW3NdVIBV/m2MDKXTDydT4lkrysH7IFA==
 
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
@@ -2293,6 +2344,11 @@ css-tree@1.0.0-alpha.39:
   dependencies:
     mdn-data "2.0.6"
     source-map "^0.6.1"
+
+css-vars-ponyfill@^2.1.2:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/css-vars-ponyfill/-/css-vars-ponyfill-2.2.1.tgz#c97dcfb3efc93b479661af58afa04cb0ef5b97e6"
+  integrity sha512-bFdKEQbCtwoDl4/iPaqjGDMZRgnVn6k7c6XUlOrW+OzMIweWV6b5YbajR99dUiAsB1WpfbGGiiE9T1cnSh2pgA==
 
 css-what@^3.2.1:
   version "3.2.1"
@@ -4243,6 +4299,18 @@ license-webpack-plugin@2.1.3:
     "@types/webpack-sources" "^0.1.5"
     webpack-sources "^1.2.0"
 
+lit-element@^2.2.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/lit-element/-/lit-element-2.3.1.tgz#73343b978fa1e73d60526c6bb6ad60f53a16c343"
+  integrity sha512-tOcUAmeO3BzwiQ7FGWdsshNvC0HVHcTFYw/TLIImmKwXYoV0E7zCBASa8IJ7DiP4cen/Yoj454gS0qqTnIGsFA==
+  dependencies:
+    lit-html "^1.1.1"
+
+lit-html@^1.1.1, lit-html@^1.1.2:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/lit-html/-/lit-html-1.2.1.tgz#1fb933dc1e2ddc095f60b8086277d4fcd9d62cc8"
+  integrity sha512-GSJHHXMGLZDzTRq59IUfL9FCdAlGfqNp/dEa7k7aBaaWD+JKaCjsAk9KYm2V12ItonVaYx2dprN66Zdm1AuBTQ==
+
 loader-runner@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/loader-runner/-/loader-runner-2.4.0.tgz#ed47066bfe534d7e84c4c7b9998c2a75607d9357"
@@ -5821,6 +5889,11 @@ querystringify@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.1.1.tgz#60e5a5fd64a7f8bfa4d2ab2ed6fdf4c85bad154e"
   integrity sha512-w7fLxIRCRT7U8Qu53jQnJyPkYZIaR4n5151KMfcJlO/A9397Wxb1amJvROTK6TOnp7PfoAmg/qXiNHI+08jRfA==
+
+ramda@^0.26.1:
+  version "0.26.1"
+  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.26.1.tgz#8d41351eb8111c55353617fc3bbffad8e4d35d06"
+  integrity sha512-hLWjpy7EnsDBb0p+Z3B7rPi3GDeRG5ZtiI33kJhTt+ORCd38AbAIjB/9zRIUoeTbE/AVX5ZkU7m6bznsvrf8eQ==
 
 randombytes@^2.0.0, randombytes@^2.0.1, randombytes@^2.0.5:
   version "2.1.0"

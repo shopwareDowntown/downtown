@@ -1,0 +1,34 @@
+<clr-main-container>
+
+  <!-- Header Toolbar -->
+  <clr-header class="header-5">
+    <!-- Branding -->
+    <div class="branding">
+      <a routerLink="/" class="logo-and-title">
+        <clr-icon class="is-white" shape="store"></clr-icon> <!-- can be replaced with favicon -->
+        <span class="title">Portal</span>
+      </a>
+    </div>
+
+    <!-- Toolbar Navigation -->
+    <div class="header-nav" [clr-nav-level]="1">
+      <a *ngFor="let nav of navigation"
+         class="nav-link"
+         [routerLink]="nav.route"
+         routerLinkActive='active'
+         [routerLinkActiveOptions]="{ exact: true }">
+        {{nav.title}}
+      </a>
+    </div>
+  </clr-header>
+
+  <!-- Content Area-->
+  <div class="content-container">
+
+    <!-- Content -->
+    <div class="content-area">
+      <router-outlet #content></router-outlet>
+    </div>
+  </div>
+
+</clr-main-container>
