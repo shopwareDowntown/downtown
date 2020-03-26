@@ -28,38 +28,38 @@ export class MerchantApiService {
   // merchant routes
 
   registerMerchant(merchantRegistration: MerchantRegistration): Observable<Merchant> {
-      return this.http.post(this.apiUrl + '/merchant-api/register', JSON.stringify(merchantRegistration));
+      return this.http.post<Merchant>(this.apiUrl + '/merchant-api/register', JSON.stringify(merchantRegistration));
   }
 
   getMerchant(): Observable<Merchant> {
-      return this.http.get(this.apiUrl + '/merchant-api/register');
+      return this.http.get<Merchant>(this.apiUrl + '/merchant-api/register');
   }
 
   updateMerchant(merchant: Merchant): Observable<Merchant> {
-      return this.http.patch(this.apiUrl + '/merchant-api/profile', JSON.stringify(merchant));
+      return this.http.patch<Merchant>(this.apiUrl + '/merchant-api/profile', JSON.stringify(merchant));
   }
 
   // product routes
 
   getProducts(): Observable<Product[]> {
-      return this.http.get(this.apiUrl + '/merchant-api/products');
+      return this.http.get<Product[]>(this.apiUrl + '/merchant-api/products');
   }
 
   getProduct(productId: number): Observable<Product> {
-      return this.http.get(this.apiUrl + '/merchant-api/products/' + productId);
+      return this.http.get<Product>(this.apiUrl + '/merchant-api/products/' + productId);
   }
 
   addProduct(product: Product): Observable<Product> {
-      return this.http.post(this.apiUrl + '/merchant-api/products/', JSON.stringify(product));
+      return this.http.post<Product>(this.apiUrl + '/merchant-api/products/', JSON.stringify(product));
   }
 
   deleteProduct(product: Product): Observable<void> {
-      return this.http.delete(this.apiUrl + '/merchant-api/products/' + product.id);
+      return this.http.delete<void>(this.apiUrl + '/merchant-api/products/' + product.id);
   }
 
   // authority route
 
   getAuthorities(): Observable<Authority[]> {
-      return this.http.get(this.apiUrl + '/merchant-api/authorities');
+      return this.http.get<Authority[]>(this.apiUrl + '/merchant-api/authorities');
   }
 }
