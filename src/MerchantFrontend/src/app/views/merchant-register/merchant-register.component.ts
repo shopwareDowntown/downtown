@@ -56,8 +56,4 @@ export class MerchantRegisterComponent implements OnInit {
       () => {}
     );
   }
-
-  test() {
-    console.log('hier!')
-  }
 }
