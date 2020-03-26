@@ -3,10 +3,13 @@
 namespace Shopware\Production\Merchants\Content\Merchant\Services;
 
 use Doctrine\DBAL\Connection;
+use Shopware\Core\Checkout\Customer\CustomerDefinition;
 use Shopware\Core\Checkout\Customer\CustomerEvents;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Event\EntityWrittenEvent;
+use Shopware\Core\Framework\DataAbstractionLayer\Write\Command\CascadeDeleteCommand;
+use Shopware\Core\Framework\DataAbstractionLayer\Write\Validation\PreWriteValidationEvent;
 use Shopware\Core\Framework\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -31,7 +34,8 @@ class CustomerSync implements EventSubscriberInterface
         EntityRepositoryInterface $customerRepository,
         EntityRepositoryInterface $merchantRepository,
         Connection $connection
-    ) {
+    )
+    {
         $this->customerRepository = $customerRepository;
         $this->merchantRepository = $merchantRepository;
         $this->connection = $connection;
@@ -44,16 +48,40 @@ class CustomerSync implements EventSubscriberInterface
     {
         return [
             'merchant.written' => 'syncToCustomer',
+            PreWriteValidationEvent::class => 'deleteCascadeCustomers'
         ];
     }
 
-    public function syncToCustomer(EntityWrittenEvent $event) :void
+    public function deleteCascadeCustomers(PreWriteValidationEvent $event)
     {
-        if(count($event->getErrors())) {
+        $context = $event->getContext();
+
+        foreach ($event->getCommands() as $command) {
+            if (!($command instanceof CascadeDeleteCommand) || !($command->getDefinition() instanceof CustomerDefinition)) {
+                continue;
+            }
+
+            $entityExistence = $command->getEntityExistence();
+
+            if (!$entityExistence->exists()) {
+                continue;
+            }
+
+            $this->customerRepository->delete([['id' => Uuid::fromBytesToHex($command->getPrimaryKey()['id'])]], $context);
+        }
+    }
+
+    public function syncToCustomer(EntityWrittenEvent $event): void
+    {
+        if (count($event->getErrors())) {
             return;
         }
 
         $saneDefaults = [
+            'active' => false,
+            'doubleOptInRegistration' => true,
+            'doubleOptInEmailSentDate' => new \DateTimeImmutable(),
+            'hash' => Uuid::randomHex(),
             'groupId' => Defaults::FALLBACK_CUSTOMER_GROUP,
             'defaultPaymentMethodId' => $this->fetchRandomPaymentMethodId(),
             'languageId' => Defaults::LANGUAGE_SYSTEM,
@@ -81,14 +109,14 @@ class CustomerSync implements EventSubscriberInterface
         $merchantUpdate = [];
 
         $customers = [];
-        foreach($event->getWriteResults() as $writeResult) {
+        foreach ($event->getWriteResults() as $writeResult) {
             $customer = [$this->extractValuesIfPresent($writeResult->getPayload(), 'salesChannelId', 'name', 'email', 'password')];
 
-            if($customer === [[]]) {
+            if ($customer === [[]]) {
                 continue;
             }
 
-            if(!$writeResult->getExistence()->exists()) {
+            if (!$writeResult->getExistence()->exists()) {
                 $newCustomerId = Uuid::randomHex();
 
                 $customer[] = $saneDefaults;
@@ -108,7 +136,7 @@ class CustomerSync implements EventSubscriberInterface
             $customers[] = array_merge(...$customer);
         }
 
-        if($customers === []) {
+        if ($customers === []) {
             return;
         }
 
@@ -120,8 +148,8 @@ class CustomerSync implements EventSubscriberInterface
     {
         $filteredData = [];
 
-        foreach($keys as $key) {
-            if(array_key_exists($key, $data)) {
+        foreach ($keys as $key) {
+            if (array_key_exists($key, $data)) {
                 $filteredData[$key] = $data[$key];
             }
         }
@@ -131,19 +159,19 @@ class CustomerSync implements EventSubscriberInterface
 
     private function fetchRandomPaymentMethodId(): string
     {
-        return (string) $this->connection
+        return (string)$this->connection
             ->fetchColumn('SELECT LOWER(HEX(id)) FROM payment_method WHERE active=1 LIMIT 1');
     }
 
     private function fetchUnspecifiedSalutation(): string
     {
-        return (string) $this->connection
+        return (string)$this->connection
             ->fetchColumn('SELECT LOWER(HEX(id)) FROM salutation WHERE salutation_key="not_specified" LIMIT 1');
     }
 
     private function fetchRandomCountry(): string
     {
-        return (string) $this->connection
+        return (string)$this->connection
             ->fetchColumn('SELECT LOWER(HEX(id)) FROM country LIMIT 1');
     }
 

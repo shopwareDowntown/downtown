@@ -7,7 +7,6 @@ services:
     build: .
     depends_on:
       - mysql
-      - elasticsearch
     ports:
       - 8000:8000
       - 8005:8000
