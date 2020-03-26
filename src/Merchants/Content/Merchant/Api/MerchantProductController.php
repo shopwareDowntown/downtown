@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @RouteScope(scopes={"sales-channel-api"})
+ * @RouteScope(scopes={"storefront"})
  */
 class MerchantProductController
 {
@@ -81,7 +81,7 @@ class MerchantProductController
     }
 
     /**
-     * @Route(name="sales-channel-api.merchant.product.read", path="/sales-channel-api/v1/merchant/{merchantId}", methods={"GET"})
+     * @Route(name="merchant-api.merchant.product.read", path="/merchant-api/v1/merchant/{merchantId}", methods={"GET"})
      */
     public function getList(string $merchantId, SalesChannelContext $context): JsonResponse
     {
@@ -114,7 +114,7 @@ class MerchantProductController
     }
 
     /**
-     * @Route(name="sales-channel-api.merchant.product.create", path="/sales-channel-api/v1/merchant/product/", methods={"POST"})
+     * @Route(name="merchant-api.merchant.product.create", path="/merchant-api/v1/merchant/product/", methods={"POST"}, defaults={"csrf_protected"=false})
      */
     public function create(Request $request, SalesChannelContext $context): JsonResponse
     {
@@ -165,7 +165,7 @@ class MerchantProductController
     }
 
     /**
-     * @Route(name="sales-channel-api.merchant.product.update", path="/sales-channel-api/v1/merchant/product/{productId}", methods={"POST"})
+     * @Route(name="merchant-api.merchant.product.update", path="/merchant-api/v1/merchant/product/{productId}", methods={"POST"}, defaults={"csrf_protected"=false})
      */
     public function update(Request $request, string $productId, SalesChannelContext $context): JsonResponse
     {
@@ -221,7 +221,7 @@ class MerchantProductController
     }
 
     /**
-     * @Route(name="sales-channel-api.merchant.product.delete", path="/sales-channel-api/v1/merchant/product/merchant/product/{productId}", methods={"DELETE"})
+     * @Route(name="merchant-api.merchant.product.delete", path="/merchant-api/v1/merchant/product/{productId}", methods={"DELETE"})
      */
     public function delete(string $productId, SalesChannelContext $context): JsonResponse
     {
