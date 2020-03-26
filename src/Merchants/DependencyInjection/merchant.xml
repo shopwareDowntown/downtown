@@ -63,10 +63,15 @@
             <tag name="kernel.event_subscriber"/>
         </service>
 
-        <service id="Shopware\Production\Merchants\Content\Merchant\Services\MerchantLogin" public="true" decorates="Shopware\Core\System\SalesChannel\Context\SalesChannelContextService">
+        <service id="Shopware\Production\Merchants\Content\Merchant\Services\MerchantSalesChannelContextService" public="true" decorates="Shopware\Core\System\SalesChannel\Context\SalesChannelContextService">
             <argument type="service" id="merchant.repository"/>
             <argument type="service" id="Shopware\Core\System\SalesChannel\Context\SalesChannelContextPersister"/>
-            <argument type="service" id="Shopware\Production\Merchants\Content\Merchant\Services\MerchantLogin.inner"/>
+            <argument type="service" id="Shopware\Production\Merchants\Content\Merchant\Services\MerchantSalesChannelContextService.inner"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Services\MerchantLogin">
+            <argument type="service" id="merchant.repository"/>
+            <argument type="service" id="Shopware\Core\System\SalesChannel\Context\SalesChannelContextPersister"/>
 
             <tag name="kernel.event_subscriber"/>
         </service>
