@@ -47,34 +47,51 @@ class ProfileController
         return new JsonResponse($merchant);
     }
 
-//    /**
-//     * @Route(name="merchant-api.profile.save", methods={"PATCH"}, path="/merchant-api/profile")
-//     */
-//    public function save(DataBag $dataBag, SalesChannelContext $salesChannelContext): JsonResponse
-//    {
-//        $merchant = SalesChannelContextExtension::extract($salesChannelContext);
-//
-//        $df = (new DataValidationDefinition())
-//            ->add('public', new NotBlank(), new Type('bool'))
-//            ->add('name', new Type('string'))
-//            ->add('email', new Type('string'))
-//            ->add('password', new Type('string'))
-//
-//            ->add('website', new NotBlank(), new Type('string'))
-//            ->add('description', new NotBlank(), new Type('string'))
-//            ->add('phoneNumber', new NotBlank(), new Type('string'))
-//
-//            ->add('categoryId', new NotBlank(), new Uuid(), new EntityExists(['entity' => 'category', 'context' => $salesChannelContext->getContext()]));
-//
-//        $this->merchantRepository->update([[
-//            $dataBag->only(... array_keys($df->getProperties()))
-//        ]], $salesChannelContext->getContext());
-//
-//        $merchant = $this->merchantRepository
-//            ->search(new Criteria([$merchant->getId()]), $salesChannelContext->getContext())
-//            ->first();
-//
-//
-//        return new JsonResponse($merchant);
-//    }
+    /**
+     * @Route(name="merchant-api.profile.save", methods={"PATCH"}, path="/merchant-api/profile")
+     */
+    public function save(DataBag $dataBag, SalesChannelContext $salesChannelContext): JsonResponse
+    {
+        $merchant = SalesChannelContextExtension::extract($salesChannelContext);
+
+        $merchantConstraints = $this->createValidationDefinition($salesChannelContext);
+
+        $this->dataValidator->validate($dataBag->all(), $merchantConstraints);
+
+        $this->merchantRepository->update([
+            array_merge(
+                ['id' => $merchant->getId()],
+                $dataBag->only(... array_keys($merchantConstraints->getProperties()))
+            )
+        ], $salesChannelContext->getContext());
+
+        $merchant = $this->merchantRepository
+            ->search(new Criteria([$merchant->getId()]), $salesChannelContext->getContext())
+            ->first();
+
+        return new JsonResponse($merchant);
+    }
+
+    protected function createValidationDefinition(SalesChannelContext $salesChannelContext): DataValidationDefinition
+    {
+        return (new DataValidationDefinition())
+            ->add('public', new NotBlank(), new Type('bool'))
+            ->add('publicCompanyName', new Type('string'))
+            ->add('publicPhoneNumber', new Type('string'))
+            ->add('publicEmail', new Type('string'))
+            ->add('publicOpeningTimes', new Type('string'))
+            ->add('publicDescription', new Type('string'))
+            ->add('publicWebsite', new Type('string'))
+            ->add('categoryId', new EntityExists(['entity' => 'category', 'context' => $salesChannelContext->getContext()]))
+
+            ->add('firstName', new Type('string'))
+            ->add('lastName', new Type('string'))
+            ->add('street', new Type('string'))
+            ->add('zip', new Type('string'))
+            ->add('city', new Type('string'))
+            ->add('country', new Type('string'))
+            ->add('email', new Type('string'))
+            ->add('password', new Type('string'))
+            ->add('phoneNumber', new Type('string'));
+    }
 }

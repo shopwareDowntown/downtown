@@ -16,29 +16,79 @@ class MerchantEntity extends Entity
     use EntityIdTrait;
 
     /**
-     * @var string|null
+     * @var bool
      */
-    protected $name;
+    protected $public;
 
     /**
      * @var string|null
      */
-    protected $website;
+    protected $publicCompanyName;
 
     /**
      * @var string|null
      */
-    protected $description;
+    protected $publicPhoneNumber;
+
+    /**
+     * @var string|null
+     */
+    protected $publicEmail;
+
+    /**
+     * @var string|null
+     */
+    protected $publicOpeningTimes;
+
+    /**
+     * @var string|null
+     */
+    protected $publicDescription;
+
+    /**
+     * @var string|null
+     */
+    protected $publicWebsite;
+
+    /**
+     * @var string|null
+     */
+    protected $firstName;
+
+    /**
+     * @var string|null
+     */
+    protected $lastName;
+
+    /**
+     * @var string|null
+     */
+    protected $street;
+
+    /**
+     * @var string|null
+     */
+    protected $zip;
+
+    /**
+     * @var string|null
+     */
+    protected $city;
+
+    /**
+     * @var string|null
+     */
+    protected $country;
+
+    /**
+     * @var string|null
+     */
+    protected $email;
 
     /**
      * @var string|null
      */
     protected $phoneNumber;
-
-    /**
-     * @var string
-     */
-    protected $email;
 
     /**
      * @var string|null
@@ -85,34 +135,137 @@ class MerchantEntity extends Entity
      */
     protected $orders;
 
-    public function getName(): ?string
+    /**
+     * @return bool
+     */
+    public function isPublic(): bool
     {
-        return $this->name;
+        return $this->public;
     }
 
-    public function setName(?string $name): void
+    public function setPublic(bool $public): void
     {
-        $this->name = $name;
+        $this->public = $public;
     }
 
-    public function getWebsite(): ?string
+    public function getPublicCompanyName(): ?string
     {
-        return $this->website;
+        return $this->publicCompanyName;
     }
 
-    public function setWebsite(?string $website): void
+    public function setPublicCompanyName(?string $publicCompanyName): void
     {
-        $this->website = $website;
+        $this->publicCompanyName = $publicCompanyName;
     }
 
-    public function getDescription(): ?string
+    public function getPublicPhoneNumber(): ?string
     {
-        return $this->description;
+        return $this->publicPhoneNumber;
     }
 
-    public function setDescription(?string $description): void
+    public function setPublicPhoneNumber(?string $publicPhoneNumber): void
     {
-        $this->description = $description;
+        $this->publicPhoneNumber = $publicPhoneNumber;
+    }
+
+    public function getPublicEmail(): ?string
+    {
+        return $this->publicEmail;
+    }
+
+    public function setPublicEmail(?string $publicEmail): void
+    {
+        $this->publicEmail = $publicEmail;
+    }
+
+    public function getPublicOpeningTimes(): ?string
+    {
+        return $this->publicOpeningTimes;
+    }
+
+    public function setPublicOpeningTimes(?string $publicOpeningTimes): void
+    {
+        $this->publicOpeningTimes = $publicOpeningTimes;
+    }
+
+    public function getPublicDescription(): ?string
+    {
+        return $this->publicDescription;
+    }
+
+    public function setPublicDescription(?string $publicDescription): void
+    {
+        $this->publicDescription = $publicDescription;
+    }
+
+    public function getPublicWebsite(): ?string
+    {
+        return $this->publicWebsite;
+    }
+
+    public function setPublicWebsite(?string $publicWebsite): void
+    {
+        $this->publicWebsite = $publicWebsite;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(?string $firstName): void
+    {
+        $this->firstName = $firstName;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(?string $lastName): void
+    {
+        $this->lastName = $lastName;
+    }
+
+    public function getStreet(): ?string
+    {
+        return $this->street;
+    }
+
+    public function setStreet(?string $street): void
+    {
+        $this->street = $street;
+    }
+
+    public function getZip(): ?string
+    {
+        return $this->zip;
+    }
+
+    public function setZip(?string $zip): void
+    {
+        $this->zip = $zip;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(?string $city): void
+    {
+        $this->city = $city;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?string $country): void
+    {
+        $this->country = $country;
     }
 
     public function getPhoneNumber(): ?string

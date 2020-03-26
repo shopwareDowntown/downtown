@@ -14,6 +14,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\CascadeDelete;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\PrimaryKey;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\Required;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\IdField;
+use Shopware\Core\Framework\DataAbstractionLayer\Field\LongTextField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\ManyToManyAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\OneToOneAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\PasswordField;
@@ -47,28 +48,40 @@ class MerchantDefinition extends EntityDefinition
     {
         return new FieldCollection([
             (new IdField('id', 'id'))->addFlags(new PrimaryKey(), new Required()),
+
+            // public profile fields
             (new BoolField('public', 'public')),
-            (new StringField('name', 'name'))->addFlags(new Required()),
+            (new StringField('public_company_name', 'publicCompanyName'))->addFlags(new Required()),
+            (new StringField('public_phone_number', 'publicPhoneNumber')),
+            (new StringField('public_email', 'publicEmail'))->addFlags(),
+            (new LongTextField('public_opening_times', 'publicOpeningTimes'))->addFlags(),
+            (new LongTextField('public_description', 'publicDescription'))->addFlags(),
+            new StringField('public_website', 'publicWebsite'),
+
+            (new FkField('category_id', 'categoryId', CategoryDefinition::class)),
+            (new OneToOneAssociationField('category', 'category_id', 'id', CategoryDefinition::class, false)),
+
+            // account fields
+            (new StringField('first_name', 'firstName'))->addFlags(),
+            (new StringField('last_name', 'lastName'))->addFlags(),
+            (new StringField('street', 'street'))->addFlags(),
+            (new StringField('zip', 'zip'))->addFlags(),
+            (new StringField('city', 'city'))->addFlags(),
+            (new StringField('country', 'country'))->addFlags(),
             (new StringField('email', 'email'))->addFlags(new Required()),
             (new PasswordField('password', 'password'))->addFlags(new Required()),
-
-            new StringField('website', 'website'),
-            new StringField('description', 'description'),
             (new StringField('phone_number', 'phoneNumber')),
 
+            // internal model fields
             (new FkField('customer_id', 'customerId', CustomerDefinition::class)),
             (new OneToOneAssociationField('customer', 'customer_id', 'id', CustomerDefinition::class, false))->addFlags(new CascadeDelete()),
 
             (new FkField('sales_channel_id', 'salesChannelId', SalesChannelDefinition::class))->addFlags(new Required()),
             (new OneToOneAssociationField('salesChannel', 'sales_channel_id', 'id', SalesChannelDefinition::class, false)),
 
-            (new FkField('category_id', 'categoryId', CategoryDefinition::class)),
-            (new OneToOneAssociationField('category', 'category_id', 'id', CategoryDefinition::class, false)),
-
             new ManyToManyAssociationField('products', ProductDefinition::class, MerchantProductDefinition::class, 'merchant_id', 'product_id'),
             new ManyToManyAssociationField('orders', OrderDefinition::class, MerchantOrderDefinition::class, 'merchant_id', 'order_id'),
             new ManyToManyAssociationField('shippingMethods', ShippingMethodDefinition::class, MerchantShippingMethodDefinition::class, 'merchant_id', 'shipping_method_id'),
-
         ]);
     }
 }
