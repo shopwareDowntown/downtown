@@ -72,8 +72,7 @@ class CartValidator implements CartValidatorInterface
         ErrorCollection $errorCollection,
         MerchantEntity $merchantEntity,
         SalesChannelContext $context
-    ): void
-    {
+    ): void {
         // Default shipping method
         if ($activeId === $context->getSalesChannel()->getShippingMethodId()) {
             return;

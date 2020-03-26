@@ -47,15 +47,15 @@ class MerchantSalesChannelContextService implements SalesChannelContextServiceIn
         $salesChannelContext = $this->decorated->get($salesChannelId, $token, $languageId);
         $params = $this->contextPersister->load($token);
 
-        if(!array_key_exists(self::PERSISTSER_KEY, $params)) {
+        if (!array_key_exists(self::PERSISTSER_KEY, $params)) {
             return $salesChannelContext;
         }
 
         $merchant = $this->merchantRepository
-            ->search(new Criteria([$params[self::PERSISTSER_KEY]]),$salesChannelContext->getContext())
+            ->search(new Criteria([$params[self::PERSISTSER_KEY]]), $salesChannelContext->getContext())
             ->first();
 
-        if(!$merchant) {
+        if (!$merchant) {
             return $salesChannelContext;
         }
 

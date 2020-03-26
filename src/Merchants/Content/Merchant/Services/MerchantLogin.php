@@ -45,7 +45,7 @@ class MerchantLogin implements EventSubscriberInterface
     {
         $merchant = $this->fetchMerchant($customerLoginEvent);
 
-        if($merchant === null) {
+        if ($merchant === null) {
             return;
         }
 

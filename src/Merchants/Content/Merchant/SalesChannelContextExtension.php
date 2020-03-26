@@ -24,7 +24,7 @@ class SalesChannelContextExtension extends Struct
     {
         $extension = $salesChannelContext->getExtension(self::NAME);
 
-        if(!$extension || !$extension instanceof self) {
+        if (!$extension || !$extension instanceof self) {
             throw new CustomerNotLoggedInException();
         }
 

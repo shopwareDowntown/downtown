@@ -50,7 +50,8 @@ class MerchantTest extends TestCase
         self::assertInstanceOf(SalesChannelContextExtension::class, SalesChannelContextExtension::extract($salesChannelContext));
     }
 
-    public function testCustomerDelete(): void {
+    public function testCustomerDelete(): void
+    {
         $merchantData = $this->getMerchantData();
 
         $merchantRepository = $this->getContainer()->get('merchant.repository');
@@ -97,5 +98,4 @@ class MerchantTest extends TestCase
             'salesChannelId' => Defaults::SALES_CHANNEL,
         ];
     }
-
 }
