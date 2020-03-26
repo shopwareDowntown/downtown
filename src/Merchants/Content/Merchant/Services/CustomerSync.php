@@ -1,0 +1,151 @@
+<?php declare(strict_types=1);
+
+namespace Shopware\Production\Merchants\Content\Merchant\Services;
+
+use Doctrine\DBAL\Connection;
+use Shopware\Core\Checkout\Customer\CustomerEvents;
+use Shopware\Core\Defaults;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
+use Shopware\Core\Framework\DataAbstractionLayer\Event\EntityWrittenEvent;
+use Shopware\Core\Framework\Uuid\Uuid;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
+class CustomerSync implements EventSubscriberInterface
+{
+    /**
+     * @var EntityRepositoryInterface
+     */
+    private $customerRepository;
+
+    /**
+     * @var EntityRepositoryInterface
+     */
+    private $merchantRepository;
+
+    /**
+     * @var Connection
+     */
+    private $connection;
+
+    public function __construct(
+        EntityRepositoryInterface $customerRepository,
+        EntityRepositoryInterface $merchantRepository,
+        Connection $connection
+    ) {
+        $this->customerRepository = $customerRepository;
+        $this->merchantRepository = $merchantRepository;
+        $this->connection = $connection;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            'merchant.written' => 'syncToCustomer',
+        ];
+    }
+
+    public function syncToCustomer(EntityWrittenEvent $event) :void
+    {
+        if(count($event->getErrors())) {
+            return;
+        }
+
+        $saneDefaults = [
+            'groupId' => Defaults::FALLBACK_CUSTOMER_GROUP,
+            'defaultPaymentMethodId' => $this->fetchRandomPaymentMethodId(),
+            'languageId' => Defaults::LANGUAGE_SYSTEM,
+            'defaultBillingAddress' => [
+                'countryId' => $this->fetchRandomCountry(),
+                'salutationId' => $this->fetchUnspecifiedSalutation(),
+                'firstName' => '&nbsp;',
+                'lastName' => '&nbsp;',
+                'zipcode' => '123465',
+                'city' => 'ABC',
+                'street' => 'Sesamestreet'
+            ],
+            'defaultShippingAddress' => [
+                'countryId' => $this->fetchRandomCountry(),
+                'salutationId' => $this->fetchUnspecifiedSalutation(),
+                'firstName' => '&nbsp;',
+                'lastName' => '&nbsp;',
+                'zipcode' => '123465',
+                'city' => 'ABC',
+                'street' => 'Sesamestreet'
+            ],
+            'salutationId' => $this->fetchUnspecifiedSalutation(),
+        ];
+
+        $merchantUpdate = [];
+
+        $customers = [];
+        foreach($event->getWriteResults() as $writeResult) {
+            $customer = [$this->extractValuesIfPresent($writeResult->getPayload(), 'salesChannelId', 'name', 'email', 'password')];
+
+            if($customer === [[]]) {
+                continue;
+            }
+
+            if(!$writeResult->getExistence()->exists()) {
+                $newCustomerId = Uuid::randomHex();
+
+                $customer[] = $saneDefaults;
+                $customer[] = [
+                    'id' => $newCustomerId,
+                    'customerNumber' => Uuid::randomHex(),
+                    'firstName' => '&nbsp;',
+                    'lastName' => '&nbsp',
+                ];
+
+                $merchantUpdate[] = [
+                    'id' => $writeResult->getPrimaryKey(),
+                    'customerId' => $newCustomerId,
+                ];
+            }
+
+            $customers[] = array_merge(...$customer);
+        }
+
+        if($customers === []) {
+            return;
+        }
+
+        $this->customerRepository->upsert($customers, $event->getContext());
+        $this->merchantRepository->update($merchantUpdate, $event->getContext());
+    }
+
+    private function extractValuesIfPresent(array $data, string ...$keys): array
+    {
+        $filteredData = [];
+
+        foreach($keys as $key) {
+            if(array_key_exists($key, $data)) {
+                $filteredData[$key] = $data[$key];
+            }
+        }
+
+        return $filteredData;
+    }
+
+    private function fetchRandomPaymentMethodId(): string
+    {
+        return (string) $this->connection
+            ->fetchColumn('SELECT LOWER(HEX(id)) FROM payment_method WHERE active=1 LIMIT 1');
+    }
+
+    private function fetchUnspecifiedSalutation(): string
+    {
+        return (string) $this->connection
+            ->fetchColumn('SELECT LOWER(HEX(id)) FROM salutation WHERE salutation_key="not_specified" LIMIT 1');
+    }
+
+    private function fetchRandomCountry(): string
+    {
+        return (string) $this->connection
+            ->fetchColumn('SELECT LOWER(HEX(id)) FROM country LIMIT 1');
+    }
+
+
+}
