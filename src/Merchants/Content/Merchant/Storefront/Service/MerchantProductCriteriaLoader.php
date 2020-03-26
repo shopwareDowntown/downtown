@@ -7,10 +7,11 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 
 class MerchantProductCriteriaLoader implements MerchantCriteriaLoaderInterface
 {
-
     public function getMerchantCriteria(Criteria $criteria): Criteria
     {
         $criteria->addAssociation('products');
         $criteria->addFilter(new EqualsFilter('public', 1));
+
+        return $criteria;
     }
 }
