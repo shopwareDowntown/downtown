@@ -12,6 +12,7 @@ use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
 use Shopware\Production\Merchants\Content\Merchant\Storefront\Page\MerchantPage;
 use Shopware\Production\Merchants\Content\Merchant\Storefront\Service\MerchantCriteriaLoaderInterface;
+use Shopware\Storefront\Controller\StorefrontController;
 use Shopware\Storefront\Page\GenericPageLoader;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,12 +23,8 @@ use Twig\Environment;
 /**
  * @RouteScope(scopes={"storefront"})
  */
-class MerchantController
+class MerchantController extends StorefrontController
 {
-    /**
-     * @var Environment
-     */
-    private $twig;
 
     /**
      * @var SalesChannelRepositoryInterface
@@ -50,13 +47,11 @@ class MerchantController
     private $criteriaLoader;
 
     public function __construct(
-        Environment $twig,
         SalesChannelRepositoryInterface $productRepository,
         EntityRepositoryInterface $merchantRepository,
         GenericPageLoader $genericPageLoader,
         MerchantCriteriaLoaderInterface $criteriaLoader
     ) {
-        $this->twig = $twig;
         $this->productRepository = $productRepository;
         $this->merchantRepository = $merchantRepository;
         $this->genericPageLoader = $genericPageLoader;
@@ -76,9 +71,7 @@ class MerchantController
             'page' => $page
         ];
 
-        $html = $this->twig->render('@Merchant/page/merchant/detail.html.twig', $vars);
-
-        return new Response($html);
+        return $this->renderStorefront('@Merchant/page/merchant/detail.html.twig', $vars);
     }
 
     private function loadMerchant(string $id, SalesChannelContext $context): MerchantEntity
