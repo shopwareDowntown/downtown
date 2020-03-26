@@ -1,0 +1,26 @@
+:host {
+  .dashboard-intro {
+    text-align: center;
+    margin-top: 64px;
+
+    .intro-ghost {
+      color: rgba(96, 113, 130, 0.3);
+      font-size: 14px;
+      font-weight: bold;
+      letter-spacing: 1.6px;
+      line-height: 24px;
+      text-transform: uppercase;
+    }
+  }
+
+  .card-organization {
+    border: var(--sw-border);
+    box-shadow: none;
+
+    .card-text {
+      display: grid;
+      grid-auto-flow: column;
+      justify-content: space-between;
+    }
+  }
+}
