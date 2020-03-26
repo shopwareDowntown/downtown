@@ -29,7 +29,9 @@ class Migration1585133049DeliveryBoy extends MigrationStep
                 `phone_number` VARCHAR(255) NOT NULL,
                 `created_at` DATETIME(3) NOT NULL,
                 `updated_at` DATETIME(3) NULL,
-                PRIMARY KEY (`id`)
+                PRIMARY KEY (`id`),
+                KEY `fk.swag_planet_express_delivery_boy.delivery_package_id` (`delivery_package_id`),
+                CONSTRAINT `fk.swag_planet_express_delivery_boy.delivery_package_id` FOREIGN KEY (`delivery_package_id`) REFERENCES `delivery_package` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;'
         );
     }

@@ -17,11 +17,13 @@ class Migration1585139955DeliveryPackage extends MigrationStep
         $connection->executeUpdate('
             CREATE TABLE `delivery_package` (
                 `id` BINARY(16) NOT NULL,
-                `recipient` LONGTEXT NOT NULL,
                 `content` LONGTEXT NOT NULL,
                 `status` VARCHAR(255) NOT NULL,
                 `comment` LONGTEXT NULL,
                 `delivery_boy_id` BINARY(16) NULL,
+                `zipcode` VARCHAR(255) NOT NULL,
+                `city` VARCHAR(255) NOT NULL,
+                `street` VARCHAR(255) NOT NULL,
                 `created_at` DATETIME(3) NOT NULL,
                 `updated_at` DATETIME(3) NULL,
                 PRIMARY KEY (`id`),
