@@ -23,6 +23,10 @@
             <tag name="shopware.entity.definition" entity="delivery_package"/>
         </service>
 
+        <service id="Shopware\Production\LocalDelivery\DeliveryRoute\DeliveryRouteDefinition">
+            <tag name="shopware.entity.definition" entity="delivery_package"/>
+        </service>
+
         <!-- Controller -->
         <service id="Shopware\Production\LocalDelivery\Controller\DeliveryBoyStorefrontController" public="true">
             <argument type="service" id="twig"/>
@@ -38,6 +42,10 @@
         <service id="Shopware\Production\LocalDelivery\Content\Storefront\Controller\DeliveryPackageController"
                  public="true">
             <argument type="service" id="twig"/>
+        </service>
+
+        <service id="Shopware\Production\LocalDelivery\DeliveryRoute\Api\DeliveryRouteController" public="true">
+            <argument type="service" id="Shopware\Production\LocalDelivery\DeliveryRoute\Services\MapboxService"/>
         </service>
 
         <!-- Services -->
@@ -59,6 +67,9 @@
 
         <service id="Shopware\Production\LocalDelivery\Services\DeliveryPackageService">
             <argument type="service" id="delivery_package.repository"/>
+        </service>
+
+        <service id="Shopware\Production\LocalDelivery\DeliveryRoute\Services\MapboxService">
         </service>
 
     </services>
