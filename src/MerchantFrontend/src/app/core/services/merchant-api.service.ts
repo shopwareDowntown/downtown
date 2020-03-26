@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+<<<<<<< HEAD
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Merchant, MerchantRegistration, MerchantLoginResult } from '../models/merchant.model';
+=======
+import { HttpClient } from '@angular/common/http';
+import { Merchant, MerchantRegistration } from '../models/merchant.model';
+>>>>>>> Added dummy data to authority call
 import { Product } from '../models/product.model';
 import { Authority } from '../models/authority.model';
 import { StateService } from '../state/state.service';
@@ -93,8 +98,13 @@ export class MerchantApiService {
 
   // authority route
 
-  getAuthorities(): Observable<any[]> {
-      return this.http.get<Authority[]>(this.apiUrl + '/merchant-api/authorities');
+  getAuthorities(): Observable<Authority[]> {
+      // return this.http.get<Authority[]>(this.apiUrl + '/merchant-api/authorities');
+      return of([
+        { name: 'Gemeinde Heek', domain: 'heek.sw-portal.com', id: 1, accessKey: "example" },
+        { name: 'Gemeinde Schöppingen', domain: 'schoeppingen.sw-portal.com', id: 1, accessKey: "example" },
+        { name: 'Zentrum Münster', domain: 'zentrum-muenster.sw-portal.com', id: 1, accessKey: "example" },
+      ])
   }
 
   private getHeaders(): { [header: string]: string | string[];} {
