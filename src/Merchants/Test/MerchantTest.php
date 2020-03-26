@@ -9,17 +9,16 @@ use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\Test\TestCaseBase\IntegrationTestBehaviour;
 use Shopware\Core\Framework\Uuid\Uuid;
+use Shopware\Core\Framework\Validation\DataBag\DataBag;
 use Shopware\Core\System\SalesChannel\Context\SalesChannelContextService;
+use Shopware\Production\Merchants\Content\Merchant\SalesChannelContextExtension;
 
-class MerchantToCustomerSyncTest extends TestCase
+class MerchantTest extends TestCase
 {
     use IntegrationTestBehaviour;
 
-    public function testMerchantCreate()
+    public function testMerchantCreateAndLogin()
     {
-
-        // @todo validate multiple with same email address
-
         $merchantData = $this->getMerchantData();
 
         $this->getContainer()
@@ -32,11 +31,23 @@ class MerchantToCustomerSyncTest extends TestCase
         self::assertSame(1, $result->count());
         self::assertNotEmpty($result->first()->getCustomerId());
 
-//        $this->getContainer()->get(AccountService::class)
-//            ->login(
-//                $merchantData['email'],
-//                $this->getContainer()->get(SalesChannelContextService::class)->get(Defaults::SALES_CHANNEL, Uuid::randomHex())
-//            );
+        $token = $this->getContainer()
+            ->get(AccountService::class)
+            ->loginWithPassword(
+                new DataBag([
+                    'username' => $merchantData['email'],
+                    'password' => $merchantData['password'],
+                ]),
+                $this->getContainer()->get(SalesChannelContextService::class)->get(Defaults::SALES_CHANNEL, Uuid::randomHex())
+            );
+
+        self::assertNotEmpty($token);
+
+        $salesChannelContext = $this->getContainer()
+            ->get(SalesChannelContextService::class)
+            ->get(Defaults::SALES_CHANNEL, $token);
+
+        self::assertInstanceOf(SalesChannelContextExtension::class, SalesChannelContextExtension::extract($salesChannelContext));
     }
 
     private function getMerchantData(): array

@@ -1,14 +1,7 @@
-# Shopware 6 production template
+# Shopware Merchant Portal
+With our portal, we want to support local authorities and merchants. We want to connect merchants with closed stores to their customers. And we want to keep in mind, that not every merchant has a sophisticated digital strategy - or even a homepage.
 
-This repository contains the production template that enables you to build,
-package and deploy Shopware 6 to production shops. This template is also used
-to build the official packages distributed by shopware at [https://www.shopware.com/en/download](https://www.shopware.com/en/download).
-
-This template is optimized for production usage and contains basic development tooling. 
-It's intended as a basis for project customizations, which are usually done by agencies.
-
-If you want to contribute to the [Shopware Platform](https://github.com/shopware/platform) or develop store plugins, 
-you should use the [development template](https://github.com/shopware/development).
+# Development
 
 ## Branches and stability
 

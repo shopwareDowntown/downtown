@@ -6,19 +6,30 @@ use Shopware\Core\Checkout\Customer\Event\CustomerLoginEvent;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
+use Shopware\Core\System\SalesChannel\Context\SalesChannelContextPersister;
+use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
+use Shopware\Production\Merchants\Content\Merchant\SalesChannelContextExtension;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class MerchantLogin implements EventSubscriberInterface
 {
+    const PERSISTSER_KEY = 'merchant_id';
 
     /**
      * @var EntityRepositoryInterface
      */
     private $merchantRepository;
+    /**
+     * @var SalesChannelContextPersister
+     */
+    private $contextPersister;
 
-    public function __construct(EntityRepositoryInterface $merchantRepository)
-    {
+    public function __construct(
+        EntityRepositoryInterface $merchantRepository,
+        SalesChannelContextPersister $contextPersister
+    ) {
         $this->merchantRepository = $merchantRepository;
+        $this->contextPersister = $contextPersister;
     }
 
     /**
@@ -39,26 +50,23 @@ class MerchantLogin implements EventSubscriberInterface
             return;
         }
 
-        $this->
+        SalesChannelContextExtension::add(
+            $customerLoginEvent->getSalesChannelContext(),
+            $merchant
+        );
 
-        dump($customerLoginEvent);
-
-        $customerLoginEvent->getCustomer()->getId();
-
-        throw new \Exception('HERE!!!');
+        $this->contextPersister->save(
+            $customerLoginEvent->getContextToken(),
+            [self::PERSISTSER_KEY => $merchant->getId()]
+        );
     }
 
-    /**
-     * @param CustomerLoginEvent $customerLoginEvent
-     * @return mixed|null
-     * @throws \Shopware\Core\Framework\DataAbstractionLayer\Exception\InconsistentCriteriaIdsException
-     */
-    protected function fetchMerchant(CustomerLoginEvent $customerLoginEvent)
+    protected function fetchMerchant(CustomerLoginEvent $customerLoginEvent): ?MerchantEntity
     {
         $criteria = (new Criteria())
             ->addFilter(new EqualsFilter('customerId', $customerLoginEvent->getCustomer()->getId()));
 
-        $merchant = $this->merchantRepository->search($criteria, $customerLoginEvent->getContext())->first();
-        return $merchant;
+        return $this->merchantRepository
+            ->search($criteria, $customerLoginEvent->getContext())->first();
     }
 }

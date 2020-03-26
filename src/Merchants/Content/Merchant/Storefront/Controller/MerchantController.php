@@ -11,6 +11,7 @@ use Shopware\Core\System\SalesChannel\Entity\SalesChannelRepositoryInterface;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
 use Shopware\Production\Merchants\Content\Merchant\Storefront\Page\MerchantPage;
+use Shopware\Production\Merchants\Content\Merchant\Storefront\Service\MerchantCriteriaLoaderInterface;
 use Shopware\Storefront\Page\GenericPageLoader;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,16 +44,23 @@ class MerchantController
      */
     private $genericPageLoader;
 
+    /**
+     * @var MerchantCriteriaLoaderInterface
+     */
+    private $criteriaLoader;
+
     public function __construct(
         Environment $twig,
         SalesChannelRepositoryInterface $productRepository,
         EntityRepositoryInterface $merchantRepository,
-        GenericPageLoader $genericPageLoader
+        GenericPageLoader $genericPageLoader,
+        MerchantCriteriaLoaderInterface $criteriaLoader
     ) {
         $this->twig = $twig;
         $this->productRepository = $productRepository;
         $this->merchantRepository = $merchantRepository;
         $this->genericPageLoader = $genericPageLoader;
+        $this->criteriaLoader = $criteriaLoader;
     }
 
     /**
@@ -76,10 +84,10 @@ class MerchantController
     private function loadMerchant(string $id, SalesChannelContext $context): MerchantEntity
     {
         $criteria = new Criteria([$id]);
-        $criteria->addAssociation('products');
-        $criteria->addFilter(new EqualsFilter('public', 1));
         $criteria->addFilter(new EqualsFilter('salesChannelId', $context->getSalesChannel()->getId()));
 
+        $criteria = $this->criteriaLoader->getMerchantCriteria($criteria);
+        
         /** @var MerchantEntity $merchant */
         $merchant = $this->merchantRepository->search($criteria, $context->getContext())->first();
 

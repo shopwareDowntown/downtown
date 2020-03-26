@@ -4,5 +4,8 @@
         "phoneNumber": "Phone number:",
         "website": "Website:",
         "ourProducts": "Our products"
+    },
+    "checkout": {
+        "cartContainsMultipleMerchants": "Only products can be purchased from one merchant at a time"
     }
 }

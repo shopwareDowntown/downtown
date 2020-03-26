@@ -8,6 +8,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
 use Shopware\Core\Framework\Migration\MigrationStep;
 use Shopware\Core\Framework\Plugin\KernelPluginLoader\KernelPluginLoader;
+use Shopware\Production\LocalDelivery\LocalDeliveryBundle;
 use Shopware\Production\Merchants\MerchantBundle;
 use Shopware\Production\Portal\PortalBundle;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -57,5 +58,6 @@ class Kernel extends \Shopware\Core\Kernel
 
         yield new MerchantBundle();
         yield new PortalBundle();
+        yield new LocalDeliveryBundle();
     }
 }
