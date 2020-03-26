@@ -51,15 +51,13 @@ class RegistrationService
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function registerMerchant(RequestDataBag $requestDataBag, SalesChannelContext $salesChannelContext): string {
-        $parameters = $requestDataBag->all();
-
+    public function registerMerchant(array $parameters, SalesChannelContext $salesChannelContext): string {
         $parameters['id'] = Uuid::randomHex();
 
         $this->entityRepository->create([$parameters], $salesChannelContext->getContext());
 
         $criteria = new Criteria([$parameters['id']]);
-        $criteria->addAssociation('customer');
+        $criteria->addAssociation('customer.salutation');
 
         $result = $this->entityRepository->search($criteria, $salesChannelContext->getContext());
         /** @var MerchantEntity $merchant */
