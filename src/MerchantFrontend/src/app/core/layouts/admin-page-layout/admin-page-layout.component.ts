@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NAVIGATION_ADMIN} from '../../navigation';
+import {NAVIGATION_ADMIN, NavigationItem} from '../../navigation';
 
 @Component({
   selector: 'portal-admin-page-layout',
@@ -17,6 +17,14 @@ export class AdminPageLayoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  public get toolbarNav(): NavigationItem[]{
+    return this.navigation.filter(value => value.isToolbar());
+  }
+
+  public get sidebarNav(): NavigationItem[]{
+    return this.navigation.filter(value => value.isSideBar());
   }
 
 }
