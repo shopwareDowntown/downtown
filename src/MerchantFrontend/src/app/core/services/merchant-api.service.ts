@@ -122,7 +122,7 @@ export class MerchantApiService {
 
   private getHeaders(): { [header: string]: string | string[];} {
     return {
-      'sw-access-key': this.getSwAccessKey(),
+      'sw-access-key': this.accessKey,
       'sw-context-token': this.getSwContextToken()
     };
   }
