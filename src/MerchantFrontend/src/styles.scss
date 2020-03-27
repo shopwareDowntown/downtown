@@ -20,10 +20,11 @@
   --sw-success-ghost-hover: #D7F6DA;
 
   // font
-  --clr-font: "Inter", sans-serif;
+  --sw-font: "Inter", sans-serif;
   @supports (font-variation-settings: normal) {
     --sw-font: "Inter var", sans-serif;
   }
+  --clr-font: var(--sw-font);
 
   // clarity overrides
   --clr-btn-primary-bg-color: var(--sw-primary);
@@ -58,16 +59,13 @@ body {
   -webkit-font-smoothing: antialiased;
   color: var(--sw-regular);
   font-size: var(--sw-font-size);
+  font-family: var(--sw-font);
 
   p {
     font-size: var(--sw-font-size);
     color: var(--sw-regular);
     line-height: 24px;
   }
-}
-
-@supports (font-variation-settings: normal) {
-  html { font-family: 'Inter var', sans-serif; }
 }
 
 .btn {
