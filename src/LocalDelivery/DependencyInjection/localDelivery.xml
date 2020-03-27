@@ -23,6 +23,14 @@
             <tag name="shopware.entity.definition" entity="delivery_package"/>
         </service>
 
+        <service id="Shopware\Production\LocalDelivery\DeliveryRoute\DeliveryRouteDefinition">
+            <tag name="shopware.entity.definition" entity="delivery_route"/>
+        </service>
+
+        <service id="Shopware\Production\LocalDelivery\MapApiRequestLimiter\MapApiRequestLimiterDefinition">
+            <tag name="shopware.entity.definition" entity="map_api_request_limiter"/>
+        </service>
+
         <!-- Controller -->
         <service id="Shopware\Production\LocalDelivery\Controller\DeliveryBoyStorefrontController" public="true">
             <argument type="service" id="twig"/>
@@ -38,6 +46,13 @@
         <service id="Shopware\Production\LocalDelivery\Content\Storefront\Controller\DeliveryPackageController"
                  public="true">
             <argument type="service" id="twig"/>
+        </service>
+
+        <service id="Shopware\Production\LocalDelivery\Controller\DeliveryRouteController" public="true">
+            <argument type="service" id="Shopware\Production\LocalDelivery\Services\DeliveryRouteService"/>
+            <argument type="service" id="Shopware\Production\LocalDelivery\Services\DeliveryBoyLoginService"/>
+            <argument type="service" id="twig"/>
+            <argument type="service" id="Shopware\Storefront\Framework\Routing\Router"/>
         </service>
 
         <!-- Services -->
@@ -59,6 +74,21 @@
 
         <service id="Shopware\Production\LocalDelivery\Services\DeliveryPackageService">
             <argument type="service" id="delivery_package.repository"/>
+        </service>
+
+        <service id="Shopware\Production\LocalDelivery\Services\MapApiRequestLimiterService">
+            <argument type="service" id="map_api_request_limiter.repository"/>
+        </service>
+
+        <service id="Shopware\Production\LocalDelivery\Services\MapboxService">
+            <argument type="service" id="Shopware\Production\LocalDelivery\Services\MapApiRequestLimiterService"/>
+        </service>
+
+        <service id="Shopware\Production\LocalDelivery\Services\DeliveryRouteService">
+            <argument type="service" id="Shopware\Production\LocalDelivery\Services\MapboxService"/>
+            <argument type="service" id="delivery_package.repository"/>
+            <argument type="service" id="delivery_route.repository"/>
+            <argument type="service" id="merchant.repository"/>
         </service>
 
     </services>

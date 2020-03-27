@@ -23,7 +23,6 @@ class Migration1585294886DeliveryPackage extends MigrationStep
                 `delivery_boy_id` BINARY(16) NULL,
                 `shipping_method_id` BINARY(16) NULL,
                 `merchant_id` BINARY(16) NULL,
-                `price` FLOAT NOT NULL,
                 `recipient_title` VARCHAR(255) NULL,
                 `recipient_first_name` VARCHAR(255) NOT NULL,
                 `recipient_last_name` VARCHAR(255) NOT NULL,

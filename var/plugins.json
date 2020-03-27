@@ -123,7 +123,7 @@
             "entryFilePath": "Resources\/app\/storefront\/src\/main.js",
             "webpack": null,
             "styleFiles": [
-                "vendor\/shopware\/storefront\/Resources\/app\/storefront\/src\/scss\/base.scss",
+                "\/home\/maltejanz\/repos\/portal\/vendor\/shopware\/storefront\/Resources\/app\/storefront\/src\/scss\/base.scss",
                 "@Plugins"
             ]
         }
@@ -134,6 +134,60 @@
             "Resources\/views"
         ],
         "technicalName": "elasticsearch",
+        "administration": {
+            "path": "Resources\/app\/administration\/src",
+            "entryFilePath": null,
+            "webpack": null
+        },
+        "storefront": {
+            "path": "Resources\/app\/storefront\/src",
+            "entryFilePath": null,
+            "webpack": null,
+            "styleFiles": []
+        }
+    },
+    "Merchant": {
+        "basePath": "src\/Merchants\/",
+        "views": [
+            "Resources\/views"
+        ],
+        "technicalName": "merchant",
+        "administration": {
+            "path": "Resources\/app\/administration\/src",
+            "entryFilePath": null,
+            "webpack": null
+        },
+        "storefront": {
+            "path": "Resources\/app\/storefront\/src",
+            "entryFilePath": null,
+            "webpack": null,
+            "styleFiles": []
+        }
+    },
+    "PortalBundle": {
+        "basePath": "src\/Portal\/",
+        "views": [
+            "Resources\/views"
+        ],
+        "technicalName": "portal-bundle",
+        "administration": {
+            "path": "Resources\/app\/administration\/src",
+            "entryFilePath": null,
+            "webpack": null
+        },
+        "storefront": {
+            "path": "Resources\/app\/storefront\/src",
+            "entryFilePath": null,
+            "webpack": null,
+            "styleFiles": []
+        }
+    },
+    "LocalDelivery": {
+        "basePath": "src\/LocalDelivery\/",
+        "views": [
+            "Resources\/views"
+        ],
+        "technicalName": "local-delivery",
         "administration": {
             "path": "Resources\/app\/administration\/src",
             "entryFilePath": null,
