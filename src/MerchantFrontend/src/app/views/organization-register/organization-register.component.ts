@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild, Input } from '@angular/core';
 import { environment } from "../../../environments/environment";
 
 @Component({
@@ -9,21 +9,19 @@ import { environment } from "../../../environments/environment";
 export class OrganizationRegisterComponent implements AfterViewInit {
 
   @ViewChild('hubspotForm', { static: false }) hubspotForm: ElementRef;
-  @Input() registerOrganizationModalOpen = true;
+  @Input() registerModalOpen = true;
 
-  constructor() { }
+  constructor() {}
 
   ngAfterViewInit(): void {
     const portalId = environment.hubspotPortalId;
     const formId = environment.hubspotFormId;
-
     let hubspotScript = document.createElement('script');
-
     hubspotScript.innerHTML = 'hbspt.forms.create({portalId: "' + portalId + '",formId: "' + formId + '"})';
     this.hubspotForm.nativeElement.appendChild(hubspotScript);
   }
 
-  registerOrganizationModalClosed() {
-    this.registerOrganizationModalOpen = false;
+  registerModalClosed() {
+    this.registerModalOpen = false;
   }
 }

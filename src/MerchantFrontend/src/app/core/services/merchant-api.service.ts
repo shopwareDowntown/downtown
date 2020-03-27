@@ -102,12 +102,7 @@ export class MerchantApiService {
   // authority route
 
   getAuthorities(): Observable<Authority[]> {
-      // return this.http.get<Authority[]>(this.apiUrl + '/merchant-api/v1/authorities');
-      return of([
-        { name: 'Gemeinde Heek', domain: 'heek.sw-portal.com', id: 1, accessKey: "example" },
-        { name: 'Gemeinde Schöppingen', domain: 'schoeppingen.sw-portal.com', id: 1, accessKey: "example" },
-        { name: 'Zentrum Münster', domain: 'zentrum-muenster.sw-portal.com', id: 1, accessKey: "example" },
-      ])
+      return this.http.get<Authority[]>(this.apiUrl + '/merchant-api/v1/authorities');
   }
 
   private getHeaders(): { [header: string]: string | string[];} {

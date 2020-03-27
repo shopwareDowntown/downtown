@@ -36,26 +36,10 @@
   </div>
 </portal-container>
 
-<portal-merchant-register *ngIf="showRegisterMerchantModal" [registerModalOpen]="showRegisterMerchantModal"></portal-merchant-register>
+<portal-merchant-register
+  [registerModalOpen]="showRegisterMerchantModal">
+</portal-merchant-register>
 
-<!-- <clr-modal [clrModalOpen]="showRegisterOrganizationModal" [clrModalClosable]="true" (clrModalOpenChange)="closeRegisterOrganization()">
-  <h3 class="modal-title">Registriere eine Organisation</h3>
-  <div class="modal-body">
-    ...
-  </div>
-</clr-modal>
-
-<clr-modal [clrModalOpen]="showRegisterMerchantModal" [clrModalClosable]="true" (clrModalOpenChange)="closeRegisterMerchant()">
-  <h3 class="modal-title">Registriere eine Organisation</h3>
-  <div class="modal-body">
-    ...
-  </div>
-</clr-modal> -->
-
-
-<!-- <clr-modal [clrModalOpen]="true" [clrModalClosable]="true">
-  <h3 class="modal-title">Registrierungsanfrage gesendet.</h3>
-  <div class="modal-body">
-    Deine Anfrage wurde an die von dir ausgewähle Organisation gesendet. Sobald dich die Organisation freigeschaltet hat, bekommst du eine Mail von uns zugeschickt und du kannst deinen Shop anlegen.
-  </div>
-</clr-modal> -->
+<portal-organization-register
+  [registerModalOpen]="showRegisterOrganizationModal">
+</portal-organization-register>
