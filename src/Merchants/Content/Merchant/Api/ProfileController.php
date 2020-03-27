@@ -44,6 +44,12 @@ class ProfileController
     {
         $merchant = SalesChannelContextExtension::extract($salesChannelContext);
 
+        $merchant = json_decode(json_encode($merchant), true);
+
+        unset($merchant['password']);
+        unset($merchant['extensions']);
+        unset($merchant['_uniqueIdentifier']);
+
         return new JsonResponse($merchant);
     }
 

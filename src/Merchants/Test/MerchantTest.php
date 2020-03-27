@@ -11,7 +11,6 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Test\TestCaseBase\IntegrationTestBehaviour;
 use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\Framework\Validation\DataBag\DataBag;
-use Shopware\Core\Framework\Validation\Exception\ConstraintViolationException;
 use Shopware\Core\System\SalesChannel\Context\SalesChannelContextService;
 use Shopware\Production\Merchants\Content\Merchant\Api\ProfileController;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
@@ -63,7 +62,9 @@ class MerchantTest extends TestCase
             ->get(ProfileController::class)
             ->profile($salesChannelContext);
 
+
         self::assertSame($merchantData['id'], json_decode($response->getContent())->id);
+        self::assertStringNotContainsString('password', $response->getContent());
         self::assertSame('FOO', json_decode($response->getContent())->publicCompanyName);
 
         $response = $this->getContainer()
