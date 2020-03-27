@@ -12,6 +12,7 @@ use Shopware\Core\Framework\Test\TestCaseBase\IntegrationTestBehaviour;
 use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\Framework\Validation\DataBag\DataBag;
 use Shopware\Core\System\SalesChannel\Context\SalesChannelContextService;
+use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Production\Merchants\Content\Merchant\Api\MerchantProductController;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -41,7 +42,7 @@ class MerchantProductTest extends TestCase
                 'description' => 'description',
                 'stock' => '1',
                 'price' => '1',
-                'productType' => 'type',
+                'productType' => 'product',
                 'tax' => '19.00',
             ]
         );
@@ -50,7 +51,32 @@ class MerchantProductTest extends TestCase
 
         $result = json_decode($jsonResponse->getContent(), true);
 
-        self::assertEquals('type', $result['data']['customFields']['productType']);
+        self::assertEquals('product', $result['data']['customFields']['productType']);
+    }
+
+    public function testGetList(): void {
+        list($token, $salesChannelContext) = $this->login();
+
+        $productController = $this->getContainer()->get(MerchantProductController::class);
+        $request = new Request(
+            [],
+            [
+                'name' => 'Name',
+                'description' => 'description',
+                'stock' => '1',
+                'price' => '1',
+                'productType' => 'product',
+                'tax' => '19.00',
+            ]
+        );
+
+        $productController->create($request, $salesChannelContext);
+
+        $jsonResponse = $productController->getList($salesChannelContext);
+
+        $result = json_decode($jsonResponse->getContent(), true);
+
+        self::assertEquals('product', $result['data'][0]['productType']);
     }
 
     private function login(): array {

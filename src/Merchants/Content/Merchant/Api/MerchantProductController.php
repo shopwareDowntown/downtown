@@ -29,6 +29,12 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class MerchantProductController
 {
+    public const PRODUCT_TYPES = [
+        'product',
+        'voucher',
+        'service'
+    ];
+
     /**
      * @var EntityRepositoryInterface
      */
@@ -97,6 +103,7 @@ class MerchantProductController
                 'description' => $product->getTranslation('description'),
                 'price' => $product->getPrice()->first()->getGross(),
                 'tax' => $product->getTax()->getTaxRate(),
+                'productType' => $product->getCustomFields()['productType']
             ];
 
             if ($product->getCover()) {
@@ -122,6 +129,8 @@ class MerchantProductController
         if ($missingFields) {
             throw new \InvalidArgumentException('The following missing values must be set: ' . implode(', ', $missingFields));
         }
+
+        $this->validateProductType($request->request->get('productType'));
 
         $productData = [
             'id' => Uuid::randomHex(),
@@ -204,6 +213,7 @@ class MerchantProductController
         }
 
         if ($request->request->has('productType')) {
+            $this->validateProductType($request->request->get('productType'));
             $productData['customFields'] = ['productType' => $request->request->get('productType')];
         }
 
@@ -289,6 +299,7 @@ class MerchantProductController
             'description',
             'tax',
             'price',
+            'productType'
         ];
 
         $missingFields = [];
@@ -301,6 +312,14 @@ class MerchantProductController
         }
 
         return $missingFields;
+    }
+
+    private function validateProductType(string $productType): void {
+        if (in_array($productType, self::PRODUCT_TYPES)) {
+            return;
+        }
+
+        throw new \InvalidArgumentException('The product type ' . $productType . ' is not valid. One values must these must be set: ' . implode(', ', self::PRODUCT_TYPES));
     }
 
     private function getMerchantFromContext(SalesChannelContext $context): MerchantEntity
