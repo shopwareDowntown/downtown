@@ -27,6 +27,10 @@
             <tag name="shopware.entity.definition" entity="delivery_route"/>
         </service>
 
+        <service id="Shopware\Production\LocalDelivery\MapApiRequestLimiter\MapApiRequestLimiterDefinition">
+            <tag name="shopware.entity.definition" entity="map_api_request_limiter"/>
+        </service>
+
         <!-- Controller -->
         <service id="Shopware\Production\LocalDelivery\Controller\DeliveryBoyStorefrontController" public="true">
             <argument type="service" id="twig"/>
