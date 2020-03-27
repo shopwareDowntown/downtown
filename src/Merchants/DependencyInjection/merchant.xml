@@ -127,6 +127,7 @@
             <argument type="service" id="tax.repository"/>
             <argument type="service" id="media.repository"/>
             <argument type="service" id="merchant.repository"/>
+            <argument type="service" id="product_media.repository"/>
             <argument type="service" id="Shopware\Core\System\NumberRange\ValueGenerator\NumberRangeValueGeneratorInterface"/>
             <argument type="service" id="Shopware\Core\Content\Media\MediaService"/>
         </service>
