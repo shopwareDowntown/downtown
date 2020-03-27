@@ -1,0 +1,16 @@
+{
+  "sw-cms": {
+    "elements": {
+      "merchantListing": {
+        "label": "Merchant-listing"
+      }
+    },
+    "blocks": {
+      "commerce": {
+        "merchantListing": {
+          "label": "Merchant-Listing"
+        }
+      }
+    }
+  }
+}

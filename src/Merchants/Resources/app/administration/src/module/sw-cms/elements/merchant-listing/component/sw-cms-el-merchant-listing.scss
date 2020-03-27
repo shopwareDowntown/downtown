@@ -1,0 +1,41 @@
+@import "~scss/variables";
+
+.sw-cms-el-merchant-listing {
+    .sw-cms-el-merchant-listing__content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+        gap: 30px;
+    }
+
+    .sw-cms-el-merchant-listing__pagination {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, 40px);
+        justify-content: center;
+        margin-top: 24px;
+
+        .sw-cms-el-merchant-listing__pagination-entry {
+            height: 40px;
+            width: 40px;
+            display: grid;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            border-right: 1px solid $color-steam-cloud;
+            border-bottom: 1px solid $color-steam-cloud;
+            border-top: 1px solid $color-steam-cloud;
+
+            .sw-icon {
+                color: $color-gutenberg;
+            }
+
+            &:first-of-type {
+                border-radius: 4px 0 0 4px;
+                border-left: 1px solid $color-steam-cloud;
+            }
+
+            &:last-of-type {
+                border-radius: 0 4px 4px 0;
+            }
+        }
+    }
+}
