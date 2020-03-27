@@ -19,12 +19,12 @@ class MapApiRequestLimiterEntity extends Entity
     /**
      * @var int
      */
-    protected $count;
+    protected $requestCount;
 
     /**
      * @var int
      */
-    protected $limit;
+    protected $requestLimit;
 
     /**
      * @return string
@@ -45,32 +45,32 @@ class MapApiRequestLimiterEntity extends Entity
     /**
      * @return int
      */
-    public function getCount(): int
+    public function getRequestCount(): int
     {
-        return $this->count;
+        return $this->requestCount;
     }
 
     /**
-     * @param int $count
+     * @param int $requestCount
      */
-    public function setCount(int $count): void
+    public function setRequestCount(int $requestCount): void
     {
-        $this->count = $count;
+        $this->requestCount = $requestCount;
     }
 
     /**
      * @return int
      */
-    public function getLimit(): int
+    public function getRequestLimit(): int
     {
-        return $this->limit;
+        return $this->requestLimit;
     }
 
     /**
-     * @param int $limit
+     * @param int $requestLimit
      */
-    public function setLimit(int $limit): void
+    public function setRequestLimit(int $requestLimit): void
     {
-        $this->limit = $limit;
+        $this->requestLimit = $requestLimit;
     }
 }

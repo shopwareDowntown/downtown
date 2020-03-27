@@ -3,23 +3,35 @@
 namespace Shopware\Production\LocalDelivery\DeliveryRoute\Services;
 
 use GuzzleHttp\Client;
+use Shopware\Core\Framework\Context;
+use Shopware\Production\LocalDelivery\MapApiRequestLimiter\Services\MapApiRequestLimiterService;
 
 class MapboxService
 {
+    /**
+     * Mapbox specific endpoint that describes the api.
+     * There is another option that is paid only.
+     */
     private const ENDPOINT = 'mapbox.places';
 
     /**
-     * @var Client
+     * @var MapApiRequestLimiterService
      */
-    private $client;
+    private $mapApiRequestLimiterService;
 
     /**
      * @var string
      */
     private $mapboxApiKey;
 
-    public function __construct()
+    /**
+     * @var Client
+     */
+    private $client;
+
+    public function __construct(MapApiRequestLimiterService $mapApiRequestLimiterService)
     {
+        $this->mapApiRequestLimiterService = $mapApiRequestLimiterService;
         $this->mapboxApiKey = getenv('MAPBOX_API_KEY');
         $this->client = new Client([
             'base_uri' => 'https://api.mapbox.com',
@@ -32,8 +44,12 @@ class MapboxService
      * @return array [long, lat]
      * @throws \Exception
      */
-    public function getGpsCoordinates(string $searchtext) : array
+    public function getGpsCoordinates(string $searchtext, Context $context) : array
     {
+        if (!$this->mapApiRequestLimiterService->increaseCount('search-temporary-geocoding-api', $context)) {
+            throw new \Exception('Map api limit reached for search-temporary-geocoding-api');
+        }
+
         $response = $this->client->get('/geocoding/v5/' . self::ENDPOINT . '/' . $searchtext . '.json', [
             'query' => [
                 'access_token' => $this->mapboxApiKey,
@@ -60,7 +76,11 @@ class MapboxService
      * @return array
      * @throws \Exception
      */
-    public function getOptimizedRoute(array $coordinatesArray, string $profile) {
+    public function getOptimizedRoute(array $coordinatesArray, string $profile, Context $context) {
+        if (!$this->mapApiRequestLimiterService->increaseCount('navigation-optimization-api', $context)) {
+            throw new \Exception('Map api limit reached for navigation-optimization-api');
+        }
+
         $coordinatesQueryString = '';
 
         foreach ($coordinatesArray as $index => $coordinates) {

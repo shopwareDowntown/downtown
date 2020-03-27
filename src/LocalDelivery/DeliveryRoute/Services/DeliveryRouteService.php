@@ -30,9 +30,11 @@ class DeliveryRouteService
     }
 
     public function getNewestRoute(Context $context) {
-        $criteria = new Criteria();
-        $result = $this->deliveryPackageRepository->search($criteria, $context);
-        dd($result);
+//        $criteria = new Criteria();
+//        $result = $this->deliveryPackageRepository->search($criteria, $context);
+//        dd($result);
+
+        return $this->mapboxService->getGpsCoordinates('adress', $context);
     }
 
 }

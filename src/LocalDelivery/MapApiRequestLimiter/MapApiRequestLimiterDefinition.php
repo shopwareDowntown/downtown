@@ -36,8 +36,8 @@ class MapApiRequestLimiterDefinition extends EntityDefinition
         return new FieldCollection([
             (new IdField('id', 'id'))->addFlags(new PrimaryKey(), new Required()),
             (new StringField('endpoint_name', 'endpointName'))->addFlags(new Required()),
-            (new IntField('count', 'count')),
-            (new IntField('limit', 'limit'))->addFlags(new Required())
+            (new IntField('request_count', 'requestCount')),
+            (new IntField('request_limit', 'requestLimit'))->addFlags(new Required())
         ]);
     }
 }

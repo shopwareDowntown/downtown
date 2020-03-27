@@ -73,13 +73,18 @@
             <argument type="service" id="delivery_package.repository"/>
         </service>
 
+        <service id="Shopware\Production\LocalDelivery\MapApiRequestLimiter\Services\MapApiRequestLimiterService">
+            <argument type="service" id="map_api_request_limiter.repository"/>
+        </service>
+
         <service id="Shopware\Production\LocalDelivery\DeliveryRoute\Services\MapboxService">
+            <argument type="service" id="Shopware\Production\LocalDelivery\MapApiRequestLimiter\Services\MapApiRequestLimiterService"/>
         </service>
 
         <service id="Shopware\Production\LocalDelivery\DeliveryRoute\Services\DeliveryRouteService">
-            <argument type="service" id="Shopware\Production\LocalDelivery\DeliveryRoute\Services\MapboxService"></argument>
-            <argument type="service" id="delivery_package.repository"></argument>
-            <argument type="service" id="delivery_route.repository"></argument>
+            <argument type="service" id="Shopware\Production\LocalDelivery\DeliveryRoute\Services\MapboxService"/>
+            <argument type="service" id="delivery_package.repository"/>
+            <argument type="service" id="delivery_route.repository"/>
         </service>
 
     </services>
