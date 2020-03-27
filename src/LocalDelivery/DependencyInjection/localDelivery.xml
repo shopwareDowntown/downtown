@@ -50,6 +50,9 @@
 
         <service id="Shopware\Production\LocalDelivery\DeliveryRoute\Api\DeliveryRouteController" public="true">
             <argument type="service" id="Shopware\Production\LocalDelivery\DeliveryRoute\Services\DeliveryRouteService"/>
+            <argument type="service" id="Shopware\Production\LocalDelivery\Services\DeliverBoyLoginService"/>
+            <argument type="service" id="twig"/>
+            <argument type="service" id="Shopware\Storefront\Framework\Routing\Router"/>
         </service>
 
         <!-- Services -->

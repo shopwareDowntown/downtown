@@ -51,22 +51,30 @@ class DeliveryRouteService
     {
         $criteria = new Criteria();
         $criteria->addFilter(new EqualsFilter('deliveryBoyId', $boyEntityId));
-        $criteria->addSorting([new FieldSorting('createdAt', FieldSorting::DESCENDING)]);
+        $criteria->addSorting(new FieldSorting('createdAt', FieldSorting::DESCENDING));
         $criteria->setLimit(1);
         /** @var DeliveryRouteEntity $result */
         $result = $this->deliveryRouteRepository->search($criteria, $context)->getEntities()->first();
 
+        if ($result === null) {
+            throw new \Exception('No route found. try to generate a new route for your packages.');
+        }
+
         return $result;
     }
 
-    public function generateRoute(string $boyEntityId, string $merchantId, string $travelProfile, Context $context): DeliveryRouteEntity
+    public function generateRoute(string $boyEntityId, string $travelProfile, Context $context): DeliveryRouteEntity
     {
         // get packages that are not delivered for this boy
         $packages = $this->getNotDeliveredPackagesForBoy($boyEntityId, $context);
 
+        if (empty($packages)) {
+            throw new \Exception('No packages for route found');
+        }
+
         // get merchant adress and coordinates
         $coordinates = [];
-        $merchant = $this->getMerchant($merchantId, $context);
+        $merchant = $packages[0]->getMerchant();
         $coordinates[] = $this->mapboxService->getGpsCoordinates(
             $this->mapboxService->convertAddressToSearchTerm(
                 $merchant->getZip(),

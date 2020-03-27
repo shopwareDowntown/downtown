@@ -2,18 +2,23 @@
 
 namespace Shopware\Production\LocalDelivery\DeliveryRoute\Api;
 
-use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
+use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Production\LocalDelivery\DeliveryRoute\Services\DeliveryRouteService;
-use Shopware\Production\LocalDelivery\DeliveryRoute\Services\MapboxService;
+use Shopware\Production\LocalDelivery\Services\DeliverBoyLoginService;
+use Shopware\Storefront\Controller\StorefrontController;
+use Shopware\Storefront\Framework\Routing\Router;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
 
 /**
  * @RouteScope(scopes={"storefront"})
  */
-class DeliveryRouteController
+class DeliveryRouteController extends StorefrontController
 {
     public const TRAVEL_PROFILES = [
         'driving',
@@ -23,39 +28,67 @@ class DeliveryRouteController
     ];
 
     /**
+     * @var Environment
+     */
+    private $twig;
+
+    /**
+     * @var Router
+     */
+    private $router;
+
+    /**
      * @var DeliveryRouteService
      */
     private $deliveryRouteService;
 
     /**
-     * DeliveryRouteController constructor.
+     * @var DeliverBoyLoginService
      */
-    public function __construct(DeliveryRouteService $deliveryRouteService)
+    private $deliverBoyLoginService;
+
+    public function __construct(
+        DeliveryRouteService $deliveryRouteService,
+        DeliverBoyLoginService $deliverBoyLoginService,
+        Environment $twig,
+        Router $router
+    )
     {
         $this->deliveryRouteService = $deliveryRouteService;
+        $this->deliverBoyLoginService = $deliverBoyLoginService;
+        $this->twig = $twig;
+        $this->router = $router;
     }
 
     /**
-     * @Route(name="delivery-api.route.get.newest", path="/delivery-api/route/get-newest")
+     * @Route(name="delivery-api.route.get.newest", path="/delivery-api/route/get-newest", methods={"GET"})
      */
-    public function getNewestRoute(Request $request, Context $context) : JsonResponse
+    public function getNewestRoute(Request $request, SalesChannelContext $salesChannelContext) : Response
     {
-        $deliveryBoyId = ""; // TODO: replace with logged in boy id
-        $result = $this->deliveryRouteService->getNewestRoute($deliveryBoyId, $context);
+        if (!$this->deliverBoyLoginService->isDeliveryBoyLoggedIn($salesChannelContext->getContext())) {
+            return new RedirectResponse(
+                $this->router->generate('delivery.boy.login.form')
+            );
+        }
+
+
+        $deliveryBoyId = $this->deliverBoyLoginService->getDeliveryBoyId();
+        $result = $this->deliveryRouteService->getNewestRoute($deliveryBoyId, $salesChannelContext->getContext());
         return new JsonResponse($result->getRouteWaypoints());
     }
 
     /**
-     * @Route(name="delivery-api.route.generate", path="/delivery-api/route/generate")
+     * @Route(name="delivery-api.route.generate", path="/delivery-api/route/generate", methods={"GET"})
      */
-    public function generate(Request $request, Context $context) : JsonResponse
+    public function generate(Request $request, SalesChannelContext $salesChannelContext) : Response
     {
-        $merchantId = $request->query->get('merchantId');
-        $travelProfile = $request->query->get('travelProfile');
-
-        if ($merchantId === null) {
-            throw new \Exception('merchantId not given.');
+        if (!$this->deliverBoyLoginService->isDeliveryBoyLoggedIn($salesChannelContext->getContext())) {
+            return new RedirectResponse(
+                $this->router->generate('delivery.boy.login.form')
+            );
         }
+
+        $travelProfile = $request->query->get('travelProfile');
 
         if ($travelProfile === null) {
             throw new \Exception('travelProfile not given (possible values are: '. implode(', ', self::TRAVEL_PROFILES) . ')');
@@ -65,8 +98,8 @@ class DeliveryRouteController
             throw new \Exception('travelProfile is not valid, choose one of the following values: '. implode(', ', self::TRAVEL_PROFILES));
         }
 
-        $deliveryBoyId = ""; // TODO: replace with logged in boy id
-        $result = $this->deliveryRouteService->generateRoute($deliveryBoyId, $merchantId, $travelProfile, $context);
+        $deliveryBoyId = $this->deliverBoyLoginService->getDeliveryBoyId();
+        $result = $this->deliveryRouteService->generateRoute($deliveryBoyId, $travelProfile, $salesChannelContext->getContext());
         return new JsonResponse($result);
     }
 }
