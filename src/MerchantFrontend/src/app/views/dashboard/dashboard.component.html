@@ -1,28 +1,45 @@
-<portal-container class="route-dashboard">
-  <div class="dashboard-intro">
-    <h3 class="intro-ghost">COVID-19 – We're here for you</h3>
-    <h1>Welcome, lets help together!</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc aliquam justo eros, ut dignissim arcu viverra sed. Praesent et hendrerit eros. Integer turpis diam, malesuada vitae ligula eget, gravida interdum turpis. Donec consequat sem ac purus commodo tempor.</p>
-  </div>
+<div class="intro-background">
+  <portal-container class="dashboard-intro">
+    <h3 class="intro-ghost">COVID-19 – WIR SIND FÜR DICH DA</h3>
+    <h1>Wilkommen, lass uns zusammen helfen.</h1>
+    <p>Mit unserem Portal wollen wir Kommunen und Händler unterstützen. So entsteht eine Handelsplattform, über die der lokale Einzelhandel seine Angebote schnell online verfügbar machen kann. Wir wollen Händler, deren Geschäfte aktuell geschlossen sind, mit ihren Kunden verbinden und gleichzeitig daran erinnern, dass nicht jeder Händler eine ausgefeilte Digital-Strategie oder gar eine Homepage hat.</p>
 
-  <h3>From which perspective do you want to use the portal?</h3>
-  <div class="dashboard-teaser">
-    <h4>I am an organization</h4>
-    <button class="btn btn-primary">Register to the portal</button>
-    <button class="btn btn-primary btn-link">Login</button>
-  </div>
-  <div class="dashboard-teaser">
-    <h4>I am an merchant</h4>
-    <button class="btn btn-primary">Register to the portal</button>
-    <button class="btn btn-primary btn-link">Login</button>
-  </div>
+    <div class="dashboard-options">
+      <h3>Wen repräsentierts du?</h3>
+      <div class="options-grid">
+        <div class="option">
+          <clr-icon shape="organization" class="is-solid"></clr-icon>
+          <h4>Ich bin eine Organisation</h4>
+          <p>Eine Behörde oder Gemeinde, Händler-Gruppe oder ein anderer Zusammenschluss.</p>
+          <button class="btn btn-primary btn-link" (click)="registerOrganization()">Registrieren</button>
+        </div>
+        <div class="option">
+          <clr-icon shape="store" class="is-solid"></clr-icon>
+          <h4>Ich bin ein Händler</h4>
+          <p>Zum Beispiel ein lokaler Einzelhandelsunternehmen oder Dienstleister.</p>
+          <button class="btn btn-primary btn-link" (click)="registerMerchant()">Registrieren</button>
+        </div>
+      </div>
+    </div>
+  </portal-container>
+</div>
+
+<portal-container class="route-dashboard">
   <div class="dashboard-organizations">
-    <h4>See who is already registered</h4>
-    <div *ngFor="let authority of getAuthorities() | async" class="card card-block card-organization">
+    <h4>Schau, wer schon im Händlerportal registriert ist:</h4>
+    <div *ngFor="let authority of authorities$ | async" class="card card-block card-organization">
       <p class="card-text">
-        <span>{{ authority.name }}</span>
+        <strong>{{ authority.name }}</strong>
         <a [href]="authority.domain">{{ authority.domain }}</a>
       </p>
     </div>
   </div>
 </portal-container>
+
+<portal-merchant-register
+  [registerModalOpen]="showRegisterMerchantModal">
+</portal-merchant-register>
+
+<portal-organization-register
+  [registerModalOpen]="showRegisterOrganizationModal">
+</portal-organization-register>

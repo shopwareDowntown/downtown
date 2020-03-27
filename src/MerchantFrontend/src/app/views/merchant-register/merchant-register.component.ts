@@ -14,7 +14,6 @@ import { Merchant, MerchantRegistration } from '../../core/models/merchant.model
 export class MerchantRegisterComponent implements OnInit {
 
   authorities$: Observable<Authority[]>;
-
   registerForm: FormGroup;
   registrationFinished = false;
   @Input() registerModalOpen = true;

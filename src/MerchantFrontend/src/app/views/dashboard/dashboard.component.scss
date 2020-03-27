@@ -1,21 +1,83 @@
 :host {
-  .dashboard-intro {
-    text-align: center;
-    margin-top: 64px;
+  .intro-background {
+    background: url('/assets/images/portal-bubble.png'), #f5f7f9;
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    margin-bottom: 232px;
+    height: 580px;
 
-    .intro-ghost {
-      color: rgba(96, 113, 130, 0.3);
-      font-size: 14px;
-      font-weight: bold;
-      letter-spacing: 1.6px;
-      line-height: 24px;
-      text-transform: uppercase;
+    .dashboard-intro {
+      text-align: center;
+      padding-top: 64px;
+      gap: 0;
+
+      h1 {
+        margin-top: 6px;
+      }
+
+      .intro-ghost {
+        color: rgba(96, 113, 130, 0.3);
+        font-size: 14px;
+        font-weight: bold;
+        letter-spacing: 1.6px;
+        line-height: 24px;
+        text-transform: uppercase;
+      }
+    }
+
+    .dashboard-options {
+      margin-top: 78px;
+      display: grid;
+      grid-auto-flow: row;
+      justify-content: center;
+
+      .options-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        margin-top: 48px;
+        gap: 48px;
+
+        .option {
+          border: var(--sw-border);
+          background: white;
+          padding: 24px;
+
+          h4 {
+            margin-top: 8px;
+          }
+
+          p {
+            font-size: 14px;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            height: 80px;
+          }
+
+          .btn {
+            display: block;
+            width: 100%;
+            margin: 0;
+          }
+
+          clr-icon {
+            color: #142432;
+            height: 36px;
+            width: 36px;
+          }
+        }
+      }
     }
   }
 
   .card-organization {
     border: var(--sw-border);
     box-shadow: none;
+
+    strong {
+      color: #313131;
+      font-weight: 600;
+      font-size: 16px;
+    }
 
     .card-text {
       display: grid;
