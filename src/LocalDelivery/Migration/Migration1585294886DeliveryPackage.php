@@ -23,6 +23,7 @@ class Migration1585294886DeliveryPackage extends MigrationStep
                 `delivery_boy_id` BINARY(16) NULL,
                 `shipping_method_id` BINARY(16) NULL,
                 `merchant_id` BINARY(16) NULL,
+                `price` FLOAT NOT NULL,
                 `recipient_title` VARCHAR(255) NULL,
                 `recipient_first_name` VARCHAR(255) NOT NULL,
                 `recipient_last_name` VARCHAR(255) NOT NULL,
@@ -32,12 +33,12 @@ class Migration1585294886DeliveryPackage extends MigrationStep
                 `created_at` DATETIME(3) NOT NULL,
                 `updated_at` DATETIME(3) NULL,
                 PRIMARY KEY (`id`),
-                CONSTRAINT `fk.delivery_package.delivery_boy_id` 
+                CONSTRAINT `fk.delivery_package.delivery_boy_id`
                     FOREIGN KEY (`delivery_boy_id`) REFERENCES `delivery_boy` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
-                CONSTRAINT `fk.delivery_package.shipping_method_id` 
+                CONSTRAINT `fk.delivery_package.shipping_method_id`
                     FOREIGN KEY (`shipping_method_id`) REFERENCES `shipping_method` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
                 CONSTRAINT `fk.delivery_package.merchant_id`
-                    FOREIGN KEY (`merchant_id`) REFERENCES `merchant` (`id`) ON DELETE SET NULL ON UPDATE CASCADE        
+                    FOREIGN KEY (`merchant_id`) REFERENCES `merchant` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         ');
     }

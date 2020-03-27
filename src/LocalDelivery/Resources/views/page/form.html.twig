@@ -1,7 +1,7 @@
 {% sw_extends '@Storefront/storefront/base.html.twig' %}
 
 {% block base_content %}
-    <h1>Register as DeliveryBoy</h1>
+    <h1>{{ "localDelivery.page.register.pageTitle"|trans }}</h1>
 
     {% if errors %}
         <div class="error-message-container alert alert-error">
@@ -20,34 +20,40 @@
         {{ sw_csrf('delivery.boy.register') }}
 
         <div class="form-row">
-            <label>Title
+            <label>
+                <span class="local-delivery-label">{{ "localDelivery.page.register.title"|trans }}</span>
                 <input type="text" name="title" value="{% if data %}{{ data.title }}{% endif %}">
             </label>
         </div>
 
         <div class="form-row">
-            <label>Firstname
+            <label>
+                <span class="local-delivery-label">{{ "localDelivery.page.register.firstname"|trans }}</span>
                 <input type="text" name="firstname" value="{% if data %}{{ data.firstname }}{% endif %}">
             </label>
-            <label>Lastname
+            <label>
+                <span class="local-delivery-label">{{ "localDelivery.page.register.lastname"|trans }}</span>
                 <input type="text" name="lastname" value="{% if data %}{{ data.lastname }}{% endif %}">
             </label>
         </div>
 
         <div class="form-row">
-            <label>Street
+            <label>
+                <span class="local-delivery-label">{{ "localDelivery.page.register.street"|trans }}</span>
                 <input type="text" name="street" value="{% if data %}{{ data.street }}{% endif %}">
             </label>
         </div>
 
         <div class="form-row">
-            <label>Email
+            <label>
+                <span class="local-delivery-label">{{ "localDelivery.page.register.email"|trans }}</span>
                 <input type="email" name="email" value="{% if data %}{{ data.email }}{% endif %}">
             </label>
         </div>
 
         <div class="form-row">
-            <label>Zipcode
+            <label>
+                <span class="local-delivery-label">{{ "localDelivery.page.register.zipcode"|trans }}</span>
                 <input type="number" name="zipcode" value="{% if data %}{{ data.zipcode }}{% endif %}">
             </label>
             <label>City
@@ -56,23 +62,25 @@
         </div>
 
         <div class="form-row">
-            <label>Phone number
+            <label>
+                <span class="local-delivery-label">{{ "localDelivery.page.register.phonenumber"|trans }}</span>
                 <input type="number" name="phone_number" value="{% if data %}{{ data.phone_number }}{% endif %}">
             </label>
         </div>
 
         <div class="form-row">
-            <label>Password
+            <label>
+                <span class="local-delivery-label">{{ "localDelivery.page.register.password"|trans }}</span>
                 <input type="password" name="password">
             </label>
-            <label>Password Confirm
+            <label>
+                <span class="local-delivery-label">{{ "localDelivery.page.register.passwordConfirm"|trans }}</span>
                 <input type="password" name="password_confirm">
             </label>
         </div>
 
         <div class="form-row">
-            <button type="submit">Submit</button>
+            <button type="submit">{{ "localDelivery.page.register.submit"|trans }}</button>
         </div>
-
     </form>
 {% endblock %}

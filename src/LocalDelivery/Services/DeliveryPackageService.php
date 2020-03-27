@@ -15,7 +15,6 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 
 class DeliveryPackageService
 {
-
     /**
      * @var EntityRepositoryInterface
      */
@@ -29,7 +28,8 @@ class DeliveryPackageService
     public function getPackagesByDeliveryBoyId(string $deliveryBoyId, Context $context): array
     {
         $criteria = new Criteria();
-        $criteria->addFilter(new EqualsFilter('delivery_boy_id', $deliveryBoyId));
+
+        $criteria->addFilter(new EqualsFilter('deliveryBoyId', $deliveryBoyId));
 
         return $this->deliveryPackageRepository->search($criteria, $context)->getElements();
     }
