@@ -21,7 +21,7 @@ class RegistrationService
     /**
      * @var EntityRepository
      */
-    private $entityRepository;
+    private $merchantRepository;
 
     /**
      * @var SystemConfigService
@@ -39,12 +39,12 @@ class RegistrationService
     private $eventDispatcher;
 
     public function __construct(
-        EntityRepository $entityRepository,
+        EntityRepository $merchantRepository,
         SystemConfigService $systemConfigService,
         EntityRepositoryInterface $domainRepository,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->entityRepository = $entityRepository;
+        $this->merchantRepository = $merchantRepository;
         $this->systemConfigService = $systemConfigService;
         $this->domainRepository = $domainRepository;
         $this->eventDispatcher = $eventDispatcher;
@@ -54,19 +54,19 @@ class RegistrationService
     {
         $parameters['id'] = Uuid::randomHex();
 
-        $this->entityRepository->create([$parameters], $salesChannelContext->getContext());
+        $this->merchantRepository->create([$parameters], $salesChannelContext->getContext());
 
         $criteria = new Criteria([$parameters['id']]);
         $criteria->addAssociation('customer.salutation');
 
-        $result = $this->entityRepository->search($criteria, $salesChannelContext->getContext());
+        $result = $this->merchantRepository->search($criteria, $salesChannelContext->getContext());
         /** @var MerchantEntity $merchant */
         $merchant = $result->first();
 
         $customer = $merchant->getCustomer();
 
         try {
-            $this->createDoubleObInEvent($salesChannelContext, $customer);
+            $this->createDoubleOptInEvent($salesChannelContext, $customer);
         } catch (SalesChannelDomainNotFoundException $e) {
             //nth
         }
@@ -107,7 +107,7 @@ class RegistrationService
      * @param CustomerEntity|null $customer
      * @throws SalesChannelDomainNotFoundException
      */
-    private function createDoubleObInEvent(SalesChannelContext $salesChannelContext, CustomerEntity $customer): void
+    private function createDoubleOptInEvent(SalesChannelContext $salesChannelContext, CustomerEntity $customer): void
     {
         $url = $this->getConfirmUrl($salesChannelContext, $customer);
         $event = new CustomerDoubleOptInRegistrationEvent($customer, $salesChannelContext, $url);

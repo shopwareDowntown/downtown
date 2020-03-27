@@ -30,7 +30,7 @@ class RegistrationController
      */
     public function register(RequestDataBag $requestData, SalesChannelContext $context): JsonResponse
     {
-        $data = $requestData->only('name', 'email', 'password', 'salesChannelId');
+        $data = $requestData->only('publicCompanyName', 'email', 'password', 'salesChannelId');
         $this->registrationService->registerMerchant($data, $context);
 
         return new JsonResponse(['success' => true]);

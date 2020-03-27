@@ -4,10 +4,10 @@ namespace Shopware\Production\Merchants\Content\Merchant\Services;
 
 use Doctrine\DBAL\Connection;
 use Shopware\Core\Checkout\Customer\CustomerDefinition;
-use Shopware\Core\Checkout\Customer\CustomerEvents;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Event\EntityWrittenEvent;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Write\Command\CascadeDeleteCommand;
 use Shopware\Core\Framework\DataAbstractionLayer\Write\Validation\PreWriteValidationEvent;
 use Shopware\Core\Framework\Uuid\Uuid;
@@ -107,9 +107,11 @@ class CustomerSync implements EventSubscriberInterface
 
         $merchantUpdate = [];
 
+        $merchants = $this->merchantRepository->search(new Criteria($event->getIds()), $event->getContext());
+
         $customers = [];
         foreach ($event->getWriteResults() as $writeResult) {
-            $customer = [$this->extractValuesIfPresent($writeResult->getPayload(), 'salesChannelId', 'name', 'email', 'password')];
+            $customer = [$this->extractValuesIfPresent($writeResult->getPayload(), 'firstName', 'lastName', 'email', 'password')];
 
             if ($customer === [[]]) {
                 continue;
@@ -122,15 +124,22 @@ class CustomerSync implements EventSubscriberInterface
                 $customer[] = [
                     'id' => $newCustomerId,
                     'customerNumber' => Uuid::randomHex(),
-                    'firstName' => '&nbsp;',
-                    'lastName' => '&nbsp',
+                    'salesChannelId' => Defaults::SALES_CHANNEL,
+
+                    // only possible because they are not part of the registration
+                    'firstName' => $writeResult->getPayload()['publicCompanyName'],
+                    'lastName' => $writeResult->getPayload()['publicCompanyName'],
                 ];
 
                 $merchantUpdate[] = [
                     'id' => $writeResult->getPrimaryKey(),
                     'customerId' => $newCustomerId,
                 ];
+            } else {
+                $customer[] = ['id' => $merchants->get($writeResult->getPrimaryKey())->getCustomerId()];
             }
+
+            //todo where is the customerId if it is not a insert???
 
             $customers[] = array_merge(...$customer);
         }
@@ -140,6 +149,11 @@ class CustomerSync implements EventSubscriberInterface
         }
 
         $this->customerRepository->upsert($customers, $event->getContext());
+
+        if($merchantUpdate === []) {
+            return;
+        }
+
         $this->merchantRepository->update($merchantUpdate, $event->getContext());
     }
 
