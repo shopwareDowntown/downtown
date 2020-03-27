@@ -53,4 +53,34 @@ class MapboxService
 
         return $data['features'][0]['center'];
     }
+
+    /**
+     * @param array $coordinatesArray
+     * @param string $profile
+     * @return array
+     * @throws \Exception
+     */
+    public function getOptimizedRoute(array $coordinatesArray, string $profile) {
+        $coordinatesQueryString = '';
+
+        foreach ($coordinatesArray as $index => $coordinates) {
+            if($index != 0) {
+                $coordinatesQueryString = $coordinatesQueryString . ';';
+            }
+            $coordinatesQueryString = $coordinatesQueryString . $coordinates[0] . ',' . $coordinates[1];
+        }
+
+        $response = $this->client->get('/optimized-trips/v1/mapbox/' . $profile . '/' . $coordinatesQueryString, [
+            'query' => [
+                'access_token' => $this->mapboxApiKey
+            ]
+        ]);
+
+        if ($response->getStatusCode() !== 200) {
+            throw new \Exception("Error from mapbox");
+        }
+
+        $result = json_decode($response->getBody()->getContents(), true);
+        return $result['waypoints'];
+    }
 }
