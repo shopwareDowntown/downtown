@@ -7,6 +7,7 @@ use Shopware\Core\Checkout\Order\OrderCollection;
 use Shopware\Core\Checkout\Shipping\ShippingMethodCollection;
 use Shopware\Core\Content\Category\CategoryEntity;
 use Shopware\Core\Content\Media\MediaCollection;
+use Shopware\Core\Content\Media\MediaEntity;
 use Shopware\Core\Content\Product\ProductCollection;
 use Shopware\Core\Framework\DataAbstractionLayer\Entity;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityIdTrait;
@@ -141,6 +142,23 @@ class MerchantEntity extends Entity
      */
     protected $media;
 
+    /**
+     * @var string|null
+     */
+    protected $coverId;
+
+    /**
+     * @var MediaEntity|null
+     */
+    protected $cover;
+
+    /**
+     * @return string|null
+     */
+    public function getVersionId(): ?string
+    {
+        return $this->versionId;
+    }
     /**
      * @return bool
      */
@@ -392,5 +410,31 @@ class MerchantEntity extends Entity
     public function setMedia(?MediaCollection $media): void
     {
         $this->media = $media;
+    }
+
+    /**
+     * @return MediaEntity|null
+     */
+    public function getCover(): ?MediaEntity
+    {
+        return $this->cover;
+    }
+
+    /**
+     * @param MediaEntity|null $cover
+     */
+    public function setCover(?MediaEntity $cover): void
+    {
+        $this->cover = $cover;
+    }
+
+    public function getCoverId(): ?string
+    {
+        return $this->coverId;
+    }
+
+    public function setCoverId(?string $coverId): void
+    {
+        $this->coverId = $coverId;
     }
 }
