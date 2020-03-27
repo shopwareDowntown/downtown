@@ -18,6 +18,7 @@
   --sw-success-dark: #29AD36; // todo
   --sw-success-ghost: #EBFAEC;
   --sw-success-ghost-hover: #D7F6DA;
+  --sw-danger: #de294c;
 
   // font
   --sw-font: "Inter", sans-serif;
@@ -162,6 +163,7 @@ body.no-scrolling .main-container .content-container .content-area {
   }
 
   input.clr-input {
+    box-shadow: none !important;
     border-radius: 3px !important;
     background: white !important;
     border: var(--sw-border) !important;
@@ -171,10 +173,11 @@ body.no-scrolling .main-container .content-container .content-area {
     max-height: unset;
     padding: 20px;
     width: 100%;
-  }
 
-  .clr-validate-icon {
-    margin-left: 10px;
+    &.ng-dirty.ng-invalid {
+      border-color: var(--sw-danger) !important;
+      color: var(--sw-danger) !important;
+    }
   }
 
   .clr-input-group-icon-action {
@@ -192,6 +195,7 @@ body.no-scrolling .main-container .content-container .content-area {
   width: 100%;
 
   select.clr-select {
+    box-shadow: none !important;
     border-radius: 3px !important;
     background: white !important;
     border: var(--sw-border) !important;
@@ -268,5 +272,35 @@ body.no-scrolling .main-container .content-container .content-area {
     width: 100% !important;
     max-width: 100% !important;
   }
+}
 
+.clr-textarea-wrapper {
+  .clr-textarea {
+    box-shadow: none !important;
+    border-radius: 3px !important;
+    background: white !important;
+    border: var(--sw-border) !important;
+    color: var(--sw-regular) !important;
+    line-height: 1 !important;
+    height: 48px !important;
+    min-height: 100px;
+    max-height: unset;
+    padding: 20px;
+    width: 100%;
+  }
+}
+
+.clr-validate-icon {
+  display: none !important;
+}
+
+
+.clr-form-control {
+  .clr-control-container {
+    width: 100%;
+    max-width: 600px;
+  }
+  label.clr-control-label {
+    margin-bottom: 6px;
+  }
 }

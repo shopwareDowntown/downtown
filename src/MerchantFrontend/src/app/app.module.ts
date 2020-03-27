@@ -16,6 +16,7 @@ import { OrganizationLoginModule } from './views/organization-login/organization
 import { HttpClientModule } from '@angular/common/http';
 import { LocalDeliveryModule } from './views/local-delivery/local-delivery.module';
 
+import { MerchantAccountModule } from './views/merchant-account/merchant-account.module';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import { LocalDeliveryModule } from './views/local-delivery/local-delivery.modul
     // Pages
     DashboardModule,
     MerchantDetailsModule,
+    MerchantAccountModule,
     MerchantRegisterModule,
     MerchantLoginModule,
     OrganizationDetailsModule,
