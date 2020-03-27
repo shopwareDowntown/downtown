@@ -1,0 +1,7 @@
+{% sw_extends '@Storefront/storefront/page/product-detail/buy-widget.html.twig' %}
+
+{% block page_product_detail_buy_inner %}
+    {% if page.product.customFields['productType'] != 'storeWindow' %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
