@@ -90,6 +90,10 @@ export class MerchantApiService {
       return this.http.post<Product>(this.apiUrl + '/merchant-api/products/', JSON.stringify(product), {headers: this.getHeaders() });
   }
 
+  updateProduct(product: Product): Observable<Product> {
+    return this.http.put<Product>(this.apiUrl + '/merchant-api/products/'  + product.id, JSON.stringify(product), {headers: this.getHeaders() });
+  }
+
   deleteProduct(product: Product): Observable<void> {
       return this.http.delete<void>(this.apiUrl + '/merchant-api/products/' + product.id, {headers: this.getHeaders() });
   }

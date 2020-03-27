@@ -33,6 +33,14 @@ export class MerchantProductsDetailComponent implements OnInit, OnDestroy {
   }
 
   saveProduct() {
-
+    if(null === this.product.id) {
+      this.merchantApiService.addProduct(this.product).subscribe((product: Product) => {
+        this.product = product;
+      });
+    } else {
+      this.merchantApiService.updateProduct(this.product).subscribe((product: Product) => {
+        this.product = product;
+      })
+    }
   }
 }

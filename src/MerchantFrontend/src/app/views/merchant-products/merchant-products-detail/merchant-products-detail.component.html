@@ -1,7 +1,7 @@
 <form clrForm clrLayout="horizontal">
   <clr-select-container>
     <label>Product-Type</label>
-    <select clrSelect name="types" [(ngModel)]="product.type">
+    <select clrSelect name="types" [(ngModel)]="product.productType">
       <option value="">Please select...</option>
       <option value="product">Product</option>
       <option value="service">Service</option>
@@ -16,18 +16,21 @@
     <label>Description</label>
     <textarea clrTextarea [(ngModel)]="product.description" name="description" required></textarea>
   </clr-textarea-container>
-  <clr-select-container>
-    <label>Vat</label>
-    <select clrSelect name="vat" [(ngModel)]="product.vat">
-      <option value="">Bitte wählen...</option>
-      <option value="7">7% Mehrwertsteuer</option>
-      <option value="19">19% Mehrwertsteuer</option>
-    </select>
-  </clr-select-container>
-  <clr-input-container>
-    <label>Price</label>
-    <input clrInput type="number" min="1" step="any" name="price" placeholder="Enter price" [(ngModel)]="product.price">
-    <clr-icon shape="euro"></clr-icon>
-  </clr-input-container>
+  <div *ngIf="'product' === product.productType">
+    <clr-select-container>
+      <label>Vat</label>
+      <select clrSelect name="tax" [(ngModel)]="product.tax">
+        <option value="">Bitte wählen...</option>
+        <option value="7">7% Mehrwertsteuer</option>
+        <option value="19">19% Mehrwertsteuer</option>
+      </select>
+    </clr-select-container>
+    <clr-input-container>
+      <label>Price</label>
+      <input clrInput type="number" min="1" step="any" name="price" placeholder="Enter price"
+             [(ngModel)]="product.price">
+      <clr-icon shape="euro"></clr-icon>
+    </clr-input-container>
+  </div>
   <button class="btn btn-primary" type="submit">Save</button>
 </form>
