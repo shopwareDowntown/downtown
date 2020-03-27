@@ -48,7 +48,7 @@ export class MerchantRegisterComponent implements OnInit {
       salesChannelId: this.registerForm.get('authority').value.id
     };
 
-    this.merchantApiService.registerMerchant(merchant, this.registerForm.get('authority').value.accessKey).subscribe(
+    this.merchantApiService.registerMerchant(merchant).subscribe(
       () => {
         this.registerModalOpen = false;
         this.registrationFinished=true;

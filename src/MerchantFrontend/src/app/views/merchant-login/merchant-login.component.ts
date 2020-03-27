@@ -17,16 +17,13 @@ export class MerchantLoginComponent implements OnInit {
   selectedAuthority: Authority;
   isLogging: boolean;
   loginFailed = false;
-  authorities$: Observable<Authority[]>;
 
   constructor(
     private router: Router,
-    private loginService: LoginService,
-    private merchantApiService: MerchantApiService
+    private loginService: LoginService
   ) { }
 
   ngOnInit(): void {
-    this.authorities$ = this.merchantApiService.getAuthorities();
   }
 
   enterLogin($event: KeyboardEvent) {
@@ -38,7 +35,7 @@ export class MerchantLoginComponent implements OnInit {
 
   public doLogin() {
     this.loginFailed = false;
-    this.loginService.login(this.username, this.password, this.selectedAuthority)
+    this.loginService.login(this.username, this.password)
       .subscribe((result) => {
         this.router.navigate(['/merchant/profile']);
 

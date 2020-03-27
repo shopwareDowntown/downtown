@@ -12,7 +12,7 @@ import { map, take } from 'rxjs/operators';
 })
 export class MerchantApiService {
 
-  private merchantSwAccessKey = 'SWSCJTWTSBF_G77_ML-5KRPWTA';
+  private merchantSwAccessKey = 'SWSCR2FPWJDMWU9HEXZLMTVWUG';
   private apiUrl = 'https://sw6.ovh';
 
   constructor(
@@ -20,11 +20,11 @@ export class MerchantApiService {
     private stateService: StateService
   ) { }
 
-  login(username: string, password: string, authorityAccessKey: string): Observable<MerchantLoginResult> {
+  login(username: string, password: string): Observable<MerchantLoginResult> {
 
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
-    headers = headers.set('sw-access-key', authorityAccessKey);
+    headers = headers.set('sw-access-key', this.merchantSwAccessKey);
 
     const body = JSON.stringify(
       {
@@ -37,17 +37,17 @@ export class MerchantApiService {
 
   // merchant routes
 
-  registerMerchant(merchantRegistration: MerchantRegistration, accessKey: string): Observable<any> {
+  registerMerchant(merchantRegistration: MerchantRegistration): Observable<any> {
     let headers = new HttpHeaders();
     headers = headers.set('content-type', 'application/json');
-    headers = headers.set('sw-access-key', accessKey);
+    headers = headers.set('sw-access-key', this.merchantSwAccessKey);
     return this.http.post<any>(this.apiUrl + '/merchant-api/v1/register', JSON.stringify(merchantRegistration), {headers: headers});
   }
 
   getMerchant(): Observable<Merchant> {
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
-    headers = headers.set('sw-access-key', this.getAuthorityAccessKey());
+    headers = headers.set('sw-access-key', this.merchantSwAccessKey);
     headers = headers.set('sw-context-token', this.getSwContextToken());
 
     return this.http.get<any>(this.apiUrl + '/sales-channel-api/v1/customer', {headers: headers})
@@ -116,18 +116,6 @@ export class MerchantApiService {
       .subscribe(authority => key = authority.accessKey);
 
     return key ? key : '';
-  }
-
-  private getAuthorityAccessKey(): string {
-    let accessKey: string;
-    this.stateService.getAuthority().pipe(
-      take(1)
-    )
-      .subscribe((authority: Authority) => {
-        accessKey = authority.accessKey
-      });
-
-    return accessKey ? accessKey : '';
   }
 
   private getSwContextToken(): string {

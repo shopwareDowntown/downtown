@@ -14,12 +14,6 @@
       <input (keypress)="enterLogin($event)" [(ngModel)]="password" type="password"
              name="login_password" placeholder="Password" clrPassword>
     </clr-password-container>
-    <clr-select-container *ngIf="authorities$ | async as authorities">
-      <label class="clr-sr-only">Organisation</label>
-      <select clrSelect name="authority" [(ngModel)]="selectedAuthority">
-        <option *ngFor="let authority of authorities" [ngValue]="authority">{{authority.name}}</option>
-      </select>
-    </clr-select-container>
     <div style="text-align: center" *ngIf="isLogging">
       <span class="spinner spinner-inline"></span>
       <span class="ml-1">Logging in...</span>
@@ -29,7 +23,7 @@
     </div>
 
     <button type="button" (click)="doLogin()" class="btn btn-primary"
-            [disabled]="!username || !password || !selectedAuthority || isLogging">LOGIN
+            [disabled]="!username || !password || isLogging">LOGIN
     </button>
   </div>
 </form>
