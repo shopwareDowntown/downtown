@@ -1,0 +1,8 @@
+{
+    "localDelivery": {
+        "formLabels": {
+            "email": "E-Mail",
+            "password": "Passwort"
+        }
+    }
+}
