@@ -1,8 +1,25 @@
 {
     "localDelivery": {
         "formLabels": {
-            "email": "Email",
+            "email": "E-Mail",
             "password": "Password"
+        },
+        "packages": {
+            "sidebar": {
+                "packagesLink": "Packages"
+            },
+            "content": {
+                "title": "Packages",
+                "subtitle": "All packages will be visible here",
+                "emptyAlert": "You have no packages yet",
+                "columns": {
+                    "zipCode": "ZIP",
+                    "status": "Status",
+                    "city": "City",
+                    "street": "Adress",
+                    "content": "Content"
+                }
+            }
         }
     }
 }

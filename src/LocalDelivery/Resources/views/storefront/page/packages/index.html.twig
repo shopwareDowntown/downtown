@@ -1,0 +1,57 @@
+{% sw_extends '@Storefront/storefront/page/account/order-history/index.html.twig' %}
+
+{% block page_account_sidebar %}
+    <div class="account-content-aside">
+        <a href="{{ path('storefront.delivery-packages') }}"
+           title="{{ "localdelivery.packages.sidebar.packagesLink"|trans }}"
+           class="list-group-item list-group-item-action account-aside-item is-active">
+            {{ "localDelivery.packages.sidebar.packagesLink"|trans|sw_sanitize }}
+        </a>
+    </div>
+{% endblock %}
+
+{% block page_account_main_content %}
+    <h1>{{ "localDelivery.packages.content.title"|trans|sw_sanitize }}</h1>
+    <p>{{ "localDelivery.packages.content.subtitle"|trans|sw_sanitize }}</p>
+
+    {% if packages|length == 0 %}
+        {% sw_include '@Storefront/storefront/utilities/alert.html.twig' with {
+            type: "warning",
+            content: "localDelivery.packages.content.emptyAlert"|trans|sw_sanitize
+        } %}
+    {% else %}
+        <div class="table order-table">
+            <div class="order-table-header">
+                <div class="row">
+                    <div class="col">
+                        {{ "localDelivery.packages.content.columns.status"|trans|sw_sanitize }}
+                    </div>
+
+                    <div class="col">
+                        {{ "localDelivery.packages.content.columns.zipCode"|trans|sw_sanitize }}
+                    </div>
+
+                    <div class="col ">
+                        {{ "localDelivery.packages.content.columns.city"|trans|sw_sanitize }}
+                    </div>
+
+                    <div class="col">
+                        {{ "localDelivery.packages.content.columns.street"|trans|sw_sanitize }}
+                    </div>
+
+                    <div class="col">
+                        {{ "localDelivery.packages.content.columns.content"|trans|sw_sanitize }}
+                    </div>
+                </div>
+            </div>
+
+            {% for package in packages %}
+                <div class="order-table-body">
+                    {% sw_include '@LocalDelivery/storefront/page/packages/delivery-package-item.html.twig' with {
+                        'row': package
+                    } %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

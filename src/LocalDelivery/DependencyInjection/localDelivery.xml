@@ -34,6 +34,10 @@
             </call>
         </service>
 
+        <service id="Shopware\Production\LocalDelivery\Content\Storefront\Controller\DeliveryPackageController" public="true">
+            <argument type="service" id="twig"/>
+        </service>
+
         <!-- Services -->
         <service id="Shopware\Production\LocalDelivery\Services\DeliveryBoyRegisterService">
             <argument type="service" id="delivery_boy.repository"/>

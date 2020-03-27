@@ -1,0 +1,37 @@
+{% block page_account_order_item_overview %}
+    <div class="order-wrapper">
+        <div class="order-item-header">
+            <div class="row">
+                <div class="col-12 col-md">
+                    <span>
+                        {{ row['status'] }}
+                    </span>
+                </div>
+
+                <div class="col-12 col-md">
+                    <span>
+                        {{ row['zipCode'] }}
+                    </span>
+                </div>
+
+                <div class="col-12 col-md">
+                    <span>
+                        {{ row['city'] }}
+                    </span>
+                </div>
+
+                <div class="col-12 col-md">
+                    <span>
+                        {{ row['street'] }}
+                    </span>
+                </div>
+
+                <div class="col-12 col-md">
+                    <span>
+                        {{ row['content'] }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

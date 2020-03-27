@@ -3,6 +3,23 @@
         "formLabels": {
             "email": "E-Mail",
             "password": "Passwort"
+        },
+        "packages": {
+            "sidebar": {
+                "packagesLink": "Pakete"
+            },
+            "content": {
+                "title": "Pakete",
+                "subtitle": "Hier werden alle Pakete angezeigt",
+                "emptyAlert": "Du hast noch keine Pakete",
+                "columns": {
+                    "zipCode": "PLZ",
+                    "status": "Status",
+                    "city": "Stadt",
+                    "street": "Adresse",
+                    "content": "Inhalt"
+                }
+            }
         }
     }
 }
