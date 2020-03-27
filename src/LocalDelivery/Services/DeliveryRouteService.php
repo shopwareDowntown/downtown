@@ -25,10 +25,12 @@ class DeliveryRouteService
      * @var MapboxService
      */
     private $mapboxService;
+
     /**
      * @var EntityRepositoryInterface
      */
     private $deliveryPackageRepository;
+
     /**
      * @var EntityRepositoryInterface
      */

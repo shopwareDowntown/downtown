@@ -8,12 +8,11 @@ declare(strict_types=1);
 
 namespace Shopware\Production\LocalDelivery\MapApiRequestLimiter;
 
-
 use Shopware\Core\Framework\DataAbstractionLayer\EntityCollection;
 
 /**
- * @method void                   add(MapApiRequestLimiterEntity $entity)
- * @method void                   set(string $key, MapApiRequestLimiterEntity $entity)
+ * @method void                            add(MapApiRequestLimiterEntity $entity)
+ * @method void                            set(string $key, MapApiRequestLimiterEntity $entity)
  * @method MapApiRequestLimiterEntity[]    getIterator()
  * @method MapApiRequestLimiterEntity[]    getElements()
  * @method MapApiRequestLimiterEntity|null get(string $key)

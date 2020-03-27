@@ -51,17 +51,17 @@ class DeliveryRouteController extends StorefrontController
     /**
      * @var DeliveryBoyLoginService
      */
-    private $deliverBoyLoginService;
+    private $deliveryBoyLoginService;
 
     public function __construct(
         DeliveryRouteService $deliveryRouteService,
-        DeliveryBoyLoginService $deliverBoyLoginService,
+        DeliveryBoyLoginService $deliveryBoyLoginService,
         Environment $twig,
         Router $router
     )
     {
         $this->deliveryRouteService = $deliveryRouteService;
-        $this->deliverBoyLoginService = $deliverBoyLoginService;
+        $this->deliveryBoyLoginService = $deliveryBoyLoginService;
         $this->twig = $twig;
         $this->router = $router;
     }
@@ -71,14 +71,14 @@ class DeliveryRouteController extends StorefrontController
      */
     public function getNewestRoute(Request $request, SalesChannelContext $salesChannelContext) : Response
     {
-        if (!$this->deliverBoyLoginService->isDeliveryBoyLoggedIn($salesChannelContext->getContext())) {
+        if (!$this->deliveryBoyLoginService->isDeliveryBoyLoggedIn($salesChannelContext->getContext())) {
             return new RedirectResponse(
                 $this->router->generate('delivery.boy.login.form')
             );
         }
 
 
-        $deliveryBoyId = $this->deliverBoyLoginService->getDeliveryBoyId();
+        $deliveryBoyId = $this->deliveryBoyLoginService->getDeliveryBoyId();
         $result = $this->deliveryRouteService->getNewestRoute($deliveryBoyId, $salesChannelContext->getContext());
         return new JsonResponse($result->getRouteWaypoints());
     }
@@ -88,7 +88,7 @@ class DeliveryRouteController extends StorefrontController
      */
     public function generate(Request $request, SalesChannelContext $salesChannelContext) : Response
     {
-        if (!$this->deliverBoyLoginService->isDeliveryBoyLoggedIn($salesChannelContext->getContext())) {
+        if (!$this->deliveryBoyLoginService->isDeliveryBoyLoggedIn($salesChannelContext->getContext())) {
             return new RedirectResponse(
                 $this->router->generate('delivery.boy.login.form')
             );
@@ -104,7 +104,7 @@ class DeliveryRouteController extends StorefrontController
             throw new \Exception('travelProfile is not valid, choose one of the following values: '. implode(', ', self::TRAVEL_PROFILES));
         }
 
-        $deliveryBoyId = $this->deliverBoyLoginService->getDeliveryBoyId();
+        $deliveryBoyId = $this->deliveryBoyLoginService->getDeliveryBoyId();
         $result = $this->deliveryRouteService->generateRoute($deliveryBoyId, $travelProfile, $salesChannelContext->getContext());
         return new JsonResponse($result);
     }

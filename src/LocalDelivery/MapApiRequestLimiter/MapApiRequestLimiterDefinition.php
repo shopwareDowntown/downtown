@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace Shopware\Production\LocalDelivery\MapApiRequestLimiter;
 
-
 use Shopware\Core\Framework\DataAbstractionLayer\EntityDefinition;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\Required;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\PrimaryKey;

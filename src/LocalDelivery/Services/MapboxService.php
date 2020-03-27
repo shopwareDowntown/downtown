@@ -44,9 +44,9 @@ class MapboxService
         ]);
     }
 
-    public function convertAddressToSearchTerm(string $zipCode, string $citiy, string $street, string $country = ''): string
+    public function convertAddressToSearchTerm(string $zipCode, string $city, string $street, string $country = ''): string
     {
-        return "${zipCode} ${citiy}, ${street}, ${country}";
+        return "${zipCode} ${city}, ${street}, ${country}";
     }
 
     /**

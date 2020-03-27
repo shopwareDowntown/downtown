@@ -21,7 +21,7 @@ class Migration1585139956DeliveryRoute extends MigrationStep
     public function update(Connection $connection): void
     {
         $connection->executeUpdate('
-            CREATE TABLE `delivery_route` (
+            CREATE TABLE IF NOT EXISTS `delivery_route` (
                 `id` BINARY(16) NOT NULL,
                 `route_waypoints` LONGTEXT NOT NULL,
                 `delivery_boy_id` BINARY(16) NULL,
