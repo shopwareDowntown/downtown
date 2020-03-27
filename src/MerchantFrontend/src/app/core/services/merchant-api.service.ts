@@ -12,7 +12,7 @@ import { map, take } from 'rxjs/operators';
 })
 export class MerchantApiService {
 
-  private merchantSwAccessKey = 'SWSCJTWTSBF_G77_ML-5KRPWTA';
+  private merchantSwAccessKey = 'SWSCR2FPWJDMWU9HEXZLMTVWUG';
   private apiUrl = 'https://sw6.ovh';
 
   constructor(
@@ -37,10 +37,10 @@ export class MerchantApiService {
 
   // merchant routes
 
-  registerMerchant(merchantRegistration: MerchantRegistration, accessKey: string): Observable<any> {
+  registerMerchant(merchantRegistration: MerchantRegistration): Observable<any> {
     let headers = new HttpHeaders();
     headers = headers.set('content-type', 'application/json');
-    headers = headers.set('sw-access-key', accessKey);
+    headers = headers.set('sw-access-key', this.merchantSwAccessKey);
     return this.http.post<any>(this.apiUrl + '/merchant-api/v1/register', JSON.stringify(merchantRegistration), {headers: headers});
   }
 
