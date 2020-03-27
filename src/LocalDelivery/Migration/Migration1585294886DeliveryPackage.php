@@ -15,7 +15,7 @@ class Migration1585294886DeliveryPackage extends MigrationStep
     public function update(Connection $connection): void
     {
         $connection->executeUpdate('
-            CREATE TABLE `delivery_package` (
+            CREATE TABLE IF NOT EXISTS `delivery_package` (
                 `id` BINARY(16) NOT NULL,
                 `content` LONGTEXT NOT NULL,
                 `status` VARCHAR(255) NOT NULL,
