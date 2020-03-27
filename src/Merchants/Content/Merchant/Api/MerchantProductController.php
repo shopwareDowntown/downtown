@@ -42,11 +42,6 @@ class MerchantProductController
     /**
      * @var EntityRepositoryInterface
      */
-    private $customerRepository;
-
-    /**
-     * @var EntityRepositoryInterface
-     */
     private $mediaRepository;
 
     /**
@@ -67,7 +62,6 @@ class MerchantProductController
     public function __construct(
         EntityRepositoryInterface $productRepository,
         EntityRepositoryInterface $taxRepository,
-        EntityRepositoryInterface $customerRepository,
         EntityRepositoryInterface $mediaRepository,
         EntityRepositoryInterface $merchantRepository,
         NumberRangeValueGeneratorInterface $numberRangeValueGenerator,
@@ -75,7 +69,6 @@ class MerchantProductController
     ) {
         $this->productRepository = $productRepository;
         $this->taxRepository = $taxRepository;
-        $this->customerRepository = $customerRepository;
         $this->mediaRepository = $mediaRepository;
         $this->merchantRepository = $merchantRepository;
         $this->numberRangeValueGenerator = $numberRangeValueGenerator;
@@ -118,7 +111,7 @@ class MerchantProductController
     }
 
     /**
-     * @Route(name="merchant-api.merchant.product.create", path="/merchant-api/v1/products", methods={"POST"}, defaults={"csrf_protected"=false})
+     * @Route(name="merchant-api.merchant.product.create", path="/merchant-api/v{version}/products", methods={"POST"}, defaults={"csrf_protected"=false})
      */
     public function create(Request $request, SalesChannelContext $context): JsonResponse
     {
@@ -173,7 +166,7 @@ class MerchantProductController
     }
 
     /**
-     * @Route(name="merchant-api.merchant.product.update", path="/merchant-api/v1/products/{productId}", methods={"POST"}, defaults={"csrf_protected"=false})
+     * @Route(name="merchant-api.merchant.product.update", path="/merchant-api/v{version}/products/{productId}", methods={"POST"}, defaults={"csrf_protected"=false})
      */
     public function update(Request $request, string $productId, SalesChannelContext $context): JsonResponse
     {
@@ -229,7 +222,7 @@ class MerchantProductController
     }
 
     /**
-     * @Route(name="merchant-api.merchant.product.delete", path="/merchant-api/v1/products/{productId}", methods={"DELETE"})
+     * @Route(name="merchant-api.merchant.product.delete", path="/merchant-api/v{version}/products/{productId}", methods={"DELETE"})
      */
     public function delete(string $productId, SalesChannelContext $context): JsonResponse
     {
