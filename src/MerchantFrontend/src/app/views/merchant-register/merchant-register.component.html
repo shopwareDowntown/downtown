@@ -1,19 +1,19 @@
 <clr-modal (clrModalOpenChange)="registerModalClosed()" [clrModalOpen]="registerModalOpen">
   <div class="modal-body">
-      <form [formGroup]="registerForm" clrForm (ngSubmit)="register()">
+      <form [formGroup]="registerForm" clrForm>
         <section class="title">
-          <h3 class="welcome">Registriere hier deine Firma</h3>
-          <h5 class="hint">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam</h5>
+          <h3 class="welcome">Registriere dich als Händler</h3>
+          <h5 class="hint">Für lokale Einzelhandelsunternehmen oder Dienstleister</h5>
         </section>
         <div>
           <clr-input-container>
             <label class="clr-sr-only">Firmenname</label>
-            <input type="text" name="username" clrInput placeholder="Company name" formControlName="name"/>
+            <input type="text" name="username" clrInput placeholder="Firmenname" formControlName="name"/>
             <clr-control-error>Bitte gib einen Firmennamen ein.</clr-control-error>
           </clr-input-container>
           <clr-input-container>
             <label class="clr-sr-only">Email</label>
-            <input type="text" name="mail" clrInput placeholder="Email" formControlName="mail"/>
+            <input type="text" name="mail" clrInput placeholder="E-Mail-Adresse" formControlName="mail"/>
             <clr-control-error>Bitte gib eine korrekte E-Mail Addresse an.</clr-control-error>
           </clr-input-container>
           <clr-password-container>
@@ -33,13 +33,15 @@
             </select>
           </clr-select-container>
           <clr-checkbox-wrapper>
-            <label>Ich akzeptiere die allgemeinen Geschäftsbedingungen.</label>
+            <label>Ich habe die Vereinbarung zur Verwendung meiner Daten gelesen.</label>
             <input type="checkbox" name="policy" formControlName="policy" clrCheckbox/>
           </clr-checkbox-wrapper>
-          <button [disabled]="registerForm.invalid" type="submit" class="btn btn-primary">Jetzt registrieren</button>
         </div>
       </form>
     </div>
+  <div class="modal-footer">
+    <button [disabled]="registerForm.invalid" type="submit" class="btn btn-primary" (click)="register()">Registrieren</button>
+  </div>
 </clr-modal>
 
 <clr-modal [clrModalOpen]="registrationFinished" [clrModalClosable]="true">
