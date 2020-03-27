@@ -1,17 +1,19 @@
 <clr-main-container>
 
   <!-- Header Toolbar -->
-  <clr-header class="header-5">
+  <clr-header class="header portal-header">
     <!-- Branding -->
     <div class="branding">
-      <a routerLink="/" class="logo-and-title">
-        <clr-icon class="is-white" shape="store"></clr-icon> <!-- can be replaced with favicon -->
+      <a routerLink="/" >
+        <img class="logo" src="assets/img/shopware_logo_blue.svg"> <!-- can be replaced with favicon -->
         <span class="title">Portal</span>
       </a>
     </div>
 
     <!-- Toolbar Navigation -->
-    <div class="header-nav" [clr-nav-level]="1">
+    <div class="header-nav clr-hidden-md-up" [clr-nav-level]="1">
+      <button class="btn btn-primary login-button">Login</button>
+      <div class="nav-divider"></div>
       <a *ngFor="let nav of navigation"
          class="nav-link"
          [routerLink]="nav.route"
@@ -19,6 +21,10 @@
          [routerLinkActiveOptions]="{ exact: true }">
         {{nav.title}}
       </a>
+    </div>
+
+    <div class="header-actions clr-hidden-sm-down">
+      <button class="btn btn-primary login-button">Login</button>
     </div>
   </clr-header>
 
