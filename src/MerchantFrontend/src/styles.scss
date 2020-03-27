@@ -145,3 +145,84 @@ body.no-scrolling .main-container .content-container .content-area {
     }
   }
 }
+
+.clr-input-wrapper {
+  position: relative;
+  max-width: unset;
+  max-height: unset;
+  height: unset;
+  width: 100%;
+
+  .clr-input-group {
+    border: none !important;
+    max-width: unset;
+    max-height: unset;
+    height: unset;
+    width: 100%;
+  }
+
+  input.clr-input {
+    border-radius: 3px !important;
+    background: white !important;
+    border: var(--sw-border) !important;
+    color: var(--sw-regular) !important;
+    line-height: 1 !important;
+    height: 48px !important;
+    max-height: unset;
+    padding: 20px;
+    width: 100%;
+  }
+
+  .clr-validate-icon {
+    margin-left: 10px;
+  }
+
+  .clr-input-group-icon-action {
+    position: absolute;
+    cursor: pointer;
+    right: 6px;
+    top: 12px;
+  }
+}
+
+.clr-select-wrapper {
+  max-height: unset;
+  max-width: unset;
+  height: unset;
+  width: 100%;
+
+  select.clr-select {
+    border-radius: 3px !important;
+    background: white !important;
+    border: var(--sw-border) !important;
+    color: var(--sw-regular) !important;
+    line-height: 1 !important;
+    height: 48px !important;
+    max-height: unset;
+    padding: 0 20px;
+    width: 100%;
+  }
+
+  &::after {
+    border-color: var(--sw-regular);
+    border-style: solid;
+    border-width: 0.1em 0.1em 0 0;
+    content: "";
+    display: inline-block;
+    height: 8px;
+    position: relative;
+    transform: rotate(-45deg);
+    vertical-align: top;
+    width: 8px;
+    transform: rotate(135deg);
+    position: absolute;
+    right: 14px;
+    top: 19px;
+    z-index: 3;
+    background-image: unset;
+  }
+}
+
+.clr-checkbox-wrapper label {
+  color: var(--sw-color);
+}

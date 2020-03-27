@@ -33,7 +33,7 @@
 
       .options-grid {
         display: grid;
-        grid-auto-flow: column;
+        grid-template-columns: 1fr 1fr;
         margin-top: 48px;
         gap: 48px;
 

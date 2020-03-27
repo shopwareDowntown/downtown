@@ -36,7 +36,7 @@ const routes: Routes = [
     component: AuthPageLayoutComponent,
     children: [
       {path: 'merchant', component: MerchantRegisterComponent},
-      {path: 'organization', component: OrganizationRegisterComponent, canActivate: [AuthGuard]},
+      {path: 'organization', component: OrganizationRegisterComponent},
     ]
   },
 
