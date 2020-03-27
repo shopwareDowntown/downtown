@@ -11,6 +11,7 @@ use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Sorting\FieldSorting;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\System\NumberRange\ValueGenerator\NumberRangeValueGeneratorInterface;
@@ -91,19 +92,34 @@ class MerchantProductController
     /**
      * @Route(name="merchant-api.merchant.product.read", path="/merchant-api/v{version}/products", methods={"GET"})
      */
-    public function getList(SalesChannelContext $context): JsonResponse
+    public function getList(Request $request, SalesChannelContext $context): JsonResponse
     {
         $merchant = SalesChannelContextExtension::extract($context);
 
-        $criteria = new Criteria([$merchant->getId()]);
-        $criteria->addAssociation('products');
-        $criteria->addAssociation('products.cover');
+        $criteria = new Criteria();
+        $criteria->addAssociation('merchants');
 
-        $merchant = $this->merchantRepository->search($criteria, $context->getContext())->first();
+        // Fetch total before limit etc. is applied
+        $total = $this->productRepository->search($criteria, Context::createDefaultContext())->getTotal();
 
-        $products = [];
+        $criteria->addFilter(new EqualsFilter('merchants.id', $merchant->getId()));
+        $criteria->addAssociation('media');
+
+        if ($request->query->has('limit')) {
+            $criteria->setLimit((int) $request->query->get('limit'));
+        }
+
+        if ($request->query->has('offset')) {
+            $criteria->setOffset((int) $request->query->get('offset'));
+        }
+
+        $criteria->addSorting(new FieldSorting('createdAt', FieldSorting::DESCENDING));
+
+        $products = $this->productRepository->search($criteria, Context::createDefaultContext());
+
+        $productsArray = [];
         /** @var ProductEntity $product */
-        foreach ($merchant->getProducts() as $key => $product) {
+        foreach ($products as $key => $product) {
             $productData = [
                 'id' => $product->getId(),
                 'name' => $product->getTranslation('name'),
@@ -112,17 +128,22 @@ class MerchantProductController
                 'description' => $product->getTranslation('description'),
                 'price' => $product->getPrice()->first()->getGross(),
                 'tax' => $product->getTax()->getTaxRate(),
+                'active' => $product->getActive(),
                 'productType' => $product->getCustomFields()['productType']
             ];
 
-            if ($product->getCover()) {
-                $productData['media'] = $product->getCover()->getMedia()->getUrl();
+            if ($product->getMedia()->count() > 0) {
+                foreach ($product->getMedia() as $media) {
+                    $productData['media'][] = $media->getMedia()->getUrl();
+                }
             }
-            $products[] = $productData;
+
+            $productsArray[] = $productData;
         }
 
         return new JsonResponse([
-            'data' => $products
+            'data' => $productsArray,
+            'total' => $total
         ]);
     }
 
@@ -168,6 +189,7 @@ class MerchantProductController
                     'id' => $merchant->getId()
                 ]
             ],
+            'active' => (bool) $request->request->get('active', true),
             'customFields' => ['productType' => $request->request->get('productType')]
         ];
 
