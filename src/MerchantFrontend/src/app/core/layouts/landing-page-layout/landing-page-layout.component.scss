@@ -1,0 +1,84 @@
+:host {
+  // active color
+  --clr-vertical-nav-icon-active-color: #189EFF;
+  --clr-vertical-nav-item-active-color: #607182;
+  --clr-vertical-nav-active-bg-color: rgba(24, 158, 255, 0.1);
+  //hover
+  --clr-vertical-nav-hover-bg-color: rgba(24, 158, 255, 0.1);
+
+  --clr-header-bg-color: transparent;
+  --clr-header-font-color: #607182;
+  --clr-responsive-nav-trigger-bg-color: #607182;
+  --clr-sliding-panel-text-color: rgba(96, 113, 130, 0.3);
+}
+
+@media (min-width: 768px) {
+  .header {
+
+    .branding {
+      margin-left: 5%;
+    }
+
+    .header-actions {
+      margin-right: 5%;
+    }
+
+  }
+
+  .branding {
+    img.logo {
+      height: 36px;
+      margin-right: 24px;
+    }
+  }
+
+}
+
+@media (max-width: 768px) {
+  .login-button {
+    width: 280px;
+    margin: 32px auto;
+  }
+
+  // Branding logo for the header only
+  clr-main-container:not(.open-hamburger-menu) {
+    .branding {
+      margin-left: .2rem !important;
+    }
+  }
+
+  clr-main-container {
+    .branding {
+      max-width: calc(100vw - 60px) !important;
+      width: auto !important;
+      margin-left: 1.2rem !important;
+      padding: 0 !important;
+
+      img.logo {
+        display: inline-block !important;
+        height: 24px;
+        padding-right: 24px;
+      }
+
+
+    }
+  }
+}
+
+
+.branding {
+
+  .title {
+    border-left: 1.5px solid rgb(207, 212, 217);
+    padding-left: 24px;
+    // Font
+    color: rgba(96, 113, 130, 0.3);
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 1.6px;
+    line-height: 24px;
+    text-transform: uppercase;
+  }
+
+}
+
