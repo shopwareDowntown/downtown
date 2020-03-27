@@ -13,6 +13,10 @@
             <argument type="service" id="Shopware\Core\Framework\Validation\DataValidator"/>
         </service>
 
+        <service id="Shopware\Production\Merchants\Content\Merchant\Api\IndustriesController" public="true">
+            <argument type="service" id="category.repository"/>
+        </service>
+
         <service id="Shopware\Production\Merchants\Content\Merchant\Api\RegistrationController" public="true">
             <argument type="service" id="Shopware\Production\Merchants\Content\Merchant\Services\RegistrationService"/>
         </service>
