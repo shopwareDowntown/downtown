@@ -85,6 +85,16 @@ class MerchantTest extends TestCase
             ->profile($salesChannelContext);
 
         self::assertCount(2, json_decode($response->getContent())->media);
+
+        $this->getContainer()
+            ->get(ProfileController::class)
+            ->delete(json_decode($response->getContent())->media[0]->id, $salesChannelContext);
+
+        $response = $this->getContainer()
+            ->get(ProfileController::class)
+            ->profile($salesChannelContext);
+
+        self::assertCount(1, json_decode($response->getContent())->media);
     }
 
     public function testCustomerDelete(): void

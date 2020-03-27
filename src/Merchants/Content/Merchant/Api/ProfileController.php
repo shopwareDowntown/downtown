@@ -38,13 +38,19 @@ class ProfileController
      * @var StorefrontMediaUploader
      */
     private $uploader;
+    /**
+     * @var EntityRepositoryInterface
+     */
+    private $merchantMediaRepository;
 
     public function __construct(
-        EntityRepositoryInterface $merchantReepository,
+        EntityRepositoryInterface $merchantRepository,
+        EntityRepositoryInterface $merchantMediaRepository,
         DataValidator $dataValidator,
         StorefrontMediaUploader $uploader
     ) {
-        $this->merchantRepository = $merchantReepository;
+        $this->merchantRepository = $merchantRepository;
+        $this->merchantMediaRepository = $merchantMediaRepository;
         $this->dataValidator = $dataValidator;
         $this->uploader = $uploader;
     }
@@ -118,6 +124,21 @@ class ProfileController
                 'id' => $merchant->getId(),
                 'media' => $uploadedMedia,
             ]], $salesChannelContext->getContext());
+
+        return new JsonResponse([]);
+    }
+
+    /**
+     * @Route(name="merchant-api.profile.image.delete", methods={"DELETE"}, path="/merchant-api/v{version}/profile/media/:mediaId")
+     */
+    public function delete(string $mediaId, SalesChannelContext $salesChannelContext): JsonResponse
+    {
+        $merchant = SalesChannelContextExtension::extract($salesChannelContext);
+
+        $this->merchantMediaRepository->delete([[
+            'mediaId' => $mediaId,
+            'merchantId' => $merchant->getId()
+        ]], $salesChannelContext->getContext());
 
         return new JsonResponse([]);
     }
