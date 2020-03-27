@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Shopware\Production\Merchants\Test;
+namespace Shopware\Merchants\Test;
 
 use PHPUnit\Framework\TestCase;
 use Shopware\Core\Checkout\Customer\SalesChannel\AccountService;
@@ -135,7 +135,7 @@ class MerchantTest extends TestCase
             'zip' => 'zip',
             'city' => 'city',
             'country' => 'country',
-            'email' => 'email',
+            'email' => 'email@exmaple.com',
             'password' => 'password',
             'phoneNumber' => 'phoneNumber',
         ];

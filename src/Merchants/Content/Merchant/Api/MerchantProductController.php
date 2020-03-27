@@ -147,7 +147,8 @@ class MerchantProductController
                 [
                     'id' => $merchant->getId()
                 ]
-            ]
+            ],
+            'customFields' => ['productType' => $request->request->get('productType')]
         ];
 
         $taxEntity = $this->getTaxFromRequest($request, $context);
@@ -202,6 +203,9 @@ class MerchantProductController
             ];
         }
 
+        if ($request->request->has('productType')) {
+            $productData['customFields'] = ['productType' => $request->request->get('productType')];
+        }
 
         if ($request->files->has('media')) {
             $mediaId = $this->createMediaIdByFile($request->files->get('media'), $context);
