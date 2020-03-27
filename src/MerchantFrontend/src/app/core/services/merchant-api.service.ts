@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-<<<<<<< HEAD
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Merchant, MerchantRegistration, MerchantLoginResult } from '../models/merchant.model';
-=======
-import { HttpClient } from '@angular/common/http';
-import { Merchant, MerchantRegistration } from '../models/merchant.model';
->>>>>>> Added dummy data to authority call
 import { Product } from '../models/product.model';
 import { Authority } from '../models/authority.model';
 import { StateService } from '../state/state.service';
