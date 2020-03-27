@@ -92,7 +92,7 @@ class OrderPlacedSubscriber
         $senderEmail = $this->systemConfigService->get('core.basicInformation.email');
 
         $mail = new \Swift_Message('Neue Bestellung');
-        $mail->addTo($merchantEntity->getEmail(), $merchantEntity->getName());
+        $mail->addTo($merchantEntity->getEmail(), $merchantEntity->getPublicCompanyName());
         $mail->addFrom($senderEmail);
         $mail->setBody($html, 'text/html');
 
