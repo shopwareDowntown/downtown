@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class DeliverBoyLoginService
+class DeliveryBoyLoginService
 {
     /**
      * @var EntityRepositoryInterface
@@ -118,5 +118,12 @@ class DeliverBoyLoginService
         }
 
         return true;
+    }
+
+    public function getDeliveryBoyId(): ?string
+    {
+        $deliveryBoyData = $this->deliveryBoySession->getDeliveryBoyData();
+
+        return $deliveryBoyData['id'];
     }
 }

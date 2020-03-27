@@ -1,5 +1,26 @@
 {
     "localDelivery": {
+        "page": {
+            "login": {
+                "pageTitle": "Login as DeliveryBoy",
+                "registerText": "If you want to help and don't have a delivery boy account yet, click",
+                "registerLinkText": "here",
+                "login": "Login"
+            },
+            "register": {
+                "pageTitle": "Here you can register to help",
+                "title": "Title",
+                "firstname": "Firstname",
+                "lastname": "Lastname",
+                "street": "Street",
+                "email": "Email",
+                "zipcode": "Zipcode",
+                "phonenumber": "Phonenumber",
+                "password": "Password",
+                "passwordConfirm": "Confirm password",
+                "submit": "Register now"
+            }
+        },
         "formLabels": {
             "email": "E-Mail",
             "password": "Password"

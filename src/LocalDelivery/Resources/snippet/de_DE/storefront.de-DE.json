@@ -1,5 +1,26 @@
 {
     "localDelivery": {
+        "page": {
+            "login": {
+                "pageTitle": "Als Liefer-Junge einloggen",
+                "registerText": "Wenn du helfen willst und noch keinen Account als Liefer-Junge hast klicke",
+                "registerLinkText": "hier",
+                "login": "Login"
+            },
+            "register": {
+                "pageTitle": "Hier kannst du dich zum helfen registrieren",
+                "title": "Titel",
+                "firstname": "Vorname",
+                "lastname": "Nachname",
+                "street": "Straße",
+                "email": "E-Mail",
+                "zipcode": "Postleitzahl",
+                "phonenumber": "Telefonnummer",
+                "password": "Passwort",
+                "passwordConfirm": "Wiederhole Passwort",
+                "submit": "Jetzt registrieren"
+            }
+        },
         "formLabels": {
             "email": "E-Mail",
             "password": "Passwort"

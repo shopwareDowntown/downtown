@@ -9,8 +9,9 @@ namespace Shopware\Production\LocalDelivery\Controller;
 
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
-use Shopware\Production\LocalDelivery\Services\DeliverBoyLoginService;
+use Shopware\Production\LocalDelivery\Services\DeliveryBoyLoginService;
 use Shopware\Production\LocalDelivery\Services\DeliveryBoyRegisterService;
+use Shopware\Production\LocalDelivery\Services\DeliveryPackageService;
 use Shopware\Storefront\Controller\StorefrontController;
 use Shopware\Storefront\Framework\Routing\Router;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -35,7 +36,7 @@ class DeliveryBoyStorefrontController extends StorefrontController
     private $deliveryBoyRegisterService;
 
     /**
-     * @var DeliverBoyLoginService
+     * @var DeliveryBoyLoginService
      */
     private $deliverBoyLoginService;
 
@@ -44,16 +45,23 @@ class DeliveryBoyStorefrontController extends StorefrontController
      */
     private $router;
 
+    /**
+     * @var DeliveryPackageService
+     */
+    private $deliveryPackageService;
+
     public function __construct(
         Environment $twig,
         DeliveryBoyRegisterService $deliveryBoyRegisterService,
-        DeliverBoyLoginService $deliverBoyLoginService,
+        DeliveryBoyLoginService $deliverBoyLoginService,
+        DeliveryPackageService $deliveryPackageService,
         Router $router
     ) {
         $this->twig = $twig;
         $this->deliveryBoyRegisterService = $deliveryBoyRegisterService;
         $this->deliverBoyLoginService = $deliverBoyLoginService;
         $this->router = $router;
+        $this->deliveryPackageService = $deliveryPackageService;
     }
 
     /**
@@ -160,8 +168,18 @@ class DeliveryBoyStorefrontController extends StorefrontController
             );
         }
 
+        $packages = $this->deliveryPackageService->getPackagesByDeliveryBoyId(
+            $this->deliverBoyLoginService->getDeliveryBoyId(),
+            $salesChannelContext->getContext()
+        );
+
         return new Response(
-            $this->renderStorefront('@LocalDelivery/page/delivery_boy_package_overview.html.twig')
+            $this->renderStorefront(
+                '@LocalDelivery/storefront/page/packages/index.html.twig',
+                [
+                    'packages' => $packages,
+                ]
+            )
         );
     }
 }

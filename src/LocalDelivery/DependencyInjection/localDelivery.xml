@@ -27,14 +27,16 @@
         <service id="Shopware\Production\LocalDelivery\Controller\DeliveryBoyStorefrontController" public="true">
             <argument type="service" id="twig"/>
             <argument type="service" id="Shopware\Production\LocalDelivery\Services\DeliveryBoyRegisterService"/>
-            <argument type="service" id="Shopware\Production\LocalDelivery\Services\DeliverBoyLoginService"/>
+            <argument type="service" id="Shopware\Production\LocalDelivery\Services\DeliveryBoyLoginService"/>
+            <argument type="service" id="Shopware\Production\LocalDelivery\Services\DeliveryPackageService"/>
             <argument type="service" id="Shopware\Storefront\Framework\Routing\Router"/>
             <call method="setContainer">
                 <argument type="service" id="service_container"/>
             </call>
         </service>
 
-        <service id="Shopware\Production\LocalDelivery\Content\Storefront\Controller\DeliveryPackageController" public="true">
+        <service id="Shopware\Production\LocalDelivery\Content\Storefront\Controller\DeliveryPackageController"
+                 public="true">
             <argument type="service" id="twig"/>
         </service>
 
@@ -44,7 +46,7 @@
             <argument type="service" id="validator"/>
         </service>
 
-        <service id="Shopware\Production\LocalDelivery\Services\DeliverBoyLoginService">
+        <service id="Shopware\Production\LocalDelivery\Services\DeliveryBoyLoginService">
             <argument type="service" id="delivery_boy.repository"/>
             <argument type="service" id="validator"/>
             <argument type="service" id="Shopware\Production\LocalDelivery\Services\DeliveryBoySession"/>
