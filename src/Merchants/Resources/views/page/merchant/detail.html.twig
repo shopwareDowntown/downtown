@@ -5,20 +5,22 @@
         <div class="col-8">
             <h4>{{ page.merchant.publicCompanyName }}</h4>
             <p>
-                {{ page.merchant.description}}
+                {{ page.merchant.publicOpeningTimes}}
+            </p>
+            <p>
+                {{ page.merchant.publicDescription}}
             </p>
         </div>
         <div class="col-4">
             <h4>{{ 'merchant.contactInformation'|trans }}</h4>
 
-
             <div class="row">
                 <div class="col-6">
-                    {% if page.merchant.website %}
+                    {% if page.merchant.publicWebsite %}
                     <p><strong>{{ 'merchant.website'|trans }}</strong><br>
                         <a href="{{ page.merchant.publicWebsite }}">{{ page.merchant.publicWebsite }}</a></p>
                     {% endif %}
-                    {% if page.merchant.email %}
+                    {% if page.merchant.publicEmail %}
                     <p><strong>{{ 'merchant.email'|trans }}</strong><br>
                         {{ page.merchant.publicEmail }}</p>
                     {% endif %}
