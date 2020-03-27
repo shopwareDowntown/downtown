@@ -85,6 +85,7 @@
             <argument type="service" id="Shopware\Production\LocalDelivery\DeliveryRoute\Services\MapboxService"/>
             <argument type="service" id="delivery_package.repository"/>
             <argument type="service" id="delivery_route.repository"/>
+            <argument type="service" id="merchant.repository"/>
         </service>
 
     </services>

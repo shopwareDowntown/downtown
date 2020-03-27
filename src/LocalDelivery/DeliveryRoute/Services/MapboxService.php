@@ -39,8 +39,14 @@ class MapboxService
         ]);
     }
 
+    public function convertAddressToSearchTerm(string $zipCode, string $citiy, string $street, string $country = ''): string
+    {
+        return "${zipCode} ${citiy}, ${street}, ${country}";
+    }
+
     /**
-     * @param string $searchtext
+     * @param string  $searchtext
+     * @param Context $context
      * @return array [long, lat]
      * @throws \Exception
      */
@@ -71,9 +77,10 @@ class MapboxService
     }
 
     /**
-     * @param array $coordinatesArray
-     * @param string $profile
-     * @return array
+     * @param array   $coordinatesArray
+     * @param string  $profile
+     * @param Context $context
+     * @return array [[long, lat],...]
      * @throws \Exception
      */
     public function getOptimizedRoute(array $coordinatesArray, string $profile, Context $context) {
