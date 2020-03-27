@@ -5,6 +5,7 @@ import { Merchant, MerchantLoginResult } from '../models/merchant.model';
 import { StateService } from '../state/state.service';
 import { MerchantApiService } from './merchant-api.service';
 import { LocalStorageService } from './local-storage.service';
+import { Authority } from '../models/authority.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,12 +19,13 @@ export class LoginService {
   ) {
   }
 
-  login(username: string, password: string): Observable<Merchant> {
-    return this.merchantApiService.login(username, password)
+  login(username: string, password: string, authority: Authority): Observable<Merchant> {
+    return this.merchantApiService.login(username, password, authority.accessKey)
       .pipe(
         tap((result: MerchantLoginResult) => {
           this.stateService.setSwContextToken(result['sw-context-token']);
           this.localStorageService.setItem('sw-context-token', result['sw-context-token']);
+          this.stateService.setAuthority(authority);
         }),
         switchMap((result: MerchantLoginResult) => {
           return this.merchantApiService.getMerchant();

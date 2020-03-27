@@ -20,11 +20,11 @@ export class MerchantApiService {
     private stateService: StateService
   ) { }
 
-  login(username: string, password: string): Observable<MerchantLoginResult> {
+  login(username: string, password: string, authorityAccessKey: string): Observable<MerchantLoginResult> {
 
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
-    headers = headers.set('sw-access-key', this.merchantSwAccessKey);
+    headers = headers.set('sw-access-key', authorityAccessKey);
 
     const body = JSON.stringify(
       {
@@ -47,7 +47,7 @@ export class MerchantApiService {
   getMerchant(): Observable<Merchant> {
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
-    headers = headers.set('sw-access-key', this.merchantSwAccessKey);
+    headers = headers.set('sw-access-key', this.getAuthorityAccessKey());
     headers = headers.set('sw-context-token', this.getSwContextToken());
 
     return this.http.get<any>(this.apiUrl + '/sales-channel-api/v1/customer', {headers: headers})
@@ -116,6 +116,18 @@ export class MerchantApiService {
       .subscribe(authority => key = authority.accessKey);
 
     return key ? key : '';
+  }
+
+  private getAuthorityAccessKey(): string {
+    let accessKey: string;
+    this.stateService.getAuthority().pipe(
+      take(1)
+    )
+      .subscribe((authority: Authority) => {
+        accessKey = authority.accessKey
+      });
+
+    return accessKey ? accessKey : '';
   }
 
   private getSwContextToken(): string {
