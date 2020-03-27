@@ -56,6 +56,11 @@ class MerchantProductController
     private $merchantRepository;
 
     /**
+     * @var EntityRepositoryInterface
+     */
+    private $productMediaRepository;
+
+    /**
      * @var MediaService
      */
     private $mediaService;
@@ -70,6 +75,7 @@ class MerchantProductController
         EntityRepositoryInterface $taxRepository,
         EntityRepositoryInterface $mediaRepository,
         EntityRepositoryInterface $merchantRepository,
+        EntityRepositoryInterface $productMediaRepository,
         NumberRangeValueGeneratorInterface $numberRangeValueGenerator,
         MediaService $mediaService
     ) {
@@ -77,6 +83,7 @@ class MerchantProductController
         $this->taxRepository = $taxRepository;
         $this->mediaRepository = $mediaRepository;
         $this->merchantRepository = $merchantRepository;
+        $this->productMediaRepository = $productMediaRepository;
         $this->numberRangeValueGenerator = $numberRangeValueGenerator;
         $this->mediaService = $mediaService;
     }
@@ -163,10 +170,7 @@ class MerchantProductController
         $taxEntity = $this->getTaxFromRequest($request, $context);
         $productData['tax'] = ['id' => $taxEntity->getId()];
 
-        if ($request->files->has('media')) {
-            $mediaId = $this->createMediaIdByFile($request->files->get('media'), $context);
-            $productData['cover'] = ['mediaId' => $mediaId];
-        }
+        $productData = $this->checkForMedias($request, $context, $productData);
 
         $this->productRepository->create([$productData], Context::createDefaultContext());
 
@@ -217,10 +221,8 @@ class MerchantProductController
             $productData['customFields'] = ['productType' => $request->request->get('productType')];
         }
 
-        if ($request->files->has('media')) {
-            $mediaId = $this->createMediaIdByFile($request->files->get('media'), $context);
-            $productData['cover'] = ['mediaId' => $mediaId];
-        }
+        $this->deletePreviousMedias($request, $productId);
+        $productData = $this->checkForMedias($request, $context, $productData);
 
         if (!$productData) {
             throw new \InvalidArgumentException('No update data was provided.');
@@ -329,5 +331,48 @@ class MerchantProductController
         $criteria->addAssociation('products');
         $criteria->addFilter(new EqualsFilter('customerId', $customerId));
         return $this->merchantRepository->search($criteria, $context->getContext())->first();
+    }
+
+    private function checkForMedias(Request $request, SalesChannelContext $context, array $productData): array
+    {
+        if (!$request->files->has('media')) {
+            return $productData;
+        }
+
+        $mediaIds = [];
+        foreach ($request->files->get('media') as $uploadedFile) {
+            $mediaIds[] = $this->createMediaIdByFile($uploadedFile, $context);
+        }
+
+        $productData['cover'] = ['mediaId' => $mediaIds[0]];
+        unset($mediaIds[0]);
+
+        foreach ($mediaIds as $mediaId) {
+            $productData['media'][] = [
+                'mediaId' => $mediaId
+            ];
+        }
+
+        return $productData;
+    }
+
+    private function deletePreviousMedias(Request $request, string $productId): void
+    {
+        if (!$request->files->has('media')) {
+            return;
+        }
+
+        $criteria = new Criteria([$productId]);
+        $criteria->addAssociation('media');
+        /** @var ProductEntity $product */
+        $product = $this->productRepository->search($criteria, Context::createDefaultContext())->first();
+
+        $mediaIds = [];
+
+        foreach ($product->getMedia() as $productMediaId => $media) {
+            $mediaIds[] = ['id' => $productMediaId];
+        }
+
+        $this->productMediaRepository->delete($mediaIds, Context::createDefaultContext());
     }
 }
