@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { environment } from "../../../environments/environment";
 
 @Component({
@@ -9,6 +9,7 @@ import { environment } from "../../../environments/environment";
 export class OrganizationRegisterComponent implements AfterViewInit {
 
   @ViewChild('hubspotForm', { static: false }) hubspotForm: ElementRef;
+  @Input() registerOrganizationModalOpen = true;
 
   constructor() { }
 
@@ -22,4 +23,7 @@ export class OrganizationRegisterComponent implements AfterViewInit {
     this.hubspotForm.nativeElement.appendChild(hubspotScript);
   }
 
+  registerOrganizationModalClosed() {
+    this.registerOrganizationModalOpen = false;
+  }
 }

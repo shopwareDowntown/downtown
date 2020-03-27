@@ -1,1 +1,5 @@
-<div #hubspotForm></div>
+<clr-modal (clrModalOpenChange)="registerOrganizationModalClosed()" [clrModalOpen]="registerOrganizationModalOpen">
+  <div class="modal-body">
+    <div #hubspotForm></div>
+  </div>
+</clr-modal>

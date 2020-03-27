@@ -20,7 +20,7 @@ export class LoginService {
   }
 
   login(username: string, password: string, authority: Authority): Observable<Merchant> {
-    return this.merchantApiService.login(username, password, authority.accessKey)
+    return this.merchantApiService.login(username, password)
       .pipe(
         tap((result: MerchantLoginResult) => {
           this.stateService.setSwContextToken(result['sw-context-token']);
