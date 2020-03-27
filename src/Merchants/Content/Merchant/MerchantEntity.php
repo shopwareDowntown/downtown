@@ -137,7 +137,7 @@ class MerchantEntity extends Entity
     protected $orders;
 
     /**
-     * @var MediaCollection
+     * @var MediaCollection|null
      */
     protected $media;
 
@@ -384,12 +384,12 @@ class MerchantEntity extends Entity
         $this->orders = $orders;
     }
 
-    public function getMedia(): MediaCollection
+    public function getMedia(): ?MediaCollection
     {
         return $this->media;
     }
 
-    public function setMedia(MediaCollection $media): void
+    public function setMedia(?MediaCollection $media): void
     {
         $this->media = $media;
     }
