@@ -1,26 +1,7 @@
 <clr-main-container>
 
-  <!-- Header Toolbar -->
-  <clr-header class="header-5">
-    <!-- Branding -->
-    <div class="branding">
-      <a routerLink="/" class="logo-and-title">
-        <clr-icon class="is-white" shape="store"></clr-icon> <!-- can be replaced with favicon -->
-        <span class="title">Your Portal</span>
-      </a>
-    </div>
-
-    <!-- Toolbar Navigation -->
-    <div class="header-nav" [clr-nav-level]="1">
-      <a *ngFor="let nav of toolbarNav"
-         class="nav-link"
-         [routerLink]="nav.route"
-         routerLinkActive='active'
-         [routerLinkActiveOptions]="{ exact: true }">
-        {{nav.title}}
-      </a>
-    </div>
-
+  <!-- Header Toolbar: only displayed for mobile version -->
+  <clr-header class="header-1 clr-hidden-md-up">
 
   </clr-header>
 
@@ -32,9 +13,9 @@
       <router-outlet #content></router-outlet>
     </div>
     <!-- Sidebar Navigation -->
-    <clr-vertical-nav [clrVerticalNavCollapsible]="collapsible"
-                      [(clrVerticalNavCollapsed)]="collapsed"
-                      [clr-nav-level]="2">
+    <clr-vertical-nav class="portal-vertical-nav" [clr-nav-level]="1">
+      <div class="sidenav-logo">BRANDING LOGO</div>
+      <div class="sidenav-title">Merchant Portal</div>
       <ng-container *ngFor="let nav of sidebarNav">
         <!-- Navigation with children -->
         <clr-vertical-nav-group *ngIf="nav.hasChildren()">
@@ -54,6 +35,11 @@
           {{nav.title}}
         </a>
       </ng-container>
+      <!-- TODO: create logout directive -->
+      <a [ngClass]="'logout-link'" clrVerticalNavLink>
+        <clr-icon shape="logout" clrVerticalNavIcon></clr-icon>
+        Logout
+      </a>
     </clr-vertical-nav>
   </div>
 

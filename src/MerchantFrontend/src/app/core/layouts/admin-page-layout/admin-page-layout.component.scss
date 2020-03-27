@@ -1,0 +1,74 @@
+:host {
+  --clr-vertical-nav-divider-color: #607182;
+  --clr-vertical-nav-item-color: #607182;
+  --clr-vertical-nav-bg-color: #F8F9FB;
+  // active color
+  --clr-vertical-nav-icon-active-color: #189EFF;
+  --clr-vertical-nav-item-active-color: #607182;
+  --clr-vertical-nav-active-bg-color: rgba(24, 158, 255, 0.1);
+  //hover
+  --clr-vertical-nav-hover-bg-color: rgba(24, 158, 255, 0.1);
+
+  // content background
+  --clr-global-app-background: white;
+
+  // header in responsive mode
+  --clr-header-bg-color: #F8F9FB;
+  --clr-header-font-color: #607182;
+  --clr-header-title-color: #607182;
+  --clr-responsive-nav-trigger-bg-color: #607182;
+
+  .header
+  {
+    border-bottom:#e7e7e7 1px solid;
+  }
+}
+
+clr-vertical-nav.portal-vertical-nav {
+  width: 280px;
+  padding-top: 32px;
+
+  border-right: #e7e7e7 1px solid;
+
+  .sidenav-logo {
+    margin-left: 32px;
+    margin-right: auto;
+
+    height: 32px;
+    background-color: red;
+  }
+
+  .sidenav-title {
+    margin-top: 48px;
+    margin-left: 32px;
+    color: rgba(96, 113, 130, 0.3);
+    font-family: Inter-Bold, serif;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 1.6px;
+    line-height: 24px;
+    text-transform: uppercase;
+  }
+
+  .nav-link {
+    margin-left: 16px;
+    margin-right: 16px;
+    padding: 0 16px 0 16px;
+
+    &:first-of-type {
+      margin-top: 24px;
+    }
+  }
+
+  .logout-link {
+    margin-top: auto;
+    margin-bottom: 32px;
+  }
+
+
+  .nav-text {
+    font-size: 15px;
+  }
+
+}
+

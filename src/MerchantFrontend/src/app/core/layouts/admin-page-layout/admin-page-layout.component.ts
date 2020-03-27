@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NAVIGATION_ADMIN, NavigationItem} from '../../navigation';
+import {NAVIGATION_ADMIN_MERCHANT, NavigationItem} from '../../navigation';
 
 @Component({
   selector: 'portal-admin-page-layout',
@@ -8,7 +8,7 @@ import {NAVIGATION_ADMIN, NavigationItem} from '../../navigation';
 })
 export class AdminPageLayoutComponent implements OnInit {
 
-  readonly navigation = NAVIGATION_ADMIN;
+  readonly navigation = NAVIGATION_ADMIN_MERCHANT;
 
   collapsible = true;
   collapsed = true;

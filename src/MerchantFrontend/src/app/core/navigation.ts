@@ -62,12 +62,11 @@ export class NavigationItem {
 
 }
 
-export const NAVIGATION_ADMIN = [
-  new NavigationItem('Dashboard', '').setIcon('unknown-status').toolbar(),
-  new NavigationItem('Merchant Profile', '/merchant/profile').setIcon('unknown-status').sidebar(),
-  new NavigationItem('Merchant Settings', '/merchant/settings').setIcon('unknown-status').sidebar(),
-  new NavigationItem('Merchant Products', '/merchant/products').setIcon('shopping-bag').sidebar(),
-  new NavigationItem('Delivery', '/merchant/delivery').setIcon('unknown-status').sidebar(),
+export const NAVIGATION_ADMIN_MERCHANT = [
+  new NavigationItem('Home', '/merchant/profile').setIcon('home').sidebar(),
+  new NavigationItem('Informationen', '/merchant/settings').setIcon('help-info').sidebar(),
+  new NavigationItem('Produkte', '/merchant/products').setIcon('shopping-bag').sidebar(),
+  new NavigationItem('Lieferungen', '/merchant/delivery').setIcon('truck').sidebar(),
 ];
 
 export const NAVIGATION_LANDING = [
