@@ -226,6 +226,10 @@ class MerchantProductController
             $productData['description'] = $request->request->get('description');
         }
 
+        if ($request->request->has('active')) {
+            $productData['active'] = (bool) $request->request->get('active');
+        }
+
         if ($request->request->has('tax')) {
             $taxEntity = $this->getTaxFromRequest($request, $context);
             $productData['tax'] = ['id' => $taxEntity->getId()];
