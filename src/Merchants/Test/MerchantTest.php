@@ -15,6 +15,8 @@ use Shopware\Core\System\SalesChannel\Context\SalesChannelContextService;
 use Shopware\Production\Merchants\Content\Merchant\Api\ProfileController;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
 use Shopware\Production\Merchants\Content\Merchant\SalesChannelContextExtension;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
 
 class MerchantTest extends TestCase
 {
@@ -62,7 +64,6 @@ class MerchantTest extends TestCase
             ->get(ProfileController::class)
             ->profile($salesChannelContext);
 
-
         self::assertSame($merchantData['id'], json_decode($response->getContent())->id);
         self::assertStringNotContainsString('password', $response->getContent());
         self::assertSame('FOO', json_decode($response->getContent())->publicCompanyName);
@@ -72,6 +73,18 @@ class MerchantTest extends TestCase
             ->save(new DataBag($this->getUpdateMerchantData()), $salesChannelContext);
 
         self::assertTrue(json_decode($response->getContent())->public);
+
+        $request = $this->createUploadRequest();
+
+        $this->getContainer()
+            ->get(ProfileController::class)
+            ->upload($request, $salesChannelContext);
+
+        $response = $this->getContainer()
+            ->get(ProfileController::class)
+            ->profile($salesChannelContext);
+
+        self::assertCount(2, json_decode($response->getContent())->media);
     }
 
     public function testCustomerDelete(): void
@@ -153,5 +166,24 @@ class MerchantTest extends TestCase
             ->search($criteria, Context::createDefaultContext())
             ->first()
             ->getNavigationCategoryId();
+    }
+
+    /**
+     * @return Request
+     */
+    protected function createUploadRequest(): Request
+    {
+        $files = [
+            __DIR__ . '/_images/test.png',
+            __DIR__ . '/_images/test.jpg',
+        ];
+
+        $request = new Request();
+        foreach ($files as $i => $path) {
+            $upload = new UploadedFile($path, pathinfo($path, PATHINFO_BASENAME), mime_content_type($path), UPLOAD_ERR_OK, true);
+            $request->files->set('image_' . $i, $upload);
+
+        }
+        return $request;
     }
 }

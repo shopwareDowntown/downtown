@@ -2,6 +2,7 @@
 
 namespace Shopware\Production\Merchants\Content\Merchant\Api;
 
+use Shopware\Core\Content\Media\Exception\UploadException;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Validation\EntityExists;
@@ -11,11 +12,12 @@ use Shopware\Core\Framework\Validation\DataValidationDefinition;
 use Shopware\Core\Framework\Validation\DataValidator;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Production\Merchants\Content\Merchant\SalesChannelContextExtension;
+use Shopware\Production\Portal\Hacks\StorefrontMediaUploader;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
-use Symfony\Component\Validator\Constraints\Uuid;
 
 /**
  * @RouteScope(scopes={"storefront"})
@@ -26,15 +28,25 @@ class ProfileController
      * @var EntityRepositoryInterface
      */
     private $merchantRepository;
+
     /**
      * @var DataValidator
      */
     private $dataValidator;
 
-    public function __construct(EntityRepositoryInterface $merchantReepository, DataValidator $dataValidator)
-    {
+    /**
+     * @var StorefrontMediaUploader
+     */
+    private $uploader;
+
+    public function __construct(
+        EntityRepositoryInterface $merchantReepository,
+        DataValidator $dataValidator,
+        StorefrontMediaUploader $uploader
+    ) {
         $this->merchantRepository = $merchantReepository;
         $this->dataValidator = $dataValidator;
+        $this->uploader = $uploader;
     }
 
     /**
@@ -44,13 +56,18 @@ class ProfileController
     {
         $merchant = SalesChannelContextExtension::extract($salesChannelContext);
 
-        $merchant = json_decode(json_encode($merchant), true);
+        $criteria = new Criteria([$merchant->getId()]);
+        $criteria->addAssociation('media.thumbnails');
 
-        unset($merchant['password']);
-        unset($merchant['extensions']);
-        unset($merchant['_uniqueIdentifier']);
+        $profile = $this->merchantRepository->search($criteria, $salesChannelContext->getContext())->first();
 
-        return new JsonResponse($merchant);
+        $profileData = json_decode(json_encode($profile), true);
+
+        unset($profileData['password']);
+        unset($profileData['extensions']);
+        unset($profileData['_uniqueIdentifier']);
+
+        return new JsonResponse($profileData);
     }
 
     /**
@@ -76,6 +93,33 @@ class ProfileController
             ->first();
 
         return new JsonResponse($merchant);
+    }
+
+    /**
+     * @Route(name="merchant-api.profile.image.save", methods={"POST"}, path="/merchant-api/v{version}/profile/media")
+     */
+    public function upload(Request $request, SalesChannelContext $salesChannelContext): JsonResponse
+    {
+        $merchant = SalesChannelContextExtension::extract($salesChannelContext);
+
+        $uploadedMedia = [];
+        foreach($request->files as $upload) {
+            try {
+                $uploadedMedia[] = [
+                    'id' => $this->uploader->upload($upload, 'merchants', 'images', $salesChannelContext->getContext()),
+                ];
+            } catch (UploadException $e) {
+                continue;
+            }
+        }
+
+        $this->merchantRepository
+            ->update([[
+                'id' => $merchant->getId(),
+                'media' => $uploadedMedia,
+            ]], $salesChannelContext->getContext());
+
+        return new JsonResponse([]);
     }
 
     protected function createValidationDefinition(SalesChannelContext $salesChannelContext): DataValidationDefinition
