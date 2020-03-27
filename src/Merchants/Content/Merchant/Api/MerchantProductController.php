@@ -107,6 +107,8 @@ class MerchantProductController
             $productData = [
                 'id' => $product->getId(),
                 'name' => $product->getTranslation('name'),
+                'productNumber' => $product->getProductNumber(),
+                'stock' => $product->getStock(),
                 'description' => $product->getTranslation('description'),
                 'price' => $product->getPrice()->first()->getGross(),
                 'tax' => $product->getTax()->getTaxRate(),
@@ -139,12 +141,14 @@ class MerchantProductController
 
         $this->validateProductType($request->request->get('productType'));
 
+        $productNumber = $request->request->get('productNumber', $this->numberRangeValueGenerator->getValue('product', $context->getContext(), $context->getSalesChannel()->getId()));
+
         $productData = [
             'id' => Uuid::randomHex(),
             'name' => $request->request->get('name'),
             'description' => $request->request->get('description'),
             'stock' => $request->request->getInt('stock', 0),
-            'productNumber' => $this->numberRangeValueGenerator->getValue('product', $context->getContext(), $context->getSalesChannel()->getId()),
+            'productNumber' => $productNumber,
             'price' => [
                 [
                     'currencyId' => Defaults::CURRENCY,
