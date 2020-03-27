@@ -176,12 +176,12 @@ class NavigationLoader extends \Shopware\Core\Content\Category\Service\Navigatio
             $router = $this->router;
             $merchants = array_map(function (MerchantEntity $merchantEntity) use ($router) {
                 $c = new CategoryEntity();
-                $c->setName($merchantEntity->getName());
+                $c->setName($merchantEntity->getPublicCompanyName());
                 $c->setActive(true);
                 $c->setId($merchantEntity->getId());
                 $c->setChildCount(1);
                 $c->setType('page');
-                $c->setTranslated(['name' => $merchantEntity->getName()]);
+                $c->setTranslated(['name' => $merchantEntity->getPublicCompanyName()]);
 
                 $c->setExternalLink($router->generate('storefront.merchant.detail', ['id' => $merchantEntity->getId()]));
 
