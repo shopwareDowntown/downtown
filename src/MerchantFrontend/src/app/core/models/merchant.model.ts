@@ -2,7 +2,7 @@ import { Authority } from './authority.model';
 
 export interface Merchant {
     id?: string;
-    authority: Authority;
+    authority?: Authority;
     email: string;
     password?: string;
     name: string;
@@ -21,5 +21,9 @@ export interface MerchantRegistration {
     mail: string;
     password: string;
     authority: Authority;
+}
+
+export interface MerchantLoginResult {
+  'sw-context-token': string;
 }
 
