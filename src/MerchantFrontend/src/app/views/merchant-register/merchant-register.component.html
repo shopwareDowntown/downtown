@@ -1,1 +1,50 @@
-<p>merchant-register works!</p>
+<clr-modal [clrModalOpen]="registerModalOpen">
+  <div class="modal-body">
+      <form [formGroup]="registerForm" clrForm (ngSubmit)="register()">
+        <section class="title">
+          <h3 class="welcome">Registriere hier deine Firma</h3>
+          <h5 class="hint">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam</h5>
+        </section>
+        <div>
+          <clr-input-container>
+            <label class="clr-sr-only">Firmenname</label>
+            <input type="text" name="username" clrInput placeholder="Company name" formControlName="name"/>
+            <clr-control-error>Bitte gib einen Firmennamen ein.</clr-control-error>
+          </clr-input-container>
+          <clr-input-container>
+            <label class="clr-sr-only">Email</label>
+            <input type="text" name="mail" clrInput placeholder="Email" formControlName="mail"/>
+            <clr-control-error>Bitte gib eine korrekte E-Mail Addresse an.</clr-control-error>
+          </clr-input-container>
+          <clr-password-container>
+            <label class="clr-sr-only">Passwort</label>
+            <input type="password" name="password" formControlName="password" clrPassword placeholder="Password"/>
+            <clr-control-error>Bitte vergebe ein Passwort mit mindestens Acht Zeichen.</clr-control-error>
+          </clr-password-container>
+          <clr-password-container [class.clr-error]="registerForm.errors?.passwordMismatch">
+            <label class="clr-sr-only">Passwort wiederholen</label>
+            <input type="password" name="repeatPassword" formControlName="repeatPassword" clrPassword placeholder="Repeat password"/>
+            <clr-control-error>Die Passwörter sind nicht identisch.</clr-control-error>
+          </clr-password-container>
+          <clr-select-container *ngIf="authorities$ | async as authorities">
+            <label class="clr-sr-only">Organisation</label>
+            <select clrSelect name="authority" formControlName="authority">
+              <option *ngFor="let authority of authorities" [value]="authority">{{authority.name}}</option>
+            </select>
+          </clr-select-container>
+          <clr-checkbox-wrapper>
+            <label>Ich akzeptiere die allgemeinen Geschäftsbedingungen.</label>
+            <input type="checkbox" name="policy" formControlName="policy" clrCheckbox/>
+          </clr-checkbox-wrapper>
+          <button type="submit" class="btn btn-primary" (click)="register()">Jetzt registrieren</button>
+        </div>
+      </form>
+    </div>
+</clr-modal>
+
+<clr-modal [clrModalOpen]="registrationFinished" [clrModalClosable]="true">
+  <h3 class="modal-title">Registrierungsanfrage gesendet.</h3>
+  <div class="modal-body">
+    Deine Anfrage wurde an die von dir ausgewähle Organisation gesendet. Sobald dich die Organisation freigeschaltet hat, bekommst du eine Mail von uns zugeschickt und du kannst deinen Shop anlegen.
+  </div>
+</clr-modal>
