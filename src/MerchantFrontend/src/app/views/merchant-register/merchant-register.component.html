@@ -36,7 +36,7 @@
             <label>Ich akzeptiere die allgemeinen Geschäftsbedingungen.</label>
             <input type="checkbox" name="policy" formControlName="policy" clrCheckbox/>
           </clr-checkbox-wrapper>
-          <button type="submit" class="btn btn-primary">Jetzt registrieren</button>
+          <button [disabled]="registerForm.invalid" type="submit" class="btn btn-primary">Jetzt registrieren</button>
         </div>
       </form>
     </div>
