@@ -5,6 +5,15 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
+        <!-- Translation -->
+        <service id="Shopware\Production\LocalDelivery\Resources\snippet\de_DE\LocalDelivery_SnippetFile_de_DE">
+            <tag name="shopware.snippet.file" priority="100"/>
+        </service>
+
+        <service id="Shopware\Production\LocalDelivery\Resources\snippet\en_GB\LocalDelivery_SnippetFile_en_GB">
+            <tag name="shopware.snippet.file" priority="100"/>
+        </service>
+
         <!-- Definitions -->
         <service id="Shopware\Production\LocalDelivery\DeliveryBoy\DeliveryBoyDefinition">
             <tag name="shopware.entity.definition" entity="delivery_boy"/>

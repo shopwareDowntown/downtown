@@ -1,7 +1,7 @@
 {% sw_extends '@Storefront/storefront/base.html.twig' %}
 
 {% block base_content %}
-    <h1>Login as DeliveryBoy</h1>
+    <h1>{{ "localDelivery.page.login.title"|trans }}</h1>
 
     {% if errors %}
         <div class="error-message-container alert alert-error">
@@ -20,13 +20,13 @@
         {{ sw_csrf('delivery.boy.login') }}
 
         <div class="form-row">
-            <label>Email
+            <label><span class="local-delivery-lable">{{ "localDelivery.formLabels.email"|trans }}</span>
                 <input type="email" name="email" value="{% if data %}{{ data.email }}{% endif %}">
             </label>
         </div>
 
         <div class="form-row">
-            <label>Password
+            <label><span class="local-delivery-lable">{{ "localDelivery.formLabels.password"|trans }}</span>
                 <input type="password" name="password">
             </label>
         </div>
@@ -35,5 +35,9 @@
             <button type="submit">Login</button>
         </div>
     </form>
+
+    <div class="register-link">
+        <p></p>
+    </div>
 
 {% endblock %}

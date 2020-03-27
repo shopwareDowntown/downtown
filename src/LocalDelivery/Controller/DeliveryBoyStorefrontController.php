@@ -57,21 +57,25 @@ class DeliveryBoyStorefrontController extends StorefrontController
     }
 
     /**
-     * @Route("/deliveryboy/form", name="delivery.boy.form", methods={"GET"})
+     * @Route("/deliveryboy/loginform", name="delivery.boy.login.form", methods={"GET"})
      */
-    public function deliveryBoyRegistrationForm(): Response
+    public function deliveryBoyLoginForm(): Response
     {
-        $html = $this->twig->renderStorefront('@LocalDelivery/page/form.html.twig');
+        $html = $this->renderStorefront(
+            '@LocalDelivery/page/login.html.twig', [
+                'registerUrl' => $this->router->generate('delivery.boy.form'),
+            ]
+        );
 
         return new Response($html);
     }
 
     /**
-     * @Route("/deliveryboy/loginform", name="delivery.boy.login.form", methods={"GET"})
+     * @Route("/deliveryboy/form", name="delivery.boy.form", methods={"GET"})
      */
-    public function deliveryBoyLoginForm(): Response
+    public function deliveryBoyRegistrationForm(): Response
     {
-        $html = $this->twig->renderStorefront('@LocalDelivery/page/login.html.twig');
+        $html = $this->renderStorefront('@LocalDelivery/page/form.html.twig');
 
         return new Response($html);
     }
@@ -88,7 +92,7 @@ class DeliveryBoyStorefrontController extends StorefrontController
             unset($loginData['password']);
 
             return new Response(
-                $this->twig->renderStorefront('@LocalDelivery/page/login.html.twig',
+                $this->renderStorefront('@LocalDelivery/page/login.html.twig',
                     [
                         'errors' => ['Email or password is wrong'],
                         'data' => $loginData,
@@ -103,7 +107,7 @@ class DeliveryBoyStorefrontController extends StorefrontController
             unset($loginData['password']);
 
             return new Response(
-                $this->twig->renderStorefront(
+                $this->renderStorefront(
                     '@LocalDelivery/page/login.html.twig',
                     [
                         'errors' => ['Email or password is wrong'],
@@ -134,14 +138,14 @@ class DeliveryBoyStorefrontController extends StorefrontController
             unset($data['password'], $data['password_confirm']);
 
             return new Response(
-                $this->twig->renderStorefront('@LocalDelivery/page/form.html.twig', ['errors' => $errorMessages, 'data' => $data])
+                $this->renderStorefront('@LocalDelivery/page/form.html.twig', ['errors' => $errorMessages, 'data' => $data])
             );
         }
 
         $this->deliveryBoyRegisterService->saveDeliveryBoy([$data], $salesChannelContext->getContext());
 
         return new Response(
-            $this->twig->renderStorefront('@LocalDelivery/page/successfully_registered.html.twig')
+            $this->renderStorefront('@LocalDelivery/page/successfully_registered.html.twig')
         );
     }
 
@@ -157,7 +161,7 @@ class DeliveryBoyStorefrontController extends StorefrontController
         }
 
         return new Response(
-            $this->twig->renderStorefront('@LocalDelivery/page/delivery_boy_package_overview.html.twig')
+            $this->renderStorefront('@LocalDelivery/page/delivery_boy_package_overview.html.twig')
         );
     }
 }
