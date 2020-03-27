@@ -50,6 +50,7 @@ class DeliveryBoyDefinition extends EntityDefinition
             (new StringField('last_name', 'lastName'))->addFlags(new Required()),
             (new PasswordField('password', 'password'))->addFlags(new ReadProtected(SalesChannelApiSource::class, AdminApiSource::class)),
             (new StringField('email', 'email'))->addFlags(new Required()),
+            new StringField('session_id', 'sessionId'),
             new BoolField('active', 'active'),
             (new StringField('zipcode', 'zipcode'))->addFlags(new Required()),
             (new StringField('city', 'city'))->addFlags(new Required()),

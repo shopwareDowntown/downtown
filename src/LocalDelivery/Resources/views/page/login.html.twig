@@ -1,0 +1,39 @@
+{% sw_extends '@Storefront/storefront/base.html.twig' %}
+
+{% block base_content %}
+    <h1>Login as DeliveryBoy</h1>
+
+    {% if errors %}
+        <div class="error-message-container alert alert-error">
+            <ul>
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <form action="{{ path('delivery.boy.login') }}"
+          method="post"
+          data-form-csrf-handler="true">
+
+        {{ sw_csrf('delivery.boy.login') }}
+
+        <div class="form-row">
+            <label>Email
+                <input type="email" name="email" value="{% if data %}{{ data.email }}{% endif %}">
+            </label>
+        </div>
+
+        <div class="form-row">
+            <label>Password
+                <input type="password" name="password">
+            </label>
+        </div>
+
+        <div class="form-row">
+            <button type="submit">Login</button>
+        </div>
+    </form>
+
+{% endblock %}

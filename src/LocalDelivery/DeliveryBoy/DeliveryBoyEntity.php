@@ -63,6 +63,11 @@ class DeliveryBoyEntity extends Entity
     /**
      * @var string
      */
+    protected $sessionId;
+
+    /**
+     * @var string
+     */
     protected $phoneNumber;
 
     /**
@@ -178,5 +183,21 @@ class DeliveryBoyEntity extends Entity
     public function setDeliveryPackages(array $deliveryPackages): void
     {
         $this->deliveryPackages = $deliveryPackages;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSessionId(): string
+    {
+        return $this->sessionId;
+    }
+
+    /**
+     * @param string $sessionId
+     */
+    public function setSessionId(string $sessionId): void
+    {
+        $this->sessionId = $sessionId;
     }
 }

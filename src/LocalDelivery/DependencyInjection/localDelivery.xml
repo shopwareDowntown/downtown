@@ -5,13 +5,45 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-<!--         Definitions-->
+        <!-- Definitions -->
         <service id="Shopware\Production\LocalDelivery\DeliveryBoy\DeliveryBoyDefinition">
             <tag name="shopware.entity.definition" entity="delivery_boy"/>
         </service>
 
         <service id="Shopware\Production\LocalDelivery\DeliveryPackage\DeliveryPackageDefinition">
             <tag name="shopware.entity.definition" entity="delivery_package"/>
+        </service>
+
+        <!-- Controller -->
+        <service id="Shopware\Production\LocalDelivery\Controller\DeliveryBoyStorefrontController" public="true">
+            <argument type="service" id="twig"/>
+            <argument type="service" id="Shopware\Production\LocalDelivery\Services\DeliveryBoyRegisterService"/>
+            <argument type="service" id="Shopware\Production\LocalDelivery\Services\DeliverBoyLoginService"/>
+            <argument type="service" id="Shopware\Storefront\Framework\Routing\Router"/>
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+
+        <!-- Services -->
+        <service id="Shopware\Production\LocalDelivery\Services\DeliveryBoyRegisterService">
+            <argument type="service" id="delivery_boy.repository"/>
+            <argument type="service" id="validator"/>
+        </service>
+
+        <service id="Shopware\Production\LocalDelivery\Services\DeliverBoyLoginService">
+            <argument type="service" id="delivery_boy.repository"/>
+            <argument type="service" id="validator"/>
+            <argument type="service" id="Shopware\Production\LocalDelivery\Services\DeliveryBoySession"/>
+        </service>
+
+        <service id="Shopware\Production\LocalDelivery\Services\DeliveryBoySession">
+            <argument type="service" id="session"/>
+            <argument type="service" id="delivery_boy.repository"/>
+        </service>
+
+        <service id="Shopware\Production\LocalDelivery\Services\DeliveryPackageService">
+            <argument type="service" id="delivery_package.repository"/>
         </service>
 
     </services>
