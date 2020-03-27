@@ -13,7 +13,7 @@ import { map, take } from 'rxjs/operators';
 export class MerchantApiService {
 
   private merchantSwAccessKey = 'SWSCJTWTSBF_G77_ML-5KRPWTA';
-  private apiUrl = 'http://localhost:8888';
+  private apiUrl = 'https://sw6.ovh';
 
   constructor(
     private readonly http: HttpClient,
@@ -37,8 +37,11 @@ export class MerchantApiService {
 
   // merchant routes
 
-  registerMerchant(merchantRegistration: MerchantRegistration): Observable<any> {
-      return this.http.post<any>(this.apiUrl + '/merchant-api/register', JSON.stringify(merchantRegistration))
+  registerMerchant(merchantRegistration: MerchantRegistration, accessKey: string): Observable<any> {
+    let headers = new HttpHeaders();
+    headers = headers.set('content-type', 'application/json');
+    headers = headers.set('sw-access-key', accessKey);
+    return this.http.post<any>(this.apiUrl + '/merchant-api/v1/register', JSON.stringify(merchantRegistration), {headers: headers});
   }
 
   getMerchant(): Observable<Merchant> {
@@ -94,12 +97,7 @@ export class MerchantApiService {
   // authority route
 
   getAuthorities(): Observable<Authority[]> {
-      // return this.http.get<Authority[]>(this.apiUrl + '/merchant-api/authorities');
-      return of([
-        { name: 'Gemeinde Heek', domain: 'heek.sw-portal.com', id: 1, accessKey: "example" },
-        { name: 'Gemeinde Schöppingen', domain: 'schoeppingen.sw-portal.com', id: 1, accessKey: "example" },
-        { name: 'Zentrum Münster', domain: 'zentrum-muenster.sw-portal.com', id: 1, accessKey: "example" },
-      ])
+      return this.http.get<Authority[]>(this.apiUrl + '/merchant-api/v1/authorities');
   }
 
   private getHeaders(): { [header: string]: string | string[];} {

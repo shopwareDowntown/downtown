@@ -42,18 +42,22 @@ export class MerchantRegisterComponent implements OnInit {
 
   register(): void {
     const merchant: MerchantRegistration = {
-      name: this.registerForm.get('name').value,
-      mail: this.registerForm.get('mail').value,
+      publicCompanyName: this.registerForm.get('name').value,
+      email: this.registerForm.get('mail').value,
       password: this.registerForm.get('password').value,
-      authority: this.registerForm.get('authority').value
+      salesChannelId: this.registerForm.get('authority').value.id
     };
 
-    this.merchantApiService.registerMerchant(merchant).subscribe(
+    this.merchantApiService.registerMerchant(merchant, this.registerForm.get('authority').value.accessKey).subscribe(
       () => {
         this.registerModalOpen = false;
         this.registrationFinished=true;
         },
       () => {}
     );
+  }
+
+  registerModalClosed() {
+    this.registerModalOpen = false;
   }
 }

@@ -17,10 +17,10 @@ export interface Merchant {
 }
 
 export interface MerchantRegistration {
-    name: string;
-    mail: string;
-    password: string;
-    authority: Authority;
+  publicCompanyName: string;
+  email: string;
+  password: string;
+  salesChannelId: string;
 }
 
 export interface MerchantLoginResult {
