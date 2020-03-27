@@ -1,10 +1,16 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
+/*
+ * (c) shopware AG <info@shopware.com>
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-namespace Shopware\Production\LocalDelivery\DeliveryRoute\Api;
+namespace Shopware\Production\LocalDelivery\Controller;
 
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
-use Shopware\Production\LocalDelivery\DeliveryRoute\Services\DeliveryRouteService;
+use Shopware\Production\LocalDelivery\Services\DeliveryRouteService;
 use Shopware\Production\LocalDelivery\Services\DeliverBoyLoginService;
 use Shopware\Storefront\Controller\StorefrontController;
 use Shopware\Storefront\Framework\Routing\Router;

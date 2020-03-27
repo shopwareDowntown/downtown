@@ -48,8 +48,8 @@
             <argument type="service" id="twig"/>
         </service>
 
-        <service id="Shopware\Production\LocalDelivery\DeliveryRoute\Api\DeliveryRouteController" public="true">
-            <argument type="service" id="Shopware\Production\LocalDelivery\DeliveryRoute\Services\DeliveryRouteService"/>
+        <service id="Shopware\Production\LocalDelivery\Controller\DeliveryRouteController" public="true">
+            <argument type="service" id="Shopware\Production\LocalDelivery\Services\DeliveryRouteService"/>
             <argument type="service" id="Shopware\Production\LocalDelivery\Services\DeliverBoyLoginService"/>
             <argument type="service" id="twig"/>
             <argument type="service" id="Shopware\Storefront\Framework\Routing\Router"/>
@@ -76,16 +76,16 @@
             <argument type="service" id="delivery_package.repository"/>
         </service>
 
-        <service id="Shopware\Production\LocalDelivery\MapApiRequestLimiter\Services\MapApiRequestLimiterService">
+        <service id="Shopware\Production\LocalDelivery\Services\MapApiRequestLimiterService">
             <argument type="service" id="map_api_request_limiter.repository"/>
         </service>
 
-        <service id="Shopware\Production\LocalDelivery\DeliveryRoute\Services\MapboxService">
-            <argument type="service" id="Shopware\Production\LocalDelivery\MapApiRequestLimiter\Services\MapApiRequestLimiterService"/>
+        <service id="Shopware\Production\LocalDelivery\Services\MapboxService">
+            <argument type="service" id="Shopware\Production\LocalDelivery\Services\MapApiRequestLimiterService"/>
         </service>
 
-        <service id="Shopware\Production\LocalDelivery\DeliveryRoute\Services\DeliveryRouteService">
-            <argument type="service" id="Shopware\Production\LocalDelivery\DeliveryRoute\Services\MapboxService"/>
+        <service id="Shopware\Production\LocalDelivery\Services\DeliveryRouteService">
+            <argument type="service" id="Shopware\Production\LocalDelivery\Services\MapboxService"/>
             <argument type="service" id="delivery_package.repository"/>
             <argument type="service" id="delivery_route.repository"/>
             <argument type="service" id="merchant.repository"/>
