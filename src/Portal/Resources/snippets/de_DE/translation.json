@@ -12,5 +12,13 @@
     },
     "error": {
         "cartHasInvalidShippingMethod": "Die ausgewählte Versandart steht nicht zur Verfügung."
+    },
+    "header": {
+        "text": "Aufgepasst! Du willst Teil der Community werden? Dann registriere dich jetzt als Händler oder als Lieferant!",
+        "dealer": "Ich bin Händler",
+        "supplier": "Ich will Lieferant werden"
+    },
+    "menu": {
+        "supplierLogin": "Lieferanten-Login"
     }
 }

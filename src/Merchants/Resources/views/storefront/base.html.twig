@@ -1,0 +1,20 @@
+{% sw_extends '@Storefront/storefront/base.html.twig' %}
+
+{% block base_header %}
+    {% if not context.customer %}
+        <header class="header-portal" style="background-color: #9FC2E8">
+            <div class="container-fluid">
+                <div class="row p-3">
+                    <div class="col-12">
+                        <span>{{ 'header.text'|trans }}</span>
+                        <a class="btn ml-3 mr-3" href="#" role="button" style="color: #fff; background-color: #6259EC; border-color: #6259EC">{{ 'header.dealer'|trans }}</a>
+                        <a class="btn ml-3 mr-3" href="#" role="button" style="color: #fff; background-color: #6259EC; border-color: #6259EC">{{ 'header.supplier'|trans }}</a>
+                    </div>
+                </div>
+
+            </div>
+        </header>
+    {% endif %}
+{{ parent() }}
+{% endblock %}
+

@@ -12,5 +12,13 @@
     },
     "error": {
         "cartHasInvalidShippingMethod": "The selected shipping method is not available."
+    },
+    "header": {
+        "text": "Watch out! Do you want to be part of the community? Then register now as a dealer or supplier!",
+        "dealer": "I am a deal",
+        "supplier": "I want to be a supplier"
+    },
+    "menu": {
+        "supplierLogin": "Supplier login"
     }
 }

@@ -1,0 +1,11 @@
+{% sw_extends '@Storefront/storefront/layout/header/header.html.twig' %}
+
+
+{% block layout_header_actions_account %}
+    {% if not context.customer %}
+        <div class="col-auto">
+            <a class="btn ml-2 mr-3" href="#" role="button" style="color: #fff; background-color: #6259EC; border-color: #6259EC">{{ 'menu.supplierLogin'|trans }}</a>
+        </div>
+    {% endif %}
+{{ parent() }}
+{% endblock %}
