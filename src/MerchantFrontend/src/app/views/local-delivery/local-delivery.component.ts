@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'portal-local-delivery',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LocalDeliveryComponent implements OnInit {
 
-  constructor() { }
+  showDeliveries: boolean = false;
+
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
+    // TODO: fetch deliveries and set showDeliveries to true
+    this.showDeliveries = true;
   }
 
+  openCreateDeliveryPackagePage(): void {
+    this.router.navigate(['merchant/delivery/create']);
+  }
 }
