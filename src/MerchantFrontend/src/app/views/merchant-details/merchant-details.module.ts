@@ -1,10 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MerchantDetailsComponent } from './merchant-details.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ClrFormsModule } from '@clr/angular';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule,
+    ClrFormsModule
   ],
   declarations: [
     MerchantDetailsComponent
@@ -13,4 +17,5 @@ import { MerchantDetailsComponent } from './merchant-details.component';
     MerchantDetailsComponent
   ],
 })
-export class MerchantDetailsModule {}
+export class MerchantDetailsModule {
+}
