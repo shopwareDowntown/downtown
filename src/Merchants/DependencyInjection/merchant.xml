@@ -33,6 +33,10 @@
             <tag name="shopware.entity.definition" entity="merchant_order"/>
         </service>
 
+        <service id="Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantMedia\MerchantMediaDefinition">
+            <tag name="shopware.entity.definition" entity="merchant_media"/>
+        </service>
+
         <service id="Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantShippingMethod\MerchantShippingMethodDefinition">
             <tag name="shopware.entity.definition" entity="merchant_shipping_method"/>
         </service>
