@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Merchant, MerchantRegistration, MerchantLoginResult } from '../models/merchant.model';
 import { Product } from '../models/product.model';
@@ -48,7 +48,7 @@ export class MerchantApiService {
   getMerchant(): Observable<Merchant> {
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
-    headers = headers.set('sw-access-key', this.getAuthorityAccessKey());
+    headers = headers.set('sw-access-key', this.accessKey);
     headers = headers.set('sw-context-token', this.getSwContextToken());
 
     return this.http.get<any>(this.apiUrl + '/sales-channel-api/v1/customer', {headers: headers})
@@ -115,7 +115,7 @@ export class MerchantApiService {
   private getJsonContentTypeHeaders(): HttpHeaders {
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
-    headers = headers.set('sw-access-key', this.getAuthorityAccessKey());
+    headers = headers.set('sw-access-key', this.accessKey);
     headers = headers.set('sw-context-token', this.getSwContextToken());
     return headers;
   }
@@ -130,18 +130,6 @@ export class MerchantApiService {
       .subscribe(authority => key = authority.accessKey);
 
     return key ? key : '';
-  }
-
-  private getAuthorityAccessKey(): string {
-    let accessKey: string;
-    this.stateService.getAuthority().pipe(
-      take(1)
-    )
-      .subscribe((authority: Authority) => {
-        accessKey = authority.accessKey
-      });
-
-    return accessKey ? accessKey : '';
   }
 
   private getSwContextToken(): string {

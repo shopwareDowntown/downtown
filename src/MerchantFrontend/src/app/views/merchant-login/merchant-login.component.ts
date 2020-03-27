@@ -38,7 +38,7 @@ export class MerchantLoginComponent implements OnInit {
 
   public doLogin() {
     this.loginFailed = false;
-    this.loginService.login(this.username, this.password, this.selectedAuthority)
+    this.loginService.login(this.username, this.password)
       .subscribe((result) => {
         this.router.navigate(['/merchant/profile']);
 
