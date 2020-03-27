@@ -149,6 +149,45 @@ class MerchantProductController
     }
 
     /**
+     * @Route(name="merchant-api.merchant.product.read-detail", path="/merchant-api/v{version}/products/{productId}", methods={"GET"})
+     */
+    public function detailProduct(string $productId, SalesChannelContext $context): JsonResponse
+    {
+        $merchant = SalesChannelContextExtension::extract($context);
+
+        $criteria = new Criteria([$productId]);
+        $criteria->addAssociation('merchants');
+        $criteria->addFilter(new EqualsFilter('merchants.id', $merchant->getId()));
+        $criteria->addAssociation('media');
+
+        /** @var ProductEntity $product */
+        $product = $this->productRepository->search($criteria, Context::createDefaultContext())->first();
+        $productData = [
+            'id' => $product->getId(),
+            'name' => $product->getTranslation('name'),
+            'productNumber' => $product->getProductNumber(),
+            'stock' => $product->getStock(),
+            'description' => $product->getTranslation('description'),
+            'price' => $product->getPrice()->first()->getGross(),
+            'tax' => $product->getTax()->getTaxRate(),
+            'active' => $product->getActive(),
+            'productType' => $product->getCustomFields()['productType']
+        ];
+
+        if ($product->getMedia()->count() > 0) {
+            foreach ($product->getMedia() as $media) {
+                $productData['media'][] = $media->getMedia()->getUrl();
+            }
+        }
+
+        return new JsonResponse(
+            [
+                'data' => $productData
+            ]
+        );
+    }
+
+    /**
      * @Route(name="merchant-api.merchant.product.create", path="/merchant-api/v{version}/products", methods={"POST"}, defaults={"csrf_protected"=false})
      */
     public function create(Request $request, SalesChannelContext $context): JsonResponse
