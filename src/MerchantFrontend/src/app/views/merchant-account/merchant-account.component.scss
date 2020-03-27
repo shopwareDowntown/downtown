@@ -1,0 +1,27 @@
+h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #142432;
+}
+
+.sub-text {
+  width: 600px;
+  font-size: 15px;
+  color: #6b7c8d;
+}
+
+form {
+  label {
+    color: #607182;
+    height: 24px;
+    font-weight: normal;
+  }
+
+  input {
+    width: 480px;
+  }
+
+  .input-group {
+    margin-bottom: 40px;
+  }
+}
