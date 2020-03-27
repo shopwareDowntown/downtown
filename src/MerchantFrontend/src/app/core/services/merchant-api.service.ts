@@ -41,7 +41,7 @@ export class MerchantApiService {
   registerMerchant(merchantRegistration: MerchantRegistration): Observable<any> {
     let headers = new HttpHeaders();
     headers = headers.set('content-type', 'application/json');
-    headers = headers.set('sw-access-key', this.merchantSwAccessKey);
+    headers = headers.set('sw-access-key', this.accessKey);
     return this.http.post<any>(this.apiUrl + '/merchant-api/v1/register', JSON.stringify(merchantRegistration), {headers: headers});
   }
 
