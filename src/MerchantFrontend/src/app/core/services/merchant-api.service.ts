@@ -6,25 +6,26 @@ import { Product } from '../models/product.model';
 import { Authority } from '../models/authority.model';
 import { StateService } from '../state/state.service';
 import { map, take } from 'rxjs/operators';
+import { environment } from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MerchantApiService {
 
-  private merchantSwAccessKey = 'SWSCR2FPWJDMWU9HEXZLMTVWUG';
-  private apiUrl = 'https://sw6.ovh';
+  private accessKey = environment.accessKey;
+  private apiUrl = environment.apiUrl;
 
   constructor(
     private readonly http: HttpClient,
     private stateService: StateService
   ) { }
 
-  login(username: string, password: string, authorityAccessKey: string): Observable<MerchantLoginResult> {
+  login(username: string, password: string): Observable<MerchantLoginResult> {
 
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
-    headers = headers.set('sw-access-key', authorityAccessKey);
+    headers = headers.set('sw-access-key', this.accessKey);
 
     const body = JSON.stringify(
       {
