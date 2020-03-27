@@ -250,3 +250,14 @@ body.no-scrolling .main-container .content-container .content-area {
 .clr-validate-icon {
   display: none !important;
 }
+
+
+.clr-form-control {
+  .clr-control-container {
+    width: 100%;
+    max-width: 600px;
+  }
+  label.clr-control-label {
+    margin-bottom: 6px;
+  }
+}
