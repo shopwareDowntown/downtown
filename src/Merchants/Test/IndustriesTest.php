@@ -25,7 +25,7 @@ class IndustriesTest extends TestCase
 
         $result = $this->getContainer()->get(IndustriesController::class)->load($salesChannelContext);
 
-        static::assertCount(17, json_decode($result->getContent()));
+        static::assertGreaterThan(16, count(json_decode($result->getContent())));
     }
 
 }

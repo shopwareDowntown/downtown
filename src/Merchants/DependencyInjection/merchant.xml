@@ -10,7 +10,9 @@
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Api\ProfileController" public="true">
             <argument type="service" id="merchant.repository"/>
+            <argument type="service" id="merchant_media.repository"/>
             <argument type="service" id="Shopware\Core\Framework\Validation\DataValidator"/>
+            <argument type="service" id="Shopware\Production\Portal\Hacks\StorefrontMediaUploader"/>
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Api\IndustriesController" public="true">
@@ -31,6 +33,10 @@
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantOrder\MerchantOrderDefinition">
             <tag name="shopware.entity.definition" entity="merchant_order"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantMedia\MerchantMediaDefinition">
+            <tag name="shopware.entity.definition" entity="merchant_media"/>
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantShippingMethod\MerchantShippingMethodDefinition">

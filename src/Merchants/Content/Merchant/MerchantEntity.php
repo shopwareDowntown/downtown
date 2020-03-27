@@ -6,6 +6,7 @@ use Shopware\Core\Checkout\Customer\CustomerEntity;
 use Shopware\Core\Checkout\Order\OrderCollection;
 use Shopware\Core\Checkout\Shipping\ShippingMethodCollection;
 use Shopware\Core\Content\Category\CategoryEntity;
+use Shopware\Core\Content\Media\MediaCollection;
 use Shopware\Core\Content\Product\ProductCollection;
 use Shopware\Core\Framework\DataAbstractionLayer\Entity;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityIdTrait;
@@ -134,6 +135,11 @@ class MerchantEntity extends Entity
      * @var OrderCollection
      */
     protected $orders;
+
+    /**
+     * @var MediaCollection|null
+     */
+    protected $media;
 
     /**
      * @return bool
@@ -376,5 +382,15 @@ class MerchantEntity extends Entity
     public function setOrders(OrderCollection $orders): void
     {
         $this->orders = $orders;
+    }
+
+    public function getMedia(): ?MediaCollection
+    {
+        return $this->media;
+    }
+
+    public function setMedia(?MediaCollection $media): void
+    {
+        $this->media = $media;
     }
 }
