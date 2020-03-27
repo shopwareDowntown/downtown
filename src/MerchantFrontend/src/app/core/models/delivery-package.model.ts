@@ -1,5 +1,6 @@
 import {DeliveryBoy} from "./delivery-boy.model";
 import {Merchant} from "./merchant.model";
+import {MerchantShippingMethod} from "./merchant-shipping-method.model";
 
 export interface DeliveryPackage {
     id?: string;
@@ -14,6 +15,6 @@ export interface DeliveryPackage {
     status: string;
     price: number;
     deliveryBoy: DeliveryBoy;
-    shippingMethod: string;
+    shippingMethod: MerchantShippingMethod;
     merchant: Merchant;
 }

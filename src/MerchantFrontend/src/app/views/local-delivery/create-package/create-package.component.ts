@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {DeliveryBoy} from "../../../core/models/delivery-boy.model";
 import { Router } from '@angular/router';
+import {MerchantApiService} from '../../../core/services/merchant-api.service';
+import {MerchantShippingMethod} from "../../../core/models/merchant-shipping-method.model";
 
 @Component({
   selector: 'portal-create-package',
@@ -11,18 +13,21 @@ import { Router } from '@angular/router';
 export class CreatePackageComponent implements OnInit {
 
   deliveryBoys: DeliveryBoy[] = [];
-  shippingMethods: string[] = [];
+  merchantShippingMethods: MerchantShippingMethod[] = [];
   isCreating: boolean;
   showDeliveryBoySelect: boolean = false;
   packageCreationForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private router: Router, private merchantService: MerchantApiService) {
     this.setInitialCreationForm();
   }
 
   ngOnInit(): void {
     // TODO: get delivery boys with the same zipcode as merchant
-    // TODO: get shipping methods
+
+    this.merchantService.getMerchantShippingMethods().subscribe((value) => {
+      this.merchantShippingMethods = value;
+    });
   }
 
   private setInitialCreationForm(): void {

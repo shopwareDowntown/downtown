@@ -7,6 +7,7 @@ import { Authority } from '../models/authority.model';
 import { StateService } from '../state/state.service';
 import { map, take } from 'rxjs/operators';
 import { Category } from '../models/category.model';
+import { MerchantShippingMethod } from '../models/merchant-shipping-method.model';
 import { environment } from "../../../environments/environment";
 
 @Injectable({
@@ -118,6 +119,11 @@ export class MerchantApiService {
 
   getAuthorities(): Observable<Authority[]> {
       return this.http.get<Authority[]>(this.apiUrl + '/merchant-api/v1/authorities');
+  }
+
+  // delivery routes
+  getMerchantShippingMethods(): Observable<MerchantShippingMethod[]> {
+    return this.http.get<MerchantShippingMethod[]>(this.apiUrl + '/merchant-api/v1/shipping-method', {headers: this.getHeaders()});
   }
 
   private getHeaders(): { [header: string]: string | string[];} {

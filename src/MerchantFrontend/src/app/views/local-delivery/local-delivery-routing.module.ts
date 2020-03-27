@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {LocalDeliveryComponent} from "./local-delivery.component";
 import {CreatePackageComponent} from "./create-package/create-package.component";
+import {AuthGuard} from "../../core/guards/auth.guard";
 
 const routes: Routes = [
   {
@@ -10,7 +11,8 @@ const routes: Routes = [
   },
   {
     path: 'create',
-    component: CreatePackageComponent
+    component: CreatePackageComponent,
+    canActivate: [AuthGuard]
   }
   // TODO: add detail page
   // {

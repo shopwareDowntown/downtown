@@ -29,7 +29,7 @@
       <clr-select-container>
         <label>Liefermethode</label>
         <select clrSelect name="shippingMethod" formControlName="shippingMethod">
-          <option *ngFor="let shippingMethod of shippingMethods" [value]="shippingMethod">{{shippingMethod.name}}</option>
+          <option *ngFor="let merchantShippingMethod of merchantShippingMethods" [value]="merchantShippingMethod">{{merchantShippingMethod.name}}</option>
         </select>
       </clr-select-container>
 
