@@ -30,6 +30,11 @@ class MerchantEntity extends Entity
     /**
      * @var string|null
      */
+    protected $publicOwner;
+
+    /**
+     * @var string|null
+     */
     protected $publicPhoneNumber;
 
     /**
@@ -175,6 +180,16 @@ class MerchantEntity extends Entity
     public function getPublicCompanyName(): ?string
     {
         return $this->publicCompanyName;
+    }
+
+    public function getPublicOwner(): ?string
+    {
+        return $this->publicOwner;
+    }
+
+    public function setPublicOwner(?string $publicOwner): void
+    {
+        $this->publicOwner = $publicOwner;
     }
 
     public function setPublicCompanyName(?string $publicCompanyName): void

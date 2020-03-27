@@ -161,6 +161,7 @@ class ProfileController
         return (new DataValidationDefinition())
             ->add('public', new Type('bool'))
             ->add('publicCompanyName', new Type('string'))
+            ->add('publicOwner', new Type('string'))
             ->add('publicPhoneNumber', new Type('string'))
             ->add('publicEmail', new Type('string'))
             ->add('publicOpeningTimes', new Type('string'))

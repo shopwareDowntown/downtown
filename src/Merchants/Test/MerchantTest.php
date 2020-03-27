@@ -74,6 +74,7 @@ class MerchantTest extends TestCase
             ->save(new RequestDataBag($this->getUpdateMerchantData()), $salesChannelContext);
 
         self::assertTrue(json_decode($response->getContent())->public);
+        self::assertSame('owner', json_decode($response->getContent())->publicOwner);
 
         $request = $this->createUploadRequest();
 
@@ -181,6 +182,7 @@ class MerchantTest extends TestCase
             'email' => 'email@exmaple.com',
             'password' => 'password',
             'phoneNumber' => 'phoneNumber',
+            'publicOwner' => 'owner',
         ];
     }
 
