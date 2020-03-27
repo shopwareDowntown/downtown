@@ -10,8 +10,8 @@ namespace Shopware\Production\LocalDelivery\Controller;
 
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
+use Shopware\Production\LocalDelivery\Services\DeliveryBoyLoginService;
 use Shopware\Production\LocalDelivery\Services\DeliveryRouteService;
-use Shopware\Production\LocalDelivery\Services\DeliverBoyLoginService;
 use Shopware\Storefront\Controller\StorefrontController;
 use Shopware\Storefront\Framework\Routing\Router;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -49,13 +49,13 @@ class DeliveryRouteController extends StorefrontController
     private $deliveryRouteService;
 
     /**
-     * @var DeliverBoyLoginService
+     * @var DeliveryBoyLoginService
      */
     private $deliverBoyLoginService;
 
     public function __construct(
         DeliveryRouteService $deliveryRouteService,
-        DeliverBoyLoginService $deliverBoyLoginService,
+        DeliveryBoyLoginService $deliverBoyLoginService,
         Environment $twig,
         Router $router
     )

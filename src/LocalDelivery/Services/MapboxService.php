@@ -88,7 +88,8 @@ class MapboxService
      * @return array [[long, lat],...]
      * @throws \Exception
      */
-    public function getOptimizedRoute(array $coordinatesArray, string $profile, Context $context) {
+    public function getOptimizedRoute(array $coordinatesArray, string $profile, Context $context): array
+    {
         if (!$this->mapApiRequestLimiterService->increaseCount('navigation-optimization-api', $context)) {
             throw new \Exception('Map api limit reached for navigation-optimization-api');
         }
@@ -113,6 +114,6 @@ class MapboxService
         }
 
         $result = json_decode($response->getBody()->getContents(), true);
-        return $result['waypoints'];
+        return $result;
     }
 }

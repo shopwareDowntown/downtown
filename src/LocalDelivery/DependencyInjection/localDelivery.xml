@@ -50,7 +50,7 @@
 
         <service id="Shopware\Production\LocalDelivery\Controller\DeliveryRouteController" public="true">
             <argument type="service" id="Shopware\Production\LocalDelivery\Services\DeliveryRouteService"/>
-            <argument type="service" id="Shopware\Production\LocalDelivery\Services\DeliverBoyLoginService"/>
+            <argument type="service" id="Shopware\Production\LocalDelivery\Services\DeliveryBoyLoginService"/>
             <argument type="service" id="twig"/>
             <argument type="service" id="Shopware\Storefront\Framework\Routing\Router"/>
         </service>

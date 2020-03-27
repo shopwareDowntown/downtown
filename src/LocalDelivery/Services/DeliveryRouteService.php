@@ -73,20 +73,21 @@ class DeliveryRouteService
         // get packages that are not delivered for this boy
         $packages = $this->getNotDeliveredPackagesForBoy($boyEntityId, $context);
 
-        if (empty($packages)) {
+        if ($packages->count() < 1) {
             throw new \Exception('No packages for route found');
         }
 
         // get merchant adress and coordinates
         $coordinates = [];
-        $merchant = $packages[0]->getMerchant();
+        $merchant = $packages->first()->getMerchant();
         $coordinates[] = $this->mapboxService->getGpsCoordinates(
             $this->mapboxService->convertAddressToSearchTerm(
                 $merchant->getZip(),
                 $merchant->getCity(),
                 $merchant->getStreet(),
                 $merchant->getCountry()
-            )
+            ),
+            $context
         );
 
         // get coordinates from the package adresses
@@ -96,17 +97,20 @@ class DeliveryRouteService
                     $package->getRecipientZipcode(),
                     $package->getRecipientCity(),
                     $package->getRecipientStreet()
-                )
+                ),
+                $context
             );
         }
 
         // get optimized route from the coordinates
-        $optimizedCoordinates = $this->mapboxService->getOptimizedRoute($coordinates, $travelProfile, $context);
+        $routeInformation = $this->mapboxService->getOptimizedRoute($coordinates, $travelProfile, $context);
 
         // save deliveryRoute
         $this->deliveryRouteRepository->create([
-            'deliveryBoyId' => $boyEntityId,
-            'routeWaypoints' => $optimizedCoordinates
+            [
+                'deliveryBoyId' => $boyEntityId,
+                'routeWaypoints' => $routeInformation
+            ]
         ], $context);
 
         return $this->getNewestRoute($boyEntityId, $context);
@@ -117,6 +121,7 @@ class DeliveryRouteService
         $criteria = new Criteria();
         $criteria->addFilter(new EqualsFilter('deliveryBoyId', $boyEntityId));
         $criteria->addFilter(new NotFilter(NotFilter::CONNECTION_AND, [new EqualsFilter('status', 'delivered')])); // TODO: replace with delivered status string
+        $criteria->addAssociation('merchant');
         /** @var DeliveryPackageCollection $entities */
         $entities = $this->deliveryPackageRepository->search($criteria, $context)->getEntities();
 
