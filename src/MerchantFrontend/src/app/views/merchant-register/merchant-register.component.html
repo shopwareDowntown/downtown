@@ -1,4 +1,4 @@
-<clr-modal [clrModalOpen]="registerModalOpen">
+<clr-modal (clrModalOpenChange)="registerModalClosed()" [clrModalOpen]="registerModalOpen">
   <div class="modal-body">
       <form [formGroup]="registerForm" clrForm (ngSubmit)="register()">
         <section class="title">
@@ -18,25 +18,25 @@
           </clr-input-container>
           <clr-password-container>
             <label class="clr-sr-only">Passwort</label>
-            <input type="password" name="password" formControlName="password" clrPassword placeholder="Password"/>
+            <input type="password" name="password" formControlName="password" clrPassword placeholder="Passwort"/>
             <clr-control-error>Bitte vergebe ein Passwort mit mindestens Acht Zeichen.</clr-control-error>
           </clr-password-container>
-          <clr-password-container [class.clr-error]="registerForm.errors?.passwordMismatch">
+          <clr-password-container [class.clr-error]="registerForm.errors?.passwordMismatch && registerForm.get('repeatPassword').touched">
             <label class="clr-sr-only">Passwort wiederholen</label>
-            <input type="password" name="repeatPassword" formControlName="repeatPassword" clrPassword placeholder="Repeat password"/>
+            <input type="password" name="repeatPassword" formControlName="repeatPassword" clrPassword placeholder="Passwort wiederholen"/>
             <clr-control-error>Die Passwörter sind nicht identisch.</clr-control-error>
           </clr-password-container>
           <clr-select-container *ngIf="authorities$ | async as authorities">
             <label class="clr-sr-only">Organisation</label>
             <select clrSelect name="authority" formControlName="authority">
-              <option *ngFor="let authority of authorities" [value]="authority">{{authority.name}}</option>
+              <option *ngFor="let authority of authorities" [ngValue]="authority">{{authority.name}}</option>
             </select>
           </clr-select-container>
           <clr-checkbox-wrapper>
             <label>Ich akzeptiere die allgemeinen Geschäftsbedingungen.</label>
             <input type="checkbox" name="policy" formControlName="policy" clrCheckbox/>
           </clr-checkbox-wrapper>
-          <button type="submit" class="btn btn-primary" (click)="register()">Jetzt registrieren</button>
+          <button type="submit" class="btn btn-primary">Jetzt registrieren</button>
         </div>
       </form>
     </div>

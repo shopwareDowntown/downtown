@@ -35,8 +35,8 @@ const routes: Routes = [
     path: 'register',
     component: AuthPageLayoutComponent,
     children: [
-      {path: 'merchant', component: MerchantRegisterComponent, canActivate: [AuthGuard]},
-      {path: 'organization', component: OrganizationRegisterComponent, canActivate: [AuthGuard]},
+      {path: 'merchant', component: MerchantRegisterComponent},
+      {path: 'organization', component: OrganizationRegisterComponent},
     ]
   },
 
