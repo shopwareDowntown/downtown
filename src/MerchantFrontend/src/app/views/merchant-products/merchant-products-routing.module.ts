@@ -13,6 +13,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'details',
+    component: MerchantProductsDetailComponent,
+    canActivate: [AuthGuard],
+  },
+  {
     path: ':id',
     component: MerchantProductsDetailComponent,
     canActivate: [AuthGuard],

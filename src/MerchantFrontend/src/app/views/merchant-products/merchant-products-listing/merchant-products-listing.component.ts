@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MerchantApiService} from '../../../core/services/merchant-api.service';
 import {Subscription} from 'rxjs';
 import {Product} from '../../../core/models/product.model';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Component({
   selector: 'portal-merchant-products-listing',
@@ -16,7 +17,7 @@ export class MerchantProductsListingComponent implements OnInit, OnDestroy {
   // Subscription
   private subProducts: Subscription;
 
-  constructor(private merchantService: MerchantApiService) {
+  constructor(private merchantService: MerchantApiService, private router: Router) {
     this.subProducts = merchantService.getProducts().subscribe(value => this.products = value);
   }
 
@@ -29,4 +30,7 @@ export class MerchantProductsListingComponent implements OnInit, OnDestroy {
     }
   }
 
+  openAddProductForm(): void {
+    this.router.navigate(['merchant/products/details']);
+  }
 }

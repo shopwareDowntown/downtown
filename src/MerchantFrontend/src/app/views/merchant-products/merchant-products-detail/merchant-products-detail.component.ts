@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Product} from '../../../core/models/product.model';
 import {Subscription} from 'rxjs';
+import { MerchantApiService } from '../../../core/services/merchant-api.service';
 
 @Component({
   selector: 'portal-merchant-products-detail',
@@ -15,7 +16,7 @@ export class MerchantProductsDetailComponent implements OnInit, OnDestroy {
   // Subscription
   private subResolver: Subscription;
 
-  constructor(private activeRoute: ActivatedRoute) {
+  constructor(private activeRoute: ActivatedRoute, private merchantApiService: MerchantApiService) {
     // Get resolved product from route
     this.subResolver = this.activeRoute.data.subscribe(value => {
       this.product = value.product;
@@ -31,4 +32,7 @@ export class MerchantProductsDetailComponent implements OnInit, OnDestroy {
     }
   }
 
+  saveProduct() {
+
+  }
 }

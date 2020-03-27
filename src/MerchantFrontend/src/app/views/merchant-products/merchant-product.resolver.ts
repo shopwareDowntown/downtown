@@ -21,8 +21,6 @@ export class MerchantProductResolver implements Resolve<Product> {
     } else {
       return new Observable(subscriber => subscriber.error('Product id is not a number!'));
     }
-
-
   }
 
 }
