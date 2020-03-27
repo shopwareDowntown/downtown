@@ -96,7 +96,7 @@ class RegistrationService
         }
 
         return sprintf(
-            $domainUrl . '/registration/confirm?em=%s&hash=%s',
+            $domainUrl . '/merchant/registration/confirm?em=%s&hash=%s',
             hash('sha1', $customer->getEmail()),
             $customer->getHash()
         );
