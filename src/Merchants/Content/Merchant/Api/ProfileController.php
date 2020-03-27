@@ -38,7 +38,7 @@ class ProfileController
     }
 
     /**
-     * @Route(name="merchant-api.profile.load", path="/merchant-api/profile")
+     * @Route(name="merchant-api.profile.load", path="/merchant-api/v{version}/profile")
      */
     public function profile(SalesChannelContext $salesChannelContext): JsonResponse
     {
@@ -48,7 +48,7 @@ class ProfileController
     }
 
     /**
-     * @Route(name="merchant-api.profile.save", methods={"PATCH"}, path="/merchant-api/profile")
+     * @Route(name="merchant-api.profile.save", methods={"PATCH"}, path="/merchant-api/v{version}/profile")
      */
     public function save(DataBag $dataBag, SalesChannelContext $salesChannelContext): JsonResponse
     {

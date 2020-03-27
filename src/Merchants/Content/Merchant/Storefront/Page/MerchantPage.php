@@ -22,8 +22,8 @@ class MerchantPage extends Page
     {
         $this->merchant = $merchant;
         $seo = new MetaInformation();
-        $seo->setAuthor($merchant->getName());
-        $seo->setMetaTitle($merchant->getName());
+        $seo->setAuthor($merchant->getPublicCompanyName());
+        $seo->setMetaTitle($merchant->getPublicCompanyName());
 
         $this->metaInformation = $seo;
     }
