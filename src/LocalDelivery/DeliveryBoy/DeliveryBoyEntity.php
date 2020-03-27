@@ -9,7 +9,7 @@ namespace Shopware\Production\LocalDelivery\DeliveryBoy;
 
 use Shopware\Core\Framework\DataAbstractionLayer\Entity;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityIdTrait;
-use Shopware\Production\LocalDelivery\DeliveryPackage\DeliveryPackageEntity;
+use Shopware\Production\LocalDelivery\DeliveryPackage\DeliveryPackageCollection;
 
 class DeliveryBoyEntity extends Entity
 {
@@ -66,7 +66,7 @@ class DeliveryBoyEntity extends Entity
     protected $phoneNumber;
 
     /**
-     * @var DeliveryPackageEntity[]
+     * @var DeliveryPackageCollection
      */
     protected $deliveryPackages;
 
@@ -170,7 +170,7 @@ class DeliveryBoyEntity extends Entity
         $this->phoneNumber = $phoneNumber;
     }
 
-    public function getDeliveryPackages(): array
+    public function getDeliveryPackages(): DeliveryPackageCollection
     {
         return $this->deliveryPackages;
     }

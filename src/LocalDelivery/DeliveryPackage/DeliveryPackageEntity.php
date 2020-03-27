@@ -8,9 +8,11 @@ declare(strict_types=1);
 
 namespace Shopware\Production\LocalDelivery\DeliveryPackage;
 
+use Shopware\Core\Checkout\Shipping\ShippingMethodEntity;
 use Shopware\Core\Framework\DataAbstractionLayer\Entity;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityIdTrait;
 use Shopware\Production\LocalDelivery\DeliveryBoy\DeliveryBoyEntity;
+use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
 
 class DeliveryPackageEntity extends Entity
 {
@@ -34,22 +36,67 @@ class DeliveryPackageEntity extends Entity
     /**
      * @var string
      */
+    protected $comment;
+
+    /**
+     * @var string
+     */
     protected $status;
 
     /**
      * @var string
      */
-    protected $zipcode;
+    protected $recipientTitle;
 
     /**
      * @var string
      */
-    protected $city;
+    protected $recipientFirstName;
 
     /**
      * @var string
      */
-    protected $street;
+    protected $recipientLastName;
+
+    /**
+     * @var string
+     */
+    protected $recipientStreet;
+
+    /**
+     * @var string
+     */
+    protected $recipientZipcode;
+
+    /**
+     * @var string
+     */
+    protected $recipientCity;
+
+    /**
+     * @var string|null
+     */
+    protected $shippingMethodId;
+
+    /**
+     * @var ShippingMethodEntity|null
+     */
+    protected $shippingMethod;
+
+    /**
+     * @var string|null
+     */
+    protected $merchantId;
+
+    /**
+     * @var MerchantEntity|null
+     */
+    protected $merchant;
+
+    /**
+     * @var float
+     */
+    protected $price;
 
     public function getDeliveryBoyId(): ?string
     {
@@ -81,6 +128,16 @@ class DeliveryPackageEntity extends Entity
         $this->content = $content;
     }
 
+    public function getComment(): string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(string $comment): void
+    {
+        $this->comment = $comment;
+    }
+
     public function getStatus(): string
     {
         return $this->status;
@@ -91,33 +148,103 @@ class DeliveryPackageEntity extends Entity
         $this->status = $status;
     }
 
-    public function getZipcode(): string
+    public function getRecipientTitle(): string
     {
-        return $this->zipcode;
+        return $this->recipientTitle;
     }
 
-    public function setZipcode(string $zipcode): void
+    public function setRecipientTitle(string $recipientTitle): void
     {
-        $this->zipcode = $zipcode;
+        $this->recipientTitle = $recipientTitle;
     }
 
-    public function getCity(): string
+    public function getRecipientFirstName(): string
     {
-        return $this->city;
+        return $this->recipientFirstName;
     }
 
-    public function setCity(string $city): void
+    public function setRecipientFirstName(string $recipientFirstName): void
     {
-        $this->city = $city;
+        $this->recipientFirstName = $recipientFirstName;
     }
 
-    public function getStreet(): string
+    public function getRecipientLastName(): string
     {
-        return $this->street;
+        return $this->recipientLastName;
     }
 
-    public function setStreet(string $street): void
+    public function setRecipientLastName(string $recipientLastName): void
     {
-        $this->street = $street;
+        $this->recipientLastName = $recipientLastName;
+    }
+
+    public function getRecipientStreet(): string
+    {
+        return $this->recipientStreet;
+    }
+
+    public function setRecipientStreet(string $recipientStreet): void
+    {
+        $this->recipientStreet = $recipientStreet;
+    }
+
+    public function getRecipientZipcode(): string
+    {
+        return $this->recipientZipcode;
+    }
+
+    public function setRecipientZipcode(string $recipientZipcode): void
+    {
+        $this->recipientZipcode = $recipientZipcode;
+    }
+
+    public function getRecipientCity(): string
+    {
+        return $this->recipientCity;
+    }
+
+    public function setRecipientCity(string $recipientCity): void
+    {
+        $this->recipientCity = $recipientCity;
+    }
+
+    public function getShippingMethodId(): ?string
+    {
+        return $this->shippingMethodId;
+    }
+
+    public function setShippingMethodId(?string $shippingMethodId): void
+    {
+        $this->shippingMethodId = $shippingMethodId;
+    }
+
+    public function getShippingMethod(): ?ShippingMethodEntity
+    {
+        return $this->shippingMethod;
+    }
+
+    public function setShippingMethod(?ShippingMethodEntity $shippingMethod): void
+    {
+        $this->shippingMethod = $shippingMethod;
+    }
+
+    public function getMerchant(): ?MerchantEntity
+    {
+        return $this->merchant;
+    }
+
+    public function setMerchant(?MerchantEntity $merchant): void
+    {
+        $this->merchant = $merchant;
+    }
+
+    public function getPrice(): float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(float $price): void
+    {
+        $this->price = $price;
     }
 }
