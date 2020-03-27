@@ -1,1 +1,141 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://rsms.me/inter/inter.css');
+
+:root {
+  // sw variables
+  --sw-color: #142432;
+  --sw-color-reversed: #FFFFFF;
+  --sw-font-size: 15px;
+  --sw-border: 1px solid #d4d8dc;
+  --sw-primary: #189eff;
+  --sw-primary-dark: #0085E6;
+  --sw-primary-ghost: #E7F5FF;
+  --sw-primary-ghost-hover: #D7EDFF;
+  --sw-regular: #607182;
+  --sw-regular-dark: #52616F; // todo
+  --sw-regular-ghost: #EFF0F2;
+  --sw-regular-ghost-hover: #DFE3E6;
+  --sw-success: #37d046;
+  --sw-success-dark: #29AD36; // todo
+  --sw-success-ghost: #EBFAEC;
+  --sw-success-ghost-hover: #D7F6DA;
+
+  // font
+  --sw-font: "Inter", sans-serif;
+  @supports (font-variation-settings: normal) {
+    --sw-font: "Inter var", sans-serif;
+  }
+  --clr-font: var(--sw-font);
+
+  // clarity overrides
+  --clr-btn-primary-bg-color: var(--sw-primary);
+  --clr-btn-primary-hover-bg-color: var(--sw-primary-dark);
+  --clr-btn-primary-border-color: var(--sw-primary);
+  --clr-btn-regular-bg-color: var(--sw-regular);
+  --clr-btn-regular-hover-bg-color: var(--sw-regular-dark);
+  --clr-btn-regular-border-color: var(--sw-regular);
+  --clr-btn-success-bg-color: var(--sw-success);
+  --clr-btn-success-hover-bg-color: var(--sw-success-dark);
+  --clr-btn-success-border-color: var(--sw-success);
+  --clr-btn-link-color: var(--sw-primary);
+
+  // headlines & text
+  --clr-h1-font-weight: 700;
+  --clr-h2-font-weight: 500;
+  --clr-h3-font-weight: 500;
+  --clr-h4-font-weight: 500;
+  --clr-h5-font-weight: 500;
+  --clr-h6-font-weight: 500;
+  --ctr-h1-color: var(--sw-color);
+  --ctr-h2-color: var(--sw-color);
+  --ctr-h3-color: var(--sw-color);
+  --ctr-h4-color: var(--sw-color);
+  --ctr-h5-color: var(--sw-color);
+  --ctr-h6-color: var(--sw-color);
+  --clr-p1-color: var(--sw-color);
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  color: var(--sw-regular);
+  font-size: var(--sw-font-size);
+  font-family: var(--sw-font);
+
+  p {
+    font-size: var(--sw-font-size);
+    color: var(--sw-regular);
+    line-height: 24px;
+  }
+}
+
+.btn {
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+  height: 48px;
+  padding: 12px 24px;
+  line-height: 1;
+  outline: none !important;
+  box-shadow: none !important;
+
+  &.btn-regular {
+    background: var(--sw-regular);
+    border-color: var(--sw-regular);
+    color: var(--sw-text-reversed);
+
+    &:hover, &:focus, &:active {
+      background: var(--sw-regular-dark);
+      border-color: var(--sw-regular-dark);
+    }
+
+    &.btn-link {
+      background: var(--sw-regular-ghost);
+      border-color: var(--sw-regular-ghost);
+      color: var(--sw-text);
+
+      &:hover, &:focus, &:active {
+        background: var(--sw-regular-ghost-hover);
+        border-color: var(--sw-regular-ghost-hover);
+      }
+    }
+  }
+
+  &.btn-primary {
+    border-color: var(--sw-primary);
+
+    &:hover, &:focus, &:active {
+      border-color: var(--sw-primary-dark);
+    }
+
+    &.btn-link {
+      background: var(--sw-primary-ghost);
+      border-color: var(--sw-primary-ghost);
+      color: var(--sw-primary);
+
+      &:hover, &:focus, &:active {
+        background: var(--sw-primary-ghost-hover);
+        border-color: var(--sw-primary-ghost-hover);
+      }
+    }
+  }
+
+  &.btn-success {
+    border-color: var(--sw-success);
+
+    &:hover, &:focus, &:active {
+      border-color: var(--sw-success-dark);
+    }
+
+    &.btn-link {
+      background: var(--sw-success-ghost);
+      border-color: var(--sw-success-ghost);
+      color: var(--sw-success);
+
+      &:hover, &:focus, &:active {
+        background: var(--sw-success-ghost-hover);
+        border-color: var(--sw-success-ghost-hover);
+      }
+    }
+  }
+}

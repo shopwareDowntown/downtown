@@ -1,0 +1,10 @@
+:host {
+  display: grid;
+  grid-auto-flow: row;
+  gap: 40px;
+  box-sizing: border-box;
+  padding: 0 24px;
+  margin: 0 auto;
+  max-width: 800px;
+  width: 100%;
+}
