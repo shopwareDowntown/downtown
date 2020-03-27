@@ -24,6 +24,9 @@ use Symfony\Component\Validator\Constraints\Type;
  */
 class ProfileController
 {
+
+    private const COVER_UPLOAD_NAME = 'cover';
+
     /**
      * @var EntityRepositoryInterface
      */
@@ -62,16 +65,7 @@ class ProfileController
     {
         $merchant = SalesChannelContextExtension::extract($salesChannelContext);
 
-        $criteria = new Criteria([$merchant->getId()]);
-        $criteria->addAssociation('media.thumbnails');
-
-        $profile = $this->merchantRepository->search($criteria, $salesChannelContext->getContext())->first();
-
-        $profileData = json_decode(json_encode($profile), true);
-
-        unset($profileData['password']);
-        unset($profileData['extensions']);
-        unset($profileData['_uniqueIdentifier']);
+        $profileData = $this->fetchProfileData($salesChannelContext, $merchant);
 
         return new JsonResponse($profileData);
     }
@@ -94,7 +88,7 @@ class ProfileController
             )
         ], $salesChannelContext->getContext());
 
-        return new JsonResponse(true);
+        return new JsonResponse($this->fetchProfileData($salesChannelContext, $merchant));
     }
 
     /**
@@ -105,23 +99,32 @@ class ProfileController
         $merchant = SalesChannelContextExtension::extract($salesChannelContext);
 
         $uploadedMedia = [];
-        foreach($request->files as $upload) {
+        $cover = [];
+
+        foreach($request->files as $name => $upload) {
             try {
-                $uploadedMedia[] = [
-                    'id' => $this->uploader->upload($upload, 'merchants', 'images', $salesChannelContext->getContext()),
-                ];
+                $mediaId = $this->uploader->upload($upload, 'merchants', 'images', $salesChannelContext->getContext());
             } catch (UploadException $e) {
                 continue;
             }
+
+            $uploadedMedia[] = ['id' => $mediaId];
+
+            if ($name === self::COVER_UPLOAD_NAME) {
+                $cover = ['coverId' => $mediaId];
+            }
         }
 
-        $this->merchantRepository
-            ->update([[
-                'id' => $merchant->getId(),
-                'media' => $uploadedMedia,
-            ]], $salesChannelContext->getContext());
+        $additionalMediaAssociations = [
+            'id' => $merchant->getId(),
+            'media' => $uploadedMedia,
+        ];
 
-        return new JsonResponse([]);
+        $this->merchantRepository
+            ->update(
+                [array_merge($additionalMediaAssociations, $cover)], $salesChannelContext->getContext());
+
+        return new JsonResponse(true);
     }
 
     /**
@@ -131,10 +134,24 @@ class ProfileController
     {
         $merchant = SalesChannelContextExtension::extract($salesChannelContext);
 
-        $this->merchantMediaRepository->delete([[
+        $updateSet = [
             'mediaId' => $mediaId,
             'merchantId' => $merchant->getId()
-        ]], $salesChannelContext->getContext());
+        ];
+
+        if($mediaId === $merchant->getCoverId()) {
+            $this->merchantRepository
+                ->update([[
+                    'id' => $merchant->getId(),
+                    'coverId' => null,
+                ]], $salesChannelContext->getContext());
+        }
+
+        $this->merchantMediaRepository
+            ->delete([[
+                'mediaId' => $mediaId,
+                'merchantId' => $merchant->getId()
+            ]], $salesChannelContext->getContext());
 
         return new JsonResponse([]);
     }
@@ -160,5 +177,22 @@ class ProfileController
             ->add('email', new Type('string'))
             ->add('password', new Type('string'))
             ->add('phoneNumber', new Type('string'));
+    }
+
+    protected function fetchProfileData(SalesChannelContext $salesChannelContext, \Shopware\Production\Merchants\Content\Merchant\MerchantEntity $merchant): array
+    {
+        $criteria = new Criteria([$merchant->getId()]);
+        $criteria->addAssociation('media.thumbnails');
+        $criteria->addAssociation('cover');
+
+        $profile = $this->merchantRepository->search($criteria, $salesChannelContext->getContext())->first();
+
+        $profileData = json_decode(json_encode($profile), true);
+
+        unset($profileData['password']);
+        unset($profileData['extensions']);
+        unset($profileData['_uniqueIdentifier']);
+
+        return $profileData;
     }
 }

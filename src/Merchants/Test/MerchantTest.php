@@ -11,6 +11,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Test\TestCaseBase\IntegrationTestBehaviour;
 use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\Framework\Validation\DataBag\DataBag;
+use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Shopware\Core\System\SalesChannel\Context\SalesChannelContextService;
 use Shopware\Production\Merchants\Content\Merchant\Api\ProfileController;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
@@ -70,7 +71,7 @@ class MerchantTest extends TestCase
 
         $response = $this->getContainer()
             ->get(ProfileController::class)
-            ->save(new DataBag($this->getUpdateMerchantData()), $salesChannelContext);
+            ->save(new RequestDataBag($this->getUpdateMerchantData()), $salesChannelContext);
 
         self::assertTrue(json_decode($response->getContent())->public);
 
@@ -84,7 +85,24 @@ class MerchantTest extends TestCase
             ->get(ProfileController::class)
             ->profile($salesChannelContext);
 
+        self::assertCount(3, json_decode($response->getContent())->media);
+
+
+        $salesChannelContext = $this->getContainer()
+            ->get(SalesChannelContextService::class)
+            ->get(Defaults::SALES_CHANNEL, $token);
+
+        $this->getContainer()
+            ->get(ProfileController::class)
+            ->delete(json_decode($response->getContent())->cover->id, $salesChannelContext);
+
+
+        $response = $this->getContainer()
+            ->get(ProfileController::class)
+            ->profile($salesChannelContext);
+
         self::assertCount(2, json_decode($response->getContent())->media);
+        self::assertEmpty(json_decode($response->getContent())->cover);
 
         $this->getContainer()
             ->get(ProfileController::class)
@@ -95,6 +113,7 @@ class MerchantTest extends TestCase
             ->profile($salesChannelContext);
 
         self::assertCount(1, json_decode($response->getContent())->media);
+        self::assertEmpty(json_decode($response->getContent())->cover);
     }
 
     public function testCustomerDelete(): void
@@ -184,14 +203,15 @@ class MerchantTest extends TestCase
     protected function createUploadRequest(): Request
     {
         $files = [
-            __DIR__ . '/_images/test.png',
-            __DIR__ . '/_images/test.jpg',
+            'image_1' => __DIR__ . '/_images/test.png',
+            'image_2' => __DIR__ . '/_images/test.jpg',
+            'cover' => __DIR__ . '/_images/cover.jpg',
         ];
 
         $request = new Request();
         foreach ($files as $i => $path) {
             $upload = new UploadedFile($path, pathinfo($path, PATHINFO_BASENAME), mime_content_type($path), UPLOAD_ERR_OK, true);
-            $request->files->set('image_' . $i, $upload);
+            $request->files->set($i, $upload);
 
         }
         return $request;

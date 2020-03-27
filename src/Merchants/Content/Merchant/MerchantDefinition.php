@@ -81,6 +81,9 @@ class MerchantDefinition extends EntityDefinition
             (new FkField('sales_channel_id', 'salesChannelId', SalesChannelDefinition::class))->addFlags(new Required()),
             (new OneToOneAssociationField('salesChannel', 'sales_channel_id', 'id', SalesChannelDefinition::class, false)),
 
+            (new FkField('cover_id', 'coverId', MediaDefinition::class)),
+            (new OneToOneAssociationField('cover', 'cover_id', 'id', MediaDefinition::class, false)),
+
             new ManyToManyAssociationField('products', ProductDefinition::class, MerchantProductDefinition::class, 'merchant_id', 'product_id'),
             new ManyToManyAssociationField('orders', OrderDefinition::class, MerchantOrderDefinition::class, 'merchant_id', 'order_id'),
             new ManyToManyAssociationField('media', MediaDefinition::class, MerchantMediaDefinition::class, 'merchant_id', 'media_id'),
