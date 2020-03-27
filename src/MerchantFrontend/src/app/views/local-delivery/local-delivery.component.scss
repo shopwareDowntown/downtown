@@ -1,0 +1,39 @@
+.local-delivery {
+
+  button {
+    margin: 20px 0;
+  }
+
+  .alert {
+    margin: 20px 0;
+    background: #e7f5ff;
+    display: grid;
+    grid-template-columns: 30px auto;
+    padding: 8px;
+
+    clr-icon {
+      width: 24px;
+      height: 24px;
+      color: #1693ee;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .empty-state {
+    padding: 80px;
+    text-align: center;
+
+    * {
+      color: #bbbbbb;
+    }
+
+    clr-icon {
+      width: 40px;
+      height: 40px;
+      color: #e7e7e7;
+    }
+  }
+}

@@ -48,7 +48,7 @@ const routes: Routes = [
       {path: 'profile', component: MerchantDetailsComponent, canActivate: [AuthGuard]},
       {path: 'settings', component: MerchantDetailsComponent, canActivate: [AuthGuard]},
       {path: 'products', loadChildren: () => import('./views/merchant-products/merchant-products.module').then(value => value.MerchantProductsModule), canActivate: [AuthGuard]},
-      {path: 'delivery', component: LocalDeliveryComponent, canActivate: [AuthGuard]}
+      {path: 'delivery', loadChildren: () => import('./views/local-delivery/local-delivery.module').then(value => value.LocalDeliveryModule) }
     ]
   },
 

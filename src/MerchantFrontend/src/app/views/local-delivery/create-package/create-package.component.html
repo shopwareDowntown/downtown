@@ -1,0 +1,110 @@
+<div class="create-delivery-package">
+  <div class="intro">
+    <h3>Lieferung erstellen</h3>
+    <p>Um Deinen Kunden Produkte unkompliziert bis nach Hause liefern zu können, musst Du hier noch die benötigten Informationen ausfüllen.</p>
+  </div>
+
+  <form [formGroup]="packageCreationForm" clrForm>
+    <div class="form-group">
+      <h4>Paketinhalt</h4>
+
+      <clr-textarea-container>
+        <label>Inhalte</label>
+        <textarea clrTextarea id="content" formControlName="content"
+                  placeholder="Comic Klassiker&#10;Spezialheft&#10;Comic des Monats Mai">
+        </textarea>
+      </clr-textarea-container>
+
+      <clr-input-container>
+        <label>Gesamtsumme</label>
+        <input type="number" name="price" clrInput placeholder="54,95" formControlName="price"/>
+        <clr-icon shape="euro"></clr-icon>
+        <clr-control-error>Bitte gib einen Preis ein.</clr-control-error>
+      </clr-input-container>
+    </div>
+
+    <div class="form-group">
+      <h4>Lieferant</h4>
+
+      <clr-select-container>
+        <label>Liefermethode</label>
+        <select clrSelect name="shippingMethod" formControlName="shippingMethod">
+          <option *ngFor="let shippingMethod of shippingMethods" [value]="shippingMethod">{{shippingMethod.name}}</option>
+        </select>
+      </clr-select-container>
+
+      <clr-select-container *ngIf="showDeliveryBoySelect">
+        <label>Lieferant*in</label>
+        <select clrSelect name="deliveryBoy" formControlName="deliveryBoy">
+          <option *ngFor="let deliveryBoy of deliveryBoys" [value]="deliveryBoy">{{deliveryBoy.firstName}} {{deliveryBoy.lastName}}</option>
+        </select>
+      </clr-select-container>
+
+      <clr-textarea-container>
+        <label>Kommentar für Lieferant*in</label>
+        <textarea clrTextarea id="comment" formControlName="comment"
+                  placeholder="Lege die Comics zur Abholung vor die Haustür. Bitte wasserdichte Liefertasche mitbringen.">
+        </textarea>
+      </clr-textarea-container>
+    </div>
+
+    <div class="form-group">
+      <h4>Lieferadresse</h4>
+
+      <clr-select-container>
+        <label>Anrede</label>
+        <select clrSelect name="title" formControlName="recipientTitle">
+          <option value="">Bitte wähle eine Anrede ...</option>
+          <option value="mr">Herr</option>
+          <option value="mrs">Frau</option>
+          <option value="divers">Divers</option>
+        </select>
+      </clr-select-container>
+
+      <clr-input-container>
+        <label>Vorname</label>
+        <input type="text" name="firstName" clrInput placeholder="Sabine" formControlName="recipientFirstName"/>
+        <clr-control-error>Bitte gib Deinen Vornamen ein.</clr-control-error>
+      </clr-input-container>
+
+      <clr-input-container>
+        <label>Nachname</label>
+        <input type="text" name="lastName" clrInput placeholder="Muster" formControlName="recipientLastName"/>
+        <clr-control-error>Bitte gib Deinen Nachnamen ein.</clr-control-error>
+      </clr-input-container>
+
+      <clr-input-container>
+        <label>Straße & Hausnummer</label>
+        <input type="text" name="street" clrInput placeholder="Musterstraße 18" formControlName="recipientStreet"/>
+        <clr-control-error>Bitte gib eine Straße und eine Hausnummer ein.</clr-control-error>
+      </clr-input-container>
+
+      <div class="two-column">
+        <clr-input-container>
+          <label>Postleitzahl</label>
+          <input type="text" name="zipcode" clrInput placeholder="48143" formControlName="recipientZipcode"/>
+          <clr-control-error>Bitte gib eine Postleitzahl ein.</clr-control-error>
+        </clr-input-container>
+
+        <clr-input-container>
+          <label>Stadt</label>
+          <input type="text" name="city" clrInput placeholder="Münster" formControlName="recipientCity"/>
+          <clr-control-error>Bitte gib einen Stadtnamen ein.</clr-control-error>
+        </clr-input-container>
+      </div>
+    </div>
+
+    <div style="text-align: center" *ngIf="isCreating">
+      <span class="spinner spinner-inline"></span>
+      <span class="ml-1">Creating package...</span>
+    </div>
+
+    <button type="button" (click)="dismiss()" class="btn btn-light">
+      Abbrechen
+    </button>
+    <button type="button" (click)="createPackage()" class="btn btn-primary"
+            [disabled]="packageCreationForm.invalid">
+      Speichern
+    </button>
+  </form>
+</div>

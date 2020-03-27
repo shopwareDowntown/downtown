@@ -1,0 +1,40 @@
+.create-delivery-package {
+  width: 610px;
+
+  .form-group {
+    margin-bottom: 60px;
+    width: 480px;
+
+    .clr-form-control {
+
+      .clr-control-container {
+        flex: unset;
+        max-width: 100%;
+      }
+
+      label {
+        flex: unset;
+        max-width: 100%;
+        margin-bottom: 10px;
+        width: 100%;
+      }
+
+      input, textarea {
+        width: 100%;
+      }
+
+      textarea {
+        height: 170px;
+      }
+    }
+
+    .clr-select-wrapper, .clr-select-wrapper select {
+      width: 100%;
+    }
+
+    .two-column {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+}

@@ -1,1 +1,25 @@
-<p>local-delivery works!</p>
+<div class="local-delivery">
+  <div class="intro">
+    <h3>Lieferungen</h3>
+    <p>Damit Produkte auch trotz der aktuellen gesundheitlichen Lage, bestehende und neue Kunden glücklich machen, kannst Du sie einfach bequem zu Ihnen nach Hause liefern lassen. Hier bieten wir Dir verschiedene unkomplizierte Liefermethoden an.</p>
+  </div>
+
+  <button type="button" (click)="openCreateDeliveryPackagePage()" class="btn btn-primary" [disabled]="!showDeliveries">
+    Lieferung Erstellen
+  </button>
+
+  <ng-container *ngIf="!showDeliveries;else deliveries">
+    <div class="alert">
+      <clr-icon shape="info-circle"></clr-icon>
+      <p>Bevor du Deine erste Lieferung erstellen kannst, vervollständige Deine Adressdaten unter dem Menüpunkt Informationen. Damit können wir dem Lieferdienst eine Routenplanung erstellen.</p>
+    </div>
+    <div class="empty-state">
+      <clr-icon shape="plus-circle"></clr-icon>
+      <p>Sieht aus als hättest Du noch keine Lieferungen erstellt. Du kannst Lieferungen über verschiedene Methoden vollziehen.</p>
+    </div>
+  </ng-container>
+
+  <ng-template #deliveries>
+
+  </ng-template>
+</div>
