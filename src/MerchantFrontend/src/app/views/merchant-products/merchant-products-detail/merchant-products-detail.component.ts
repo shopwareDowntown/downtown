@@ -11,7 +11,7 @@ import { MerchantApiService } from '../../../core/services/merchant-api.service'
 })
 export class MerchantProductsDetailComponent implements OnInit, OnDestroy {
 
-  product: Product;
+  product: Product = null;
 
   // Subscription
   private subResolver: Subscription;
@@ -19,7 +19,18 @@ export class MerchantProductsDetailComponent implements OnInit, OnDestroy {
   constructor(private activeRoute: ActivatedRoute, private merchantApiService: MerchantApiService) {
     // Get resolved product from route
     this.subResolver = this.activeRoute.data.subscribe(value => {
-      this.product = value.product;
+      if(value && value.product) {
+        this.product = value.product;
+      } else {
+        this.product = <Product>{
+          name: '',
+          description: '',
+          productType: '',
+          price: 0,
+          tax: 19
+        }
+      }
+
     });
   }
 
@@ -33,6 +44,14 @@ export class MerchantProductsDetailComponent implements OnInit, OnDestroy {
   }
 
   saveProduct() {
-
+    if(this.product.id) {
+      this.merchantApiService.updateProduct(this.product).subscribe((product: Product) => {
+        this.product = product;
+      });
+    } else {
+      this.merchantApiService.addProduct(this.product).subscribe((product: Product) => {
+        this.product = product;
+      });
+    }
   }
 }

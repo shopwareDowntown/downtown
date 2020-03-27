@@ -78,20 +78,24 @@ export class MerchantApiService {
 
   // product routes
 
-  getProducts(): Observable<Product[]> {
-      return this.http.get<Product[]>(this.apiUrl + '/merchant-api/products', {headers: this.getHeaders() });
+  getProducts(): Observable<{ data: Product[]}> {
+      return this.http.get<{ data: Product[]}>(this.apiUrl + '/merchant-api/v1/products', {headers: this.getHeaders() });
   }
 
   getProduct(productId: number): Observable<Product> {
-      return this.http.get<Product>(this.apiUrl + '/merchant-api/products/' + productId, {headers: this.getHeaders() });
+      return this.http.get<Product>(this.apiUrl + '/merchant-api/v1/products/' + productId, {headers: this.getJsonContentTypeHeaders() });
   }
 
   addProduct(product: Product): Observable<Product> {
-      return this.http.post<Product>(this.apiUrl + '/merchant-api/products/', JSON.stringify(product), {headers: this.getHeaders() });
+      return this.http.post<Product>(this.apiUrl + '/merchant-api/v1/products', JSON.stringify(product), {headers: this.getJsonContentTypeHeaders() });
+  }
+
+  updateProduct(product: Product): Observable<Product> {
+    return this.http.put<Product>(this.apiUrl + '/merchant-api/v1/products/'  + product.id, JSON.stringify(product), {headers: this.getJsonContentTypeHeaders() });
   }
 
   deleteProduct(product: Product): Observable<void> {
-      return this.http.delete<void>(this.apiUrl + '/merchant-api/products/' + product.id, {headers: this.getHeaders() });
+      return this.http.delete<void>(this.apiUrl + '/merchant-api/products/' + product.id, {headers: this.getJsonContentTypeHeaders() });
   }
 
   // authority route
@@ -106,6 +110,15 @@ export class MerchantApiService {
       'sw-context-token': this.getSwContextToken()
     };
   }
+
+  private getJsonContentTypeHeaders(): HttpHeaders {
+    let headers = new HttpHeaders();
+    headers = headers.set('Content-Type', 'application/json');
+    headers = headers.set('sw-access-key', this.getAuthorityAccessKey());
+    headers = headers.set('sw-context-token', this.getSwContextToken());
+    return headers;
+  }
+
 
   private getSwAccessKey(): string {
     let key: string;
