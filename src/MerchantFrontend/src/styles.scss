@@ -40,8 +40,8 @@
 
   // headlines & text
   --clr-h1-font-weight: 700;
-  --clr-h2-font-weight: 500;
-  --clr-h3-font-weight: 500;
+  --clr-h2-font-weight: 600;
+  --clr-h3-font-weight: 600;
   --clr-h4-font-weight: 500;
   --clr-h5-font-weight: 500;
   --clr-h6-font-weight: 500;
@@ -66,6 +66,12 @@ body {
     color: var(--sw-regular);
     line-height: 24px;
   }
+}
+
+// scrolling clarity content-area
+body.no-scrolling .main-container .content-container .content-area {
+  padding-bottom: 80px !important;
+  overflow-y: auto;
 }
 
 .btn {
