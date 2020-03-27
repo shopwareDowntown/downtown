@@ -2,13 +2,16 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MerchantDetailsComponent } from './merchant-details.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ClrFormsModule } from '@clr/angular';
+import { ClarityModule, ClrFormsModule } from '@clr/angular';
+import { MerchantAccountModule } from '../merchant-account/merchant-account.module';
 
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    ClrFormsModule
+    ClrFormsModule,
+    ClarityModule,
+    MerchantAccountModule
   ],
   declarations: [
     MerchantDetailsComponent

@@ -12,6 +12,7 @@ import {LandingPageLayoutComponent} from './core/layouts/landing-page-layout/lan
 import {AdminPageLayoutComponent} from './core/layouts/admin-page-layout/admin-page-layout.component';
 import {AuthPageLayoutComponent} from './core/layouts/auth-page-layout/auth-page-layout.component';
 import {LocalDeliveryComponent} from "./views/local-delivery/local-delivery.component";
+import { MerchantAccountComponent } from './views/merchant-account/merchant-account.component';
 
 const routes: Routes = [
   {
@@ -46,7 +47,7 @@ const routes: Routes = [
     children: [
       {path: 'detail/:id', component: MerchantDetailsComponent, canActivate: [AuthGuard]},
       {path: 'profile', component: MerchantDetailsComponent, canActivate: [AuthGuard]},
-      {path: 'settings', component: MerchantDetailsComponent, canActivate: [AuthGuard]},
+      {path: 'account', component: MerchantAccountComponent, canActivate: [AuthGuard]},
       {path: 'products', loadChildren: () => import('./views/merchant-products/merchant-products.module').then(value => value.MerchantProductsModule), canActivate: [AuthGuard]},
       {path: 'delivery', loadChildren: () => import('./views/local-delivery/local-delivery.module').then(value => value.LocalDeliveryModule) }
     ]
