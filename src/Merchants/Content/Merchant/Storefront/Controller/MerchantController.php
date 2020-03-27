@@ -25,7 +25,6 @@ use Twig\Environment;
  */
 class MerchantController extends StorefrontController
 {
-
     /**
      * @var SalesChannelRepositoryInterface
      */
@@ -77,6 +76,7 @@ class MerchantController extends StorefrontController
     private function loadMerchant(string $id, SalesChannelContext $context): MerchantEntity
     {
         $criteria = new Criteria([$id]);
+        $criteria->addAssociation('products');
         $criteria->addFilter(new EqualsFilter('salesChannelId', $context->getSalesChannel()->getId()));
 
         $criteria = $this->criteriaLoader->getMerchantCriteria($criteria);

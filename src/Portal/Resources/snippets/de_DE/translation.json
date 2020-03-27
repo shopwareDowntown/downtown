@@ -8,7 +8,8 @@
     },
     "checkout": {
         "cartContainsMultipleMerchants": "Es können nur Produkte von einem Händler gleichzeitig gekauft werden",
-        "cartHasInvalidShippingMethod": "Die ausgewählte Versandart steht nicht zur Verfügung."
+        "cartHasInvalidShippingMethod": "Die ausgewählte Versandart steht nicht zur Verfügung.",
+        "cartWrongProductType": "Es können keine  Anzeigeprodukte gekauft werden."
     },
     "error": {
         "cartHasInvalidShippingMethod": "Die ausgewählte Versandart steht nicht zur Verfügung."

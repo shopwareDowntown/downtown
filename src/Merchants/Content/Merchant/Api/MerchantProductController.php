@@ -32,7 +32,8 @@ class MerchantProductController
     public const PRODUCT_TYPES = [
         'product',
         'voucher',
-        'service'
+        'service',
+        'storeWindow'
     ];
 
     /**

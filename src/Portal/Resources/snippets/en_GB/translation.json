@@ -8,7 +8,8 @@
     },
     "checkout": {
         "cartContainsMultipleMerchants": "Only products can be purchased from one merchant at a time",
-        "cartHasInvalidShippingMethod": "The selected shipping method is not available."
+        "cartHasInvalidShippingMethod": "The selected shipping method is not available.",
+        "cartWrongProductType": "Show products can be purchased."
     },
     "error": {
         "cartHasInvalidShippingMethod": "The selected shipping method is not available."
