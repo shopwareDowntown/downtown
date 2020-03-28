@@ -3,7 +3,6 @@ import {RouterModule, Routes} from '@angular/router';
 import {MerchantProductsListingComponent} from './merchant-products-listing/merchant-products-listing.component';
 import {AuthGuard} from '../../core/guards/auth.guard';
 import {MerchantProductsDetailComponent} from './merchant-products-detail/merchant-products-detail.component';
-import {MerchantProductResolver} from './merchant-product.resolver';
 
 
 const routes: Routes = [
@@ -18,12 +17,9 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: ':id',
+    path: 'details/:id',
     component: MerchantProductsDetailComponent,
-    canActivate: [AuthGuard],
-    resolve: {
-      product: MerchantProductResolver
-    }
+    canActivate: [AuthGuard]
   }
 ];
 

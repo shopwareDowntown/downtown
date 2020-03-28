@@ -32,4 +32,8 @@ export class MerchantProductsListingComponent {
   openAddProductForm(): void {
     this.router.navigate(['merchant/products/details']);
   }
+
+  editProduct(product: Product): void {
+    this.router.navigate(['merchant/products/details', product.id]);
+  }
 }

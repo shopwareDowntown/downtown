@@ -98,12 +98,12 @@ export class MerchantApiService {
       return this.http.get<{ data: Product[]}>(this.apiUrl + '/merchant-api/v1/products', {headers: this.getHeaders() });
   }
 
-  getProduct(productId: number): Observable<Product> {
-      return this.http.get<Product>(this.apiUrl + '/merchant-api/v1/products/' + productId, {headers: this.getJsonContentTypeHeaders() });
+  getProduct(productId: string): Observable<{ data: Product}> {
+      return this.http.get<{ data: Product}>(this.apiUrl + '/merchant-api/v1/products/' + productId.toLowerCase(), {headers: this.getJsonContentTypeHeaders() });
   }
 
-  addProduct(product: Product): Observable<Product> {
-      return this.http.post<Product>(this.apiUrl + '/merchant-api/v1/products', JSON.stringify(product), {headers: this.getJsonContentTypeHeaders() });
+  addProduct(product: Product): Observable<{ data: Product}> {
+      return this.http.post<{ data: Product}>(this.apiUrl + '/merchant-api/v1/products', JSON.stringify(product), {headers: this.getJsonContentTypeHeaders() });
   }
 
   updateProduct(product: Product): Observable<Product> {
