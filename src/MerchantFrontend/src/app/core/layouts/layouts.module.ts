@@ -5,6 +5,7 @@ import {AdminPageLayoutComponent} from './admin-page-layout/admin-page-layout.co
 import {ClarityModule, ClrIconModule, ClrLayoutModule, ClrVerticalNavModule} from '@clr/angular';
 import {RouterModule} from '@angular/router';
 import { AuthPageLayoutComponent } from './auth-page-layout/auth-page-layout.component';
+import { MerchantLoginModule } from '../../views/merchant-login/merchant-login.module';
 
 
 @NgModule({
@@ -12,7 +13,8 @@ import { AuthPageLayoutComponent } from './auth-page-layout/auth-page-layout.com
   imports: [
     CommonModule,
     RouterModule,
-    ClarityModule
+    ClarityModule,
+    MerchantLoginModule
   ],
   exports: [LandingPageLayoutComponent, AdminPageLayoutComponent]
 })
