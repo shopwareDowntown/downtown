@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Product} from '../../../core/models/product.model';
 import {Subscription} from 'rxjs';
 import { MerchantApiService } from '../../../core/services/merchant-api.service';
+import {ServiceBookingDate} from "../../../core/models/service-booking-date.model";
 
 @Component({
   selector: 'portal-merchant-products-detail',
@@ -44,7 +45,7 @@ export class MerchantProductsDetailComponent implements OnInit, OnDestroy {
   }
 
   saveProduct() {
-    if(this.product.id) {
+    if (this.product.id) {
       this.merchantApiService.updateProduct(this.product).subscribe((product: Product) => {
         this.product = product;
       });
@@ -52,6 +53,43 @@ export class MerchantProductsDetailComponent implements OnInit, OnDestroy {
       this.merchantApiService.addProduct(this.product).subscribe((product: Product) => {
         this.product = product;
       });
+    }
+  }
+
+  addDate() {
+    if(!this.product.serviceBookingTemplate) {
+      this.product = <Product>{
+        name: this.product.name,
+        description: this.product.description,
+        productType: 'service',
+        price: this.product.price,
+        tax: this.product.tax,
+        serviceBookingTemplate: {
+          type: '',
+          dates: []
+        }
+      };
+    }
+    this.product.serviceBookingTemplate.dates.push(<ServiceBookingDate>{
+      start: '',
+      end: '',
+      template: this.product.serviceBookingTemplate
+    });
+  }
+
+  potentiallyAddServiceBookingTemplate(produktType) {
+    if(produktType === 'service' && !this.product.serviceBookingTemplate) {
+      this.product = <Product>{
+        name: this.product.name,
+        description: this.product.description,
+        productType: 'service',
+        price: this.product.price,
+        tax: this.product.tax,
+        serviceBookingTemplate: {
+          type: '',
+          dates: []
+        }
+      }
     }
   }
 }

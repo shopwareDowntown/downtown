@@ -1,3 +1,5 @@
+import {ServiceBookingTemplate} from "./service-booking-template.model";
+
 export interface Product {
   id?: string;
   name: string;
@@ -7,4 +9,5 @@ export interface Product {
   images: any[];
   price?: number;
   tax?: number;
+  serviceBookingTemplate?: ServiceBookingTemplate;
 }

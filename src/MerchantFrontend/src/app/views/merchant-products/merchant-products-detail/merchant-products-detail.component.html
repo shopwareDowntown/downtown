@@ -1,36 +1,65 @@
 <form clrForm clrLayout="horizontal" *ngIf="null !== product">
+  <h3>Produkt hinzufügen</h3>
+  Füge Deinem Produkt alle notwendigen Informationen hinzu, damit
+  Deine Kunden alles über deine Produkte erfahren können.
+  <h4>Basis Informationen</h4>
   <clr-select-container>
-    <label>Product-Type</label>
-    <select clrSelect name="types" [(ngModel)]="product.productType">
-      <option value="">Please select...</option>
-      <option value="product">Product</option>
+    <label>Produkttyp</label>
+    <select clrSelect name="types" [(ngModel)]="product.productType" (ngModelChange)="potentiallyAddServiceBookingTemplate($event)">
+      <option value="">Bitte wählen...</option>
+      <option value="product">Produkt</option>
       <option value="service">Service</option>
-      <option value="voucher">Voucher</option>
+      <option value="voucher">Gutschein</option>
+    </select>
+  </clr-select-container>
+  <clr-select-container *ngIf="product.productType ==='service'">
+    <label>Service Art</label>
+    <select clrSelect name="serviceType" [(ngModel)]="product.serviceBookingTemplate.type">
+      <option value="">Bitte wählen...</option>
+      <option value="installation">Installation/Montage</option>
+      <option value="webinar">Webinar</option>
+      <option value="consulting">Beratung</option>
+      <option value="default">Sonstiges</option>
     </select>
   </clr-select-container>
   <clr-input-container>
-    <label>Name</label>
+    <label>Produktname</label>
     <input clrInput type="text" [(ngModel)]="product.name" name="example" required/>
   </clr-input-container>
   <clr-textarea-container>
-    <label>Description</label>
+    <label>Produktbeschreibung</label>
     <textarea clrTextarea [(ngModel)]="product.description" name="description" required></textarea>
   </clr-textarea-container>
-  <div *ngIf="'product' === product.productType">
-    <clr-select-container>
-      <label>Vat</label>
-      <select clrSelect name="tax" [(ngModel)]="product.tax">
-        <option value="">Bitte wählen...</option>
-        <option value="7">7% Mehrwertsteuer</option>
-        <option value="19">19% Mehrwertsteuer</option>
-      </select>
-    </clr-select-container>
-    <clr-input-container>
-      <label>Price</label>
-      <input clrInput type="number" min="1" step="any" name="price" placeholder="Enter price"
-             [(ngModel)]="product.price">
-      <clr-icon shape="euro"></clr-icon>
-    </clr-input-container>
+  <div *ngIf="product.productType ==='service'">
+    <h4>Service Termine</h4>
+    <ng-container *ngFor="let date of product.serviceBookingTemplate.dates">
+      <clr-date-container [(ngModel)]="date.start" name="start">
+        <label>Startdatum</label>
+        <clr-datepicker-view-manager></clr-datepicker-view-manager>
+      </clr-date-container>
+      <clr-date-container [(ngModel)]="date.end" name="end">
+        <label>Enddatum</label>
+        <clr-datepicker-view-manager></clr-datepicker-view-manager>
+      </clr-date-container>
+    </ng-container>
+    <button class="btn btn-default" type="submit" (click)="addDate()">Neuen Termin hinzufügen</button>
   </div>
-  <button class="btn btn-primary" type="submit" (click)="saveProduct()">Save</button>
+  <h4>Preis</h4>
+  <clr-input-container>
+    <label>Preis</label>
+    <input clrInput type="number" min="1" step="any" name="price" placeholder="Enter price"
+           [(ngModel)]="product.price">
+    <clr-icon shape="euro"></clr-icon>
+  </clr-input-container>
+  <clr-select-container>
+    <label>Steuersatz</label>
+    <select clrSelect name="tax" [(ngModel)]="product.tax">
+      <option value="">Bitte wählen...</option>
+      <option value="7">7% Mehrwertsteuer</option>
+      <option value="19">19% Mehrwertsteuer</option>
+    </select>
+  </clr-select-container>
+  <h4>Bilder</h4>
+  <button class="btn btn-default" type="reset">Abbrechen</button>
+  <button class="btn btn-primary" type="submit" (click)="saveProduct()">Speichern</button>
 </form>
