@@ -5,8 +5,8 @@ Shopware.Service('cmsService').registerCmsBlock({
     name: 'merchant-listing',
     label: 'sw-cms.blocks.commerce.merchantListing.label',
     category: 'commerce',
-    hidden: true,
-    removable: false,
+    hidden: false,
+    removable: true,
     component: 'sw-cms-block-merchant-listing',
     previewComponent: 'sw-cms-preview-merchant-listing',
     defaultConfig: {

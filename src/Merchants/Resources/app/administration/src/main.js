@@ -1,4 +1,5 @@
-import './module/sw-cms/elements/merchant-listing';
+import './module/sw-cms';
+
 import deDE from './module/sw-cms/snippet/de-DE.json';
 import enGB from './module/sw-cms/snippet/en-GB.json';
 
