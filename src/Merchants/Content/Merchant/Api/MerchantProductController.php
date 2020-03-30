@@ -399,7 +399,8 @@ class MerchantProductController
         return $missingFields;
     }
 
-    private function validateProductType(string $productType): void {
+    private function validateProductType(string $productType): void
+    {
         if (in_array($productType, self::PRODUCT_TYPES)) {
             return;
         }

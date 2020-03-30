@@ -11,6 +11,7 @@ use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Shopware\Core\Framework\Validation\DataValidationDefinition;
 use Shopware\Core\Framework\Validation\DataValidator;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
+use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
 use Shopware\Production\Merchants\Content\Merchant\SalesChannelContextExtension;
 use Shopware\Production\Portal\Hacks\StorefrontMediaUploader;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,7 +25,6 @@ use Symfony\Component\Validator\Constraints\Type;
  */
 class ProfileController
 {
-
     private const COVER_UPLOAD_NAME = 'cover';
 
     /**
@@ -101,7 +101,7 @@ class ProfileController
         $uploadedMedia = [];
         $cover = [];
 
-        foreach($request->files as $name => $upload) {
+        foreach ($request->files as $name => $upload) {
             try {
                 $mediaId = $this->uploader->upload($upload, 'merchants', 'images', $salesChannelContext->getContext());
             } catch (UploadException $e) {
@@ -122,7 +122,9 @@ class ProfileController
 
         $this->merchantRepository
             ->update(
-                [array_merge($additionalMediaAssociations, $cover)], $salesChannelContext->getContext());
+                [array_merge($additionalMediaAssociations, $cover)],
+                $salesChannelContext->getContext()
+            );
 
         return new JsonResponse(true);
     }
@@ -139,7 +141,7 @@ class ProfileController
             'merchantId' => $merchant->getId()
         ];
 
-        if($mediaId === $merchant->getCoverId()) {
+        if ($mediaId === $merchant->getCoverId()) {
             $this->merchantRepository
                 ->update([[
                     'id' => $merchant->getId(),
@@ -180,7 +182,7 @@ class ProfileController
             ->add('phoneNumber', new Type('string'));
     }
 
-    protected function fetchProfileData(SalesChannelContext $salesChannelContext, \Shopware\Production\Merchants\Content\Merchant\MerchantEntity $merchant): array
+    protected function fetchProfileData(SalesChannelContext $salesChannelContext, MerchantEntity $merchant): array
     {
         $criteria = new Criteria([$merchant->getId()]);
         $criteria->addAssociation('media.thumbnails');
@@ -190,8 +192,7 @@ class ProfileController
 
         $profileData = json_decode(json_encode($profile), true);
 
-        unset($profileData['password']);
-        unset($profileData['extensions']);
+        unset($profileData['password'], $profileData['extensions']);
         unset($profileData['_uniqueIdentifier']);
 
         return $profileData;

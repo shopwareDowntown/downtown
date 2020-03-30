@@ -150,7 +150,7 @@ class CustomerSync implements EventSubscriberInterface
 
         $this->customerRepository->upsert($customers, $event->getContext());
 
-        if($merchantUpdate === []) {
+        if ($merchantUpdate === []) {
             return;
         }
 

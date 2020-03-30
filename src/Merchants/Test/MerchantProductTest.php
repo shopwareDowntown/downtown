@@ -55,7 +55,8 @@ class MerchantProductTest extends TestCase
         self::assertEquals('product', $result['data']['customFields']['productType']);
     }
 
-    public function testGetList(): void {
+    public function testGetList(): void
+    {
         $this->markTestSkipped('Not working');
         list($token, $salesChannelContext) = $this->login();
 
@@ -81,7 +82,8 @@ class MerchantProductTest extends TestCase
         self::assertEquals('product', $result['data'][0]['productType']);
     }
 
-    private function login(): array {
+    private function login(): array
+    {
         $merchantData = $this->getMinimalMerchantData();
 
         $this->getContainer()
