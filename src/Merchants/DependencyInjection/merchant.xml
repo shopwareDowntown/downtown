@@ -81,7 +81,7 @@
             <argument type="service" id="Shopware\Production\Merchants\Content\Merchant\Storefront\Service\MerchantCriteriaLoaderInterface"/>
         </service>
 
-        <service id="Shopware\Production\Merchants\Content\Merchant\Storefront\Controller\RegistrationController" public="true">
+        <service id="Shopware\Production\Merchants\Content\Merchant\Storefront\Controller\DoubleOptinController" public="true">
             <argument type="service" id="Shopware\Core\Checkout\Customer\SalesChannel\AccountRegistrationService"/>
         </service>
 
