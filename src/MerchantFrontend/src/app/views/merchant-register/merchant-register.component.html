@@ -1,33 +1,33 @@
 <clr-modal (clrModalOpenChange)="registerModalClosed()" [clrModalOpen]="registerModalOpen">
   <div class="modal-body">
-      <form [formGroup]="registerForm" clrForm>
+      <form [formGroup]="registerForm" clrForm clrLayout="vertical">
         <section class="title">
           <h3 class="welcome">Registriere dich als Händler</h3>
           <h5 class="hint">Für lokale Einzelhandelsunternehmen oder Dienstleister</h5>
         </section>
         <div>
           <clr-input-container>
-            <label class="clr-sr-only">Firmenname</label>
-            <input type="text" name="username" clrInput placeholder="Firmenname" formControlName="name"/>
+            <label>Firmenname</label>
+            <input type="text" name="username" clrInput  formControlName="name"/>
             <clr-control-error>Bitte gib einen Firmennamen ein.</clr-control-error>
           </clr-input-container>
           <clr-input-container>
-            <label class="clr-sr-only">Email</label>
-            <input type="text" name="mail" clrInput placeholder="E-Mail-Adresse" formControlName="mail"/>
+            <label>Email</label>
+            <input type="text" name="mail" clrInput  formControlName="mail"/>
             <clr-control-error>Bitte gib eine korrekte E-Mail Addresse an.</clr-control-error>
           </clr-input-container>
-          <clr-password-container>
-            <label class="clr-sr-only">Passwort</label>
-            <input type="password" name="password" formControlName="password" clrPassword placeholder="Passwort"/>
+          <clr-input-container>
+            <label>Passwort</label>
+            <input type="password" name="password" formControlName="password"   clrInput/>
             <clr-control-error>Bitte vergebe ein Passwort mit mindestens Acht Zeichen.</clr-control-error>
-          </clr-password-container>
-          <clr-password-container [class.clr-error]="registerForm.errors?.passwordMismatch && registerForm.get('repeatPassword').touched">
-            <label class="clr-sr-only">Passwort wiederholen</label>
-            <input type="password" name="repeatPassword" formControlName="repeatPassword" clrPassword placeholder="Passwort wiederholen"/>
+          </clr-input-container>
+          <clr-input-container [class.clr-error]="registerForm.errors?.passwordMismatch && registerForm.get('repeatPassword').touched" >
+            <label>Passwort wiederholen</label>
+            <input type="password" name="repeatPassword" formControlName="repeatPassword"  clrInput/>
             <clr-control-error>Die Passwörter sind nicht identisch.</clr-control-error>
-          </clr-password-container>
+          </clr-input-container>
           <clr-select-container *ngIf="authorities$ | async as authorities">
-            <label class="clr-sr-only">Organisation</label>
+            <label>Organisation</label>
             <select clrSelect name="authority" formControlName="authority">
               <option *ngFor="let authority of authorities" [ngValue]="authority">{{authority.name}}</option>
             </select>
@@ -47,6 +47,10 @@
 <clr-modal [clrModalOpen]="registrationFinished" [clrModalClosable]="true">
   <h3 class="modal-title">Registrierungsanfrage gesendet.</h3>
   <div class="modal-body">
-    Deine Anfrage wurde an die von dir ausgewähle Organisation gesendet. Sobald dich die Organisation freigeschaltet hat, bekommst du eine Mail von uns zugeschickt und du kannst deinen Shop anlegen.
+    <div class="success-wrapper">
+      <clr-icon shape="success-standard" class="is-solid" size="36"></clr-icon>
+      <h3>Registrierungsanfrage gesendet!</h3>
+      <span>Deine Anfrage wird zur Abstimmung an die von Dir ausgewählte Organisation geschickt. Sobald eine Bestätigung erfolgt ist, melden wir uns bei Dir per E-Mail. Danach kannst Du Deinen Shop eröffnen.</span>
+    </div>
   </div>
 </clr-modal>

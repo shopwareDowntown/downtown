@@ -1,29 +1,33 @@
-<form class="login">
-  <section class="title">
-    <h3 class="welcome">Welcome</h3>
-    <h5 class="hint">Please login</h5>
-  </section>
-  <div class="login-group">
-    <clr-input-container>
-      <label class="clr-sr-only">Username</label>
-      <input (keypress)="enterLogin($event)" [(ngModel)]="username" type="text" name="login_username"
-             placeholder="Username" clrInput>
-    </clr-input-container>
-    <clr-password-container>
-      <label class="clr-sr-only">Password</label>
-      <input (keypress)="enterLogin($event)" [(ngModel)]="password" type="password"
-             name="login_password" placeholder="Password" clrPassword>
-    </clr-password-container>
-    <div style="text-align: center" *ngIf="isLogging">
-      <span class="spinner spinner-inline"></span>
-      <span class="ml-1">Logging in...</span>
+<clr-modal (clrModalOpenChange)="modalClosed()" [clrModalOpen]="loginModalOpen">
+  <div class="modal-body">
+    <form class="login" [formGroup]="loginForm" clrForm clrLayout="vertical">
+      <section class="title">
+        <h3 class="welcome">Hallo und Willkommen zurück!</h3>
+        <h5 class="hint">Melde Dich im Shopware Portal an.</h5>
+      </section>
+      <div class="login-group">
+        <clr-input-container>
+          <label>E-Mail-Adresse</label>
+          <input (keypress)="enterLogin($event)" formControlName="username" type="text" name="login_username" clrInput>
+        </clr-input-container>
+        <clr-input-container >
+          <label>Passwort</label>
+          <input (keypress)="enterLogin($event)" formControlName="password" type="password"
+                 name="login_password" clrInput>
+        </clr-input-container>
+        <div style="text-align: center" *ngIf="isLogging">
+          <span class="spinner spinner-inline"></span>
+          <span class="ml-1">Logging in...</span>
+        </div>
+        <div class="error active" *ngIf="loginFailed">
+          Invalid user name or password
+        </div>
+      </div>
+    </form>
+    <div class="modal-footer">
+      <button type="button" (click)="doLogin()" class="btn btn-primary"
+              [disabled]="loginForm.invalid  || isLogging">LOGIN
+      </button>
     </div>
-    <div class="error active" *ngIf="loginFailed">
-      Invalid user name or password
-    </div>
-
-    <button type="button" (click)="doLogin()" class="btn btn-primary"
-            [disabled]="!username || !password  || isLogging">LOGIN
-    </button>
   </div>
-</form>
+</clr-modal>

@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import { LoginService } from '../../core/services/login.service';
-import { MerchantApiService } from '../../core/services/merchant-api.service';
-import { Observable } from 'rxjs';
-import { Authority } from '../../core/models/authority.model';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'portal-merchant-login',
@@ -12,21 +10,20 @@ import { Authority } from '../../core/models/authority.model';
 })
 export class MerchantLoginComponent implements OnInit {
 
-  username: string;
-  password: string;
-  selectedAuthority: Authority;
   isLogging: boolean;
   loginFailed = false;
-  authorities$: Observable<Authority[]>;
+  @Input() loginModalOpen: boolean;
+  loginForm: FormGroup;
+  private initialFormState: any;
 
   constructor(
-    private router: Router,
-    private loginService: LoginService,
-    private merchantApiService: MerchantApiService
+    private readonly router: Router,
+    private readonly loginService: LoginService,
+    private readonly formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
-    this.authorities$ = this.merchantApiService.getAuthorities();
+    this.initializeForm();
   }
 
   enterLogin($event: KeyboardEvent) {
@@ -38,12 +35,26 @@ export class MerchantLoginComponent implements OnInit {
 
   public doLogin() {
     this.loginFailed = false;
-    this.loginService.login(this.username, this.password)
+    this.loginService.login(this.loginForm.get('username').value, this.loginForm.get('password').value)
       .subscribe((result) => {
+        this.modalClosed();
         this.router.navigate(['/merchant/profile']);
 
       },() => {
         this.loginFailed = true;
       });
+  }
+
+  initializeForm(): void {
+    this.loginForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
+    });
+    this.initialFormState = this.loginForm.value;
+  }
+
+  modalClosed(): void {
+    this.loginForm.reset();
+    this.loginModalOpen = false;
   }
 }

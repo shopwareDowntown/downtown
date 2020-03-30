@@ -24,7 +24,7 @@
     </div>
 
     <div class="header-actions clr-hidden-sm-down">
-      <button routerLink="login/merchant" class="btn btn-primary login-button">Login</button>
+      <button (click)="openLogin()" class="btn btn-primary login-button">Login</button>
     </div>
   </clr-header>
 
@@ -36,3 +36,7 @@
   </div>
 
 </clr-main-container>
+
+<portal-merchant-login [loginModalOpen]="showLogin">
+
+</portal-merchant-login>

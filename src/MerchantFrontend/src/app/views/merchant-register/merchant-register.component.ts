@@ -16,6 +16,8 @@ export class MerchantRegisterComponent implements OnInit {
   authorities$: Observable<Authority[]>;
   registerForm: FormGroup;
   registrationFinished = false;
+  private initialRegisterFormValues: any;
+
   @Input() registerModalOpen = true;
 
   constructor(
@@ -37,6 +39,7 @@ export class MerchantRegisterComponent implements OnInit {
       authority: [ null, Validators.required],
       policy: [false, Validators.requiredTrue]
     }, {validator: Validators.compose([PasswordValidators.matchPassword])});
+    this.initialRegisterFormValues = this.registerForm.value;
   }
 
   register(): void {
@@ -57,6 +60,7 @@ export class MerchantRegisterComponent implements OnInit {
   }
 
   registerModalClosed() {
+    this.registerForm.reset(this.initialRegisterFormValues);
     this.registerModalOpen = false;
   }
 }
