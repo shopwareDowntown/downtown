@@ -21,12 +21,15 @@
   <clr-dg-column [clrDgField]="'productType'">
     Type
   </clr-dg-column>
+  <clr-dg-column [clrDgField]="'options'">
+  </clr-dg-column>
 
   <!-- Row -->
   <clr-dg-row *ngFor="let product of products">
     <clr-dg-cell>{{product.name}}</clr-dg-cell>
     <clr-dg-cell>{{product.description}}</clr-dg-cell>
     <clr-dg-cell>{{product.productType}}</clr-dg-cell>
+    <clr-dg-cell><a (click)="editProduct(product)"><clr-icon shape="pencil"></clr-icon></a></clr-dg-cell>
   </clr-dg-row>
 
   <!-- Footer -->

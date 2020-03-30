@@ -1,26 +1,32 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Product} from '../../../core/models/product.model';
-import {Subscription} from 'rxjs';
+import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Product } from '../../../core/models/product.model';
 import { MerchantApiService } from '../../../core/services/merchant-api.service';
+import { switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'portal-merchant-products-detail',
   templateUrl: './merchant-products-detail.component.html',
   styleUrls: ['./merchant-products-detail.component.scss']
 })
-export class MerchantProductsDetailComponent implements OnInit, OnDestroy {
+export class MerchantProductsDetailComponent {
 
   product: Product = null;
 
-  // Subscription
-  private subResolver: Subscription;
-
   constructor(private activeRoute: ActivatedRoute, private merchantApiService: MerchantApiService) {
-    // Get resolved product from route
-    this.subResolver = this.activeRoute.data.subscribe(value => {
-      if(value && value.product) {
-        this.product = value.product;
+    this.activeRoute.params.pipe(
+      switchMap((value) => {
+          if (value && value.id) {
+            return this.merchantApiService.getProduct(value.id);
+          } else {
+            return of(false);
+          }
+        }
+      )
+    ).subscribe((product: { data: Product }) => {
+      if(product && product.data) {
+        this.product = product.data;
       } else {
         this.product = <Product>{
           name: '',
@@ -30,27 +36,17 @@ export class MerchantProductsDetailComponent implements OnInit, OnDestroy {
           tax: 19
         }
       }
-
     });
   }
 
-  ngOnInit(): void {
-  }
-
-  ngOnDestroy(): void {
-    if (this.subResolver) {
-      this.subResolver.unsubscribe();
-    }
-  }
-
   saveProduct() {
-    if(this.product.id) {
+    if (this.product.id) {
       this.merchantApiService.updateProduct(this.product).subscribe((product: Product) => {
         this.product = product;
       });
     } else {
-      this.merchantApiService.addProduct(this.product).subscribe((product: Product) => {
-        this.product = product;
+      this.merchantApiService.addProduct(this.product).subscribe((product: { data: Product }) => {
+        this.product = product.data;
       });
     }
   }
