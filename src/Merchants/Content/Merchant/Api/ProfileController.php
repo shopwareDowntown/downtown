@@ -17,6 +17,8 @@ use Shopware\Production\Portal\Hacks\StorefrontMediaUploader;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 
@@ -177,8 +179,8 @@ class ProfileController
             ->add('zip', new Type('string'))
             ->add('city', new Type('string'))
             ->add('country', new Type('string'))
-            ->add('email', new Type('string'))
-            ->add('password', new Type('string'))
+            ->add('email', new Email())
+            ->add('password', new Length(['min' => 8]))
             ->add('phoneNumber', new Type('string'));
     }
 
