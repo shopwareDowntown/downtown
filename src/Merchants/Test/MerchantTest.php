@@ -188,7 +188,6 @@ class MerchantTest extends TestCase
 
     private function getRandomCategoryId(): string
     {
-
         $criteria = new Criteria();
         $criteria->addFilter(new EqualsFilter('typeId', Defaults::SALES_CHANNEL_TYPE_STOREFRONT));
 
@@ -214,7 +213,6 @@ class MerchantTest extends TestCase
         foreach ($files as $i => $path) {
             $upload = new UploadedFile($path, pathinfo($path, PATHINFO_BASENAME), mime_content_type($path), UPLOAD_ERR_OK, true);
             $request->files->set($i, $upload);
-
         }
         return $request;
     }

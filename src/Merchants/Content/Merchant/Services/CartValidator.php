@@ -55,7 +55,7 @@ class CartValidator implements CartValidatorInterface
                 continue;
             }
 
-            if(!$this->isOrderAble($product)) {
+            if (!$this->isOrderAble($product)) {
                 $errorCollection->add(new CartContainsStoreWindowLineItem($lineItem->getId()));
                 $cart->getLineItems()->removeElement($lineItem);
                 continue;
@@ -76,7 +76,8 @@ class CartValidator implements CartValidatorInterface
         }
     }
 
-    private function isOrderAble(ProductEntity $productEntity): bool {
+    private function isOrderAble(ProductEntity $productEntity): bool
+    {
         return $productEntity->getCustomFields()['productType'] !== self::NOT_ORDER_ABLE_TYPE;
     }
 

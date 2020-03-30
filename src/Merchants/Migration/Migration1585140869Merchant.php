@@ -14,7 +14,6 @@ class Migration1585140869Merchant extends MigrationStep
 
     public function update(Connection $connection): void
     {
-
         $connection->executeQuery('
             DROP TABLE merchant;
         ');

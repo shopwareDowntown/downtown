@@ -5,7 +5,6 @@ namespace Shopware\Production\Merchants\Content\Merchant\Exception;
 
 use Shopware\Core\Checkout\Cart\Error\Error;
 
-
 class CartContainsStoreWindowLineItem extends Error
 {
     private const MESSAGE_KEY = 'cartWrongProductType';

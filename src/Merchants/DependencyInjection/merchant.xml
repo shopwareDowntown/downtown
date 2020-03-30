@@ -71,6 +71,7 @@
             <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
             <argument type="service" id="sales_channel_domain.repository"/>
             <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="Shopware\Core\Framework\Validation\DataValidator"/>
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Storefront\Controller\MerchantController" public="true">

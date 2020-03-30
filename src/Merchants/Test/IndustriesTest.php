@@ -27,5 +27,4 @@ class IndustriesTest extends TestCase
 
         static::assertGreaterThan(16, count(json_decode($result->getContent())));
     }
-
 }
