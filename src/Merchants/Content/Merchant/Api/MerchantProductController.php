@@ -230,7 +230,9 @@ class MerchantProductController
                 ]
             ],
             'active' => (bool) $request->request->get('active', true),
-            'customFields' => ['productType' => $request->request->get('productType')]
+            'customFields' => [
+                'productType' => $request->request->get('productType')
+            ]
         ];
 
         $taxEntity = $this->getTaxFromRequest($request, $context);
@@ -238,7 +240,18 @@ class MerchantProductController
 
         $productData = $this->checkForMedias($request, $context, $productData);
 
+        // Write in default language (otherwise we get an exception)
         $this->productRepository->create([$productData], Context::createDefaultContext());
+
+        // customFields are not inherited from translations. So we need to write them in active sales channel language
+        $this->productRepository->update([
+            [
+                'id' => $productData['id'],
+                'customFields' => [
+                    'productType' => $request->request->get('productType')
+                ]
+            ]
+        ], $context->getContext());
 
         return new JsonResponse(
             ['message' => 'Successfully created product!', 'data' => $productData]
