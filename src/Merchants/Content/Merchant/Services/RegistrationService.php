@@ -5,6 +5,7 @@ namespace Shopware\Production\Merchants\Content\Merchant\Services;
 use Shopware\Core\Checkout\Customer\CustomerEntity;
 use Shopware\Core\Checkout\Customer\Event\CustomerDoubleOptInRegistrationEvent;
 use Shopware\Core\Content\Newsletter\Exception\SalesChannelDomainNotFoundException;
+use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
@@ -13,6 +14,7 @@ use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
+use Shopware\Production\Merchants\Content\Merchant\Exception\EmailAlreadyExistsException;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -53,6 +55,10 @@ class RegistrationService
     public function registerMerchant(array $parameters, SalesChannelContext $salesChannelContext): string
     {
         $parameters['id'] = Uuid::randomHex();
+
+        if (!$this->isMailAvailable($parameters['email'])) {
+            throw new EmailAlreadyExistsException('Email address is already taken');
+        }
 
         $this->merchantRepository->create([$parameters], $salesChannelContext->getContext());
 
@@ -113,5 +119,13 @@ class RegistrationService
         $event = new CustomerDoubleOptInRegistrationEvent($customer, $salesChannelContext, $url);
 
         $this->eventDispatcher->dispatch($event);
+    }
+
+    private function isMailAvailable(string $email): bool
+    {
+        $criteria = new Criteria();
+        $criteria->addFilter(new EqualsFilter('email', $email));
+
+        return $this->merchantRepository->searchIds($criteria, Context::createDefaultContext())->getTotal() === 0;
     }
 }

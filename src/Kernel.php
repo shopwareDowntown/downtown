@@ -58,6 +58,6 @@ class Kernel extends \Shopware\Core\Kernel
 
         yield new MerchantBundle();
         yield new PortalBundle();
-        yield new LocalDeliveryBundle();
+//        yield new LocalDeliveryBundle();
     }
 }
