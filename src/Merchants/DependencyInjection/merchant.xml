@@ -43,6 +43,10 @@
             <tag name="shopware.entity.definition" entity="merchant_shipping_method"/>
         </service>
 
+        <service id="Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantResetPasswordToken\MerchantResetPasswordTokenDefinition">
+            <tag name="shopware.entity.definition" entity="merchant_reset_password_token"/>
+        </service>
+
         <service id="Shopware\Production\Merchants\Content\Merchant\CustomerEntityExtension">
             <tag name="shopware.entity.extension"/>
         </service>
@@ -147,6 +151,14 @@
             <argument type="service" id="product_media.repository"/>
             <argument type="service" id="Shopware\Core\System\NumberRange\ValueGenerator\NumberRangeValueGeneratorInterface"/>
             <argument type="service" id="Shopware\Core\Content\Media\MediaService"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Api\ResetPasswordController" public="true">
+            <argument type="service" id="merchant.repository"/>
+            <argument type="service" id="merchant_reset_password_token.repository"/>
+            <argument type="service" id="twig"/>
+            <argument type="service" id="Shopware\Core\Content\MailTemplate\Service\MailSender"/>
+            <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Api\OrderListController" public="true">

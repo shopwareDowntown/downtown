@@ -8,15 +8,19 @@ use Shopware\Core\Checkout\Shipping\ShippingMethodDefinition;
 use Shopware\Core\Content\Category\CategoryDefinition;
 use Shopware\Core\Content\Media\MediaDefinition;
 use Shopware\Core\Content\Product\ProductDefinition;
+use Shopware\Core\Framework\Api\Context\SalesChannelApiSource;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityDefinition;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\BoolField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\FkField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\CascadeDelete;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\PrimaryKey;
+use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\ReadProtected;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\Required;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\IdField;
+use Shopware\Core\Framework\DataAbstractionLayer\Field\JsonField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\LongTextField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\ManyToManyAssociationField;
+use Shopware\Core\Framework\DataAbstractionLayer\Field\OneToManyAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\OneToOneAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\PasswordField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\StringField;
@@ -25,6 +29,7 @@ use Shopware\Core\System\SalesChannel\SalesChannelDefinition;
 use Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantMedia\MerchantMediaDefinition;
 use Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantOrder\MerchantOrderDefinition;
 use Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantProduct\MerchantProductDefinition;
+use Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantResetPasswordToken\MerchantResetPasswordTokenDefinition;
 use Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantShippingMethod\MerchantShippingMethodDefinition;
 
 class MerchantDefinition extends EntityDefinition
@@ -72,7 +77,7 @@ class MerchantDefinition extends EntityDefinition
             (new StringField('city', 'city'))->addFlags(),
             (new StringField('country', 'country'))->addFlags(),
             (new StringField('email', 'email'))->addFlags(new Required()),
-            (new PasswordField('password', 'password'))->addFlags(new Required()),
+            (new PasswordField('password', 'password'))->addFlags(new Required(), new ReadProtected(SalesChannelApiSource::class)),
             (new StringField('phone_number', 'phoneNumber')),
 
             // internal model fields
@@ -84,6 +89,8 @@ class MerchantDefinition extends EntityDefinition
 
             (new FkField('cover_id', 'coverId', MediaDefinition::class)),
             (new OneToOneAssociationField('cover', 'cover_id', 'id', MediaDefinition::class, false)),
+
+            (new OneToManyAssociationField('resetPasswordTokens', MerchantResetPasswordTokenDefinition::class, 'merchant_id')),
 
             new ManyToManyAssociationField('products', ProductDefinition::class, MerchantProductDefinition::class, 'merchant_id', 'product_id'),
             new ManyToManyAssociationField('orders', OrderDefinition::class, MerchantOrderDefinition::class, 'merchant_id', 'order_id'),
