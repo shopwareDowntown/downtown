@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NAVIGATION_ADMIN_MERCHANT, NavigationItem} from '../../navigation';
+import { LoginService } from '../../services/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'portal-admin-page-layout',
@@ -13,8 +15,10 @@ export class AdminPageLayoutComponent implements OnInit {
   collapsible = true;
   collapsed = true;
 
-  constructor() {
-  }
+  constructor(
+    private readonly loginService:LoginService,
+    private readonly router: Router
+  ) {}
 
   ngOnInit(): void {
   }
@@ -25,6 +29,10 @@ export class AdminPageLayoutComponent implements OnInit {
 
   public get sidebarNav(): NavigationItem[]{
     return this.navigation.filter(value => value.isSideBar());
+  }
+
+  doLogout(): void {
+    this.loginService.logout();
   }
 
 }

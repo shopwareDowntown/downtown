@@ -42,11 +42,6 @@ export class NavigationItem {
     return this;
   }
 
-  public toolbar(enabled: boolean = true): NavigationItem {
-    this.$toolbar = enabled;
-    return this;
-  }
-
   public isToolbar(): boolean {
     return this.$toolbar;
   }
@@ -67,13 +62,4 @@ export const NAVIGATION_ADMIN_MERCHANT = [
   new NavigationItem('Informationen', '/merchant/profile').setIcon('help-info').sidebar(),
   new NavigationItem('Produkte', '/merchant/products').setIcon('shopping-bag').sidebar(),
   new NavigationItem('Lieferungen', '/merchant/delivery').setIcon('truck').sidebar(),
-];
-
-export const NAVIGATION_LANDING = [
-  new NavigationItem('Dashboard', ''),
-  new NavigationItem('Merchant Area', '/merchant/profile').toolbar(), // TODO: Just for testing
-  new NavigationItem('Merchant Login', '/login/merchant').toolbar(),
-  new NavigationItem('Merchant Register', '/register/merchant').toolbar(),
-  new NavigationItem('Organisation Login', '/login/organization').toolbar(),
-  new NavigationItem('Organisation Register', '/register/organization').toolbar(),
 ];

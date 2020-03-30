@@ -35,8 +35,7 @@
           {{nav.title}}
         </a>
       </ng-container>
-      <!-- TODO: create logout directive -->
-      <a [ngClass]="'logout-link'" clrVerticalNavLink>
+      <a (click)="doLogout()" [ngClass]="'logout-link'" routerLink='' clrVerticalNavLink>
         <clr-icon shape="logout" clrVerticalNavIcon></clr-icon>
         Logout
       </a>
