@@ -320,20 +320,6 @@ class MerchantProductController
         );
     }
 
-    /**
-     * @Route(name="merchant-api.merchant.product.delete", path="/merchant-api/v{version}/products/{productId}", methods={"DELETE"})
-     */
-    public function delete(string $productId, SalesChannelContext $context): JsonResponse
-    {
-        $product = $this->getProductFromMerchant($productId, $context);
-
-        $this->productRepository->delete([['id' => $product->getId()]], $context->getContext());
-
-        return new JsonResponse(
-            ['message' => 'Succesfully deleted product!', 'data' => ['id' => $productId]]
-        );
-    }
-
     private function getProductFromMerchant(string $productId, SalesChannelContext $context): ProductEntity
     {
         $product = $this->getMerchantFromContext($context)->getProducts()->get($productId);
