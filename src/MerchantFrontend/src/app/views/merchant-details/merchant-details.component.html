@@ -2,20 +2,32 @@
   Deine Informationen
 </h1>
 
-<span>Zeige Deinen Kunden, wer Du bist und was Du tust. Pflege Kontaktdaten, Öffnungszeiten und gestalte Deine Händlerseite.</span>
+<span
+  >Zeige Deinen Kunden, wer Du bist und was Du tust. Pflege Kontaktdaten,
+  Öffnungszeiten und gestalte Deine Händlerseite.</span
+>
 
 <clr-tabs>
   <clr-tab>
-
     <button clrTabLink>
-      Unternehmen
+      Allgemein
     </button>
 
     <clr-tab-content>
-      <form clrForm clrLayout="vertical" [formGroup]="profileForm" *ngIf="merchantLoaded && categoriesLoaded; else loading">
-
+      <form
+        clrForm
+        clrLayout="vertical"
+        [formGroup]="profileForm"
+        *ngIf="merchantLoaded && categoriesLoaded; else loading"
+      >
         <clr-toggle-wrapper>
-          <input type="checkbox" clrToggle value="true" formControlName="public" name="public" />
+          <input
+            type="checkbox"
+            clrToggle
+            value="true"
+            formControlName="public"
+            name="public"
+          />
           <label>Auf dem Portal veröffentlichen</label>
         </clr-toggle-wrapper>
         <clr-select-container>
@@ -31,36 +43,66 @@
 
         <clr-input-container>
           <label>Firmenname</label>
-          <input clrInput placeholder="Der Name Deiner Firma" type="text" formControlName="publicCompanyName" name="publicCompanyName"/>
+          <input
+            clrInput
+            placeholder="Der Name Deiner Firma"
+            type="text"
+            formControlName="publicCompanyName"
+            name="publicCompanyName"
+          />
         </clr-input-container>
 
         <clr-input-container>
           <label>Inhaber*in</label>
-          <input clrInput placeholder="Inhaber*in der Firma" type="text" formControlName="owner" name=owner/>
+          <input
+            clrInput
+            placeholder="Inhaber*in der Firma"
+            type="text"
+            formControlName="owner"
+            name="owner"
+          />
         </clr-input-container>
 
         <clr-input-container>
           <label>Straße & Hausnummer</label>
-          <input clrInput placeholder="Standort deiner Firma" type="text" formControlName="street"
-                 name="street"/>
+          <input
+            clrInput
+            placeholder="Standort deiner Firma"
+            type="text"
+            formControlName="street"
+            name="street"
+          />
         </clr-input-container>
 
         <clr-input-container>
           <label>PLZ</label>
-          <input clrInput placeholder="Postleitzahl" type="text" formControlName="zip"
-                 name="zip"/>
+          <input
+            clrInput
+            placeholder="Postleitzahl"
+            type="text"
+            formControlName="zip"
+            name="zip"
+          />
         </clr-input-container>
 
         <clr-input-container>
           <label>Ort</label>
-          <input clrInput placeholder="Stadt diner Firma" type="text" formControlName="city"
-                 name="city"/>
+          <input
+            clrInput
+            placeholder="Stadt diner Firma"
+            type="text"
+            formControlName="city"
+            name="city"
+          />
         </clr-input-container>
 
         <clr-select-container>
           <label>Land</label>
           <select clrSelect name="country" formControlName="country">
-            <option *ngFor="let mockCountry of mockCountries" [value]="mockCountry.id">
+            <option
+              *ngFor="let mockCountry of mockCountries"
+              [value]="mockCountry.id"
+            >
               {{ mockCountry.label }}
             </option>
           </select>
@@ -68,55 +110,82 @@
 
         <clr-input-container>
           <label>Telefonnummer</label>
-          <input clrInput placeholder="Eine Nummer, die Deine Kunden anrufen können" type="text" formControlName="publicPhoneNumber"
-                 name="publicPhoneNumber"/>
+          <input
+            clrInput
+            placeholder="Eine Nummer, die Deine Kunden anrufen können"
+            type="text"
+            formControlName="publicPhoneNumber"
+            name="publicPhoneNumber"
+          />
         </clr-input-container>
 
         <clr-input-container>
-          <label>E-Mail-Adresse</label>label
-          <input clrInput placeholder="Eine E-Mail-Adresse, die Deine Kunden anschreiben können" type="email" formControlName="publicEmail" name="publicEmail"/>
+          <label>E-Mail-Adresse</label>
+          <input
+            clrInput
+            placeholder="Eine E-Mail-Adresse, die Deine Kunden anschreiben können"
+            type="email"
+            formControlName="publicEmail"
+            name="publicEmail"
+          />
         </clr-input-container>
 
         <clr-input-container>
-          <label>Internetseite (Optional)</label>label
-          <input clrInput placeholder="Du kannst hier den Link Deiner Internetseite angeben" type="text" formControlName="publicWebsite" name="publicWebsite"/>
+          <label>Internetseite (Optional)</label>
+          <input
+            clrInput
+            placeholder="Du kannst hier den Link Deiner Internetseite angeben"
+            type="text"
+            formControlName="publicWebsite"
+            name="publicWebsite"
+          />
         </clr-input-container>
 
         <h3>Händlerseite</h3>
 
         <clr-textarea-container>
           <label>Öffnungszeiten</label>
-          <textarea clrTextarea placeholder="Die Öffnungszeiten Deiner Firma" formControlName="publicOpeningTimes"
-                    name="publicOpeningTimes"></textarea>
+          <textarea
+            clrTextarea
+            placeholder="Die Öffnungszeiten Deiner Firma"
+            formControlName="publicOpeningTimes"
+            name="publicOpeningTimes"
+          ></textarea>
         </clr-textarea-container>
 
         <clr-textarea-container>
           <label>Beschreibung (Optional)</label>
-          <textarea clrTextarea placeholder="Hier kannst Du Deine Firma in ein paar Sätzen beschreiben" formControlName="publicDescription"
-                    name="publicDescription"></textarea>
+          <textarea
+            clrTextarea
+            placeholder="Hier kannst Du Deine Firma in ein paar Sätzen beschreiben"
+            formControlName="publicDescription"
+            name="publicDescription"
+          ></textarea>
         </clr-textarea-container>
-
       </form>
       <ng-template #loading>
         <div>
           Lädt...
         </div>
       </ng-template>
-      <button style="margin-left: 50px" type="button" (click)="save()" class="btn btn-primary"
-              [disabled]="!profileForm.valid">Save
+      <button
+        type="button"
+        (click)="save()"
+        class="btn btn-primary"
+        [disabled]="!profileForm.valid"
+        [style.margin-top]="'32px'"
+      >
+        Speichern
       </button>
     </clr-tab-content>
   </clr-tab>
 
   <clr-tab>
-
     <button clrTabLink>
       Account
     </button>
-
     <clr-tab-content>
       <portal-merchant-account></portal-merchant-account>
     </clr-tab-content>
   </clr-tab>
-
 </clr-tabs>

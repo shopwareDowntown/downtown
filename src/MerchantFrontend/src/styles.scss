@@ -73,9 +73,13 @@ body {
   }
 }
 
-// scrolling clarity content-area
-body.no-scrolling .main-container .content-container .content-area {
-  padding-bottom: 80px !important;
+// body.no-scrolling .main-container .content-container .content-area {
+//   padding: 64px !important;
+//   overflow-y: auto;
+// }
+
+.main-container .content-container .content-area {
+  padding: 64px !important;
   overflow-y: auto;
 }
 
@@ -87,6 +91,7 @@ body.no-scrolling .main-container .content-container .content-area {
   height: 48px;
   padding: 12px 24px;
   line-height: 1;
+  margin: 0;
   outline: none !important;
   box-shadow: none !important;
 
@@ -155,6 +160,13 @@ body.no-scrolling .main-container .content-container .content-area {
   margin-top: 8px;
 }
 
+<<<<<<< HEAD
+=======
+.clr-form {
+  padding: 0;
+}
+
+>>>>>>> Added tab design
 .clr-input-wrapper {
   position: relative;
   max-width: unset;
@@ -277,18 +289,24 @@ body.no-scrolling .main-container .content-container .content-area {
   margin-top: 24px;
 }
 
+clr-toggle-wrapper .clr-control-label {
+  font-size: 14px;
+}
+
 .portal-vertical-nav,
 .portal-header {
   --clr-responsive-nav-trigger-bg-color: #000;
   --clr-nav-background-color: #F8F9FB;
+<<<<<<< HEAD
   // active color
   --clr-vertical-nav-icon-active-color: var(--sw-primary);
+=======
+  --clr-vertical-nav-icon-active-color: #189EFF;
+>>>>>>> Added tab design
   --clr-vertical-nav-item-active-color: #607182;
   --clr-vertical-nav-active-bg-color: rgba(24, 158, 255, 0.1);
-  //hover
   --clr-vertical-nav-hover-bg-color: rgba(24, 158, 255, 0.1);
 }
-
 
 /**
  *  Global burger menu style
@@ -299,9 +317,9 @@ body.no-scrolling .main-container .content-container .content-area {
   .portal-header {
 
     .header-hamburger-trigger {
-      transform: translateX(calc(100vw - 60px)); // had to be changed because width is now 100%
+      transform: translateX(calc(100vw - 60px));
       transition: transform .3s !important;
-      z-index: 1040 !important; //< Nav had index 1039, so it needs to be higher
+      z-index: 1040 !important;
 
       span:before,
       span:after {
@@ -324,7 +342,6 @@ body.no-scrolling .main-container .content-container .content-area {
   display: none !important;
 }
 
-
 .clr-form-control {
   .clr-control-container {
     width: 100%;
@@ -332,5 +349,23 @@ body.no-scrolling .main-container .content-container .content-area {
   }
   label.clr-control-label {
     margin-bottom: 6px;
+  }
+}
+
+.nav {
+  margin-bottom: 32px;
+  margin-top: 24px;
+  height: 42px;
+
+  .nav-link.btn {
+    font-size: 15px;
+    padding: 0 12px;
+    height: 42px;
+    margin: 0;
+
+    &.active {
+      border-bottom: 2px solid var(--sw-primary);
+      color: inherit;
+    }
   }
 }
