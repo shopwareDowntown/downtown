@@ -2,7 +2,10 @@
   <div class="modal-body">
     <form class="login" [formGroup]="loginForm" clrForm clrLayout="vertical">
       <section class="title">
-        <h3 class="welcome">Hallo und Willkommen zurück!</h3>
+        <h3 *ngIf="registrationCompleted === false; else newUser" class="welcome">Hallo und Willkommen zurück!</h3>
+        <ng-template #newUser>
+          <h3>Registrierung erfolgreich!</h3>
+        </ng-template>
         <h5 class="hint">Melde Dich im Shopware Portal an.</h5>
       </section>
       <div class="login-group">
