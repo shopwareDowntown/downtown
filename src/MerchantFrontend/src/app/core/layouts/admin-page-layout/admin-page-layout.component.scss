@@ -53,7 +53,9 @@ clr-vertical-nav.portal-vertical-nav {
   .nav-link {
     margin-left: 16px;
     margin-right: 16px;
-    padding: 0 16px 0 16px;
+    padding: 6px 16px;
+    height: 48px !important;
+    margin-bottom: 8px;
 
     &:first-of-type {
       margin-top: 24px;
