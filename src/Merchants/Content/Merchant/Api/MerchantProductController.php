@@ -99,11 +99,11 @@ class MerchantProductController
 
         $criteria = new Criteria();
         $criteria->addAssociation('merchants');
+        $criteria->addFilter(new EqualsFilter('merchants.id', $merchant->getId()));
 
         // Fetch total before limit etc. is applied
         $total = $this->productRepository->search($criteria, Context::createDefaultContext())->getTotal();
 
-        $criteria->addFilter(new EqualsFilter('merchants.id', $merchant->getId()));
         $criteria->addAssociation('media');
 
         if ($request->query->has('limit')) {
