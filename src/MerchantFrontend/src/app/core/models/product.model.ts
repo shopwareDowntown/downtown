@@ -4,7 +4,7 @@ export interface Product {
   description: string;
   productType: string;
   active: boolean;
-  images: any[];
+  media: any[];
   price?: number;
   tax?: number;
 }

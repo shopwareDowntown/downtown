@@ -27,7 +27,6 @@ export class MerchantProductsListingComponent implements OnInit {
 
   refresh(): void {
     this.pageChange();
-    console.log(this.offset);
     this.loading = true;
     this.merchantService.getProducts(this.limit, this.offset).subscribe((value) => {
       this.products = value.data;
