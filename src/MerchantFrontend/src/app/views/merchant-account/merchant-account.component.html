@@ -3,21 +3,20 @@
 <div class="clr-row">
   <div class="clr-col-12">
     <p class="sub-text">
-      Zeige deinen Kunden wer Du bist und was Du tust. Pflege Kontaktdaten, Öffnungszeiten
-      und gestalte Deine Händlerseite.
+      Zeige deinen Kunden wer Du bist und was Du tust. Pflege Kontaktdaten,
+      Öffnungszeiten und gestalte Deine Händlerseite.
     </p>
 
     <form clrForm clrLayout="vertical" [formGroup]="form">
-
       <div class="input-group">
         <clr-input-container>
           <label>Vorname</label>
-          <input clrInput type="text" formControlName="firstName">
+          <input clrInput type="text" formControlName="firstName" />
         </clr-input-container>
 
         <clr-input-container>
           <label>Nachname</label>
-          <input clrInput type="text" formControlName="lastName">
+          <input clrInput type="text" formControlName="lastName" />
         </clr-input-container>
       </div>
 
@@ -26,7 +25,12 @@
       <div class="input-group">
         <clr-input-container>
           <label>Aktuelle E-Mail-Adresse</label>
-          <input clrInput disabled type="email" formControlName="currentEmail">
+          <input
+            clrInput
+            disabled
+            type="email"
+            formControlName="currentEmail"
+          />
         </clr-input-container>
       </div>
       <button class="btn btn-primary" type="button" (click)="openChangeEmail()">E-Mail-Adresse ändern</button>
@@ -38,16 +42,10 @@
 
     <div class="button-wrapper">
       <button
-        class="btn btn-regular"
-        (click)="resetChanges()">
-        Abbrechen
-      </button>
-
-      <button
         class="btn btn-primary"
         (click)="saveChanges()"
         [disabled]="form.invalid || !form.dirty">
-        Save
+        Speichern
       </button>
     </div>
   </div>

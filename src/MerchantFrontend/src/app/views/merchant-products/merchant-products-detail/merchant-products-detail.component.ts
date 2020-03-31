@@ -78,13 +78,6 @@ export class MerchantProductsDetailComponent implements OnInit{
     });
   }
 
-  closeDetails(): void {
-    if (this.form.touched && !confirm('Möchtest Du Deine Änderungen wirklich verwerfen?')) {
-      return;
-    }
-    this.router.navigate(['/merchant/products'])
-  }
-
   imageSelected(value: any) {
     this.form.get('media').setValue(value);
   }

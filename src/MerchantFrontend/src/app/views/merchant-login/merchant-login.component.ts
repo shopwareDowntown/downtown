@@ -39,7 +39,7 @@ export class MerchantLoginComponent implements OnInit {
     this.loginService.login(this.loginForm.get('username').value, this.loginForm.get('password').value)
       .subscribe((result) => {
         this.modalClosed();
-        this.router.navigate(['/merchant/profile']);
+        this.router.navigate(['/merchant/home']);
 
       },() => {
         this.loginFailed = true;

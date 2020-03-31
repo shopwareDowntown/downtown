@@ -20,9 +20,14 @@
         [formGroup]="profileForm"
         *ngIf="merchantLoaded && categoriesLoaded; else loading"
       >
-
         <clr-toggle-wrapper>
-          <input type="checkbox" clrToggle value="true" formControlName="public" name="public"/>
+          <input
+            type="checkbox"
+            clrToggle
+            value="true"
+            formControlName="public"
+            name="public"
+          />
           <label>Auf dem Portal veröffentlichen</label>
         </clr-toggle-wrapper>
         <clr-select-container>
@@ -38,8 +43,13 @@
 
         <clr-input-container>
           <label>Firmenname</label>
-          <input clrInput placeholder="Der Name Deiner Firma" type="text" formControlName="publicCompanyName"
-                 name="publicCompanyName"/>
+          <input
+            clrInput
+            placeholder="Der Name Deiner Firma"
+            type="text"
+            formControlName="publicCompanyName"
+            name="publicCompanyName"
+          />
         </clr-input-container>
 
         <clr-input-container>
@@ -97,21 +107,35 @@
 
         <clr-input-container>
           <label>Telefonnummer</label>
-          <input clrInput placeholder="Eine Nummer, die Deine Kunden anrufen können" type="text"
-                 formControlName="publicPhoneNumber"
-                 name="publicPhoneNumber"/>
+          <input
+            clrInput
+            placeholder="Eine Nummer, die Deine Kunden anrufen können"
+            type="text"
+            formControlName="publicPhoneNumber"
+            name="publicPhoneNumber"
+          />
         </clr-input-container>
 
         <clr-input-container>
           <label>E-Mail-Adresse</label>
-          <input clrInput placeholder="Eine E-Mail-Adresse, die Deine Kunden anschreiben können" type="email"
-                 formControlName="publicEmail" name="publicEmail"/>
+          <input
+            clrInput
+            placeholder="Eine E-Mail-Adresse, die Deine Kunden anschreiben können"
+            type="email"
+            formControlName="publicEmail"
+            name="publicEmail"
+          />
         </clr-input-container>
 
         <clr-input-container>
           <label>Internetseite (Optional)</label>
-          <input clrInput placeholder="Du kannst hier den Link Deiner Internetseite angeben" type="text"
-                 formControlName="publicWebsite" name="publicWebsite"/>
+          <input
+            clrInput
+            placeholder="Du kannst hier den Link Deiner Internetseite angeben"
+            type="text"
+            formControlName="publicWebsite"
+            name="publicWebsite"
+          />
         </clr-input-container>
 
         <h3>Händlerseite</h3>
@@ -128,9 +152,12 @@
 
         <clr-textarea-container>
           <label>Beschreibung (Optional)</label>
-          <textarea clrTextarea placeholder="Hier kannst Du Deine Firma in ein paar Sätzen beschreiben"
-                    formControlName="publicDescription"
-                    name="publicDescription"></textarea>
+          <textarea
+            clrTextarea
+            placeholder="Hier kannst Du Deine Firma in ein paar Sätzen beschreiben"
+            formControlName="publicDescription"
+            name="publicDescription"
+          ></textarea>
         </clr-textarea-container>
       </form>
       <ng-template #loading>

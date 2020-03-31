@@ -2,7 +2,12 @@
   <div class="modal-body">
     <form class="login" [formGroup]="loginForm" clrForm clrLayout="vertical">
       <section class="title">
-        <h3 *ngIf="registrationCompleted === false; else newUser" class="welcome">Hallo und Willkommen zurück!</h3>
+        <h3
+          *ngIf="registrationCompleted === false; else newUser"
+          class="welcome"
+        >
+          Hallo und Willkommen zurück!
+        </h3>
         <ng-template #newUser>
           <h3>Registrierung erfolgreich!</h3>
         </ng-template>
@@ -11,12 +16,23 @@
       <div class="login-group">
         <clr-input-container>
           <label>E-Mail-Adresse</label>
-          <input (keypress)="enterLogin($event)" formControlName="username" type="text" name="login_username" clrInput>
+          <input
+            (keypress)="enterLogin($event)"
+            formControlName="username"
+            type="text"
+            name="login_username"
+            clrInput
+          />
         </clr-input-container>
-        <clr-input-container >
+        <clr-input-container>
           <label>Passwort</label>
-          <input (keypress)="enterLogin($event)" formControlName="password" type="password"
-                 name="login_password" clrInput>
+          <input
+            (keypress)="enterLogin($event)"
+            formControlName="password"
+            type="password"
+            name="login_password"
+            clrInput
+          />
         </clr-input-container>
         <div style="text-align: center" *ngIf="isLogging">
           <span class="spinner spinner-inline"></span>
@@ -28,8 +44,13 @@
       </div>
     </form>
     <div class="modal-footer">
-      <button type="button" (click)="doLogin()" class="btn btn-primary"
-              [disabled]="loginForm.invalid  || isLogging">LOGIN
+      <button
+        type="button"
+        (click)="doLogin()"
+        class="btn btn-primary"
+        [disabled]="loginForm.invalid || isLogging"
+      >
+        LOGIN
       </button>
     </div>
   </div>

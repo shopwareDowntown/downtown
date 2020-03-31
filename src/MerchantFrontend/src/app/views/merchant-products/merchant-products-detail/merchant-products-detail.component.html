@@ -9,11 +9,22 @@
   </clr-select-container>
   <clr-input-container>
     <label>Produktname</label>
-    <input clrInput type="text" formControlName="name" name="example" required/>
+    <input
+      clrInput
+      type="text"
+      formControlName="name"
+      name="example"
+      required
+    />
   </clr-input-container>
   <clr-textarea-container>
     <label>Beschreibungstext</label>
-    <textarea clrTextarea formControlName="description" name="description" required></textarea>
+    <textarea
+      clrTextarea
+      formControlName="description"
+      name="description"
+      required
+    ></textarea>
   </clr-textarea-container>
   <clr-input-container>
     <label>Aktiv</label>
@@ -23,7 +34,14 @@
     <h3>Preis</h3>
     <clr-input-container>
       <label>Preis</label>
-      <input clrInput type="number" min="1" step="any" name="price" formControlName="price">
+      <input
+        clrInput
+        type="number"
+        min="1"
+        step="any"
+        name="price"
+        formControlName="price"
+      />
       <clr-icon shape="euro"></clr-icon>
     </clr-input-container>
     <clr-select-container>
@@ -44,7 +62,13 @@
     <portal-file-upload maxFileSize="2097152" accept="image/x-png,image/jpeg" [label]="'Bild hochladen'" (onSelect)="imageSelected($event)"></portal-file-upload>
   </ng-container>
   <div class="button-wrapper">
-    <button class="btn btn-regular" type="button" (click)="closeDetails()">Abbrechen</button>
-    <button class="btn btn-primary" type="button" (click)="saveProduct()" [disabled]="form.invalid">Speichern</button>
+    <button
+      class="btn btn-primary"
+      type="button"
+      (click)="saveProduct()"
+      [disabled]="form.invalid"
+    >
+      Speichern
+    </button>
   </div>
 </form>
