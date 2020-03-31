@@ -1,0 +1,13 @@
+{% block sw_sales_channel_detail_base_general_input_footer_category %}
+    {% parent %}
+
+    <sw-entity-single-select
+            v-if="!!salesChannel.extensions.landingPage"
+            class="sw-sales-channel-detail__select-footer-category-id"
+            id="cmsPageId"
+            label="Landingpage layout"
+            v-model="salesChannel.extensions.landingPage.cmsPageId"
+            entity="cms_page"
+            required>
+    </sw-entity-single-select>
+{% endblock %}

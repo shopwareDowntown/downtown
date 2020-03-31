@@ -14,9 +14,11 @@ use Shopware\Production\Merchants\Content\Merchant\MerchantDefinition;
 
 class MerchantShippingMethodDefinition extends MappingEntityDefinition
 {
+    public const ENTITY_NAME = 'merchant_shipping_method';
+
     public function getEntityName(): string
     {
-        return 'merchant_shipping_method';
+        return self::ENTITY_NAME;
     }
 
     protected function defineFields(): FieldCollection

@@ -15,9 +15,11 @@ use Shopware\Production\Merchants\Content\Merchant\MerchantDefinition;
 
 class MerchantProductDefinition extends MappingEntityDefinition
 {
+    public const ENTITY_NAME = 'merchant_product';
+
     public function getEntityName(): string
     {
-        return 'merchant_product';
+        return self::ENTITY_NAME;
     }
 
     protected function defineFields(): FieldCollection
