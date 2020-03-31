@@ -1,0 +1,33 @@
+:host {
+  .home-steps {
+    display: grid;
+    grid-auto-flow: row;
+    gap: 32px;
+
+    .step-section {
+      border: var(--sw-border);
+      border-radius: 3px;
+      padding: 24px 40px;
+
+      .section-header {
+        display: grid;
+        grid-auto-flow: column;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 16px;
+
+        h4 {
+          margin-top: 2px;
+        }
+      }
+
+      p {
+        margin: 8px 0 16px 0;
+      }
+
+      clr-icon {
+        color: var(--sw-color);
+      }
+    }
+  }
+}

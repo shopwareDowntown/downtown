@@ -1,5 +1,7 @@
 .button-wrapper {
-  padding-top: 8px;
   display: grid;
-  grid-template-columns: max-content max-content;
+  grid-auto-flow: column;
+  justify-content: flex-start;
+  margin-top: 32px;
+  gap: 12px;
 }

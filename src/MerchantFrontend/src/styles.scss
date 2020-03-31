@@ -42,6 +42,7 @@
   // forms
   --clr-forms-invalid-color: var(--sw-danger);
   --clr-forms-subtext-color: var(--sw-regular);
+  --clr-toggle-bg-color-on: var(--sw-primary);
 
   // headlines & text
   --clr-h1-font-weight: 700;
@@ -93,7 +94,7 @@ body {
   &.btn-regular {
     background: var(--sw-regular);
     border-color: var(--sw-regular);
-    color: var(--sw-text-reversed);
+    color: var(--sw-color-reversed);
 
     &:hover, &:focus, &:active {
       background: var(--sw-regular-dark);
@@ -103,7 +104,7 @@ body {
     &.btn-link {
       background: var(--sw-regular-ghost);
       border-color: var(--sw-regular-ghost);
-      color: var(--sw-text);
+      color: var(--sw-color);
 
       &:hover, &:focus, &:active {
         background: var(--sw-regular-ghost-hover);
