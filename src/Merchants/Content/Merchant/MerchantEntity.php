@@ -11,6 +11,7 @@ use Shopware\Core\Content\Media\MediaEntity;
 use Shopware\Core\Content\Product\ProductCollection;
 use Shopware\Core\Framework\DataAbstractionLayer\Entity;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityIdTrait;
+use Shopware\Core\System\Country\CountryEntity;
 use Shopware\Core\System\SalesChannel\SalesChannelEntity;
 
 class MerchantEntity extends Entity
@@ -83,7 +84,7 @@ class MerchantEntity extends Entity
     protected $city;
 
     /**
-     * @var string|null
+     * @var CountryEntity|null
      */
     protected $country;
 
@@ -297,12 +298,12 @@ class MerchantEntity extends Entity
         $this->city = $city;
     }
 
-    public function getCountry(): ?string
+    public function getCountry(): ?CountryEntity
     {
         return $this->country;
     }
 
-    public function setCountry(?string $country): void
+    public function setCountry(?CountryEntity $country): void
     {
         $this->country = $country;
     }
