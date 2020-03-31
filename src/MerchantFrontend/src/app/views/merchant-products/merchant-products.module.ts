@@ -6,6 +6,7 @@ import { MerchantProductsListingComponent } from './merchant-products-listing/me
 import { MerchantProductsDetailComponent } from './merchant-products-detail/merchant-products-detail.component';
 import {ClrDatagridModule, ClrFormsModule, ClrIconModule} from '@clr/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FileUploadModule } from '../../shared/components/file-upload/file-upload.module';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ClrDatagridModule,
     ClrIconModule,
     ClrFormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FileUploadModule
   ]
 })
 export class MerchantProductsModule { }

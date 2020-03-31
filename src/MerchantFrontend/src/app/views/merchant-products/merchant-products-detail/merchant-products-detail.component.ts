@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from '../../../core/models/product.model';
 import { MerchantApiService } from '../../../core/services/merchant-api.service';
 import { switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -58,20 +58,24 @@ export class MerchantProductsDetailComponent implements OnInit{
       productType: [this.product.productType, Validators.required],
       price: [this.product.price],
       tax: [this.product.tax],
-      active: [this.product.active, Validators.required]
+      active: [this.product.active, Validators.required],
+      media: [null]
     })
   }
 
   saveProduct(): void {
+    let product$ = null;
     if (this.product.id) {
-      this.merchantApiService.updateProduct(this.form.value).subscribe((product: Product) => {
-        this.product = product;
-      });
+      product$ = this.merchantApiService.updateProduct(this.form.value);
     } else {
-      this.merchantApiService.addProduct(this.form.value).subscribe((product: { data: Product }) => {
-        this.product = product.data;
-      });
+      product$ = this.merchantApiService.addProduct(this.form.value)
     }
+    product$.pipe(
+      switchMap((product: {data: Product}) => {
+        return this.merchantApiService.addImageToProduct(this.form.get('media').value, product.data.id)
+      })).subscribe((product: {data: Product}) => {
+      this.product = product.data;
+    });
   }
 
   closeDetails(): void {
@@ -79,5 +83,9 @@ export class MerchantProductsDetailComponent implements OnInit{
       return;
     }
     this.router.navigate(['/merchant/products'])
+  }
+
+  imageSelected(value: any) {
+    this.form.get('media').setValue(value);
   }
 }

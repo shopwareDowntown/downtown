@@ -424,6 +424,10 @@ class MerchantProductController
             $mediaIds[] = ['id' => $productMediaId];
         }
 
+        if (empty($mediaIds)) {
+            return;
+        }
+
         $this->productMediaRepository->delete($mediaIds, Context::createDefaultContext());
     }
 

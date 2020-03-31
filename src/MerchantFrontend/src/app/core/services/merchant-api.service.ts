@@ -122,6 +122,15 @@ export class MerchantApiService {
     return this.http.delete<void>(this.apiUrl + '/merchant-api/products/' + product.id, {headers: this.getJsonContentTypeHeaders()});
   }
 
+  addImageToProduct(image: File, productId: string): Observable<any> {
+    let headers = new HttpHeaders();
+    headers = headers.set('sw-context-token', this.getSwContextToken());
+    headers = headers.set('sw-access-key', this.accessKey);
+    const formData = new FormData();
+    formData.append('media[]', image[0]);
+    return this.http.post<any>(this.apiUrl + '/merchant-api/v1/products/' + productId, formData, {headers: headers});
+  }
+
   // authority route
 
   getAuthorities(): Observable<Authority[]> {
@@ -146,7 +155,6 @@ export class MerchantApiService {
     headers = headers.set('sw-context-token', this.getSwContextToken());
     return headers;
   }
-
 
   private getSwAccessKey(): string {
     let key: string;
