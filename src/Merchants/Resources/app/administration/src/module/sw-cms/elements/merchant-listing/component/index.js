@@ -24,10 +24,6 @@ Component.register('sw-cms-el-merchant-listing', {
                         source: 'static',
                         value: this.element.config.boxLayout.value
                     },
-                    displayMode: {
-                        source: 'static',
-                        value: 'standard'
-                    }
                 },
                 data: {
                     merchant: {

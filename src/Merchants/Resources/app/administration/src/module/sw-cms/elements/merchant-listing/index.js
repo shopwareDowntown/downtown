@@ -10,4 +10,10 @@ Shopware.Service('cmsService').registerCmsElement({
     component: 'sw-cms-el-merchant-listing',
     previewComponent: 'sw-cms-el-preview-merchant-listing',
     configComponent: 'sw-cms-el-config-merchant-listing',
+    defaultConfig: {
+        boxLayout: {
+            source: 'static',
+            value: 'standard'
+        }
+    }
 });

@@ -1,5 +1,4 @@
 import template from './sw-cms-el-config-merchant-listing.html.twig';
-import './sw-cms-el-config-merchant-listing.scss';
 
 const { Component, Mixin } = Shopware;
 
