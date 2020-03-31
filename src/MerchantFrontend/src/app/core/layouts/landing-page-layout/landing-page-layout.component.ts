@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {NAVIGATION_LANDING} from '../../navigation';
-import { timeout } from 'rxjs/operators';
 
 @Component({
   selector: 'portal-landing-page-layout',
@@ -8,8 +6,6 @@ import { timeout } from 'rxjs/operators';
   styleUrls: ['./landing-page-layout.component.scss']
 })
 export class LandingPageLayoutComponent implements OnInit {
-
-  readonly navigation = NAVIGATION_LANDING;
 
   showLogin = false;
 

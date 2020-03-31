@@ -82,11 +82,6 @@ export class MerchantDetailsComponent implements OnInit {
       });
   }
 
-  logout(): void {
-    this.loginService.logout();
-    this.router.navigate(['login', 'merchant']);
-  }
-
   private createForm() {
     this.profileForm = this.formBuilder.group({
       public: this.merchant.public,

@@ -10,19 +10,6 @@
       </a>
     </div>
 
-    <!-- Toolbar Navigation -->
-    <div class="header-nav clr-hidden-md-up" [clr-nav-level]="1">
-      <button class="btn btn-primary login-button">Login</button>
-      <div class="nav-divider"></div>
-      <a *ngFor="let nav of navigation"
-         class="nav-link"
-         [routerLink]="nav.route"
-         routerLinkActive='active'
-         [routerLinkActiveOptions]="{ exact: true }">
-        {{nav.title}}
-      </a>
-    </div>
-
     <div class="header-actions clr-hidden-sm-down">
       <button (click)="openLogin()" class="btn btn-primary login-button">Login</button>
     </div>
