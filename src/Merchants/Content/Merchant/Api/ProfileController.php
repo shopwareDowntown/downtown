@@ -77,6 +77,11 @@ class ProfileController
      */
     public function save(RequestDataBag $dataBag, SalesChannelContext $salesChannelContext): JsonResponse
     {
+        if ($dataBag->has('country')) {
+            $dataBag->set('countryId', $dataBag->get('country'));
+            $dataBag->remove('country');
+        }
+
         $merchant = SalesChannelContextExtension::extract($salesChannelContext);
 
         $merchantConstraints = $this->createValidationDefinition($salesChannelContext);
@@ -178,7 +183,7 @@ class ProfileController
             ->add('street', new Type('string'))
             ->add('zip', new Type('string'))
             ->add('city', new Type('string'))
-            ->add('country', new Type('string'))
+            ->add('countryId', new EntityExists(['entity' => 'country', 'context' => $salesChannelContext->getContext()]))
             ->add('email', new Email())
             ->add('password', new Length(['min' => 8]))
             ->add('phoneNumber', new Type('string'));

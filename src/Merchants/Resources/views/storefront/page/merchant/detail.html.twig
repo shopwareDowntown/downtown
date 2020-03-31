@@ -16,6 +16,14 @@
 
             <div class="row">
                 <div class="col-6">
+                    {% if page.merchant.street %}
+                    <p>
+                        <strong>{{ 'merchant.address'|trans }}</strong><br>
+                        {{ page.merchant.street }}<br>
+                        {{ page.merchant.zip }} {{ page.merchant.city }}<br>
+                        {{ page.merchant.country.translated.name }}
+                    </p>
+                    {% endif %}
                     {% if page.merchant.publicWebsite %}
                     <p><strong>{{ 'merchant.website'|trans }}</strong><br>
                         <a href="{{ page.merchant.publicWebsite }}">{{ page.merchant.publicWebsite }}</a></p>

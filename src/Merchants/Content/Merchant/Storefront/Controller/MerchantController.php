@@ -70,13 +70,14 @@ class MerchantController extends StorefrontController
             'page' => $page
         ];
 
-        return $this->renderStorefront('@Merchant/page/merchant/detail.html.twig', $vars);
+        return $this->renderStorefront('@Merchant/storefront/page/merchant/detail.html.twig', $vars);
     }
 
     private function loadMerchant(string $id, SalesChannelContext $context): MerchantEntity
     {
         $criteria = new Criteria([$id]);
         $criteria->addAssociation('products');
+        $criteria->addAssociation('country');
         $criteria->addFilter(new EqualsFilter('salesChannelId', $context->getSalesChannel()->getId()));
 
         $criteria = $this->criteriaLoader->getMerchantCriteria($criteria);

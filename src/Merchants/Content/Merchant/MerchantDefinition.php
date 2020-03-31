@@ -25,6 +25,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Field\OneToOneAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\PasswordField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\StringField;
 use Shopware\Core\Framework\DataAbstractionLayer\FieldCollection;
+use Shopware\Core\System\Country\CountryDefinition;
 use Shopware\Core\System\SalesChannel\SalesChannelDefinition;
 use Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantMedia\MerchantMediaDefinition;
 use Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantOrder\MerchantOrderDefinition;
@@ -75,7 +76,10 @@ class MerchantDefinition extends EntityDefinition
             (new StringField('street', 'street'))->addFlags(),
             (new StringField('zip', 'zip'))->addFlags(),
             (new StringField('city', 'city'))->addFlags(),
-            (new StringField('country', 'country'))->addFlags(),
+
+            (new FkField('country_id', 'countryId', CountryDefinition::class))->addFlags(),
+            (new OneToOneAssociationField('country', 'country_id', 'id', CountryDefinition::class)),
+
             (new StringField('email', 'email'))->addFlags(new Required()),
             (new PasswordField('password', 'password'))->addFlags(new Required(), new ReadProtected(SalesChannelApiSource::class)),
             (new StringField('phone_number', 'phoneNumber')),
