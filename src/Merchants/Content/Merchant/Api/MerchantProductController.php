@@ -155,34 +155,9 @@ class MerchantProductController
     {
         $merchant = SalesChannelContextExtension::extract($context);
 
-        $criteria = new Criteria([$productId]);
-        $criteria->addAssociation('merchants');
-        $criteria->addFilter(new EqualsFilter('merchants.id', $merchant->getId()));
-        $criteria->addAssociation('media');
-
-        /** @var ProductEntity $product */
-        $product = $this->productRepository->search($criteria, Context::createDefaultContext())->first();
-        $productData = [
-            'id' => $product->getId(),
-            'name' => $product->getTranslation('name'),
-            'productNumber' => $product->getProductNumber(),
-            'stock' => $product->getStock(),
-            'description' => $product->getTranslation('description'),
-            'price' => $product->getPrice()->first()->getGross(),
-            'tax' => $product->getTax()->getTaxRate(),
-            'active' => $product->getActive(),
-            'productType' => $product->getCustomFields()['productType']
-        ];
-
-        if ($product->getMedia()->count() > 0) {
-            foreach ($product->getMedia() as $media) {
-                $productData['media'][] = $media->getMedia()->getUrl();
-            }
-        }
-
         return new JsonResponse(
             [
-                'data' => $productData
+                'data' => $this->fetchProductData($productId, $merchant)
             ]
         );
     }
@@ -254,7 +229,7 @@ class MerchantProductController
         ], $context->getContext());
 
         return new JsonResponse(
-            ['message' => 'Successfully created product!', 'data' => $productData]
+            ['message' => 'Successfully created product!', 'data' => $this->fetchProductData($productData['id'], $merchant)]
         );
     }
 
@@ -263,6 +238,8 @@ class MerchantProductController
      */
     public function update(Request $request, string $productId, SalesChannelContext $context): JsonResponse
     {
+        $merchant = SalesChannelContextExtension::extract($context);
+
         $product = $this->getProductFromMerchant($productId, $context);
 
         if (!$product) {
@@ -286,6 +263,10 @@ class MerchantProductController
             $taxEntity = $this->getTaxFromRequest($request, $context);
             $productData['tax'] = ['id' => $taxEntity->getId()];
             $product->setTax($taxEntity);
+        }
+
+        if ($request->request->has('stock')) {
+            $productData['stock'] = $request->request->getInt('stock', 0);
         }
 
         if ($request->request->has('price')) {
@@ -316,7 +297,7 @@ class MerchantProductController
         $this->productRepository->update([$productData], Context::createDefaultContext());
 
         return new JsonResponse(
-            ['message' => 'Successfully saved product!', 'data' => $productData]
+            ['message' => 'Successfully saved product!', 'data' => $this->fetchProductData($productId, $merchant)]
         );
     }
 
@@ -444,5 +425,35 @@ class MerchantProductController
         }
 
         $this->productMediaRepository->delete($mediaIds, Context::createDefaultContext());
+    }
+
+    private function fetchProductData(string $productId, MerchantEntity $merchant): array
+    {
+        $criteria = new Criteria([$productId]);
+        $criteria->addAssociation('merchants');
+        $criteria->addFilter(new EqualsFilter('merchants.id', $merchant->getId()));
+        $criteria->addAssociation('media');
+
+        /** @var ProductEntity $product */
+        $product = $this->productRepository->search($criteria, Context::createDefaultContext())->first();
+        $productData = [
+            'id' => $product->getId(),
+            'name' => $product->getTranslation('name'),
+            'productNumber' => $product->getProductNumber(),
+            'stock' => $product->getStock(),
+            'description' => $product->getTranslation('description'),
+            'price' => $product->getPrice()->first()->getGross(),
+            'tax' => $product->getTax()->getTaxRate(),
+            'active' => $product->getActive(),
+            'productType' => $product->getCustomFields()['productType']
+        ];
+
+        if ($product->getMedia()->count() > 0) {
+            foreach ($product->getMedia() as $media) {
+                $productData['media'][] = $media->getMedia()->getUrl();
+            }
+        }
+
+        return $productData;
     }
 }
