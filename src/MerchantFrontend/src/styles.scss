@@ -79,8 +79,8 @@ body {
 // }
 
 .main-container .content-container .content-area {
-  padding: 64px !important;
   overflow-y: auto;
+  padding: 64px;
 }
 
 .btn {
@@ -160,13 +160,10 @@ body {
   margin-top: 8px;
 }
 
-<<<<<<< HEAD
-=======
 .clr-form {
   padding: 0;
 }
 
->>>>>>> Added tab design
 .clr-input-wrapper {
   position: relative;
   max-width: unset;
@@ -297,13 +294,8 @@ clr-toggle-wrapper .clr-control-label {
 .portal-header {
   --clr-responsive-nav-trigger-bg-color: #000;
   --clr-nav-background-color: #F8F9FB;
-<<<<<<< HEAD
-  // active color
   --clr-vertical-nav-icon-active-color: var(--sw-primary);
-=======
-  --clr-vertical-nav-icon-active-color: #189EFF;
->>>>>>> Added tab design
-  --clr-vertical-nav-item-active-color: #607182;
+  --clr-vertical-nav-item-active-color: var(--sw-regular);
   --clr-vertical-nav-active-bg-color: rgba(24, 158, 255, 0.1);
   --clr-vertical-nav-hover-bg-color: rgba(24, 158, 255, 0.1);
 }
