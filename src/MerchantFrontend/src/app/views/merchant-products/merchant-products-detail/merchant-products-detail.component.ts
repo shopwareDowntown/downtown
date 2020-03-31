@@ -1,20 +1,29 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from '../../../core/models/product.model';
 import { MerchantApiService } from '../../../core/services/merchant-api.service';
 import { switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'portal-merchant-products-detail',
   templateUrl: './merchant-products-detail.component.html',
   styleUrls: ['./merchant-products-detail.component.scss']
 })
-export class MerchantProductsDetailComponent {
+export class MerchantProductsDetailComponent implements OnInit{
 
   product: Product = null;
+  form: FormGroup;
 
-  constructor(private activeRoute: ActivatedRoute, private merchantApiService: MerchantApiService) {
+  constructor(
+    private readonly activeRoute: ActivatedRoute,
+    private readonly merchantApiService: MerchantApiService,
+    private readonly router: Router,
+    private readonly formBuilder: FormBuilder
+  ) {}
+
+  ngOnInit(): void {
     this.activeRoute.params.pipe(
       switchMap((value) => {
           if (value && value.id) {
@@ -33,21 +42,42 @@ export class MerchantProductsDetailComponent {
           description: '',
           productType: '',
           price: 0,
-          tax: 19
+          tax: 19,
+          active: false,
         }
       }
+      this.initializeForm()
     });
   }
 
-  saveProduct() {
+  initializeForm(): void {
+    this.form = this.formBuilder.group({
+      id: [this.product.id],
+      name: [this.product.name, [Validators.required, Validators.minLength(1)]],
+      description: [this.product.description],
+      productType: [this.product.productType, Validators.required],
+      price: [this.product.price],
+      tax: [this.product.tax],
+      active: [this.product.active, Validators.required]
+    })
+  }
+
+  saveProduct(): void {
     if (this.product.id) {
-      this.merchantApiService.updateProduct(this.product).subscribe((product: Product) => {
+      this.merchantApiService.updateProduct(this.form.value).subscribe((product: Product) => {
         this.product = product;
       });
     } else {
-      this.merchantApiService.addProduct(this.product).subscribe((product: { data: Product }) => {
+      this.merchantApiService.addProduct(this.form.value).subscribe((product: { data: Product }) => {
         this.product = product.data;
       });
     }
+  }
+
+  closeDetails(): void {
+    if (this.form.touched && !confirm('Möchtest Du Deine Änderungen wirklich verwerfen?')) {
+      return;
+    }
+    this.router.navigate(['/merchant/products'])
   }
 }

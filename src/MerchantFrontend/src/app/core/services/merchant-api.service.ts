@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Merchant, MerchantRegistration, MerchantLoginResult } from '../models/merchant.model';
-import { Product } from '../models/product.model';
+import { Product, ProductListData } from '../models/product.model';
 import { Authority } from '../models/authority.model';
 import { StateService } from '../state/state.service';
 import { map, take } from 'rxjs/operators';
 import { Category } from '../models/category.model';
-import { environment } from "../../../environments/environment";
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,8 @@ export class MerchantApiService {
   constructor(
     private readonly http: HttpClient,
     private stateService: StateService
-  ) { }
+  ) {
+  }
 
   login(username: string, password: string): Observable<MerchantLoginResult> {
 
@@ -83,7 +84,7 @@ export class MerchantApiService {
   }
 
   updateMerchant(merchant: Merchant): Observable<Merchant> {
-      return this.http.patch<Merchant>(this.apiUrl + '/merchant-api/v1/profile', JSON.stringify(merchant), {headers: this.getHeaders() });
+    return this.http.patch<Merchant>(this.apiUrl + '/merchant-api/v1/profile', JSON.stringify(merchant), {headers: this.getHeaders()});
   }
 
   // category routes
@@ -94,33 +95,39 @@ export class MerchantApiService {
 
   // product routes
 
-  getProducts(): Observable<{ data: Product[]}> {
-      return this.http.get<{ data: Product[]}>(this.apiUrl + '/merchant-api/v1/products', {headers: this.getHeaders() });
+  getProducts(limit: number, offset: number): Observable<ProductListData> {
+    let params = new HttpParams();
+    params = params.append('limit', limit.toString());
+    params = params.append('offset', offset.toString());
+    return this.http.get<ProductListData>(this.apiUrl + '/merchant-api/v1/products', {
+      headers: this.getHeaders(),
+      params: params
+    });
   }
 
-  getProduct(productId: string): Observable<{ data: Product}> {
-      return this.http.get<{ data: Product}>(this.apiUrl + '/merchant-api/v1/products/' + productId.toLowerCase(), {headers: this.getJsonContentTypeHeaders() });
+  getProduct(productId: string): Observable<{ data: Product }> {
+    return this.http.get<{ data: Product }>(this.apiUrl + '/merchant-api/v1/products/' + productId.toLowerCase(), {headers: this.getJsonContentTypeHeaders()});
   }
 
-  addProduct(product: Product): Observable<{ data: Product}> {
-      return this.http.post<{ data: Product}>(this.apiUrl + '/merchant-api/v1/products', JSON.stringify(product), {headers: this.getJsonContentTypeHeaders() });
+  addProduct(product: Product): Observable<{ data: Product }> {
+    return this.http.post<{ data: Product }>(this.apiUrl + '/merchant-api/v1/products', JSON.stringify(product), {headers: this.getJsonContentTypeHeaders()});
   }
 
   updateProduct(product: Product): Observable<Product> {
-    return this.http.put<Product>(this.apiUrl + '/merchant-api/v1/products/'  + product.id, JSON.stringify(product), {headers: this.getJsonContentTypeHeaders() });
+    return this.http.post<Product>(this.apiUrl + '/merchant-api/v1/products/' + product.id, JSON.stringify(product), {headers: this.getJsonContentTypeHeaders()});
   }
 
   deleteProduct(product: Product): Observable<void> {
-      return this.http.delete<void>(this.apiUrl + '/merchant-api/products/' + product.id, {headers: this.getJsonContentTypeHeaders() });
+    return this.http.delete<void>(this.apiUrl + '/merchant-api/products/' + product.id, {headers: this.getJsonContentTypeHeaders()});
   }
 
   // authority route
 
   getAuthorities(): Observable<Authority[]> {
-      return this.http.get<Authority[]>(this.apiUrl + '/merchant-api/v1/authorities');
+    return this.http.get<Authority[]>(this.apiUrl + '/merchant-api/v1/authorities');
   }
 
-  private getHeaders(): { [header: string]: string | string[];} {
+  private getHeaders(): { [header: string]: string | string[]; } {
     return {
       'sw-access-key': this.accessKey,
       'sw-context-token': this.getSwContextToken()
