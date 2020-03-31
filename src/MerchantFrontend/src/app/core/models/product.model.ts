@@ -8,3 +8,8 @@ export interface Product {
   price?: number;
   tax?: number;
 }
+
+export interface ProductListData {
+  data: Product[];
+  total: number;
+}
