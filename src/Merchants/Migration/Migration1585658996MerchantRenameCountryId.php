@@ -14,6 +14,7 @@ class Migration1585658996MerchantRenameCountryId extends MigrationStep
 
     public function update(Connection $connection): void
     {
+        $connection->executeQuery('UPDATE merchant SET country = NULL');
         $connection->executeQuery('ALTER TABLE `merchant`
 CHANGE `country` `country_id` binary(16) NULL AFTER `city`;');
     }
