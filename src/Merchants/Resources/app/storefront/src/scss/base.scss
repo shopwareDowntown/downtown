@@ -1,0 +1,37 @@
+#merchant-banner {
+    height: 100px;
+    width: 100%;
+    background: #1e52b5;
+    color: #fff;
+    display: flex;
+    align-items: center;
+
+    .main-content {
+        width: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .merchant-float {
+        float: left;
+    }
+
+    .button-container {
+        margin-left: 200px;
+    }
+
+    .text-headline {
+        font-weight: 600;
+        font-size: 20px;
+    }
+
+    .btn-merchant {
+        background: #fff;
+        color: $sw-text-color;
+
+        &:hover {
+            background: #eeeeee;
+            cursor: pointer;
+        }
+    }
+}
