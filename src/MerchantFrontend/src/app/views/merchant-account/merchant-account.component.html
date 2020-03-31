@@ -28,33 +28,15 @@
           <label>Aktuelle E-Mail Adresse</label>
           <input clrInput disabled type="email" formControlName="currentEmail">
         </clr-input-container>
-
-        <clr-input-container>
-          <label>Neue E-Mail Adresse</label>
-          <input clrInput type="email" formControlName="newEmail">
-          <clr-control-error>Error message that appears after focus is lost and control is invalid</clr-control-error>
-        </clr-input-container>
-
-        <clr-input-container>
-          <label>Neue E-Mail Adresse bestätigen</label>
-          <input clrInput type="email" formControlName="newEmailConfirmation">
-        </clr-input-container>
       </div>
+      <button class="btn btn-primary" type="button" (click)="openChangeEmail()">E-Mail-Adresse ändern</button>
 
       <h4>Passwort ändern</h4>
+      <button class="btn btn-primary" type="button" (click)="openChangePassword()">Passwort ändern</button>
 
-      <div class="input-group">
-        <clr-input-container>
-          <label>Neues Passwort</label>
-          <input clrInput type="password" formControlName="newPassword">
-        </clr-input-container>
+    </form>
 
-        <clr-input-container>
-          <label>Neues Passwort bestätigen</label>
-          <input clrInput type="password" formControlName="newPasswordConfirmation">
-        </clr-input-container>
-      </div>
-
+    <div class="button-wrapper">
       <button
         class="btn"
         (click)="resetChanges()">
@@ -67,7 +49,9 @@
         [disabled]="form.invalid || !form.dirty">
         Save
       </button>
-
-    </form>
+    </div>
   </div>
 </div>
+
+<portal-change-password-modal (passwordChanged)="passwordChanged($event)" [modalOpen]="changePasswordModalOpen"></portal-change-password-modal>
+<portal-change-mail-modal (emailChanged)="emailChanged($event)" [modalOpen]="changeEmailModalOpen"></portal-change-mail-modal>

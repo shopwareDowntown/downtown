@@ -22,12 +22,10 @@ export class MerchantProductsListingComponent implements OnInit {
   ngOnInit(): void {
     this.offset = 0;
     this.refresh();
-    this.currentPage;
   }
 
   refresh(): void {
     this.pageChange();
-    console.log(this.offset);
     this.loading = true;
     this.merchantService.getProducts(this.limit, this.offset).subscribe((value) => {
       this.products = value.data;

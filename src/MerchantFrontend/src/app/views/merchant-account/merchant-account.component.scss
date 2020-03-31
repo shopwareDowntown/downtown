@@ -25,3 +25,10 @@ form {
     margin-bottom: 40px;
   }
 }
+
+.button-wrapper {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  padding-top: 32px;
+  grid-gap: 8px;
+}
