@@ -1,7 +1,7 @@
 <div class="intro-background">
   <portal-container class="dashboard-intro">
     <h3 class="intro-ghost">COVID-19 – WIR SIND FÜR DICH DA</h3>
-    <h1>Wilkommen, lass uns zusammen helfen.</h1>
+    <h1>Willkommen, lass uns zusammen helfen.</h1>
     <p>Mit unserem Portal wollen wir Kommunen und Händler unterstützen. So entsteht eine Handelsplattform, über die der lokale Einzelhandel seine Angebote schnell online verfügbar machen kann. Wir wollen Händler, deren Geschäfte aktuell geschlossen sind, mit ihren Kunden verbinden und gleichzeitig daran erinnern, dass nicht jeder Händler eine ausgefeilte Digital-Strategie oder gar eine Homepage hat.</p>
 
     <div class="dashboard-options">
@@ -25,7 +25,7 @@
 </div>
 
 <portal-container class="route-dashboard">
-  <div class="dashboard-organizations">
+  <div class="dashboard-organizations organizations-wrapper">
     <h4>Schau, wer schon im Händlerportal registriert ist:</h4>
     <div *ngFor="let authority of authorities$ | async" class="card card-block card-organization">
       <p class="card-text">
@@ -43,3 +43,7 @@
 <portal-organization-register
   [registerModalOpen]="showRegisterOrganizationModal">
 </portal-organization-register>
+
+<portal-merchant-login [loginModalOpen]="registrationCompleted" [registrationCompleted]="true">
+
+</portal-merchant-login>

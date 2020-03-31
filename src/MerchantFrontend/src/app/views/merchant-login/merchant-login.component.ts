@@ -13,6 +13,7 @@ export class MerchantLoginComponent implements OnInit {
   isLogging: boolean;
   loginFailed = false;
   @Input() loginModalOpen: boolean;
+  @Input() registrationCompleted = false;
   loginForm: FormGroup;
   private initialFormState: any;
 

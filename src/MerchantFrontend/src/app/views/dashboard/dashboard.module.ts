@@ -7,6 +7,7 @@ import { ClrIconModule, ClrModalModule } from '@clr/angular';
 import { MerchantRegisterModule } from '../merchant-register/merchant-register.module';
 import { OrganizationRegisterModule } from '../organization-register/organization-register.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MerchantLoginModule } from '../merchant-login/merchant-login.module';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     ClrModalModule,
     MerchantRegisterModule,
     OrganizationRegisterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MerchantLoginModule
   ],
   declarations: [
     DashboardComponent
