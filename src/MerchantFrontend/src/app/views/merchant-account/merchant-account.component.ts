@@ -34,12 +34,6 @@ export class MerchantAccountComponent implements OnInit {
     });
   }
 
-  resetChanges(): void {
-    this.form.get('firstName').patchValue(this.merchant.firstName);
-    this.form.get('lastName').patchValue(this.merchant.lastName);
-    this.form.markAsPristine();
-  }
-
   saveChanges(): void {
     this.merchant.firstName = this.form.value.firstName;
     this.merchant.lastName = this.form.value.lastName;

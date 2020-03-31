@@ -38,16 +38,10 @@
 
     <div class="button-wrapper">
       <button
-        class="btn btn-regular"
-        (click)="resetChanges()">
-        Abbrechen
-      </button>
-
-      <button
         class="btn btn-primary"
         (click)="saveChanges()"
         [disabled]="form.invalid || !form.dirty">
-        Save
+        Speichern
       </button>
     </div>
   </div>

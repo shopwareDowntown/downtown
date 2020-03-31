@@ -96,7 +96,7 @@ body {
     border-color: var(--sw-regular);
     color: var(--sw-color-reversed);
 
-    &:hover, &:focus, &:active {
+    &:not([disabled]):hover, &:not([disabled]):focus, &:not([disabled]):active {
       background: var(--sw-regular-dark);
       border-color: var(--sw-regular-dark);
     }
@@ -106,7 +106,7 @@ body {
       border-color: var(--sw-regular-ghost);
       color: var(--sw-color);
 
-      &:hover, &:focus, &:active {
+      &:not([disabled]):hover, &:not([disabled]):focus, &:not([disabled]):active {
         background: var(--sw-regular-ghost-hover);
         border-color: var(--sw-regular-ghost-hover);
       }
@@ -116,7 +116,7 @@ body {
   &.btn-primary {
     border-color: var(--sw-primary);
 
-    &:hover, &:focus, &:active {
+    &:not([disabled]):hover, &:not([disabled]):focus, &:not([disabled]):active {
       border-color: var(--sw-primary-dark);
     }
 
@@ -125,7 +125,7 @@ body {
       border-color: var(--sw-primary-ghost);
       color: var(--sw-primary);
 
-      &:hover, &:focus, &:active {
+      &:not([disabled]):hover, &:not([disabled]):focus, &:not([disabled]):active {
         background: var(--sw-primary-ghost-hover);
         border-color: var(--sw-primary-ghost-hover);
       }
@@ -135,7 +135,7 @@ body {
   &.btn-success {
     border-color: var(--sw-success);
 
-    &:hover, &:focus, &:active {
+    &:not([disabled]):hover, &:not([disabled]):focus, &:not([disabled]):active {
       border-color: var(--sw-success-dark);
     }
 
@@ -144,7 +144,7 @@ body {
       border-color: var(--sw-success-ghost);
       color: var(--sw-success);
 
-      &:hover, &:focus, &:active {
+      &:not([disabled]):hover, &:not([disabled]):focus, &:not([disabled]):active {
         background: var(--sw-success-ghost-hover);
         border-color: var(--sw-success-ghost-hover);
       }
@@ -188,7 +188,7 @@ body {
     width: 100%;
     transition: border-color .2s ease-in-out;
 
-    &:hover, &:focus, &:active {
+    &:not([disabled]):hover, &:not([disabled]):focus, &:not([disabled]):active {
       border-color: var(--sw-primary) !important;
     }
 
@@ -230,7 +230,7 @@ body {
     width: 100%;
     transition: border-color .2s ease-in-out;
 
-    &:hover, &:focus, &:active {
+    &:not([disabled]):hover, &:not([disabled]):focus, &:not([disabled]):active {
       border-color: var(--sw-primary) !important;
     }
   }
@@ -271,7 +271,7 @@ body {
     width: 100%;
     transition: border-color .2s ease-in-out;
 
-    &:hover, &:focus, &:active {
+    &:not([disabled]):hover, &:not([disabled]):focus, &:not([disabled]):active {
       border-color: var(--sw-primary) !important;
     }
   }
@@ -345,9 +345,13 @@ clr-toggle-wrapper .clr-control-label {
   margin-top: 24px;
   height: 42px;
 
+  li.nav-item {
+    margin-right: 0 !important;
+  }
+
   .nav-link.btn {
     font-size: 15px;
-    padding: 0 12px;
+    padding: 0 16px;
     height: 42px;
     margin: 0;
 
