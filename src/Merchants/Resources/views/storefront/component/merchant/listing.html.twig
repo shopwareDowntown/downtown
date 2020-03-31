@@ -1,0 +1,15 @@
+{% block element_merchant_listing %}
+    <div class="cms-element-product-listing">
+        <div class="row cms-listing-row js-listing-wrapper">
+            {% for merchant in searchResult %}
+                <div class="cms-listing-col {{ listingColumns }}">
+                    {% block element_merchant_listing_box %}
+                        {% sw_include '@Storefront/storefront/component/merchant/card/box-standard.html.twig' with {
+                            'merchant': merchant
+                        }%}
+                    {% endblock %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% block sw_cms_element_merchant_listing_config %}
+<div class="sw-cms-el-config-merchant-listing">
+
+    {% block sw_cms_element_merchant_listing_config_layout_select %}
+    <sw-select-field :label="$tc('sw-cms.elements.productBox.config.label.layoutType')" v-model="element.config.boxLayout.value">
+        {% block sw_cms_element_merchant_listing_config_layout_select_options %}
+        <option value="standard">{{ $tc('sw-cms.elements.productBox.config.label.layoutTypeStandard') }}</option>
+        <option value="image">{{ $tc('sw-cms.elements.productBox.config.label.layoutTypeImage') }}</option>
+        <option value="minimal">{{ $tc('sw-cms.elements.productBox.config.label.layoutTypeMinimal') }}</option>
+        {% endblock %}
+    </sw-select-field>
+    {% endblock %}
+
+    {% block sw_cms_element_merchant_listing_config_info %}
+    <sw-alert variant="info">{{ $tc('sw-cms.elements.general.config.infoText.listingElement') }}</sw-alert>
+    {% endblock %}
+</div>
+{% endblock %}
