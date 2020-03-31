@@ -4,8 +4,7 @@
     <label>Produkttyp</label>
     <select clrSelect name="types" formControlName="productType">
       <option value="product">Produkt</option>
-      <option value="service">Service</option>
-      <option value="voucher">Gutschein</option>
+      <option value="storeWindow">Showcase</option>
     </select>
   </clr-select-container>
   <clr-input-container>
@@ -16,11 +15,11 @@
     <label>Beschreibungstext</label>
     <textarea clrTextarea formControlName="description" name="description" required></textarea>
   </clr-textarea-container>
-  <clr-input-container *ngIf="'product' === product.productType">
+  <clr-input-container>
     <label>Aktiv</label>
     <input clrInput type="checkbox" formControlName="active" clrToggle />
   </clr-input-container>
-  <ng-container *ngIf="'product' === product.productType">
+  <ng-container *ngIf="'product' === form.get('productType').value">
     <h3>Preis</h3>
     <clr-input-container>
       <label>Preis</label>
