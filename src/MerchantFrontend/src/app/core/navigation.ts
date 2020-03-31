@@ -61,5 +61,5 @@ export const NAVIGATION_ADMIN_MERCHANT = [
   new NavigationItem('Home', '/merchant/home').setIcon('home').sidebar(),
   new NavigationItem('Informationen', '/merchant/profile').setIcon('help-info').sidebar(),
   new NavigationItem('Produkte', '/merchant/products').setIcon('shopping-bag').sidebar(),
-  new NavigationItem('Lieferungen', '/merchant/delivery').setIcon('truck').sidebar(),
+  //new NavigationItem('Lieferungen', '/merchant/delivery').setIcon('truck').sidebar(),
 ];
