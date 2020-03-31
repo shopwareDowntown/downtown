@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MerchantApiService } from '../../core/services/merchant-api.service';
 import { Category } from '../../core/models/category.model';
+import { Country } from '../../core/models/country.model';
 
 @Component({
   selector: 'portal-merchant-details',
@@ -29,12 +30,7 @@ export class MerchantDetailsComponent implements OnInit {
     private merchantApiService: MerchantApiService
   ) {}
 
-  mockCountries = [
-    {id: 'germany', label: 'Deutschland'},
-    {id: 'alsoGermany', label: 'Auch Deutschland'},
-    {id: 'schöppingen', label: 'Schöppingen'},
-    {id: 'bielefeld', label: 'Bielefeld'}
-  ];
+  countries: Country[] = [];
 
   ngOnInit(): void {
 
@@ -50,11 +46,14 @@ export class MerchantDetailsComponent implements OnInit {
       this.categories = categories;
       this.categoriesLoaded = true;
     });
+
+    this.merchantApiService.getCountries().subscribe((countries: { data: Country[]}) => {
+      this.countries = countries.data;
+    });
   }
 
   save() {
     const newData = this.profileForm.getRawValue();
-
     // update data
     const updatedData = {
       publicCompanyName: newData.publicCompanyName,
@@ -66,14 +65,10 @@ export class MerchantDetailsComponent implements OnInit {
       publicOpeningTimes: newData.publicOpeningTimes,
       publicDescription: newData.publicDescription,
       public: newData.public,
-      lastName: this.merchant.lastName,
-      firstName: this.merchant.firstName,
       street: newData.street,
       zip: newData.zip,
       city: newData.city,
-      country: newData.country,
-      email: this.merchant.email,
-      password: this.merchant.password
+      country: newData.country
     } as Merchant;
 
     this.merchantApiService.updateMerchant(updatedData)
@@ -91,11 +86,11 @@ export class MerchantDetailsComponent implements OnInit {
       zip: [this.merchant.zip, Validators.required],
       city: [this.merchant.city, Validators.required],
       country: [this.merchant.country, Validators.required],
-      publicPhoneNumber: [this.merchant.publicPhoneNumber, Validators.required],
-      publicEmail: [this.merchant.publicEmail, [Validators.required, Validators.email]],
-      publicWebsite: this.merchant.publicWebsite,
       categoryId: [this.merchant.categoryId, Validators.required],
-      publicOpeningTimes: [this.merchant.publicOpeningTimes, Validators.required],
+      publicPhoneNumber: [this.merchant.publicPhoneNumber],
+      publicEmail: [this.merchant.publicEmail],
+      publicWebsite: this.merchant.publicWebsite,
+      publicOpeningTimes: [this.merchant.publicOpeningTimes],
       publicDescription: this.merchant.publicDescription,
     });
   }
