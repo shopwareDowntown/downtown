@@ -9,4 +9,12 @@ export class PasswordValidators {
     }
     return null;
   }
+
+  static matchEmail(form: FormGroup): ValidationErrors|null {
+    const email = form.get('email').value;
+    const repeatEmail = form.get('repeatEmail').value;
+    if (email !== repeatEmail) {
+      return {emailMismatch: true}
+    }
+  }
 }

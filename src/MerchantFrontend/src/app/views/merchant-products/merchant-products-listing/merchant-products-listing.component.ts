@@ -22,7 +22,6 @@ export class MerchantProductsListingComponent implements OnInit {
   ngOnInit(): void {
     this.offset = 0;
     this.refresh();
-    this.currentPage;
   }
 
   refresh(): void {

@@ -13,6 +13,8 @@ export class MerchantAccountComponent implements OnInit {
 
   form: FormGroup;
   merchant: Merchant;
+  changePasswordModalOpen = false;
+  changeEmailModalOpen = false;
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -28,48 +30,66 @@ export class MerchantAccountComponent implements OnInit {
     this.form = this.formBuilder.group({
       firstName: [this.merchant.firstName, [Validators.required]],
       lastName: [this.merchant.lastName, [Validators.required]],
-      currentEmail: [this.merchant.email, [Validators.required, Validators.email]],
-      newEmail: ['', [Validators.email]],
-      newEmailConfirmation: ['', [Validators.email]],
-      newPassword: ['', [Validators.minLength(8)]],
-      newPasswordConfirmation: ['', [Validators.minLength(8)]]
-    }, {
-      validator: [this.checkPasswords, this.checkEmail],
+      currentEmail: [this.merchant.email, [Validators.required, Validators.email]]
     });
   }
 
   resetChanges(): void {
     this.form.get('firstName').patchValue(this.merchant.firstName);
     this.form.get('lastName').patchValue(this.merchant.lastName);
-    this.form.get('newEmail').patchValue('');
-    this.form.get('newEmailConfirmation').patchValue('');
-    this.form.get('newPassword').patchValue('');
-    this.form.get('newPasswordConfirmation').patchValue('');
     this.form.markAsPristine();
   }
 
   saveChanges(): void {
     this.merchant.firstName = this.form.value.firstName;
     this.merchant.lastName = this.form.value.lastName;
-    this.merchant.email = this.form.value.email;
-    this.merchant.password = this.form.value.newPassword;
 
-    this.merchantApiService.updateMerchant(this.merchant).subscribe((merchant: Merchant) => {
+    const updateData = {
+      firstName: this.form.value.firstName,
+      lastName: this.form.value.lastName
+    } as Merchant
+
+    this.merchantApiService.updateMerchant(updateData).subscribe((merchant: Merchant) => {
       this.merchant = merchant;
     });
   }
 
-  private checkPasswords(group: FormGroup) {
-    const password = group.get('newPassword').value;
-    const passwordConfirmation = group.get('newPasswordConfirmation').value;
 
-    return password === passwordConfirmation ? null : { notSame: true }
+  openChangePassword() {
+    this.changePasswordModalOpen = false;
+    setTimeout(() => {
+      this.changePasswordModalOpen = true;
+    });
   }
 
-  private checkEmail(group: FormGroup) {
-    let email = group.get('newEmail').value;
-    let emailConfirmation = group.get('newEmailConfirmation').value;
+  openChangeEmail() {
+    this.changeEmailModalOpen = false;
+    setTimeout(() => {
+      this.changeEmailModalOpen = true;
+    });
+  }
 
-    return email === emailConfirmation ? null : { notSame: true }
+  passwordChanged(newPassword: string) {
+    const updatedData = {
+      password: newPassword,
+      firstName: this.merchant.firstName,
+      lastName: this.merchant.lastName
+    } as Merchant;
+    this.merchant.password = newPassword;
+    this.merchantApiService.updateMerchant(updatedData).subscribe((merchant: Merchant) => {
+      this.merchant = merchant;
+    });
+  }
+
+  emailChanged(newEmail: string) {
+    const updatedData = {
+      email: newEmail,
+      firstName: this.merchant.firstName,
+      lastName: this.merchant.lastName
+    } as Merchant;
+    this.merchantApiService.updateMerchant(updatedData).subscribe((merchant: Merchant) => {
+      this.merchant = merchant;
+      this.form.get('currentEmail').setValue(merchant.email);
+    });
   }
 }
