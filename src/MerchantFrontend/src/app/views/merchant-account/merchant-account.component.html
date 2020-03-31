@@ -21,22 +21,21 @@
         </clr-input-container>
       </div>
 
-      <h4>E-Mail Andresse ändern</h4>
+      <h4>E-Mail-Adresse ändern</h4>
 
       <div class="input-group">
         <clr-input-container>
-          <label>Aktuelle E-Mail Adresse</label>
+          <label>Aktuelle E-Mail-Adresse</label>
           <input clrInput disabled type="email" formControlName="currentEmail">
         </clr-input-container>
 
         <clr-input-container>
-          <label>Neue E-Mail Adresse</label>
+          <label>Neue E-Mail-Adresse</label>
           <input clrInput type="email" formControlName="newEmail">
-          <clr-control-error>Error message that appears after focus is lost and control is invalid</clr-control-error>
         </clr-input-container>
 
         <clr-input-container>
-          <label>Neue E-Mail Adresse bestätigen</label>
+          <label>Neue E-Mail-Adresse bestätigen</label>
           <input clrInput type="email" formControlName="newEmailConfirmation">
         </clr-input-container>
       </div>
@@ -56,9 +55,9 @@
       </div>
 
       <button
-        class="btn"
+        class="btn btn-regular"
         (click)="resetChanges()">
-        Cancel
+        Abbrechen
       </button>
 
       <button
