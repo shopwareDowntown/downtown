@@ -94,7 +94,7 @@ class ProfileController
     }
 
     /**
-     * @Route(name="merchant-api.profile.image.save", methods={"POST"}, path="/merchant-api/v{version}/profile/media")
+     * @Route(name="merchant-api.profile.image.save", methods={"POST"}, path="/merchant-api/v{version}/profile/media", defaults={"csrf_protected"=false})
      */
     public function upload(Request $request, SalesChannelContext $salesChannelContext): JsonResponse
     {
