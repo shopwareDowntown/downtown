@@ -5,6 +5,8 @@
     color: #fff;
     display: flex;
     align-items: center;
+    position: relative;
+    overflow: hidden;
 
     .main-content {
         width: 100%;
@@ -16,13 +18,22 @@
         float: left;
     }
 
+    .text-container {
+        z-index: 10;
+    }
+
     .button-container {
-        margin-left: 200px;
+        margin-left: 10%;
+        z-index: 10;
     }
 
     .text-headline {
         font-weight: 600;
-        font-size: 20px;
+        font-size: 16px;
+    }
+
+    .text-subline {
+        display: none;
     }
 
     .btn-merchant {
@@ -33,5 +44,27 @@
             background: #eeeeee;
             cursor: pointer;
         }
+    }
+
+    .covid-bubble {
+        transform: rotate(180deg);
+        position: absolute;
+
+        right: -20%;
+        bottom: -110px;
+    }
+}
+
+@include media-breakpoint-up(sm) {
+    #merchant-banner .covid-bubble {
+        right: 10%;
+    }
+
+    #merchant-banner .text-headline {
+        font-size: 20px;
+    }
+
+    #merchant-banner .text-subline {
+        display: block;
     }
 }
