@@ -39,6 +39,10 @@
   --clr-btn-success-border-color: var(--sw-success);
   --clr-btn-link-color: var(--sw-primary);
 
+  // forms
+  --clr-forms-invalid-color: var(--sw-danger);
+  --clr-forms-subtext-color: var(--sw-regular);
+
   // headlines & text
   --clr-h1-font-weight: 700;
   --clr-h2-font-weight: 600;
@@ -147,6 +151,10 @@ body.no-scrolling .main-container .content-container .content-area {
   }
 }
 
+.clr-subtext {
+  margin-top: 8px;
+}
+
 .clr-input-wrapper {
   position: relative;
   max-width: unset;
@@ -173,6 +181,16 @@ body.no-scrolling .main-container .content-container .content-area {
     max-height: unset;
     padding: 20px;
     width: 100%;
+    transition: border-color .2s ease-in-out;
+
+    &:hover, &:focus, &:active {
+      border-color: var(--sw-primary) !important;
+    }
+
+    &[type="number"],
+    input[type="number"] {
+      padding: 0 20px !important;
+    }
 
     &.ng-dirty.ng-invalid {
       border-color: var(--sw-danger) !important;
@@ -205,6 +223,11 @@ body.no-scrolling .main-container .content-container .content-area {
     max-height: unset;
     padding: 0 20px;
     width: 100%;
+    transition: border-color .2s ease-in-out;
+
+    &:hover, &:focus, &:active {
+      border-color: var(--sw-primary) !important;
+    }
   }
 
   &::after {
@@ -227,6 +250,28 @@ body.no-scrolling .main-container .content-container .content-area {
   }
 }
 
+.clr-textarea-wrapper {
+  .clr-textarea {
+    box-shadow: none !important;
+    border-radius: 3px !important;
+    background: white !important;
+    border: var(--sw-border) !important;
+    color: var(--sw-regular) !important;
+    line-height: 1.6 !important;
+    min-height: 100px !important;
+    max-height: unset;
+    max-width: unset;
+    resize: vertical;
+    padding: 20px;
+    width: 100%;
+    transition: border-color .2s ease-in-out;
+
+    &:hover, &:focus, &:active {
+      border-color: var(--sw-primary) !important;
+    }
+  }
+}
+
 .clr-checkbox-wrapper label {
   color: var(--sw-color);
   margin-top: 24px;
@@ -237,7 +282,7 @@ body.no-scrolling .main-container .content-container .content-area {
   --clr-responsive-nav-trigger-bg-color: #000;
   --clr-nav-background-color: #F8F9FB;
   // active color
-  --clr-vertical-nav-icon-active-color: #189EFF;
+  --clr-vertical-nav-icon-active-color: var(--sw-primary);
   --clr-vertical-nav-item-active-color: #607182;
   --clr-vertical-nav-active-bg-color: rgba(24, 158, 255, 0.1);
   //hover
@@ -272,22 +317,6 @@ body.no-scrolling .main-container .content-container .content-area {
   .portal-vertical-nav {
     width: 100% !important;
     max-width: 100% !important;
-  }
-}
-
-.clr-textarea-wrapper {
-  .clr-textarea {
-    box-shadow: none !important;
-    border-radius: 3px !important;
-    background: white !important;
-    border: var(--sw-border) !important;
-    color: var(--sw-regular) !important;
-    line-height: 1 !important;
-    height: 48px !important;
-    min-height: 100px;
-    max-height: unset;
-    padding: 20px;
-    width: 100%;
   }
 }
 
