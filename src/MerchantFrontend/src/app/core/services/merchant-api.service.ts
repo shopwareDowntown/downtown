@@ -7,6 +7,7 @@ import { Authority } from '../models/authority.model';
 import { StateService } from '../state/state.service';
 import { map, take } from 'rxjs/operators';
 import { Category } from '../models/category.model';
+import { Country } from '../models/country.model';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -84,7 +85,7 @@ export class MerchantApiService {
   }
 
   updateMerchant(merchant: Merchant): Observable<Merchant> {
-    return this.http.patch<Merchant>(this.apiUrl + '/merchant-api/v1/profile', JSON.stringify(merchant), {headers: this.getHeaders()});
+      return this.http.patch<Merchant>(this.apiUrl + '/merchant-api/v1/profile', JSON.stringify(merchant), {headers: this.getJsonContentTypeHeaders() });
   }
 
   // category routes
@@ -127,7 +128,11 @@ export class MerchantApiService {
     return this.http.get<Authority[]>(this.apiUrl + '/merchant-api/v1/authorities');
   }
 
-  private getHeaders(): { [header: string]: string | string[]; } {
+  getCountries(): Observable<{ data: Country[]}> {
+    return this.http.get<{ data: Country[]}>(this.apiUrl + '/sales-channel-api/v1/country', {headers: this.getJsonContentTypeHeaders() });
+  }
+
+  private getHeaders(): { [header: string]: string | string[];} {
     return {
       'sw-access-key': this.accessKey,
       'sw-context-token': this.getSwContextToken()
