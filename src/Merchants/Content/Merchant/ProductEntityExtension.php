@@ -14,6 +14,7 @@ class ProductEntityExtension implements EntityExtensionInterface
     {
         return ProductDefinition::class;
     }
+
     /**
      * @inheritDoc
      */

@@ -14,9 +14,11 @@ use Shopware\Production\Merchants\Content\Merchant\MerchantDefinition;
 
 class MerchantMediaDefinition extends MappingEntityDefinition
 {
+    public const ENTITY_NAME = 'merchant_media';
+
     public function getEntityName(): string
     {
-        return 'merchant_media';
+        return self::ENTITY_NAME;
     }
 
     protected function defineFields(): FieldCollection

@@ -1,4 +1,6 @@
 import './module/sw-cms';
+import './module/sw-sales-channel/view/sw-sales-channel-detail-base';
+import './module/sw-sales-channel/page/sw-sales-channel-detail';
 
 import deDE from './module/sw-cms/snippet/de-DE.json';
 import enGB from './module/sw-cms/snippet/en-GB.json';

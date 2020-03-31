@@ -47,6 +47,10 @@
             <tag name="shopware.entity.definition" entity="merchant_reset_password_token"/>
         </service>
 
+        <service id="Shopware\Production\Merchants\System\SalesChannel\SalesChannelLandingPageDefinition">
+            <tag name="shopware.entity.definition" entity="sales_channel_landing_page"/>
+        </service>
+
         <service id="Shopware\Production\Merchants\Content\Merchant\CustomerEntityExtension">
             <tag name="shopware.entity.extension"/>
         </service>
@@ -61,6 +65,20 @@
 
         <service id="Shopware\Production\Merchants\Content\Merchant\OrderEntityExtension">
             <tag name="shopware.entity.extension"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\System\SalesChannel\Extensions\SalesChannelExtension">
+            <tag name="shopware.entity.extension"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\System\SalesChannel\Extensions\CmsPageExtension">
+            <tag name="shopware.entity.extension"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Storefront\Page\Navigation\NavigationPageSubscriber">
+            <argument type="service" id="Shopware\Core\Content\Cms\SalesChannel\SalesChannelCmsPageLoader"/>
+            <argument type="service" id="category.repository"/>
+            <tag name="kernel.event_listener"/>
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Services\NavigationLoader" decorates="Shopware\Core\Content\Category\Service\NavigationLoader">
