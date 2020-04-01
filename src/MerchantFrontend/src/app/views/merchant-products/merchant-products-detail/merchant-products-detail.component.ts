@@ -72,7 +72,11 @@ export class MerchantProductsDetailComponent implements OnInit{
     }
     product$.pipe(
       switchMap((product: {data: Product}) => {
-        return this.merchantApiService.addImageToProduct(this.form.get('media').value, product.data.id)
+        if (this.form.get('media') !== null) {
+          return this.merchantApiService.addImageToProduct(this.form.get('media').value, product.data.id)
+        } else {
+          return of(product);
+        }
       })).subscribe((product: {data: Product}) => {
       this.product = product.data;
     });

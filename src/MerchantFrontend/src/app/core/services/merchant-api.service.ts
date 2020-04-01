@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Merchant, MerchantRegistration, MerchantLoginResult } from '../models/merchant.model';
+import { Merchant, MerchantRegistration, MerchantLoginResult, PasswordReset } from '../models/merchant.model';
 import { Product, ProductListData } from '../models/product.model';
 import { Authority } from '../models/authority.model';
 import { StateService } from '../state/state.service';
@@ -132,6 +132,24 @@ export class MerchantApiService {
 
   getCountries(): Observable<{ data: Country[]}> {
     return this.http.get<{ data: Country[]}>(this.apiUrl + '/merchant-api/v1/country', {headers: this.getJsonContentTypeHeaders() });
+  }
+
+  resetPassword(email: PasswordReset): Observable<void> {
+    let headers = new HttpHeaders();
+    headers = headers.set('Content-Type', 'application/json');
+    return this.http.post<any>(this.apiUrl + '/merchant-api/v1/reset-password', JSON.stringify(email), {headers: headers})
+  }
+
+  resetPasswordConfirm(password: string, token: string): Observable<void> {
+    const body = {
+      newPassword: password,
+      token: token
+    };
+
+    let headers = new HttpHeaders();
+    headers = headers.set('Content-Type', 'application/json');
+
+    return this.http.post<any>(this.apiUrl + '/merchant-api/v1/reset-password-confirm', JSON.stringify(body), {headers: headers})
   }
 
   private getHeaders(): { [header: string]: string | string[];} {

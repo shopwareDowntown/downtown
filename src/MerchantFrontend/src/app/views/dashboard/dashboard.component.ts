@@ -12,21 +12,27 @@ import { ActivatedRoute } from '@angular/router';
 export class DashboardComponent implements OnInit{
   showRegisterOrganizationModal: boolean;
   showRegisterMerchantModal: boolean;
+  showPasswordResetConfirmModal = false;
   authorities$: Observable<Authority[]>;
   registrationCompleted = false;
+  token: string;
 
   constructor(
     private readonly merchantApiService: MerchantApiService,
-    private readonly route: ActivatedRoute
+    private readonly activeRoute: ActivatedRoute
   ) {}
 
 
   ngOnInit(): void {
+    this.activeRoute.params.subscribe((params) => {
+      if (params.token) {
+        this.token = params.token;
+        this.showPasswordResetConfirmModal = true;
+      }
+    });
     this.authorities$ = this.getAuthorities();
-    this.registrationCompleted = this.route.snapshot.queryParamMap.get("merchantRegistrationCompleted") === '1';
-    if (this.registrationCompleted) {
+    this.registrationCompleted = this.activeRoute.snapshot.queryParamMap.get("merchantRegistrationCompleted") === '1';
 
-    }
   }
 
   getAuthorities(): Observable<Authority[]>{

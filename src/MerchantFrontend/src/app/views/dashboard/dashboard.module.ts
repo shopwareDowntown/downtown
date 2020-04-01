@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard.component';
 import { SharedModule } from '../../shared/shared.module';
 import { CoreModule } from '../../core/core.module';
-import { ClrIconModule, ClrModalModule } from '@clr/angular';
+import { ClrIconModule, ClrInputModule, ClrModalModule } from '@clr/angular';
 import { MerchantRegisterModule } from '../merchant-register/merchant-register.module';
 import { OrganizationRegisterModule } from '../organization-register/organization-register.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MerchantLoginModule } from '../merchant-login/merchant-login.module';
+import { PasswordResetModalComponent } from './password-reset-modal/password-reset-modal.component';
 
 @NgModule({
   imports: [
@@ -19,10 +20,12 @@ import { MerchantLoginModule } from '../merchant-login/merchant-login.module';
     MerchantRegisterModule,
     OrganizationRegisterModule,
     ReactiveFormsModule,
-    MerchantLoginModule
+    MerchantLoginModule,
+    ClrInputModule
   ],
   declarations: [
-    DashboardComponent
+    DashboardComponent,
+    PasswordResetModalComponent
   ],
   exports: [
     DashboardComponent
