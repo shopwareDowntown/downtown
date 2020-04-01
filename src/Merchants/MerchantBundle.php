@@ -3,7 +3,6 @@
 namespace Shopware\Production\Merchants;
 
 use Shopware\Core\Framework\Bundle;
-use Shopware\Core\System\CustomField\CustomFieldTypes;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;

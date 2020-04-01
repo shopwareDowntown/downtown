@@ -14,11 +14,6 @@ class CartContainsStoreWindowLineItem extends Error
      */
     private $key;
 
-    /**
-     * @var string
-     */
-    private $property;
-
     public function __construct(string $key)
     {
         $this->key = $key;

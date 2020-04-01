@@ -1,16 +1,18 @@
-<?php
+<?php declare(strict_types=1);
 
 use Shopware\Core\Framework\Test\TestCaseBase\KernelLifecycleManager;
+use Shopware\Core\Kernel;
 use Symfony\Component\Dotenv\Dotenv;
 
-$_ENV['PROJECT_ROOT'] = $_SERVER['PROJECT_ROOT'] = $_SERVER['PROJECT_ROOT'] ?? dirname(__DIR__);
+$_SERVER['PROJECT_ROOT'] = $_SERVER['PROJECT_ROOT'] ?? dirname(__DIR__);
+$_ENV['PROJECT_ROOT'] = $_SERVER['PROJECT_ROOT'];
 define('TEST_PROJECT_DIR', $_SERVER['PROJECT_ROOT']);
 
 $testEnv = [
     'APP_ENV' => 'test',
     'APP_DEBUG' => 1,
     'APP_SECRET' => 's$cretf0rt3st',
-    'KERNEL_CLASS' => \Shopware\Production\Kernel::class,
+    'KERNEL_CLASS' => Kernel::class,
     'SHOPWARE_ES_ENABLED' => '',
     'SHOPWARE_ES_INDEXING_ENABLED' => '',
     'JWT_PRIVATE_KEY_PASSPHRASE' => 'shopware',
@@ -18,19 +20,21 @@ $testEnv = [
 ];
 
 foreach ($testEnv as $key => $value) {
-    $_ENV[$key] = $_SERVER[$key] = $value;
+    $_SERVER[$key] = $value;
+    $_ENV[$key] = $_SERVER[$key];
 }
 
 $jwtDir = TEST_PROJECT_DIR . '/var/test/jwt';
 
 if (!file_exists($jwtDir) && !mkdir($jwtDir, 0770, true) && !is_dir($jwtDir)) {
-    throw new \RuntimeException(sprintf('Directory "%s" was not created', $jwtDir));
+    throw new RuntimeException(sprintf('Directory "%s" was not created', $jwtDir));
 }
 
 // generate jwt pk
 $key = openssl_pkey_new([
     'digest_alg' => 'aes256',
     'private_key_type' => OPENSSL_KEYTYPE_RSA,
+    'private_key_bits' => 4096,
     'encrypt_key_cipher' => OPENSSL_CIPHER_AES_256_CBC,
     'encrypt_key' => $_SERVER['JWT_PRIVATE_KEY_PASSPHRASE']
 ]);

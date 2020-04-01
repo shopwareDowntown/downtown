@@ -4,9 +4,9 @@ namespace Shopware\Production\Merchants\Content\Merchant\Services;
 
 use Shopware\Core\Checkout\Customer\CustomerEntity;
 use Shopware\Core\Checkout\Customer\Event\CustomerDoubleOptInRegistrationEvent;
+use Shopware\Core\Checkout\Customer\Exception\CustomerNotFoundException;
 use Shopware\Core\Content\Newsletter\Exception\SalesChannelDomainNotFoundException;
 use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Constraints\Type;
 class RegistrationService
 {
     /**
-     * @var EntityRepository
+     * @var EntityRepositoryInterface
      */
     private $merchantRepository;
 
@@ -53,7 +53,7 @@ class RegistrationService
     private $dataValidator;
 
     public function __construct(
-        EntityRepository $merchantRepository,
+        EntityRepositoryInterface $merchantRepository,
         SystemConfigService $systemConfigService,
         EntityRepositoryInterface $domainRepository,
         EventDispatcherInterface $eventDispatcher,
@@ -89,6 +89,9 @@ class RegistrationService
         $merchant = $result->first();
 
         $customer = $merchant->getCustomer();
+        if ($customer === null) {
+            throw new CustomerNotFoundException($parameters['email']);
+        }
 
         try {
             $this->createDoubleOptInEvent($salesChannelContext, $customer);

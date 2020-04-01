@@ -4,13 +4,7 @@ declare(strict_types=1);
 
 namespace Shopware\Production\Command;
 
-use Doctrine\DBAL\Configuration;
-use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\FetchMode;
-use Shopware\Core\Framework\Adapter\Console\ShopwareStyle;
-use Shopware\Production\Kernel;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -43,7 +37,7 @@ class SystemGenerateJwtSecretCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        if (!extension_loaded('openssl')) {
+        if (!\extension_loaded('openssl')) {
             $io->error('extension openssl is required');
 
             return 1;
@@ -74,6 +68,7 @@ class SystemGenerateJwtSecretCommand extends Command
         $key = openssl_pkey_new([
             'digest_alg' => 'aes256',
             'private_key_type' => OPENSSL_KEYTYPE_RSA,
+            'private_key_bits' => 4096,
             'encrypt_key' => $passphrase,
             'encrypt_key_cipher' => OPENSSL_CIPHER_AES_256_CBC
         ]);

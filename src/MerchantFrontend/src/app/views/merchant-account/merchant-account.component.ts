@@ -41,7 +41,7 @@ export class MerchantAccountComponent implements OnInit {
     const updateData = {
       firstName: this.form.value.firstName,
       lastName: this.form.value.lastName
-    } as Merchant
+    } as Merchant;
 
     this.merchantApiService.updateMerchant(updateData).subscribe((merchant: Merchant) => {
       this.merchant = merchant;

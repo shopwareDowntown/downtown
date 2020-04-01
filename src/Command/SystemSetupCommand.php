@@ -85,8 +85,7 @@ class SystemSetupCommand extends Command
 
         $this->generateJwt($input, $io);
 
-        $key = Key::createNewRandomKey();
-        $env['APP_SECRET'] = $key->saveToAsciiSafeString();
+        $env['APP_SECRET'] = Key::createNewRandomKey()->saveToAsciiSafeString();
         $env['INSTANCE_ID'] = $this->generateInstanceId();
 
         $io->section('Database information');
@@ -217,11 +216,7 @@ class SystemSetupCommand extends Command
             $parameters['--jwt-passphrase'] = $input->getOption('jwt-passphrase');
         }
 
-        $ret = $command->run(new ArrayInput($parameters, $command->getDefinition()), $io);
-
-
-
-        return $ret;
+        return $command->run(new ArrayInput($parameters, $command->getDefinition()), $io);
     }
 
     private function generateInstanceId(): string

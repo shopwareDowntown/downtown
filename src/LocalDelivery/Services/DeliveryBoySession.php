@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace Shopware\Production\LocalDelivery\Services;
 
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Production\LocalDelivery\DeliveryBoy\DeliveryBoyEntity;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -19,18 +18,12 @@ class DeliveryBoySession
      */
     private $session;
 
-    /**
-     * @var EntityRepositoryInterface
-     */
-    private $deliveryBoyRepository;
-
-    public function __construct(SessionInterface $session, EntityRepositoryInterface $deliveryBoyRepository)
+    public function __construct(SessionInterface $session)
     {
         $this->session = $session;
-        $this->deliveryBoyRepository = $deliveryBoyRepository;
     }
 
-    public function login(DeliveryBoyEntity $deliveryBoyEntity)
+    public function login(DeliveryBoyEntity $deliveryBoyEntity): void
     {
         $this->session->set('deliveryBoyId', $deliveryBoyEntity->getId());
         $this->session->set('deliveryBoyEmail', $deliveryBoyEntity->getEmail());
@@ -46,14 +39,14 @@ class DeliveryBoySession
         ];
     }
 
-    public function logout()
+    public function logout(): void
     {
         $this->session->remove('deliveryBoyId');
         $this->session->remove('deliveryBoyEmail');
         $this->session->remove('deliveryBoyPassword');
     }
 
-    public function getSessionId()
+    public function getSessionId(): string
     {
         return $this->session->getId();
     }

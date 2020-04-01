@@ -58,7 +58,7 @@ class MapboxService
     public function getGpsCoordinates(string $searchtext, Context $context) : array
     {
         if (!$this->mapApiRequestLimiterService->increaseCount('search-temporary-geocoding-api', $context)) {
-            throw new \Exception('Map api limit reached for search-temporary-geocoding-api');
+            throw new \RuntimeException('Map api limit reached for search-temporary-geocoding-api');
         }
 
         $response = $this->client->get('/geocoding/v5/' . self::ENDPOINT . '/' . $searchtext . '.json', [
@@ -69,13 +69,13 @@ class MapboxService
             ]
         ]);
         if ($response->getStatusCode() !== 200) {
-            throw new \Exception("Error from mapbox");
+            throw new \RuntimeException('Error from mapbox');
         }
 
         $data = json_decode($response->getBody()->getContents(), true);
 
         if (empty($data['features'])) {
-            throw new \Exception("No coordinates found.");
+            throw new \RuntimeException('No coordinates found.');
         }
 
         return $data['features'][0]['center'];
@@ -91,16 +91,16 @@ class MapboxService
     public function getOptimizedRoute(array $coordinatesArray, string $profile, Context $context): array
     {
         if (!$this->mapApiRequestLimiterService->increaseCount('navigation-optimization-api', $context)) {
-            throw new \Exception('Map api limit reached for navigation-optimization-api');
+            throw new \RuntimeException('Map api limit reached for navigation-optimization-api');
         }
 
         $coordinatesQueryString = '';
 
         foreach ($coordinatesArray as $index => $coordinates) {
-            if($index != 0) {
-                $coordinatesQueryString = $coordinatesQueryString . ';';
+            if($index !== 0) {
+                $coordinatesQueryString .= ';';
             }
-            $coordinatesQueryString = $coordinatesQueryString . $coordinates[0] . ',' . $coordinates[1];
+            $coordinatesQueryString .= $coordinates[0] . ',' . $coordinates[1];
         }
 
         $response = $this->client->get('/optimized-trips/v1/mapbox/' . $profile . '/' . $coordinatesQueryString, [
@@ -110,10 +110,9 @@ class MapboxService
         ]);
 
         if ($response->getStatusCode() !== 200) {
-            throw new \Exception("Error from mapbox");
+            throw new \RuntimeException('Error from mapbox');
         }
 
-        $result = json_decode($response->getBody()->getContents(), true);
-        return $result;
+        return json_decode($response->getBody()->getContents(), true);
     }
 }

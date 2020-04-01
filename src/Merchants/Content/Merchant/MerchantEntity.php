@@ -159,13 +159,6 @@ class MerchantEntity extends Entity
     protected $cover;
 
     /**
-     * @return string|null
-     */
-    public function getVersionId(): ?string
-    {
-        return $this->versionId;
-    }
-    /**
      * @return bool
      */
     public function isPublic(): bool

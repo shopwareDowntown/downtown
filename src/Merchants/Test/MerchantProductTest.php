@@ -4,16 +4,13 @@ namespace Shopware\Merchants\Test;
 
 use PHPUnit\Framework\TestCase;
 use Shopware\Core\Checkout\Customer\SalesChannel\AccountService;
-use Shopware\Core\Content\Product\ProductCollection;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\Test\TestCaseBase\IntegrationTestBehaviour;
 use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\Framework\Validation\DataBag\DataBag;
 use Shopware\Core\System\SalesChannel\Context\SalesChannelContextService;
-use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Production\Merchants\Content\Merchant\Api\MerchantProductController;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,19 +18,12 @@ class MerchantProductTest extends TestCase
 {
     use IntegrationTestBehaviour;
 
-    /**
-     * @var EntityRepositoryInterface
-     */
-    private $customerRepository;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function testCreateCustomProductField(): void
     {
-        list($token, $salesChannelContext) = $this->login();
+        [
+            $token,
+            $salesChannelContext
+        ] = $this->login();
 
         $productController = $this->getContainer()->get(MerchantProductController::class);
         $request = new Request(
@@ -58,7 +48,10 @@ class MerchantProductTest extends TestCase
     public function testGetList(): void
     {
         $this->markTestSkipped('Not working');
-        list($token, $salesChannelContext) = $this->login();
+        [
+            $token,
+            $salesChannelContext
+        ] = $this->login();
 
         $productController = $this->getContainer()->get(MerchantProductController::class);
         $request = new Request(

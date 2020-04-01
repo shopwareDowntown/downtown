@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Shopware\Production\Merchants\Content\Merchant\Exception;
 
@@ -10,11 +10,6 @@ class CartContainsMultipleMerchants extends Error
      * @var string
      */
     private $key;
-
-    /**
-     * @var string
-     */
-    private $property;
 
     public function __construct(string $key)
     {

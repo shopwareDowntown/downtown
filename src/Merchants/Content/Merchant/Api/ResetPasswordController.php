@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Shopware\Production\Merchants\Content\Merchant\Api;
 
@@ -140,7 +140,7 @@ class ResetPasswordController
 
         $ids = $this->merchantResetPasswordTokenRepository->searchIds($criteria, Context::createDefaultContext())->getIds();
 
-        if (!count($ids)) {
+        if (!\count($ids)) {
             return;
         }
 

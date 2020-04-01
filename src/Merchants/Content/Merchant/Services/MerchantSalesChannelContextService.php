@@ -11,7 +11,7 @@ use Shopware\Production\Merchants\Content\Merchant\SalesChannelContextExtension;
 
 class MerchantSalesChannelContextService implements SalesChannelContextServiceInterface
 {
-    const PERSISTSER_KEY = 'merchant_id';
+    public const PERSISTSER_KEY = 'merchant_id';
 
     /**
      * @var EntityRepositoryInterface
@@ -42,7 +42,7 @@ class MerchantSalesChannelContextService implements SalesChannelContextServiceIn
         $salesChannelContext = $this->decorated->get($salesChannelId, $token, $languageId);
         $params = $this->contextPersister->load($token);
 
-        if (!array_key_exists(self::PERSISTSER_KEY, $params)) {
+        if (!\array_key_exists(self::PERSISTSER_KEY, $params)) {
             return $salesChannelContext;
         }
 

@@ -1,16 +1,14 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Shopware\Production\Merchants\Content\Merchant\Subscriber;
 
 use Shopware\Core\Checkout\Cart\Event\CheckoutOrderPlacedEvent;
-use Shopware\Core\Checkout\Order\OrderEntity;
 use Shopware\Core\Content\MailTemplate\Service\MailSender;
-use Shopware\Core\Content\MailTemplate\Service\MailService;
 use Shopware\Core\Content\Product\ProductEntity;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
-use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
+use Shopware\Production\Merchants\Content\Merchant\MerchantCollection;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
 use Twig\Environment;
 
@@ -55,9 +53,19 @@ class OrderPlacedSubscriber
         $this->systemConfigService = $systemConfigService;
     }
 
-    public function __invoke(CheckoutOrderPlacedEvent $orderPlacedEvent)
+    public function __invoke(CheckoutOrderPlacedEvent $orderPlacedEvent): void
     {
-        $productId = $orderPlacedEvent->getOrder()->getLineItems()->first()->getProductId();
+        $orderLineItemCollection = $orderPlacedEvent->getOrder()->getLineItems();
+        if ($orderLineItemCollection === null) {
+            return;
+        }
+
+        $firstLineItem = $orderLineItemCollection->first();
+        if ($firstLineItem === null) {
+            return;
+        }
+
+        $productId = $firstLineItem->getProductId();
 
         $criteria = new Criteria([$productId]);
         $criteria->addAssociation('merchants');
@@ -65,8 +73,16 @@ class OrderPlacedSubscriber
         /** @var ProductEntity $product */
         $product = $this->productRepository->search($criteria, $orderPlacedEvent->getContext())->first();
 
-        /** @var MerchantEntity $merchant */
-        $merchant = $product->getExtension('merchants')->first();
+        /** @var MerchantCollection|null $merchants */
+        $merchants = $product->getExtension('merchants');
+        if ($merchants === null) {
+            return;
+        }
+
+        $merchant = $merchants->first();
+        if ($merchant === null) {
+            return;
+        }
 
         $this->orderRepository->update([
             [

@@ -4,7 +4,6 @@ namespace Shopware\Merchants\Test;
 
 use PHPUnit\Framework\TestCase;
 use Shopware\Core\Defaults;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\Test\TestCaseBase\IntegrationTestBehaviour;
 use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
@@ -17,23 +16,13 @@ class MerchantRegistrationTest extends TestCase
     use IntegrationTestBehaviour;
     use StorefrontControllerTestBehaviour;
 
-    /**
-     * @var EntityRepositoryInterface
-     */
-    private $customerRepository;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function testMerchantRegistration(): void
     {
         $merchantData =
             [
                 'email' => Uuid::randomHex() . '@example.com',
                 'password' => 'a-valid-password',
-                'publicCompanyName' => "foo",
+                'publicCompanyName' => 'foo',
                 'salesChannelId' => Defaults::SALES_CHANNEL
             ];
 

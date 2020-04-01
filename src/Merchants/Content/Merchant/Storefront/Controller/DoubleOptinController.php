@@ -7,7 +7,6 @@ use Shopware\Core\Checkout\Customer\Exception\CustomerNotFoundByHashException;
 use Shopware\Core\Checkout\Customer\SalesChannel\AccountRegistrationService;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\Framework\Validation\DataBag\QueryDataBag;
-use Shopware\Core\Framework\Validation\Exception\ConstraintViolationException;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Storefront\Controller\StorefrontController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -37,7 +36,7 @@ class DoubleOptinController extends StorefrontController
     {
         try {
             $this->accountRegistrationService->finishDoubleOptInRegistration($queryDataBag, $context);
-        } catch (CustomerNotFoundByHashException | CustomerAlreadyConfirmedException | ConstraintViolationException $exception) {
+        } catch (CustomerNotFoundByHashException | CustomerAlreadyConfirmedException $exception) {
             $this->addFlash('danger', $this->trans('account.confirmationIsAlreadyDone'));
 
             return new RedirectResponse(getenv('MERCHANT_PORTAL'));
