@@ -57,7 +57,7 @@ export class MerchantDetailsComponent implements OnInit {
     // update data
     const updatedData = {
       publicCompanyName: newData.publicCompanyName,
-      owner: newData.owner,
+      publicOwner: newData.publicOwner,
       publicPhoneNumber: newData.publicPhoneNumber,
       publicEmail: newData.publicEmail,
       publicWebsite: newData.publicWebsite,
@@ -68,7 +68,7 @@ export class MerchantDetailsComponent implements OnInit {
       street: newData.street,
       zip: newData.zip,
       city: newData.city,
-      country: newData.country
+      countryId: newData.countryId
     } as Merchant;
 
     this.merchantApiService.updateMerchant(updatedData)
@@ -81,11 +81,11 @@ export class MerchantDetailsComponent implements OnInit {
     this.profileForm = this.formBuilder.group({
       public: this.merchant.public,
       publicCompanyName: [this.merchant.publicCompanyName, Validators.required],
-      owner: [this.merchant.owner, Validators.required],
+      publicOwner: [this.merchant.publicOwner, Validators.required],
       street: [this.merchant.street, Validators.required],
       zip: [this.merchant.zip, Validators.required],
       city: [this.merchant.city, Validators.required],
-      country: [this.merchant.country, Validators.required],
+      countryId: [this.merchant.countryId, Validators.required],
       categoryId: [this.merchant.categoryId, Validators.required],
       publicPhoneNumber: [this.merchant.publicPhoneNumber],
       publicEmail: [this.merchant.publicEmail],

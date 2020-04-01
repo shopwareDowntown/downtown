@@ -58,8 +58,8 @@
             clrInput
             placeholder="Inhaber*in der Firma"
             type="text"
-            formControlName="owner"
-            name="owner"
+            formControlName="publicOwner"
+            name="publicOwner"
           />
         </clr-input-container>
 
@@ -98,7 +98,7 @@
 
         <clr-select-container>
           <label>Land</label>
-          <select clrSelect name="country" formControlName="country">
+          <select clrSelect name="countryId" formControlName="countryId">
             <option *ngFor="let country of countries" [value]="country.id">
               {{ country.name }}
             </option>

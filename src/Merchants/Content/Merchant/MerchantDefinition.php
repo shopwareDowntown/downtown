@@ -26,6 +26,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Field\StringField;
 use Shopware\Core\Framework\DataAbstractionLayer\FieldCollection;
 use Shopware\Core\System\Country\CountryDefinition;
 use Shopware\Core\System\SalesChannel\SalesChannelDefinition;
+use Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantAccessToken\MerchantAccessTokenDefinition;
 use Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantMedia\MerchantMediaDefinition;
 use Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantOrder\MerchantOrderDefinition;
 use Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantProduct\MerchantProductDefinition;
@@ -55,6 +56,7 @@ class MerchantDefinition extends EntityDefinition
     {
         return new FieldCollection([
             (new IdField('id', 'id'))->addFlags(new PrimaryKey(), new Required()),
+            (new BoolField('active', 'active')),
 
             // public profile fields
             (new BoolField('public', 'public')),
@@ -84,16 +86,15 @@ class MerchantDefinition extends EntityDefinition
             (new StringField('phone_number', 'phoneNumber')),
 
             // internal model fields
-            (new FkField('customer_id', 'customerId', CustomerDefinition::class)),
-            (new OneToOneAssociationField('customer', 'customer_id', 'id', CustomerDefinition::class, false))->addFlags(new CascadeDelete()),
-
+            (new StringField('activation_code', 'activationCode')),
             (new FkField('sales_channel_id', 'salesChannelId', SalesChannelDefinition::class))->addFlags(new Required()),
             (new OneToOneAssociationField('salesChannel', 'sales_channel_id', 'id', SalesChannelDefinition::class, false)),
 
             (new FkField('cover_id', 'coverId', MediaDefinition::class)),
-            (new OneToOneAssociationField('cover', 'cover_id', 'id', MediaDefinition::class, false)),
+            (new OneToOneAssociationField('cover', 'cover_id', 'id', MediaDefinition::class, false))->addFlags(new CascadeDelete()),
 
-            (new OneToManyAssociationField('resetPasswordTokens', MerchantResetPasswordTokenDefinition::class, 'merchant_id')),
+            (new OneToManyAssociationField('resetPasswordTokens', MerchantResetPasswordTokenDefinition::class, 'merchant_id'))->addFlags(new CascadeDelete()),
+            (new OneToManyAssociationField('accessTokens', MerchantAccessTokenDefinition::class, 'merchant_id'))->addFlags(new CascadeDelete()),
 
             new ManyToManyAssociationField('products', ProductDefinition::class, MerchantProductDefinition::class, 'merchant_id', 'product_id'),
             new ManyToManyAssociationField('orders', OrderDefinition::class, MerchantOrderDefinition::class, 'merchant_id', 'order_id'),

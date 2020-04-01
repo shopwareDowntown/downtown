@@ -4,9 +4,10 @@ namespace Shopware\Production\Merchants\Content\Merchant\Services;
 
 use Shopware\Core\Checkout\Customer\CustomerEntity;
 use Shopware\Core\Checkout\Customer\Event\CustomerDoubleOptInRegistrationEvent;
-use Shopware\Core\Checkout\Customer\Exception\CustomerNotFoundException;
+use Shopware\Core\Content\MailTemplate\Service\MailSender;
 use Shopware\Core\Content\Newsletter\Exception\SalesChannelDomainNotFoundException;
 use Shopware\Core\Framework\Context;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
@@ -24,11 +25,12 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
+use Twig\Environment;
 
 class RegistrationService
 {
     /**
-     * @var EntityRepositoryInterface
+     * @var EntityRepository
      */
     private $merchantRepository;
 
@@ -38,32 +40,32 @@ class RegistrationService
     private $systemConfigService;
 
     /**
-     * @var EntityRepositoryInterface
-     */
-    private $domainRepository;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
      * @var DataValidator
      */
     private $dataValidator;
 
+    /**
+     * @var Environment
+     */
+    private $twig;
+
+    /**
+     * @var MailSender
+     */
+    private $mailService;
+
     public function __construct(
-        EntityRepositoryInterface $merchantRepository,
+        EntityRepository $merchantRepository,
         SystemConfigService $systemConfigService,
-        EntityRepositoryInterface $domainRepository,
-        EventDispatcherInterface $eventDispatcher,
-        DataValidator $dataValidator
+        DataValidator $dataValidator,
+        Environment $twig,
+        MailSender $mailService
     ) {
         $this->merchantRepository = $merchantRepository;
         $this->systemConfigService = $systemConfigService;
-        $this->domainRepository = $domainRepository;
-        $this->eventDispatcher = $eventDispatcher;
         $this->dataValidator = $dataValidator;
+        $this->twig = $twig;
+        $this->mailService = $mailService;
     }
 
     public function registerMerchant(array $parameters, SalesChannelContext $salesChannelContext): string
@@ -79,68 +81,19 @@ class RegistrationService
             throw new EmailAlreadyExistsException('Email address is already taken');
         }
 
+        $parameters['activationCode'] = Uuid::randomHex();
+
         $this->merchantRepository->create([$parameters], $salesChannelContext->getContext());
 
         $criteria = new Criteria([$parameters['id']]);
-        $criteria->addAssociation('customer.salutation');
 
         $result = $this->merchantRepository->search($criteria, $salesChannelContext->getContext());
         /** @var MerchantEntity $merchant */
         $merchant = $result->first();
 
-        $customer = $merchant->getCustomer();
-        if ($customer === null) {
-            throw new CustomerNotFoundException($parameters['email']);
-        }
-
-        try {
-            $this->createDoubleOptInEvent($salesChannelContext, $customer);
-        } catch (SalesChannelDomainNotFoundException $e) {
-            //nth
-        }
+        $this->sendMail($merchant, $salesChannelContext);
 
         return $parameters['id'];
-    }
-
-    private function getConfirmUrl(SalesChannelContext $context, CustomerEntity $customer): string
-    {
-        $domainUrl = $this->systemConfigService
-            ->get('core.loginRegistration.doubleOptInDomain', $context->getSalesChannel()->getId());
-
-        if (!$domainUrl) {
-            $criteria = new Criteria();
-            $criteria->addFilter(new EqualsFilter('salesChannelId', $context->getSalesChannel()->getId()));
-            $criteria->setLimit(1);
-
-            $domain = $this->domainRepository
-                ->search($criteria, $context->getContext())
-                ->first();
-
-            if (!$domain) {
-                throw new SalesChannelDomainNotFoundException($context->getSalesChannel());
-            }
-
-            $domainUrl = $domain->getUrl();
-        }
-
-        return sprintf(
-            $domainUrl . '/merchant/registration/confirm?em=%s&hash=%s',
-            hash('sha1', $customer->getEmail()),
-            $customer->getHash()
-        );
-    }
-
-    /**
-     * @param SalesChannelContext $salesChannelContext
-     * @param CustomerEntity|null $customer
-     * @throws SalesChannelDomainNotFoundException
-     */
-    private function createDoubleOptInEvent(SalesChannelContext $salesChannelContext, CustomerEntity $customer): void
-    {
-        $url = $this->getConfirmUrl($salesChannelContext, $customer);
-        $event = new CustomerDoubleOptInRegistrationEvent($customer, $salesChannelContext, $url);
-
-        $this->eventDispatcher->dispatch($event);
     }
 
     private function isMailAvailable(string $email): bool
@@ -158,5 +111,32 @@ class RegistrationService
             ->add('email', new Email())
             ->add('salesChannelId', new EntityExists(['entity' => 'sales_channel', 'context' => $salesChannelContext->getContext()]))
             ->add('password', new NotBlank(), new Length(['min' => 8]));
+    }
+
+    private function sendMail(MerchantEntity $merchant, SalesChannelContext $context): void
+    {
+        $html = $this->twig->render('@Merchant/email/merchant_registration.html.twig', [
+            'merchant' => $merchant,
+            'confirmUrl' => $this->getConfirmUrl($merchant, $context)
+        ]);
+
+        $senderEmail = $this->systemConfigService->get('core.basicInformation.email');
+
+        $mail = new \Swift_Message('Registrierung Bestätigung');
+        $mail->addTo($merchant->getEmail(), $merchant->getPublicCompanyName());
+        $mail->addFrom($senderEmail);
+        $mail->setBody($html, 'text/html');
+
+        $this->mailService->send($mail);
+    }
+
+    private function getConfirmUrl(MerchantEntity $merchantEntity, SalesChannelContext $context): string
+    {
+        $domainUrl = $context->getSalesChannel()->getDomains()->first()->getUrl();
+
+        return sprintf(
+            $domainUrl . '/merchant/registration/confirm?hash=%s',
+            $merchantEntity->getActivationCode()
+        );
     }
 }

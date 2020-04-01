@@ -19,6 +19,7 @@ class MerchantBundle extends Bundle
         parent::build($container);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/DependencyInjection/'));
+        $loader->load('api.xml');
         $loader->load('merchant.xml');
         $loader->load('merchant_listing.xml');
         $loader->load('commands.xml');
