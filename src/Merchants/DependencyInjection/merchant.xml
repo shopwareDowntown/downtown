@@ -182,11 +182,5 @@
         <service id="Shopware\Production\Merchants\Content\Merchant\Api\OrderListController" public="true">
             <argument type="service" id="merchant.repository"/>
         </service>
-
-        <service id="Shopware\Production\Merchants\Content\Merchant\Cms\MerchantListingCmsElementResolver" public="true">
-            <argument type="service" id="merchant.repository"/>
-            <argument type="service" id="request_stack"/>
-            <tag name="shopware.cms.data_resolver" />
-        </service>
     </services>
 </container>
