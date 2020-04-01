@@ -15,7 +15,7 @@ class IndustriesTest extends TestCase
 {
     use IntegrationTestBehaviour;
 
-    public function testListing()
+    public function testListing(): void
     {
         $salesChannelContext = $this->getContainer()
                 ->get(SalesChannelContextService::class)
@@ -25,6 +25,6 @@ class IndustriesTest extends TestCase
 
         $result = $this->getContainer()->get(IndustriesController::class)->load($salesChannelContext);
 
-        static::assertGreaterThan(16, count(json_decode($result->getContent())));
+        static::assertGreaterThan(16, \count(json_decode($result->getContent(), true)));
     }
 }

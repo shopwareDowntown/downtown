@@ -96,7 +96,7 @@ class SystemInstallCommand extends Command
 
         $tables = $connection->query('SHOW TABLES')->fetchAll(FetchMode::COLUMN);
 
-        if (!in_array('migration', $tables, true)) {
+        if (!\in_array('migration', $tables, true)) {
             $output->writeln('Importing base schema.sql');
             $connection->exec($this->getBaseSchema());
         }
@@ -146,14 +146,11 @@ class SystemInstallCommand extends Command
             ];
         }
 
-        $commands = array_merge($commands, [
-                [
-                    'command' => 'assets:install',
-                    '--no-cleanup' => true,
-                ],
-                [
-                    'command' => 'cache:clear'
-                ]
+        array_push($commands, [
+            'command' => 'assets:install',
+            '--no-cleanup' => true,
+        ], [
+            'command' => 'cache:clear'
         ]);
 
         $this->runCommands($commands, $output);
@@ -170,8 +167,6 @@ class SystemInstallCommand extends Command
     private function runCommands(array $commands, OutputInterface $output): int
     {
         foreach($commands as $parameters) {
-            $output->writeln('');
-
             $command = $this->getApplication()->find($parameters['command']);
             unset($parameters['command']);
             $returnCode = $command->run(new ArrayInput($parameters, $command->getDefinition()), $output);

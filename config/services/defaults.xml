@@ -32,6 +32,7 @@
         </service>
         <service id="Shopware\Production\Command\SystemUpdatePrepareCommand">
             <argument type="service" id="service_container" />
+            <argument type="service" id="event_dispatcher"/>
             <tag name="console.command"/>
         </service>
 

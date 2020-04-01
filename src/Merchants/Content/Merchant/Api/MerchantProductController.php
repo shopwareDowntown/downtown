@@ -121,22 +121,40 @@ class MerchantProductController
         $productsArray = [];
         /** @var ProductEntity $product */
         foreach ($products as $key => $product) {
+            $priceCollection = $product->getPrice();
+            if ($priceCollection === null) {
+                continue;
+            }
+
+            $productPrice = $priceCollection->first();
+            if ($productPrice === null) {
+                continue;
+            }
+
+            $productTax = $product->getTax();
+            if ($productTax === null) {
+                continue;
+            }
+
             $productData = [
                 'id' => $product->getId(),
                 'name' => $product->getTranslation('name'),
                 'productNumber' => $product->getProductNumber(),
                 'stock' => $product->getStock(),
                 'description' => $product->getTranslation('description'),
-                'price' => $product->getPrice()->first()->getGross(),
-                'tax' => $product->getTax()->getTaxRate(),
+                'price' => $productPrice->getGross(),
+                'tax' => $productTax->getTaxRate(),
                 'active' => $product->getActive(),
                 'productType' => $product->getCustomFields()['productType']
             ];
 
-            if ($product->getMedia()->count() > 0) {
-                foreach ($product->getMedia() as $media) {
-                    $productData['media'][] = $media->getMedia()->getUrl();
+            foreach ($product->getMedia() as $media) {
+                $mediaEntity = $media->getMedia();
+                if ($mediaEntity === null) {
+                    continue;
                 }
+
+                $productData['media'][] = $mediaEntity->getUrl();
             }
 
             $productsArray[] = $productData;
@@ -270,11 +288,18 @@ class MerchantProductController
         }
 
         if ($request->request->has('price')) {
+            $productTax = $product->getTax();
+            if ($productTax === null) {
+                throw new NotFoundHttpException(
+                    sprintf('No tax specified for the product with the id "%s"', $productId)
+                );
+            }
+
             $productData['price'] = [
                 [
                     'currencyId' => Defaults::CURRENCY,
                     'gross' => $request->request->get('price'),
-                    'net' => $request->request->get('price') / (1 + $product->getTax()->getTaxRate()/100),
+                    'net' => $request->request->get('price') / (1 + $productTax->getTaxRate()/100),
                     'linked' => true
                 ]
             ];
@@ -303,7 +328,22 @@ class MerchantProductController
 
     private function getProductFromMerchant(string $productId, SalesChannelContext $context): ProductEntity
     {
-        $product = $this->getMerchantFromContext($context)->getProducts()->get($productId);
+        $merchantEntity = $this->getMerchantFromContext($context);
+        if ($merchantEntity === null) {
+            throw new NotFoundHttpException('Could not find merchant for the given context');
+        }
+
+        $productCollection = $merchantEntity->getProducts();
+        if ($productCollection === null) {
+            throw new NotFoundHttpException(
+                sprintf(
+                    'Could not find any products for the merchant with the id "%s"',
+                    $merchantEntity->getId()
+                )
+            );
+        }
+
+        $product = $productCollection->get($productId);
 
         if (!$product) {
             throw new NotFoundHttpException(sprintf('Cannot find product by id %s for current merchant.', $productId));
@@ -368,16 +408,21 @@ class MerchantProductController
 
     private function validateProductType(string $productType): void
     {
-        if (in_array($productType, self::PRODUCT_TYPES)) {
+        if (\in_array($productType, self::PRODUCT_TYPES, true)) {
             return;
         }
 
         throw new \InvalidArgumentException('The product type ' . $productType . ' is not valid. One values must these must be set: ' . implode(', ', self::PRODUCT_TYPES));
     }
 
-    private function getMerchantFromContext(SalesChannelContext $context): MerchantEntity
+    private function getMerchantFromContext(SalesChannelContext $context): ?MerchantEntity
     {
-        $customerId = $context->getCustomer()->getId();
+        $customerEntity = $context->getCustomer();
+        if ($customerEntity === null) {
+            return null;
+        }
+
+        $customerId = $customerEntity->getId();
         $criteria = new Criteria();
         $criteria->addAssociation('products');
         $criteria->addFilter(new EqualsFilter('customerId', $customerId));
@@ -431,7 +476,7 @@ class MerchantProductController
         $this->productMediaRepository->delete($mediaIds, Context::createDefaultContext());
     }
 
-    private function fetchProductData(string $productId, MerchantEntity $merchant): array
+    private function fetchProductData(string $productId, MerchantEntity $merchant): ?array
     {
         $criteria = new Criteria([$productId]);
         $criteria->addAssociation('merchants');
@@ -440,21 +485,46 @@ class MerchantProductController
 
         /** @var ProductEntity $product */
         $product = $this->productRepository->search($criteria, Context::createDefaultContext())->first();
+        $priceCollection = $product->getPrice();
+        if ($priceCollection === null) {
+            return null;
+        }
+
+        $firstPrice = $priceCollection->first();
+        if ($firstPrice === null) {
+            return null;
+        }
+
+        $taxEntity = $product->getTax();
+        if ($taxEntity === null) {
+            return null;
+        }
+
         $productData = [
             'id' => $product->getId(),
             'name' => $product->getTranslation('name'),
             'productNumber' => $product->getProductNumber(),
             'stock' => $product->getStock(),
             'description' => $product->getTranslation('description'),
-            'price' => $product->getPrice()->first()->getGross(),
-            'tax' => $product->getTax()->getTaxRate(),
+            'price' => $firstPrice->getGross(),
+            'tax' => $taxEntity->getTaxRate(),
             'active' => $product->getActive(),
             'productType' => $product->getCustomFields()['productType']
         ];
 
-        if ($product->getMedia()->count() > 0) {
-            foreach ($product->getMedia() as $media) {
-                $productData['media'][] = $media->getMedia()->getUrl();
+        $productMediaCollection = $product->getMedia();
+        if ($productMediaCollection === null) {
+            return $productData;
+        }
+
+        if ($productMediaCollection->count() > 0) {
+            foreach ($productMediaCollection as $media) {
+                $mediaEntity = $media->getMedia();
+                if ($mediaEntity === null) {
+                    continue;
+                }
+
+                $productData['media'][] = $mediaEntity->getUrl();
             }
         }
 

@@ -11,9 +11,7 @@ use Shopware\Core\Framework\Update\Event\UpdatePostPrepareEvent;
 use Shopware\Core\Framework\Update\Event\UpdatePrePrepareEvent;
 use Shopware\Production\Kernel;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -27,10 +25,16 @@ class SystemUpdatePrepareCommand extends Command
      */
     private $container;
 
-    public function __construct(ContainerInterface $container)
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    public function __construct(ContainerInterface $container, EventDispatcherInterface $eventDispatcher)
     {
         parent::__construct();
         $this->container = $container;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -50,13 +54,10 @@ class SystemUpdatePrepareCommand extends Command
         // TODO: get new version (from composer.lock?)
         $newVersion = '';
 
-        $eventDispatcher = $this->container->get('event_dispatcher');
-        $eventDispatcher->dispatch(new UpdatePrePrepareEvent($context, $currentVersion, $newVersion));
-
-        $containerWithoutPlugins = $this->rebootKernelWithoutPlugins();
+        $this->eventDispatcher->dispatch(new UpdatePrePrepareEvent($context, $currentVersion, $newVersion));
 
         /** @var EventDispatcherInterface $eventDispatcher */
-        $eventDispatcher = $containerWithoutPlugins->get('event_dispatcher');
+        $eventDispatcher = $this->rebootKernelWithoutPlugins()->get('event_dispatcher');
 
         // @internal plugins are deactivated
         $eventDispatcher->dispatch(new UpdatePostPrepareEvent($context, $currentVersion, $newVersion));

@@ -13,23 +13,17 @@ use Shopware\Production\LocalDelivery\Services\DeliveryBoyLoginService;
 use Shopware\Production\LocalDelivery\Services\DeliveryBoyRegisterService;
 use Shopware\Production\LocalDelivery\Services\DeliveryPackageService;
 use Shopware\Storefront\Controller\StorefrontController;
-use Shopware\Storefront\Framework\Routing\Router;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Twig\Environment;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @RouteScope(scopes={"storefront"})
  */
 class DeliveryBoyStorefrontController extends StorefrontController
 {
-    /**
-     * @var Environment
-     */
-    private $twig;
-
     /**
      * @var DeliveryBoyRegisterService
      */
@@ -41,7 +35,7 @@ class DeliveryBoyStorefrontController extends StorefrontController
     private $deliverBoyLoginService;
 
     /**
-     * @var Router
+     * @var RouterInterface
      */
     private $router;
 
@@ -51,13 +45,11 @@ class DeliveryBoyStorefrontController extends StorefrontController
     private $deliveryPackageService;
 
     public function __construct(
-        Environment $twig,
         DeliveryBoyRegisterService $deliveryBoyRegisterService,
         DeliveryBoyLoginService $deliverBoyLoginService,
         DeliveryPackageService $deliveryPackageService,
-        Router $router
+        RouterInterface $router
     ) {
-        $this->twig = $twig;
         $this->deliveryBoyRegisterService = $deliveryBoyRegisterService;
         $this->deliverBoyLoginService = $deliverBoyLoginService;
         $this->router = $router;
@@ -96,7 +88,7 @@ class DeliveryBoyStorefrontController extends StorefrontController
         $loginData = $this->deliverBoyLoginService->getLoginDataFromRequest($request);
         $violations = $this->deliverBoyLoginService->validateLoginData($loginData);
 
-        if (count($violations) > 0) {
+        if (\count($violations) > 0) {
             unset($loginData['password']);
 
             return new Response(
@@ -140,7 +132,7 @@ class DeliveryBoyStorefrontController extends StorefrontController
         $data = $this->deliveryBoyRegisterService->getDeliveryBoyDataFromRequest($request);
         $violations = $this->deliveryBoyRegisterService->validateDeliveryBoyData($data);
 
-        if (count($violations) > 0) {
+        if (\count($violations) > 0) {
             $errorMessages = $this->deliveryBoyRegisterService->getViolationMessages($violations);
 
             unset($data['password'], $data['password_confirm']);
@@ -160,7 +152,7 @@ class DeliveryBoyStorefrontController extends StorefrontController
     /**
      * @Route("/deliveryboy/packageoverview", name="delivery.boy.package.overview", methods={"GET"})
      */
-    public function deliveryBoyPackageOverview(Request $request, SalesChannelContext $salesChannelContext)
+    public function deliveryBoyPackageOverview(SalesChannelContext $salesChannelContext)
     {
         if (!$this->deliverBoyLoginService->isDeliveryBoyLoggedIn($salesChannelContext->getContext())) {
             return new RedirectResponse(

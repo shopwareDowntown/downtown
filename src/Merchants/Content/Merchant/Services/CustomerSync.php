@@ -43,7 +43,7 @@ class CustomerSync implements EventSubscriberInterface
     /**
      * @inheritDoc
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             'merchant.written' => 'syncToCustomer',
@@ -51,7 +51,7 @@ class CustomerSync implements EventSubscriberInterface
         ];
     }
 
-    public function deleteCascadeCustomers(PreWriteValidationEvent $event)
+    public function deleteCascadeCustomers(PreWriteValidationEvent $event): void
     {
         $context = $event->getContext();
 
@@ -72,7 +72,7 @@ class CustomerSync implements EventSubscriberInterface
 
     public function syncToCustomer(EntityWrittenEvent $event): void
     {
-        if (count($event->getErrors())) {
+        if (\count($event->getErrors())) {
             return;
         }
 
@@ -117,7 +117,19 @@ class CustomerSync implements EventSubscriberInterface
                 continue;
             }
 
-            if (!$writeResult->getExistence()->exists()) {
+            $entityExistence = $writeResult->getExistence();
+            if ($entityExistence === null) {
+                return;
+            }
+
+            if ($entityExistence->exists()) {
+                $merchant = $merchants->get($writeResult->getPrimaryKey());
+                if ($merchant === null) {
+                    return;
+                }
+
+                $customer[] = ['id' => $merchant->getCustomerId()];
+            } else {
                 $newCustomerId = Uuid::randomHex();
 
                 $customer[] = $saneDefaults;
@@ -135,8 +147,6 @@ class CustomerSync implements EventSubscriberInterface
                     'id' => $writeResult->getPrimaryKey(),
                     'customerId' => $newCustomerId,
                 ];
-            } else {
-                $customer[] = ['id' => $merchants->get($writeResult->getPrimaryKey())->getCustomerId()];
             }
 
             //todo where is the customerId if it is not a insert???
@@ -162,7 +172,7 @@ class CustomerSync implements EventSubscriberInterface
         $filteredData = [];
 
         foreach ($keys as $key) {
-            if (array_key_exists($key, $data)) {
+            if (\array_key_exists($key, $data)) {
                 $filteredData[$key] = $data[$key];
             }
         }

@@ -33,7 +33,6 @@
 
         <!-- Controller -->
         <service id="Shopware\Production\LocalDelivery\Controller\DeliveryBoyStorefrontController" public="true">
-            <argument type="service" id="twig"/>
             <argument type="service" id="Shopware\Production\LocalDelivery\Services\DeliveryBoyRegisterService"/>
             <argument type="service" id="Shopware\Production\LocalDelivery\Services\DeliveryBoyLoginService"/>
             <argument type="service" id="Shopware\Production\LocalDelivery\Services\DeliveryPackageService"/>
@@ -43,15 +42,11 @@
             </call>
         </service>
 
-        <service id="Shopware\Production\LocalDelivery\Content\Storefront\Controller\DeliveryPackageController"
-                 public="true">
-            <argument type="service" id="twig"/>
-        </service>
+        <service id="Shopware\Production\LocalDelivery\Content\Storefront\Controller\DeliveryPackageController" public="true"/>
 
         <service id="Shopware\Production\LocalDelivery\Controller\DeliveryRouteController" public="true">
             <argument type="service" id="Shopware\Production\LocalDelivery\Services\DeliveryRouteService"/>
             <argument type="service" id="Shopware\Production\LocalDelivery\Services\DeliveryBoyLoginService"/>
-            <argument type="service" id="twig"/>
             <argument type="service" id="Shopware\Storefront\Framework\Routing\Router"/>
         </service>
 
@@ -69,7 +64,6 @@
 
         <service id="Shopware\Production\LocalDelivery\Services\DeliveryBoySession">
             <argument type="service" id="session"/>
-            <argument type="service" id="delivery_boy.repository"/>
         </service>
 
         <service id="Shopware\Production\LocalDelivery\Services\DeliveryPackageService">
@@ -88,7 +82,6 @@
             <argument type="service" id="Shopware\Production\LocalDelivery\Services\MapboxService"/>
             <argument type="service" id="delivery_package.repository"/>
             <argument type="service" id="delivery_route.repository"/>
-            <argument type="service" id="merchant.repository"/>
         </service>
 
     </services>

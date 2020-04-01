@@ -2,7 +2,6 @@
 
 namespace Shopware\Production\Merchants\Content\Merchant\Storefront\Controller;
 
-use Shopware\Core\Content\Product\ProductCollection;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
@@ -18,7 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Twig\Environment;
 
 /**
  * @RouteScope(scopes={"storefront"})
@@ -82,16 +80,21 @@ class MerchantController extends StorefrontController
 
         $criteria = $this->criteriaLoader->getMerchantCriteria($criteria);
 
-        /** @var MerchantEntity $merchant */
+        /** @var MerchantEntity|null $merchant */
         $merchant = $this->merchantRepository->search($criteria, $context->getContext())->first();
-
-        if (!$merchant) {
-            throw new NotFoundHttpException(sprintf('Cannot find merchant by id %s', $id));
+        if ($merchant === null) {
+            throw new NotFoundHttpException(sprintf('Couldn\'t find merchant by id %s', $id));
         }
 
-        $productIds = $merchant->getProducts()->getIds();
+        $productCollection = $merchant->getProducts();
+        if ($productCollection === null) {
+            throw new NotFoundHttpException(
+                sprintf('Couldn\'t find any products for the merchant with the id "%s"', $merchant->getId())
+            );
+        }
 
-        if (count($productIds)) {
+        $productIds = $productCollection->getIds();
+        if (\count($productIds)) {
             $merchant->setProducts($this->productRepository->search(new Criteria($productIds), $context)->getEntities());
         }
 

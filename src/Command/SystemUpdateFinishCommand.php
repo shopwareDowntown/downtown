@@ -18,6 +18,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class SystemUpdateFinishCommand extends Command
 {
@@ -55,17 +56,21 @@ class SystemUpdateFinishCommand extends Command
         $containerWithoutPlugins = $this->rebootKernelWithoutPlugins();
 
         $context = Context::createDefaultContext();
-        $oldVersion = (string)$this->container->get(SystemConfigService::class)
-            ->get(UpdateController::UPDATE_PREVIOUS_VERSION_KEY);
+        /** @var SystemConfigService $systemConfigService */
+        $systemConfigService = $this->container->get(SystemConfigService::class);
+        $oldVersion = (string)$systemConfigService->get(UpdateController::UPDATE_PREVIOUS_VERSION_KEY);
 
         $newVersion = $containerWithoutPlugins->getParameter('kernel.shopware_version');
-        $containerWithoutPlugins->get('event_dispatcher')
-            ->dispatch(new UpdatePreFinishEvent($context, $oldVersion, $newVersion));
+        /** @var EventDispatcherInterface $eventDispatcher */
+        $eventDispatcher = $containerWithoutPlugins->get('event_dispatcher');
+        $eventDispatcher->dispatch(new UpdatePreFinishEvent($context, $oldVersion, $newVersion));
 
         $this->runMigrations($input, $output);
 
         $updateEvent = new UpdatePostFinishEvent($context, $oldVersion, $newVersion);
-        $this->container->get('event_dispatcher')->dispatch($updateEvent);
+        /** @var EventDispatcherInterface $eventDispatcher */
+        $eventDispatcher = $this->container->get('event_dispatcher');
+        $eventDispatcher->dispatch($updateEvent);
 
         $this->installAssets($input, $output);
 

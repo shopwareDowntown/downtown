@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Shopware\Production\Merchants\Content\Merchant\Services;
 
@@ -13,6 +13,7 @@ use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Production\Merchants\Content\Merchant\Exception\CartContainsMultipleMerchants;
 use Shopware\Production\Merchants\Content\Merchant\Exception\CartContainsStoreWindowLineItem;
 use Shopware\Production\Merchants\Content\Merchant\Exception\CartInvalidShippingMethod;
+use Shopware\Production\Merchants\Content\Merchant\MerchantCollection;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
 
 class CartValidator implements CartValidatorInterface
@@ -33,7 +34,7 @@ class CartValidator implements CartValidatorInterface
     {
         $ids = array_filter($cart->getLineItems()->getReferenceIds());
 
-        if (count($ids) === 0) {
+        if (\count($ids) === 0) {
             return;
         }
 
@@ -61,17 +62,35 @@ class CartValidator implements CartValidatorInterface
                 continue;
             }
 
-            /** @var MerchantEntity $merchant */
-            $merchant = $product->getExtension('merchants')->first();
+            /** @var MerchantCollection|null $merchants */
+            $merchants = $product->getExtension('merchants');
+            if ($merchants === null) {
+                continue;
+            }
+
+            $merchant = $merchants->first();
+            if ($merchant === null) {
+                continue;
+            }
 
             $merchantIds[$merchant->getId()] = true;
 
-            if (count($merchantIds) > 1) {
+            if (\count($merchantIds) > 1) {
                 $errorCollection->add(new CartContainsMultipleMerchants($lineItem->getId()));
                 $cart->getLineItems()->removeElement($lineItem);
             } else {
-                $shippingMethodId = $cart->getDeliveries()->first()->getShippingMethod()->getId();
-                $this->blockOrderWithInvalidShippingMethod($shippingMethodId, $errorCollection, $merchant, $salesChannelContext);
+                $delivery = $cart->getDeliveries()->first();
+                if ($delivery === null) {
+                    continue;
+                }
+
+                $shippingMethodId = $delivery->getShippingMethod()->getId();
+                $this->blockOrderWithInvalidShippingMethod(
+                    $shippingMethodId,
+                    $errorCollection,
+                    $merchant,
+                    $salesChannelContext
+                );
             }
         }
     }

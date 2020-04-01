@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Shopware\Production\Merchants\Content\Merchant\Api;
 
@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
@@ -143,11 +142,6 @@ class ProfileController
     {
         $merchant = SalesChannelContextExtension::extract($salesChannelContext);
 
-        $updateSet = [
-            'mediaId' => $mediaId,
-            'merchantId' => $merchant->getId()
-        ];
-
         if ($mediaId === $merchant->getCoverId()) {
             $this->merchantRepository
                 ->update([[
@@ -199,8 +193,7 @@ class ProfileController
 
         $profileData = json_decode(json_encode($profile), true);
 
-        unset($profileData['password'], $profileData['extensions']);
-        unset($profileData['_uniqueIdentifier']);
+        unset($profileData['password'], $profileData['extensions'], $profileData['_uniqueIdentifier']);
 
         return $profileData;
     }
