@@ -162,6 +162,7 @@
             <argument type="service" id="twig"/>
             <argument type="service" id="Shopware\Core\Content\MailTemplate\Service\MailSender"/>
             <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
+            <argument type="service" id="Shopware\Core\System\SalesChannel\Context\SalesChannelContextFactory"/>
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Api\LoginController" public="true">

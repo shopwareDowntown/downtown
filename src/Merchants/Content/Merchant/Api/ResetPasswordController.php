@@ -10,6 +10,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\Framework\Util\Random;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
+use Shopware\Core\System\SalesChannel\Context\SalesChannelContextFactory;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
@@ -48,24 +49,31 @@ class ResetPasswordController
      */
     private $systemConfigService;
 
+    /**
+     * @var SalesChannelContextFactory
+     */
+    private $salesChannelContextFactory;
+
     public function __construct(
         EntityRepositoryInterface $merchantRepository,
         EntityRepositoryInterface $merchantResetPasswordTokenRepository,
         Environment $twig,
         MailSender $mailService,
-        SystemConfigService $systemConfigService
+        SystemConfigService $systemConfigService,
+        SalesChannelContextFactory $salesChannelContextFactory
     ) {
         $this->merchantRepository = $merchantRepository;
         $this->merchantResetPasswordTokenRepository = $merchantResetPasswordTokenRepository;
         $this->twig = $twig;
         $this->mailService = $mailService;
         $this->systemConfigService = $systemConfigService;
+        $this->salesChannelContextFactory = $salesChannelContextFactory;
     }
 
     /**
      * @Route(name="merchant-api.account.password.reset", path="/merchant-api/v{version}/reset-password", methods={"POST"}, defaults={"auth_required"=false})
      */
-    public function reset(RequestDataBag $dataBag, SalesChannelContext $context): Response
+    public function reset(RequestDataBag $dataBag): Response
     {
         $successResponse = new JsonResponse(['success' => true]);
 
@@ -94,7 +102,9 @@ class ResetPasswordController
                     ]
                 ],
             ]
-        ], $context->getContext());
+        ], Context::createDefaultContext());
+
+        $context = $this->salesChannelContextFactory->create($token, $merchant->getSalesChannelId());
 
         $this->sendRecoveryMail($token, $merchant, $context);
 
@@ -104,7 +114,7 @@ class ResetPasswordController
     /**
      * @Route(name="merchant-api.account.password.confirm", path="/merchant-api/v{version}/reset-password-confirm", methods={"POST"}, defaults={"auth_required"=false})
      */
-    public function resetConfirm(RequestDataBag $dataBag, SalesChannelContext $context): Response
+    public function resetConfirm(RequestDataBag $dataBag): Response
     {
         if (!$dataBag->has('token') || !$dataBag->has('newPassword')) {
             throw new \InvalidArgumentException('Missing token or newPassword request argument');
@@ -125,7 +135,7 @@ class ResetPasswordController
                 'id' => $merchant->getId(),
                 'password' => $dataBag->get('newPassword')
             ]
-        ], $context->getContext());
+        ], Context::createDefaultContext());
 
         $this->cleanupOldTokens($merchant);
 
