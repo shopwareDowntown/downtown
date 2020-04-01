@@ -13,20 +13,21 @@ class MerchantListingFeaturesSubscriber extends ProductListingFeaturesSubscriber
      */
     public static function getSubscribedEvents(): array
     {
-        $events = parent::getSubscribedEvents();
-        $events[MerchantListingCriteriaEvent::class] = [
-            ['handleListingRequest', 100],
-            ['switchFilter', -100],
+        return [
+            MerchantListingCriteriaEvent::class =>  [
+                ['handleMerchantListingRequest', 100],
+            ],
+            MerchantListingResultEvent::class => 'handleResult'
         ];
-
-        $events[MerchantListingResultEvent::class] =  'handleResult';
-
-        return $events;
     }
 
-    public function handleListingRequest(ProductListingCriteriaEvent $event): void
+    public function handleMerchantListingRequest(ProductListingCriteriaEvent $event): void
     {
-        parent::handleListingRequest($event);
+        $this->handleListingRequest($event);
+
+        if (!$event instanceof MerchantListingCriteriaEvent) {
+            return;
+        }
 
         $criteria = $event->getCriteria();
         $this->removeFilter($criteria);
