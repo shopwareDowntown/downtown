@@ -4,7 +4,7 @@ export interface Merchant {
   id?: string;
   authority?: Authority;
   publicCompanyName: string;
-  owner: string;
+  publicOwner: string;
   publicPhoneNumber: string;
   publicEmail: string;
   publicWebsite: string;
@@ -18,7 +18,7 @@ export interface Merchant {
   street: string;
   zip: string;
   city: string;
-  country: string; // New interface for countries?
+  countryId: string; // New interface for countries?
   email: string;
   password?: string;
 }

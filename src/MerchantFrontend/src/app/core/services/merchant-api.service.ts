@@ -25,18 +25,16 @@ export class MerchantApiService {
   }
 
   login(username: string, password: string): Observable<MerchantLoginResult> {
-
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
-    headers = headers.set('sw-access-key', this.accessKey);
 
     const body = JSON.stringify(
       {
-        username: username,
+        email: username,
         password: password,
       }
     );
-    return this.http.post<MerchantLoginResult>(this.apiUrl + '/sales-channel-api/v1/customer/login', body, {headers: headers});
+    return this.http.post<MerchantLoginResult>(this.apiUrl + '/merchant-api/v1/login', body, {headers: headers});
   }
 
   // merchant routes
@@ -44,25 +42,21 @@ export class MerchantApiService {
   registerMerchant(merchantRegistration: MerchantRegistration): Observable<any> {
     let headers = new HttpHeaders();
     headers = headers.set('content-type', 'application/json');
-    headers = headers.set('sw-access-key', this.accessKey);
     return this.http.post<any>(this.apiUrl + '/merchant-api/v1/register', JSON.stringify(merchantRegistration), {headers: headers});
   }
 
   getMerchant(): Observable<Merchant> {
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
-    headers = headers.set('sw-access-key', this.accessKey);
     headers = headers.set('sw-context-token', this.getSwContextToken());
 
-    return this.http.get<any>(this.apiUrl + '/sales-channel-api/v1/customer', {headers: headers})
+    return this.http.get<any>(this.apiUrl + '/merchant-api/v1/profile', {headers: headers})
       .pipe(
-        map((result: any) => {
-          let merchantData = result.data.extensions.merchants;
-
+        map((merchantData: any) => {
           return {
             id: merchantData.id as string,
             publicCompanyName: merchantData.publicCompanyName || '',
-            owner: '?',
+            publicOwner: merchantData.publicOwner || '',
             publicPhoneNumber: merchantData.publicPhoneNumber as string || '',
             publicEmail: merchantData.publicEmail as string || '',
             publicWebsite: merchantData.publicWebsite || '',
@@ -76,7 +70,7 @@ export class MerchantApiService {
             street: merchantData.street || '',
             zip: merchantData.zip || '',
             city: merchantData.city || '',
-            country: merchantData.country || '',
+            countryId: merchantData.countryId || '',
             email: merchantData.email as string,
             password: merchantData.password,
           } as Merchant;
@@ -125,7 +119,6 @@ export class MerchantApiService {
   addImageToProduct(image: File, productId: string): Observable<any> {
     let headers = new HttpHeaders();
     headers = headers.set('sw-context-token', this.getSwContextToken());
-    headers = headers.set('sw-access-key', this.accessKey);
     const formData = new FormData();
     formData.append('media[]', image[0]);
     return this.http.post<any>(this.apiUrl + '/merchant-api/v1/products/' + productId, formData, {headers: headers});
@@ -138,12 +131,11 @@ export class MerchantApiService {
   }
 
   getCountries(): Observable<{ data: Country[]}> {
-    return this.http.get<{ data: Country[]}>(this.apiUrl + '/sales-channel-api/v1/country', {headers: this.getJsonContentTypeHeaders() });
+    return this.http.get<{ data: Country[]}>(this.apiUrl + '/merchant-api/v1/country', {headers: this.getJsonContentTypeHeaders() });
   }
 
   private getHeaders(): { [header: string]: string | string[];} {
     return {
-      'sw-access-key': this.accessKey,
       'sw-context-token': this.getSwContextToken()
     };
   }
@@ -151,20 +143,8 @@ export class MerchantApiService {
   private getJsonContentTypeHeaders(): HttpHeaders {
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
-    headers = headers.set('sw-access-key', this.accessKey);
     headers = headers.set('sw-context-token', this.getSwContextToken());
     return headers;
-  }
-
-  private getSwAccessKey(): string {
-    let key: string;
-    this.stateService.getAuthority()
-      .pipe(
-        take(1)
-      )
-      .subscribe(authority => key = authority.accessKey);
-
-    return key ? key : '';
   }
 
   private getSwContextToken(): string {

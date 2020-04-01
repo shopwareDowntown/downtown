@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @RouteScope(scopes={"storefront"})
+ * @RouteScope(scopes={"merchant-api"})
  */
 class IndustriesController
 {
@@ -31,12 +31,10 @@ class IndustriesController
     }
 
     /**
-     * @Route(name="merchant-api.industries.load", path="/merchant-api/v{version}/industries")
+     * @Route(name="merchant-api.industries.load", path="/merchant-api/v{version}/industries", defaults={"auth_required"=false})
      */
-    public function load(SalesChannelContext $salesChannelContext): JsonResponse
+    public function load(): JsonResponse
     {
-        SalesChannelContextExtension::extract($salesChannelContext);
-
         $criteria = new Criteria();
         $criteria->addFilter(new EqualsFilter('visible', true));
         $criteria->addFilter(new NotFilter(MultiFilter::CONNECTION_AND, [new EqualsFilter('parentId', null)]));

@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @RouteScope(scopes={"storefront"})
+ * @RouteScope(scopes={"merchant-api"})
  */
 class AuthoritiesController
 {
@@ -29,7 +29,7 @@ class AuthoritiesController
     }
 
     /**
-     * @Route(name="merchant-api.authorities.load", path="/merchant-api/v{version}/authorities")
+     * @Route(name="merchant-api.authorities.load", path="/merchant-api/v{version}/authorities", defaults={"auth_required"=false})
      */
     public function load(): JsonResponse
     {

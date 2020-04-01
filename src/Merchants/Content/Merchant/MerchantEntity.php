@@ -21,6 +21,16 @@ class MerchantEntity extends Entity
     /**
      * @var bool
      */
+    protected $active;
+
+    /**
+     * @var string|null
+     */
+    protected $activationCode;
+
+    /**
+     * @var bool
+     */
     protected $public;
 
     /**
@@ -94,19 +104,14 @@ class MerchantEntity extends Entity
     protected $email;
 
     /**
+     * @var string
+     */
+    protected $password;
+
+    /**
      * @var string|null
      */
     protected $phoneNumber;
-
-    /**
-     * @var string|null
-     */
-    protected $customerId;
-
-    /**
-     * @var CustomerEntity|null
-     */
-    protected $customer;
 
     /**
      * @var string|null
@@ -157,6 +162,16 @@ class MerchantEntity extends Entity
      * @var MediaEntity|null
      */
     protected $cover;
+
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    public function getActivationCode(): ?string
+    {
+        return $this->activationCode;
+    }
 
     /**
      * @return bool
@@ -321,24 +336,9 @@ class MerchantEntity extends Entity
         $this->email = $email;
     }
 
-    public function getCustomerId(): ?string
+    public function getPassword(): string
     {
-        return $this->customerId;
-    }
-
-    public function setCustomerId(?string $customerId): void
-    {
-        $this->customerId = $customerId;
-    }
-
-    public function getCustomer(): ?CustomerEntity
-    {
-        return $this->customer;
-    }
-
-    public function setCustomer(?CustomerEntity $customer): void
-    {
-        $this->customer = $customer;
+        return $this->password;
     }
 
     public function getSalesChannelId(): ?string

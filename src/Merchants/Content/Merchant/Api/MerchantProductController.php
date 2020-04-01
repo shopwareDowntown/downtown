@@ -18,7 +18,6 @@ use Shopware\Core\System\NumberRange\ValueGenerator\NumberRangeValueGeneratorInt
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Core\System\Tax\TaxEntity;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
-use Shopware\Production\Merchants\Content\Merchant\SalesChannelContextExtension;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +25,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @RouteScope(scopes={"storefront"})
+ * @RouteScope(scopes={"merchant-api"})
  */
 class MerchantProductController
 {
@@ -93,10 +92,8 @@ class MerchantProductController
     /**
      * @Route(name="merchant-api.merchant.product.read", path="/merchant-api/v{version}/products", methods={"GET"})
      */
-    public function getList(Request $request, SalesChannelContext $context): JsonResponse
+    public function getList(Request $request, MerchantEntity $merchant): JsonResponse
     {
-        $merchant = SalesChannelContextExtension::extract($context);
-
         $criteria = new Criteria();
         $criteria->addAssociation('merchants');
         $criteria->addFilter(new EqualsFilter('merchants.id', $merchant->getId()));
@@ -169,10 +166,8 @@ class MerchantProductController
     /**
      * @Route(name="merchant-api.merchant.product.read-detail", path="/merchant-api/v{version}/products/{productId}", methods={"GET"})
      */
-    public function detailProduct(string $productId, SalesChannelContext $context): JsonResponse
+    public function detailProduct(string $productId, MerchantEntity $merchant): JsonResponse
     {
-        $merchant = SalesChannelContextExtension::extract($context);
-
         return new JsonResponse(
             [
                 'data' => $this->fetchProductData($productId, $merchant)
@@ -183,10 +178,8 @@ class MerchantProductController
     /**
      * @Route(name="merchant-api.merchant.product.create", path="/merchant-api/v{version}/products", methods={"POST"}, defaults={"csrf_protected"=false})
      */
-    public function create(Request $request, SalesChannelContext $context): JsonResponse
+    public function create(Request $request, MerchantEntity $merchant, SalesChannelContext $context): JsonResponse
     {
-        $merchant = SalesChannelContextExtension::extract($context);
-
         $missingFields = $this->checkForMissingFields($request);
 
         if ($missingFields) {
@@ -254,11 +247,9 @@ class MerchantProductController
     /**
      * @Route(name="merchant-api.merchant.product.update", path="/merchant-api/v{version}/products/{productId}", methods={"POST"}, defaults={"csrf_protected"=false})
      */
-    public function update(Request $request, string $productId, SalesChannelContext $context): JsonResponse
+    public function update(Request $request, string $productId, MerchantEntity $merchant, SalesChannelContext $context): JsonResponse
     {
-        $merchant = SalesChannelContextExtension::extract($context);
-
-        $product = $this->getProductFromMerchant($productId, $context);
+        $product = $this->getProductFromMerchant($productId, $merchant);
 
         if (!$product) {
             throw new NotFoundHttpException(sprintf('Cannot find product by id %s', $productId));
@@ -326,9 +317,9 @@ class MerchantProductController
         );
     }
 
-    private function getProductFromMerchant(string $productId, SalesChannelContext $context): ProductEntity
+    private function getProductFromMerchant(string $productId, MerchantEntity $merchant): ProductEntity
     {
-        $merchantEntity = $this->getMerchantFromContext($context);
+        $merchantEntity = $this->getMerchantWithProducts($merchant);
         if ($merchantEntity === null) {
             throw new NotFoundHttpException('Could not find merchant for the given context');
         }
@@ -415,18 +406,12 @@ class MerchantProductController
         throw new \InvalidArgumentException('The product type ' . $productType . ' is not valid. One values must these must be set: ' . implode(', ', self::PRODUCT_TYPES));
     }
 
-    private function getMerchantFromContext(SalesChannelContext $context): ?MerchantEntity
+    private function getMerchantWithProducts(MerchantEntity $merchant): ?MerchantEntity
     {
-        $customerEntity = $context->getCustomer();
-        if ($customerEntity === null) {
-            return null;
-        }
-
-        $customerId = $customerEntity->getId();
-        $criteria = new Criteria();
+        $criteria = new Criteria([$merchant->getId()]);
         $criteria->addAssociation('products');
-        $criteria->addFilter(new EqualsFilter('customerId', $customerId));
-        return $this->merchantRepository->search($criteria, $context->getContext())->first();
+
+        return $this->merchantRepository->search($criteria, Context::createDefaultContext())->first();
     }
 
     private function checkForMedias(Request $request, SalesChannelContext $context, array $productData): array

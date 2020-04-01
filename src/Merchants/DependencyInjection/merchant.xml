@@ -21,6 +21,7 @@
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Api\RegistrationController" public="true">
             <argument type="service" id="Shopware\Production\Merchants\Content\Merchant\Services\RegistrationService"/>
+            <argument type="service" id="Shopware\Core\System\SalesChannel\Context\SalesChannelContextFactory"/>
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\MerchantDefinition">
@@ -45,6 +46,10 @@
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantResetPasswordToken\MerchantResetPasswordTokenDefinition">
             <tag name="shopware.entity.definition" entity="merchant_reset_password_token"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantAccessToken\MerchantAccessTokenDefinition">
+            <tag name="shopware.entity.definition" entity="merchant_access_token"/>
         </service>
 
         <service id="Shopware\Production\Merchants\System\SalesChannel\SalesChannelLandingPageDefinition">
@@ -95,9 +100,9 @@
         <service id="Shopware\Production\Merchants\Content\Merchant\Services\RegistrationService">
             <argument type="service" id="merchant.repository"/>
             <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
-            <argument type="service" id="sales_channel_domain.repository"/>
-            <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="Shopware\Core\Framework\Validation\DataValidator"/>
+            <argument type="service" id="twig"/>
+            <argument type="service" id="Shopware\Core\Content\MailTemplate\Service\MailSender"/>
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Storefront\Controller\MerchantController" public="true">
@@ -108,32 +113,11 @@
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Storefront\Controller\DoubleOptinController" public="true">
-            <argument type="service" id="Shopware\Core\Checkout\Customer\SalesChannel\AccountRegistrationService"/>
+            <argument type="service" id="merchant.repository"/>
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Storefront\Service\MerchantCriteriaLoaderInterface"
                  class="Shopware\Production\Merchants\Content\Merchant\Storefront\Service\MerchantProductCriteriaLoader">
-        </service>
-
-        <service id="Shopware\Production\Merchants\Content\Merchant\Services\CustomerSync" public="true">
-            <argument type="service" id="customer.repository"/>
-            <argument type="service" id="merchant.repository"/>
-            <argument type="service" id="Doctrine\DBAL\Connection"/>
-
-            <tag name="kernel.event_subscriber"/>
-        </service>
-
-        <service id="Shopware\Production\Merchants\Content\Merchant\Services\MerchantSalesChannelContextService" public="true" decorates="Shopware\Core\System\SalesChannel\Context\SalesChannelContextService">
-            <argument type="service" id="merchant.repository"/>
-            <argument type="service" id="Shopware\Core\System\SalesChannel\Context\SalesChannelContextPersister"/>
-            <argument type="service" id="Shopware\Production\Merchants\Content\Merchant\Services\MerchantSalesChannelContextService.inner"/>
-        </service>
-
-        <service id="Shopware\Production\Merchants\Content\Merchant\Services\MerchantLogin">
-            <argument type="service" id="merchant.repository"/>
-            <argument type="service" id="Shopware\Core\System\SalesChannel\Context\SalesChannelContextPersister"/>
-
-            <tag name="kernel.event_subscriber"/>
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Subscriber\OrderPlacedSubscriber">
@@ -148,10 +132,6 @@
         <service id="Shopware\Production\Merchants\Content\Merchant\Subscriber\ConfirmPageLoadedSubscriber">
             <argument type="service" id="product.repository"/>
             <tag name="kernel.event_listener"/>
-        </service>
-
-        <service id="Shopware\Production\Merchants\Content\Merchant\Subscriber\FixContextTokenMerchantApiSubscriber">
-            <tag name="kernel.event_subscriber"/>
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Services\CartValidator">
@@ -183,8 +163,20 @@
             <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
         </service>
 
+        <service id="Shopware\Production\Merchants\Content\Merchant\Api\LoginController" public="true">
+            <argument type="service" id="merchant.repository"/>
+        </service>
+
         <service id="Shopware\Production\Merchants\Content\Merchant\Api\OrderListController" public="true">
             <argument type="service" id="merchant.repository"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Api\CountryController" public="true">
+            <argument type="service" id="sales_channel.country.repository"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Api\LogoutController" public="true">
+            <argument type="service" id="merchant_access_token.repository"/>
         </service>
     </services>
 </container>

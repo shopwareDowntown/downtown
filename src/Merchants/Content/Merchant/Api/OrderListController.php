@@ -2,6 +2,7 @@
 
 namespace Shopware\Production\Merchants\Content\Merchant\Api;
 
+use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
@@ -12,7 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @RouteScope(scopes={"storefront"})
+ * @RouteScope(scopes={"merchant-api"})
  */
 class OrderListController
 {
@@ -29,16 +30,14 @@ class OrderListController
     /**
      * @Route(name="merchant-api.orders.load", path="/merchant-api/v{version}/orders")
      */
-    public function load(SalesChannelContext $context): JsonResponse
+    public function load(MerchantEntity $merchant): JsonResponse
     {
-        $merchant = SalesChannelContextExtension::extract($context);
-
         $criteria = new Criteria([$merchant->getId()]);
         $criteria->addAssociation('orders.deliveries');
         $criteria->addAssociation('orders.lineItems');
 
         /** @var MerchantEntity $merchant */
-        $merchant = $this->merchantRepository->search($criteria, $context->getContext())->first();
+        $merchant = $this->merchantRepository->search($criteria, Context::createDefaultContext())->first();
 
         return new JsonResponse($merchant->getOrders());
     }

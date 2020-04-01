@@ -12,7 +12,6 @@ use Shopware\Core\Framework\Validation\DataValidationDefinition;
 use Shopware\Core\Framework\Validation\DataValidator;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
-use Shopware\Production\Merchants\Content\Merchant\SalesChannelContextExtension;
 use Shopware\Production\Portal\Hacks\StorefrontMediaUploader;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +21,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
- * @RouteScope(scopes={"storefront"})
+ * @RouteScope(scopes={"merchant-api"})
  */
 class ProfileController
 {
@@ -62,10 +61,8 @@ class ProfileController
     /**
      * @Route(name="merchant-api.profile.load", methods={"GET"}, path="/merchant-api/v{version}/profile")
      */
-    public function profile(SalesChannelContext $salesChannelContext): JsonResponse
+    public function profile(MerchantEntity $merchant, SalesChannelContext $salesChannelContext): JsonResponse
     {
-        $merchant = SalesChannelContextExtension::extract($salesChannelContext);
-
         $profileData = $this->fetchProfileData($salesChannelContext, $merchant);
 
         return new JsonResponse($profileData);
@@ -74,14 +71,12 @@ class ProfileController
     /**
      * @Route(name="merchant-api.profile.save", methods={"PATCH"}, path="/merchant-api/v{version}/profile")
      */
-    public function save(RequestDataBag $dataBag, SalesChannelContext $salesChannelContext): JsonResponse
+    public function save(Request $request, RequestDataBag $dataBag, MerchantEntity $merchant, SalesChannelContext $salesChannelContext): JsonResponse
     {
         if ($dataBag->has('country')) {
             $dataBag->set('countryId', $dataBag->get('country'));
             $dataBag->remove('country');
         }
-
-        $merchant = SalesChannelContextExtension::extract($salesChannelContext);
 
         $merchantConstraints = $this->createValidationDefinition($salesChannelContext);
 
@@ -100,10 +95,8 @@ class ProfileController
     /**
      * @Route(name="merchant-api.profile.image.save", methods={"POST"}, path="/merchant-api/v{version}/profile/media", defaults={"csrf_protected"=false})
      */
-    public function upload(Request $request, SalesChannelContext $salesChannelContext): JsonResponse
+    public function upload(MerchantEntity $merchant, Request $request, SalesChannelContext $salesChannelContext): JsonResponse
     {
-        $merchant = SalesChannelContextExtension::extract($salesChannelContext);
-
         $uploadedMedia = [];
         $cover = [];
 
@@ -138,10 +131,8 @@ class ProfileController
     /**
      * @Route(name="merchant-api.profile.image.delete", methods={"DELETE"}, path="/merchant-api/v{version}/profile/media/:mediaId")
      */
-    public function delete(string $mediaId, SalesChannelContext $salesChannelContext): JsonResponse
+    public function delete(string $mediaId, MerchantEntity $merchant, SalesChannelContext $salesChannelContext): JsonResponse
     {
-        $merchant = SalesChannelContextExtension::extract($salesChannelContext);
-
         if ($mediaId === $merchant->getCoverId()) {
             $this->merchantRepository
                 ->update([[

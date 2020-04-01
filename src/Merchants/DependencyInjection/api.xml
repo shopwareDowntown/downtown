@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="Shopware\Production\Merchants\Api\RequestTransformer" decorates="Shopware\Core\Framework\Routing\RequestTransformerInterface">
+            <argument type="service" id="Shopware\Production\Merchants\Api\RequestTransformer.inner"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Api\MerchantApiRouteScope">
+            <argument type="service" id="merchant_access_token.repository"/>
+            <argument type="service" id="Shopware\Core\System\SalesChannel\Context\SalesChannelContextFactory"/>
+            <tag name="shopware.route_scope"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Api\MerchantValueResolver">
+            <tag name="controller.argument_value_resolver" priority="1000"/>
+        </service>
+    </services>
+</container>

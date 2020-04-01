@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
 /**
- * @RouteScope(scopes={"storefront"})
+ * @RouteScope(scopes={"merchant-api"})
  */
 class ResetPasswordController
 {
@@ -54,8 +54,7 @@ class ResetPasswordController
         Environment $twig,
         MailSender $mailService,
         SystemConfigService $systemConfigService
-    )
-    {
+    ) {
         $this->merchantRepository = $merchantRepository;
         $this->merchantResetPasswordTokenRepository = $merchantResetPasswordTokenRepository;
         $this->twig = $twig;
