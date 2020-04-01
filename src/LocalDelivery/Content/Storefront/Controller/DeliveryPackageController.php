@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Shopware\Production\LocalDelivery\Content\Storefront\Controller;
 
@@ -7,26 +7,12 @@ use Shopware\Storefront\Controller\StorefrontController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Twig\Environment;
 
 /**
  * @RouteScope(scopes={"storefront"})
  */
 class DeliveryPackageController extends StorefrontController
 {
-    /**
-     * @var Environment
-     */
-    private $twig;
-
-
-    public function __construct(
-        Environment $twig
-    )
-    {
-        $this->twig = $twig;
-    }
-
     /**
      * @Route(name="storefront.delivery-packages", path="/delivery-packages")
      */
@@ -35,16 +21,16 @@ class DeliveryPackageController extends StorefrontController
         $packages = [
             [
                 'status' => 'ok cool',
-                'zipCode' => "23333",
-                'city' => "hamburg",
-                'street' => "abc 123",
+                'zipCode' => '23333',
+                'city' => 'hamburg',
+                'street' => 'abc 123',
                 'content' => 'gunther'
             ],
             [
                 'status' => 'ok nich so cool',
-                'zipCode' => "69420",
-                'city' => "kekistan",
-                'street' => "moin joachim 14",
+                'zipCode' => '69420',
+                'city' => 'kekistan',
+                'street' => 'moin joachim 14',
                 'content' => 'Frühlingsrollen'
             ]
         ];

@@ -1,9 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantResetPasswordToken;
 
 use Shopware\Core\Framework\DataAbstractionLayer\EntityDefinition;
-use Shopware\Core\Framework\DataAbstractionLayer\Field\DateTimeField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\FkField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\PrimaryKey;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\Required;
@@ -15,9 +14,21 @@ use Shopware\Production\Merchants\Content\Merchant\MerchantDefinition;
 
 class MerchantResetPasswordTokenDefinition extends EntityDefinition
 {
+    public const ENTITY_NAME = 'merchant_reset_password_token';
+
     public function getEntityName(): string
     {
-        return 'merchant_reset_password_token';
+        return self::ENTITY_NAME;
+    }
+
+    public function getEntityClass(): string
+    {
+        return MerchantResetPasswordTokenEntity::class;
+    }
+
+    public function getCollectionClass(): string
+    {
+        return MerchantResetPasswordTokenCollection::class;
     }
 
     protected function defineFields(): FieldCollection

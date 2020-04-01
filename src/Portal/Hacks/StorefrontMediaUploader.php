@@ -52,7 +52,7 @@ class StorefrontMediaUploader
 
         $this->validator->validate($file, $type);
 
-        $mediaFile = new MediaFile($file->getPathname(), $file->getMimeType(), $file->getExtension(), $file->getSize());
+        $mediaFile = new MediaFile($file->getPathname(), $file->getMimeType(), $file->getClientOriginalExtension(), $file->getSize());
 
         $mediaId = $this->mediaService->createMediaInFolder($folder, $context, false);
 

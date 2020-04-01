@@ -2,11 +2,13 @@
 
 namespace Shopware\Production\Merchants\Command;
 
+use http\Exception\RuntimeException;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
+use Shopware\Core\System\SalesChannel\SalesChannelEntity;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -31,7 +33,7 @@ class CreateDefaultCategoriesCommand extends Command
         $this->categoryRepository = $categoryRepository;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $categories = [
             0 => 'Travel, rental and transportation',
@@ -54,6 +56,9 @@ class CreateDefaultCategoriesCommand extends Command
         ];
 
         $parentId = $this->getDefaultCategoryId();
+        if ($parentId === null) {
+            throw new \RuntimeException('Could not fetch default category.');
+        }
 
         $items = [];
         foreach ($categories as $name) {
@@ -69,10 +74,17 @@ class CreateDefaultCategoriesCommand extends Command
         return 0;
     }
 
-    private function getDefaultCategoryId(): string
+    private function getDefaultCategoryId(): ?string
     {
         $criteria = new Criteria();
         $criteria->addFilter(new EqualsFilter('typeId', Defaults::SALES_CHANNEL_TYPE_STOREFRONT));
-        return $this->salesChannelRepository->search($criteria, Context::createDefaultContext())->first()->getNavigationCategoryId();
+
+        /** @var SalesChannelEntity|null $salesChannel */
+        $salesChannel = $this->salesChannelRepository->search($criteria, Context::createDefaultContext())->first();
+        if ($salesChannel === null) {
+            return null;
+        }
+
+        return $salesChannel->getNavigationCategoryId();
     }
 }

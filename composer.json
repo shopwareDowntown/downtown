@@ -46,7 +46,9 @@
         "shopware\/administration": "v6.1.*",
         "shopware\/storefront": "v6.1.*",
         "shopware\/elasticsearch": "v6.1.*",
-        "shopware\/recovery": "v6.1.*"
+        "shopware\/recovery": "v6.1.*",
+        "ext-json": "*",
+        "ext-openssl": "*"
     },
     "require-dev": {
         "ext-tokenizer": "*",

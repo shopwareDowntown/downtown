@@ -18,7 +18,7 @@ use Shopware\Core\System\NumberRange\ValueGenerator\NumberRangeValueGeneratorInt
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Core\System\Tax\TaxEntity;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
-use Shopware\Production\Merchants\Content\Merchant\SalesChannelContextExtension;
+use Shopware\Production\Portal\Hacks\StorefrontMediaUploader;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +26,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @RouteScope(scopes={"storefront"})
+ * @RouteScope(scopes={"merchant-api"})
  */
 class MerchantProductController
 {
@@ -72,6 +72,11 @@ class MerchantProductController
      */
     private $numberRangeValueGenerator;
 
+    /**
+     * @var StorefrontMediaUploader
+     */
+    private $storefrontMediaUploader;
+
     public function __construct(
         EntityRepositoryInterface $productRepository,
         EntityRepositoryInterface $taxRepository,
@@ -79,7 +84,8 @@ class MerchantProductController
         EntityRepositoryInterface $merchantRepository,
         EntityRepositoryInterface $productMediaRepository,
         NumberRangeValueGeneratorInterface $numberRangeValueGenerator,
-        MediaService $mediaService
+        MediaService $mediaService,
+        StorefrontMediaUploader $storefrontMediaUploader
     ) {
         $this->productRepository = $productRepository;
         $this->taxRepository = $taxRepository;
@@ -88,15 +94,14 @@ class MerchantProductController
         $this->productMediaRepository = $productMediaRepository;
         $this->numberRangeValueGenerator = $numberRangeValueGenerator;
         $this->mediaService = $mediaService;
+        $this->storefrontMediaUploader = $storefrontMediaUploader;
     }
 
     /**
      * @Route(name="merchant-api.merchant.product.read", path="/merchant-api/v{version}/products", methods={"GET"})
      */
-    public function getList(Request $request, SalesChannelContext $context): JsonResponse
+    public function getList(Request $request, MerchantEntity $merchant): JsonResponse
     {
-        $merchant = SalesChannelContextExtension::extract($context);
-
         $criteria = new Criteria();
         $criteria->addAssociation('merchants');
         $criteria->addFilter(new EqualsFilter('merchants.id', $merchant->getId()));
@@ -121,22 +126,40 @@ class MerchantProductController
         $productsArray = [];
         /** @var ProductEntity $product */
         foreach ($products as $key => $product) {
+            $priceCollection = $product->getPrice();
+            if ($priceCollection === null) {
+                continue;
+            }
+
+            $productPrice = $priceCollection->first();
+            if ($productPrice === null) {
+                continue;
+            }
+
+            $productTax = $product->getTax();
+            if ($productTax === null) {
+                continue;
+            }
+
             $productData = [
                 'id' => $product->getId(),
                 'name' => $product->getTranslation('name'),
                 'productNumber' => $product->getProductNumber(),
                 'stock' => $product->getStock(),
                 'description' => $product->getTranslation('description'),
-                'price' => $product->getPrice()->first()->getGross(),
-                'tax' => $product->getTax()->getTaxRate(),
+                'price' => $productPrice->getGross(),
+                'tax' => $productTax->getTaxRate(),
                 'active' => $product->getActive(),
                 'productType' => $product->getCustomFields()['productType']
             ];
 
-            if ($product->getMedia()->count() > 0) {
-                foreach ($product->getMedia() as $media) {
-                    $productData['media'][] = $media->getMedia()->getUrl();
+            foreach ($product->getMedia() as $media) {
+                $mediaEntity = $media->getMedia();
+                if ($mediaEntity === null) {
+                    continue;
                 }
+
+                $productData['media'][] = $mediaEntity->getUrl();
             }
 
             $productsArray[] = $productData;
@@ -151,10 +174,8 @@ class MerchantProductController
     /**
      * @Route(name="merchant-api.merchant.product.read-detail", path="/merchant-api/v{version}/products/{productId}", methods={"GET"})
      */
-    public function detailProduct(string $productId, SalesChannelContext $context): JsonResponse
+    public function detailProduct(string $productId, MerchantEntity $merchant): JsonResponse
     {
-        $merchant = SalesChannelContextExtension::extract($context);
-
         return new JsonResponse(
             [
                 'data' => $this->fetchProductData($productId, $merchant)
@@ -165,10 +186,8 @@ class MerchantProductController
     /**
      * @Route(name="merchant-api.merchant.product.create", path="/merchant-api/v{version}/products", methods={"POST"}, defaults={"csrf_protected"=false})
      */
-    public function create(Request $request, SalesChannelContext $context): JsonResponse
+    public function create(Request $request, MerchantEntity $merchant, SalesChannelContext $context): JsonResponse
     {
-        $merchant = SalesChannelContextExtension::extract($context);
-
         $missingFields = $this->checkForMissingFields($request);
 
         if ($missingFields) {
@@ -236,11 +255,9 @@ class MerchantProductController
     /**
      * @Route(name="merchant-api.merchant.product.update", path="/merchant-api/v{version}/products/{productId}", methods={"POST"}, defaults={"csrf_protected"=false})
      */
-    public function update(Request $request, string $productId, SalesChannelContext $context): JsonResponse
+    public function update(Request $request, string $productId, MerchantEntity $merchant, SalesChannelContext $context): JsonResponse
     {
-        $merchant = SalesChannelContextExtension::extract($context);
-
-        $product = $this->getProductFromMerchant($productId, $context);
+        $product = $this->getProductFromMerchant($productId, $merchant);
 
         if (!$product) {
             throw new NotFoundHttpException(sprintf('Cannot find product by id %s', $productId));
@@ -270,11 +287,18 @@ class MerchantProductController
         }
 
         if ($request->request->has('price')) {
+            $productTax = $product->getTax();
+            if ($productTax === null) {
+                throw new NotFoundHttpException(
+                    sprintf('No tax specified for the product with the id "%s"', $productId)
+                );
+            }
+
             $productData['price'] = [
                 [
                     'currencyId' => Defaults::CURRENCY,
                     'gross' => $request->request->get('price'),
-                    'net' => $request->request->get('price') / (1 + $product->getTax()->getTaxRate()/100),
+                    'net' => $request->request->get('price') / (1 + $productTax->getTaxRate()/100),
                     'linked' => true
                 ]
             ];
@@ -301,9 +325,24 @@ class MerchantProductController
         );
     }
 
-    private function getProductFromMerchant(string $productId, SalesChannelContext $context): ProductEntity
+    private function getProductFromMerchant(string $productId, MerchantEntity $merchant): ProductEntity
     {
-        $product = $this->getMerchantFromContext($context)->getProducts()->get($productId);
+        $merchantEntity = $this->getMerchantWithProducts($merchant);
+        if ($merchantEntity === null) {
+            throw new NotFoundHttpException('Could not find merchant for the given context');
+        }
+
+        $productCollection = $merchantEntity->getProducts();
+        if ($productCollection === null) {
+            throw new NotFoundHttpException(
+                sprintf(
+                    'Could not find any products for the merchant with the id "%s"',
+                    $merchantEntity->getId()
+                )
+            );
+        }
+
+        $product = $productCollection->get($productId);
 
         if (!$product) {
             throw new NotFoundHttpException(sprintf('Cannot find product by id %s for current merchant.', $productId));
@@ -321,7 +360,7 @@ class MerchantProductController
         $mediaFile = new MediaFile(
             $uploadedFile->getPathname(),
             $uploadedFile->getMimeType(),
-            'jpg',
+            $uploadedFile->getClientOriginalExtension(),
             $uploadedFile->getSize()
         );
 
@@ -368,20 +407,19 @@ class MerchantProductController
 
     private function validateProductType(string $productType): void
     {
-        if (in_array($productType, self::PRODUCT_TYPES)) {
+        if (\in_array($productType, self::PRODUCT_TYPES, true)) {
             return;
         }
 
         throw new \InvalidArgumentException('The product type ' . $productType . ' is not valid. One values must these must be set: ' . implode(', ', self::PRODUCT_TYPES));
     }
 
-    private function getMerchantFromContext(SalesChannelContext $context): MerchantEntity
+    private function getMerchantWithProducts(MerchantEntity $merchant): ?MerchantEntity
     {
-        $customerId = $context->getCustomer()->getId();
-        $criteria = new Criteria();
+        $criteria = new Criteria([$merchant->getId()]);
         $criteria->addAssociation('products');
-        $criteria->addFilter(new EqualsFilter('customerId', $customerId));
-        return $this->merchantRepository->search($criteria, $context->getContext())->first();
+
+        return $this->merchantRepository->search($criteria, Context::createDefaultContext())->first();
     }
 
     private function checkForMedias(Request $request, SalesChannelContext $context, array $productData): array
@@ -392,7 +430,7 @@ class MerchantProductController
 
         $mediaIds = [];
         foreach ($request->files->get('media') as $uploadedFile) {
-            $mediaIds[] = $this->createMediaIdByFile($uploadedFile, $context);
+            $mediaIds[] = $this->storefrontMediaUploader->upload($uploadedFile, 'merchant_products', 'merchant_images', $context->getContext());
         }
 
         $productData['cover'] = ['mediaId' => $mediaIds[0]];
@@ -431,7 +469,7 @@ class MerchantProductController
         $this->productMediaRepository->delete($mediaIds, Context::createDefaultContext());
     }
 
-    private function fetchProductData(string $productId, MerchantEntity $merchant): array
+    private function fetchProductData(string $productId, MerchantEntity $merchant): ?array
     {
         $criteria = new Criteria([$productId]);
         $criteria->addAssociation('merchants');
@@ -440,21 +478,46 @@ class MerchantProductController
 
         /** @var ProductEntity $product */
         $product = $this->productRepository->search($criteria, Context::createDefaultContext())->first();
+        $priceCollection = $product->getPrice();
+        if ($priceCollection === null) {
+            return null;
+        }
+
+        $firstPrice = $priceCollection->first();
+        if ($firstPrice === null) {
+            return null;
+        }
+
+        $taxEntity = $product->getTax();
+        if ($taxEntity === null) {
+            return null;
+        }
+
         $productData = [
             'id' => $product->getId(),
             'name' => $product->getTranslation('name'),
             'productNumber' => $product->getProductNumber(),
             'stock' => $product->getStock(),
             'description' => $product->getTranslation('description'),
-            'price' => $product->getPrice()->first()->getGross(),
-            'tax' => $product->getTax()->getTaxRate(),
+            'price' => $firstPrice->getGross(),
+            'tax' => $taxEntity->getTaxRate(),
             'active' => $product->getActive(),
             'productType' => $product->getCustomFields()['productType']
         ];
 
-        if ($product->getMedia()->count() > 0) {
-            foreach ($product->getMedia() as $media) {
-                $productData['media'][] = $media->getMedia()->getUrl();
+        $productMediaCollection = $product->getMedia();
+        if ($productMediaCollection === null) {
+            return $productData;
+        }
+
+        if ($productMediaCollection->count() > 0) {
+            foreach ($productMediaCollection as $media) {
+                $mediaEntity = $media->getMedia();
+                if ($mediaEntity === null) {
+                    continue;
+                }
+
+                $productData['media'][] = $mediaEntity->getUrl();
             }
         }
 

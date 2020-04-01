@@ -7,9 +7,11 @@
             </div>
         </div>
 
-        <div class="button-container merchant-float">
-            <a class="btn btn-merchant" href="https://downtowns.io/">Als Händler registrieren</a>
-        </div>
+        {% if page.footer.extensions.portal %}
+            <div class="button-container merchant-float">
+                <a class="btn btn-merchant" href="{{ page.footer.extensions.portal.url }}" target="_blank">Als Händler registrieren</a>
+            </div>
+        {% endif %}
 
         <img class="covid-bubble" src="{{ asset('bundles/merchant/storefront/img/covid-bubble.svg') }}" />
     </div>

@@ -3,7 +3,6 @@
 namespace Shopware\Production\Merchants;
 
 use Shopware\Core\Framework\Bundle;
-use Shopware\Core\System\CustomField\CustomFieldTypes;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -20,7 +19,9 @@ class MerchantBundle extends Bundle
         parent::build($container);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/DependencyInjection/'));
+        $loader->load('api.xml');
         $loader->load('merchant.xml');
+        $loader->load('merchant_listing.xml');
         $loader->load('commands.xml');
         $this->registerMigrationPath($container);
     }

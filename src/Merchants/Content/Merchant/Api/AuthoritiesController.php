@@ -8,12 +8,13 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
+use Shopware\Core\System\SalesChannel\SalesChannelCollection;
 use Shopware\Core\System\SalesChannel\SalesChannelEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @RouteScope(scopes={"storefront"})
+ * @RouteScope(scopes={"merchant-api"})
  */
 class AuthoritiesController
 {
@@ -28,7 +29,7 @@ class AuthoritiesController
     }
 
     /**
-     * @Route(name="merchant-api.authorities.load", path="/merchant-api/v{version}/authorities")
+     * @Route(name="merchant-api.authorities.load", path="/merchant-api/v{version}/authorities", defaults={"auth_required"=false})
      */
     public function load(): JsonResponse
     {
@@ -36,17 +37,26 @@ class AuthoritiesController
         $criteria->addAssociation('domains');
         $criteria->addFilter(new EqualsFilter('typeId', Defaults::SALES_CHANNEL_TYPE_STOREFRONT));
 
-        $items = $this->salesChannelRepository->search($criteria, Context::createDefaultContext())->getElements();
+        /** @var SalesChannelCollection $salesChannelCollection */
+        $salesChannelCollection = $this->salesChannelRepository->search($criteria, Context::createDefaultContext());
 
         $result = [];
+        foreach ($salesChannelCollection as $salesChannel) {
+            $domainCollection = $salesChannel->getDomains();
+            if ($domainCollection === null) {
+                continue;
+            }
 
-        /** @var SalesChannelEntity $item */
-        foreach ($items as $item) {
+            $domainEntity = $domainCollection->first();
+            if ($domainEntity === null) {
+                continue;
+            }
+
             $result[] = [
-                'id' => $item->getId(),
-                'name' => $item->getName(),
-                'domain' => $item->getDomains()->first()->getUrl(),
-                'accessKey' => $item->getAccessKey(),
+                'id' => $salesChannel->getId(),
+                'name' => $salesChannel->getName(),
+                'domain' => $domainEntity->getUrl(),
+                'accessKey' => $salesChannel->getAccessKey(),
             ];
         }
 

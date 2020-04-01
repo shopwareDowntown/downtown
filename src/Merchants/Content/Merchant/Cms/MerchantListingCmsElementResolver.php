@@ -10,6 +10,10 @@ use Shopware\Core\Content\Cms\DataResolver\ResolverContext\ResolverContext;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
+use Shopware\Production\Merchants\Content\Merchant\Storefront\Listing\MerchantListingCriteriaEvent;
+use Shopware\Production\Merchants\Content\Merchant\Storefront\Listing\MerchantListingResult;
+use Shopware\Production\Merchants\Content\Merchant\Storefront\Listing\MerchantListingResultEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class MerchantListingCmsElementResolver extends AbstractCmsElementResolver
@@ -24,10 +28,19 @@ class MerchantListingCmsElementResolver extends AbstractCmsElementResolver
      */
     private $requestStack;
 
-    public function __construct(EntityRepositoryInterface $merchantRepository, RequestStack $requestStack)
-    {
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    public function __construct(
+        EntityRepositoryInterface $merchantRepository,
+        RequestStack $requestStack,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->merchantRepository = $merchantRepository;
         $this->requestStack = $requestStack;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function getType(): string
@@ -52,8 +65,21 @@ class MerchantListingCmsElementResolver extends AbstractCmsElementResolver
         $criteria->addFilter(new EqualsFilter('categoryId', $categoryId));
         $criteria->addFilter(new EqualsFilter('public', 1));
         $criteria->addFilter(new EqualsFilter('salesChannelId', $salesChannelId));
-        $criteria->addAssociation('cover');
-        $listing = $this->merchantRepository->search($criteria, $resolverContext->getSalesChannelContext()->getContext());
+        $criteria->setTotalCountMode(Criteria::TOTAL_COUNT_MODE_EXACT);
+
+        $salesChannelContext = $resolverContext->getSalesChannelContext();
+        $request = $resolverContext->getRequest();
+
+        $this->eventDispatcher->dispatch(
+            new MerchantListingCriteriaEvent($request, $criteria, $salesChannelContext)
+        );
+
+        $listing = $this->merchantRepository->search($criteria, $salesChannelContext->getContext());
+        $listing = MerchantListingResult::createFrom($listing);
+
+        $this->eventDispatcher->dispatch(
+            new MerchantListingResultEvent($request, $listing, $salesChannelContext)
+        );
 
         $data->setListing($listing);
     }

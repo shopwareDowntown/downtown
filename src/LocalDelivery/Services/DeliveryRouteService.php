@@ -16,8 +16,6 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\NotFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Sorting\FieldSorting;
 use Shopware\Production\LocalDelivery\DeliveryPackage\DeliveryPackageCollection;
 use Shopware\Production\LocalDelivery\DeliveryRoute\DeliveryRouteEntity;
-use Shopware\Production\Merchants\Content\Merchant\MerchantCollection;
-use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
 
 class DeliveryRouteService
 {
@@ -36,22 +34,15 @@ class DeliveryRouteService
      */
     private $deliveryRouteRepository;
 
-    /**
-     * @var EntityRepositoryInterface
-     */
-    private $merchantRepository;
-
     public function __construct(
         MapboxService $mapboxService,
         EntityRepositoryInterface $deliveryPackageRepository,
-        EntityRepositoryInterface $deliveryRouteRepository,
-        EntityRepositoryInterface $merchantRepository
+        EntityRepositoryInterface $deliveryRouteRepository
     )
     {
         $this->mapboxService = $mapboxService;
         $this->deliveryPackageRepository = $deliveryPackageRepository;
         $this->deliveryRouteRepository = $deliveryRouteRepository;
-        $this->merchantRepository = $merchantRepository;
     }
 
     public function getNewestRoute(string $boyEntityId, Context $context): DeliveryRouteEntity
@@ -64,7 +55,7 @@ class DeliveryRouteService
         $result = $this->deliveryRouteRepository->search($criteria, $context)->getEntities()->first();
 
         if ($result === null) {
-            throw new \Exception('No route found. try to generate a new route for your packages.');
+            throw new \RuntimeException('No route found. try to generate a new route for your packages.');
         }
 
         return $result;
@@ -74,20 +65,30 @@ class DeliveryRouteService
     {
         // get packages that are not delivered for this boy
         $packages = $this->getNotDeliveredPackagesForBoy($boyEntityId, $context);
+        $firstPackage = $packages->first();
 
-        if ($packages->count() < 1) {
-            throw new \Exception('No packages for route found');
+        if ($firstPackage === null) {
+            throw new \RuntimeException('No packages for route found');
         }
 
         // get merchant adress and coordinates
         $coordinates = [];
-        $merchant = $packages->first()->getMerchant();
+        $merchant = $firstPackage->getMerchant();
+        if ($merchant === null) {
+            throw new \RuntimeException('No merchant found for package');
+        }
+
+        $merchantCountry = $merchant->getCountry();
+        if ($merchantCountry === null) {
+            throw new \RuntimeException('No country for merchant provided');
+        }
+
         $coordinates[] = $this->mapboxService->getGpsCoordinates(
             $this->mapboxService->convertAddressToSearchTerm(
                 $merchant->getZip(),
                 $merchant->getCity(),
                 $merchant->getStreet(),
-                $merchant->getCountry()
+                $merchantCountry->getIso3()
             ),
             $context
         );
@@ -128,14 +129,5 @@ class DeliveryRouteService
         $entities = $this->deliveryPackageRepository->search($criteria, $context)->getEntities();
 
         return $entities;
-    }
-
-    private function getMerchant(string $merchantId, Context $context): MerchantEntity
-    {
-        $criteria = new Criteria([$merchantId]);
-        /** @var MerchantCollection $entities */
-        $entities = $this->merchantRepository->search($criteria, $context)->getEntities();
-
-        return $entities->first();
     }
 }

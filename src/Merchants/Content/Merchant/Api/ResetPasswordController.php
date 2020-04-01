@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Shopware\Production\Merchants\Content\Merchant\Api;
 
@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
 /**
- * @RouteScope(scopes={"storefront"})
+ * @RouteScope(scopes={"merchant-api"})
  */
 class ResetPasswordController
 {
@@ -54,8 +54,7 @@ class ResetPasswordController
         Environment $twig,
         MailSender $mailService,
         SystemConfigService $systemConfigService
-    )
-    {
+    ) {
         $this->merchantRepository = $merchantRepository;
         $this->merchantResetPasswordTokenRepository = $merchantResetPasswordTokenRepository;
         $this->twig = $twig;
@@ -140,7 +139,7 @@ class ResetPasswordController
 
         $ids = $this->merchantResetPasswordTokenRepository->searchIds($criteria, Context::createDefaultContext())->getIds();
 
-        if (!count($ids)) {
+        if (!\count($ids)) {
             return;
         }
 

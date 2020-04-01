@@ -23,7 +23,7 @@ class MerchantTest extends TestCase
 {
     use IntegrationTestBehaviour;
 
-    public function testMerchantCreateAndLoginAndProfileGetAndProfileUpdate()
+    public function testMerchantCreateAndLoginAndProfileGetAndProfileUpdate(): void
     {
         $merchantData = $this->getMinimalMerchantData();
 
@@ -65,16 +65,16 @@ class MerchantTest extends TestCase
             ->get(ProfileController::class)
             ->profile($salesChannelContext);
 
-        self::assertSame($merchantData['id'], json_decode($response->getContent())->id);
+        self::assertSame($merchantData['id'], json_decode($response->getContent(), false)->id);
         self::assertStringNotContainsString('password', $response->getContent());
-        self::assertSame('FOO', json_decode($response->getContent())->publicCompanyName);
+        self::assertSame('FOO', json_decode($response->getContent(), false)->publicCompanyName);
 
         $response = $this->getContainer()
             ->get(ProfileController::class)
             ->save(new RequestDataBag($this->getUpdateMerchantData()), $salesChannelContext);
 
-        self::assertTrue(json_decode($response->getContent())->public);
-        self::assertSame('owner', json_decode($response->getContent())->publicOwner);
+        self::assertTrue(json_decode($response->getContent(), false)->public);
+        self::assertSame('owner', json_decode($response->getContent(), false)->publicOwner);
 
         $request = $this->createUploadRequest();
 
@@ -86,7 +86,7 @@ class MerchantTest extends TestCase
             ->get(ProfileController::class)
             ->profile($salesChannelContext);
 
-        self::assertCount(3, json_decode($response->getContent())->media);
+        self::assertCount(3, json_decode($response->getContent(), false)->media);
 
 
         $salesChannelContext = $this->getContainer()
@@ -95,26 +95,26 @@ class MerchantTest extends TestCase
 
         $this->getContainer()
             ->get(ProfileController::class)
-            ->delete(json_decode($response->getContent())->cover->id, $salesChannelContext);
+            ->delete(json_decode($response->getContent(), false)->cover->id, $salesChannelContext);
 
 
         $response = $this->getContainer()
             ->get(ProfileController::class)
             ->profile($salesChannelContext);
 
-        self::assertCount(2, json_decode($response->getContent())->media);
-        self::assertEmpty(json_decode($response->getContent())->cover);
+        self::assertCount(2, json_decode($response->getContent(), false)->media);
+        self::assertEmpty(json_decode($response->getContent(), false)->cover);
 
         $this->getContainer()
             ->get(ProfileController::class)
-            ->delete(json_decode($response->getContent())->media[0]->id, $salesChannelContext);
+            ->delete(json_decode($response->getContent(), false)->media[0]->id, $salesChannelContext);
 
         $response = $this->getContainer()
             ->get(ProfileController::class)
             ->profile($salesChannelContext);
 
-        self::assertCount(1, json_decode($response->getContent())->media);
-        self::assertEmpty(json_decode($response->getContent())->cover);
+        self::assertCount(1, json_decode($response->getContent(), false)->media);
+        self::assertEmpty(json_decode($response->getContent(), false)->cover);
     }
 
     public function testCustomerDelete(): void

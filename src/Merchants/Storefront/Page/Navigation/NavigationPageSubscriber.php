@@ -40,6 +40,7 @@ class NavigationPageSubscriber
         $salesChannelContext = $event->getSalesChannelContext();
         $salesChannel = $salesChannelContext->getSalesChannel();
         $landingPage = $salesChannel->getExtension('landingPage');
+        $page = $event->getPage();
 
         if ($request->attributes->get('_route') !== 'frontend.home.page') {
             return;
@@ -69,14 +70,19 @@ class NavigationPageSubscriber
             throw new PageNotFoundException($pageId);
         }
 
-        $event->getPage()->setCmsPage($pages->get($pageId));
+        $page->setCmsPage($pages->get($pageId));
 
         $salesChannelName = $salesChannel->getTranslation('name');
         if ($salesChannelName === null || !\is_string($salesChannelName)) {
             return;
         }
 
-        $event->getPage()->getMetaInformation()->setMetaTitle($salesChannelName);
+        $metaInformation = $page->getMetaInformation();
+        if ($metaInformation === null) {
+            return;
+        }
+
+        $metaInformation->setMetaTitle($salesChannelName);
     }
 
     private function loadNavigationCategory(string $navigationCategoryId, Context $context): ?CategoryEntity

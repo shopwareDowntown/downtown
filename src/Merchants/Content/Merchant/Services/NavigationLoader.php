@@ -9,6 +9,7 @@ use Shopware\Core\Content\Category\Event\NavigationLoadedEvent;
 use Shopware\Core\Content\Category\Exception\CategoryNotFoundException;
 use Shopware\Core\Content\Category\Tree\Tree;
 use Shopware\Core\Content\Category\Tree\TreeItem;
+use \Shopware\Core\Content\Category\Service\NavigationLoader as ShopwareNavigationLoader;
 use Shopware\Core\Framework\DataAbstractionLayer\Doctrine\FetchModeHelper;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\ContainsFilter;
@@ -22,7 +23,7 @@ use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class NavigationLoader extends \Shopware\Core\Content\Category\Service\NavigationLoader
+class NavigationLoader extends ShopwareNavigationLoader
 {
     /**
      * @var SalesChannelRepositoryInterface
@@ -174,7 +175,13 @@ class NavigationLoader extends \Shopware\Core\Content\Category\Service\Navigatio
             );
 
             $router = $this->router;
-            $merchants = array_map(function (MerchantEntity $merchantEntity) use ($router) {
+
+            $merchantCollection = $child->getExtension('merchants');
+            if ($merchantCollection === null) {
+                continue;
+            }
+
+            $merchants = array_map(static function (MerchantEntity $merchantEntity) use ($router) {
                 $c = new CategoryEntity();
                 $c->setName($merchantEntity->getPublicCompanyName());
                 $c->setActive(true);
@@ -186,11 +193,11 @@ class NavigationLoader extends \Shopware\Core\Content\Category\Service\Navigatio
                 $c->setExternalLink($router->generate('storefront.merchant.detail', ['id' => $merchantEntity->getId()]));
 
                 return new TreeItem($c, []);
-            }, $child->getExtension('merchants')->getElements());
+            }, $merchantCollection->getElements());
 
-            if (count($merchants)) {
+            if (\count($merchants)) {
                 $item->setChildren(array_values(array_merge($item->getChildren(), $merchants)));
-                $item->getCategory()->setChildCount(count($item->getChildren()));
+                $item->getCategory()->setChildCount(\count($item->getChildren()));
             }
 
             $items[$child->getId()] = $item;
@@ -225,6 +232,7 @@ class NavigationLoader extends \Shopware\Core\Content\Category\Service\Navigatio
         $criteria->addAssociation('media');
         $criteria->addAssociation('merchants');
 
+        $criteria->addFilter(new EqualsFilter('merchants.public', 1));
         $criteria->addFilter(new EqualsFilter('merchants.salesChannelId', $context->getSalesChannel()->getId()));
 
         /** @var CategoryCollection $firstTwoLevels */
@@ -261,8 +269,7 @@ class NavigationLoader extends \Shopware\Core\Content\Category\Service\Navigatio
     {
         $active = $this->getMetaInfoById($activeId, $metaInfo);
 
-        unset($metaInfo[$rootId]);
-        unset($metaInfo[$activeId]);
+        unset($metaInfo[$rootId], $metaInfo[$activeId]);
 
         $childIds = array_keys($metaInfo);
 
@@ -284,18 +291,18 @@ class NavigationLoader extends \Shopware\Core\Content\Category\Service\Navigatio
         $parentIds = array_filter(explode('|', $path ?? ''));
 
         $haveToBeIncluded = array_merge($childIds, $parentIds, [$activeId]);
-        $included = $alreadyLoaded->getIds();
-        $included = array_flip($included);
+        $included = array_flip($alreadyLoaded->getIds());
 
         return array_diff($haveToBeIncluded, $included);
     }
 
     private function validate(string $activeId, ?string $path, SalesChannelContext $context): void
     {
+        $salesChannel = $context->getSalesChannel();
         $ids = array_filter([
-            $context->getSalesChannel()->getFooterCategoryId(),
-            $context->getSalesChannel()->getServiceCategoryId(),
-            $context->getSalesChannel()->getNavigationCategoryId(),
+            $salesChannel->getFooterCategoryId(),
+            $salesChannel->getServiceCategoryId(),
+            $salesChannel->getNavigationCategoryId(),
         ]);
 
         foreach ($ids as $id) {

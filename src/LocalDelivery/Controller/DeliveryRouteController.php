@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 /*
  * (c) shopware AG <info@shopware.com>
  * For the full copyright and license information, please view the LICENSE
@@ -13,13 +12,12 @@ use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Production\LocalDelivery\Services\DeliveryBoyLoginService;
 use Shopware\Production\LocalDelivery\Services\DeliveryRouteService;
 use Shopware\Storefront\Controller\StorefrontController;
-use Shopware\Storefront\Framework\Routing\Router;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Twig\Environment;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @RouteScope(scopes={"storefront"})
@@ -34,12 +32,7 @@ class DeliveryRouteController extends StorefrontController
     ];
 
     /**
-     * @var Environment
-     */
-    private $twig;
-
-    /**
-     * @var Router
+     * @var RouterInterface
      */
     private $router;
 
@@ -56,20 +49,18 @@ class DeliveryRouteController extends StorefrontController
     public function __construct(
         DeliveryRouteService $deliveryRouteService,
         DeliveryBoyLoginService $deliveryBoyLoginService,
-        Environment $twig,
-        Router $router
+        RouterInterface $router
     )
     {
         $this->deliveryRouteService = $deliveryRouteService;
         $this->deliveryBoyLoginService = $deliveryBoyLoginService;
-        $this->twig = $twig;
         $this->router = $router;
     }
 
     /**
      * @Route(name="delivery-api.route.get.newest", path="/delivery-api/route/get-newest", methods={"GET"})
      */
-    public function getNewestRoute(Request $request, SalesChannelContext $salesChannelContext) : Response
+    public function getNewestRoute(SalesChannelContext $salesChannelContext) : Response
     {
         if (!$this->deliveryBoyLoginService->isDeliveryBoyLoggedIn($salesChannelContext->getContext())) {
             return new RedirectResponse(
@@ -97,11 +88,11 @@ class DeliveryRouteController extends StorefrontController
         $travelProfile = $request->query->get('travelProfile');
 
         if ($travelProfile === null) {
-            throw new \Exception('travelProfile not given (possible values are: '. implode(', ', self::TRAVEL_PROFILES) . ')');
+            throw new \RuntimeException('travelProfile not given (possible values are: '. implode(', ', self::TRAVEL_PROFILES) . ')');
         }
 
-        if (!in_array($travelProfile, self::TRAVEL_PROFILES, true)) {
-            throw new \Exception('travelProfile is not valid, choose one of the following values: '. implode(', ', self::TRAVEL_PROFILES));
+        if (!\in_array($travelProfile, self::TRAVEL_PROFILES, true)) {
+            throw new \RuntimeException('travelProfile is not valid, choose one of the following values: '. implode(', ', self::TRAVEL_PROFILES));
         }
 
         $deliveryBoyId = $this->deliveryBoyLoginService->getDeliveryBoyId();

@@ -107,11 +107,9 @@ class DeliveryBoyLoginService
         $criteria->addFilter(new EqualsFilter('id', $deliveryBoyData['id']));
         $criteria->addFilter(new EqualsFilter('email', $deliveryBoyData['email']));
 
-        $searchResult = $this->deliveryBoyRepository->search($criteria, $context);
-
-        if ($searchResult->getTotal() !== 1 ||
-            $deliveryBoyData['password'] !== $searchResult->first()->getPassword()
-        ) {
+        /** @var DeliveryBoyEntity|null $deliveryBoy */
+        $deliveryBoy = $this->deliveryBoyRepository->search($criteria, $context)->first();
+        if ($deliveryBoy === null || $deliveryBoyData['password'] !== $deliveryBoy->getPassword()) {
             $this->deliveryBoySession->logout();
 
             return false;
