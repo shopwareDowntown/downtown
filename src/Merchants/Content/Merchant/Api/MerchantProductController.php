@@ -18,6 +18,7 @@ use Shopware\Core\System\NumberRange\ValueGenerator\NumberRangeValueGeneratorInt
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Core\System\Tax\TaxEntity;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
+use Shopware\Production\Portal\Hacks\StorefrontMediaUploader;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -71,6 +72,11 @@ class MerchantProductController
      */
     private $numberRangeValueGenerator;
 
+    /**
+     * @var StorefrontMediaUploader
+     */
+    private $storefrontMediaUploader;
+
     public function __construct(
         EntityRepositoryInterface $productRepository,
         EntityRepositoryInterface $taxRepository,
@@ -78,7 +84,8 @@ class MerchantProductController
         EntityRepositoryInterface $merchantRepository,
         EntityRepositoryInterface $productMediaRepository,
         NumberRangeValueGeneratorInterface $numberRangeValueGenerator,
-        MediaService $mediaService
+        MediaService $mediaService,
+        StorefrontMediaUploader $storefrontMediaUploader
     ) {
         $this->productRepository = $productRepository;
         $this->taxRepository = $taxRepository;
@@ -87,6 +94,7 @@ class MerchantProductController
         $this->productMediaRepository = $productMediaRepository;
         $this->numberRangeValueGenerator = $numberRangeValueGenerator;
         $this->mediaService = $mediaService;
+        $this->storefrontMediaUploader = $storefrontMediaUploader;
     }
 
     /**
@@ -352,7 +360,7 @@ class MerchantProductController
         $mediaFile = new MediaFile(
             $uploadedFile->getPathname(),
             $uploadedFile->getMimeType(),
-            'jpg',
+            $uploadedFile->getClientOriginalExtension(),
             $uploadedFile->getSize()
         );
 
@@ -422,7 +430,7 @@ class MerchantProductController
 
         $mediaIds = [];
         foreach ($request->files->get('media') as $uploadedFile) {
-            $mediaIds[] = $this->createMediaIdByFile($uploadedFile, $context);
+            $mediaIds[] = $this->storefrontMediaUploader->upload($uploadedFile, 'merchant_products', 'merchant_images', $context->getContext());
         }
 
         $productData['cover'] = ['mediaId' => $mediaIds[0]];

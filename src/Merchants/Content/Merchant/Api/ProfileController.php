@@ -102,7 +102,7 @@ class ProfileController
 
         foreach ($request->files as $name => $upload) {
             try {
-                $mediaId = $this->uploader->upload($upload, 'merchants', 'images', $salesChannelContext->getContext());
+                $mediaId = $this->uploader->upload($upload, 'merchants', 'merchant_images', $salesChannelContext->getContext());
             } catch (UploadException $e) {
                 continue;
             }
