@@ -63,7 +63,7 @@ class ResetPasswordController
     }
 
     /**
-     * @Route(name="merchant-api.account.password.reset", path="/merchant-api/v{version}/reset-password", methods={"POST"}, defaults={"csrf_protected"=false})
+     * @Route(name="merchant-api.account.password.reset", path="/merchant-api/v{version}/reset-password", methods={"POST"}, defaults={"auth_required"=false})
      */
     public function reset(RequestDataBag $dataBag, SalesChannelContext $context): Response
     {
@@ -102,7 +102,7 @@ class ResetPasswordController
     }
 
     /**
-     * @Route(name="merchant-api.account.password.confirm", path="/merchant-api/v{version}/reset-password-confirm", methods={"POST"}, defaults={"csrf_protected"=false})
+     * @Route(name="merchant-api.account.password.confirm", path="/merchant-api/v{version}/reset-password-confirm", methods={"POST"}, defaults={"auth_required"=false})
      */
     public function resetConfirm(RequestDataBag $dataBag, SalesChannelContext $context): Response
     {
