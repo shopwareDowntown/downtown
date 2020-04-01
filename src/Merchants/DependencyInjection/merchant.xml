@@ -153,6 +153,7 @@
             <argument type="service" id="product_media.repository"/>
             <argument type="service" id="Shopware\Core\System\NumberRange\ValueGenerator\NumberRangeValueGeneratorInterface"/>
             <argument type="service" id="Shopware\Core\Content\Media\MediaService"/>
+            <argument type="service" id="Shopware\Production\Portal\Hacks\StorefrontMediaUploader"/>
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Api\ResetPasswordController" public="true">
@@ -177,6 +178,10 @@
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Api\LogoutController" public="true">
             <argument type="service" id="merchant_access_token.repository"/>
+        </service>
+
+        <service id="Shopware\Production\Portal\Hacks\StorefrontMerchantMediaImageValidator">
+            <tag name="storefront.media.upload.validator" />
         </service>
     </services>
 </container>
