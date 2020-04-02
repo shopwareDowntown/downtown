@@ -1,57 +1,94 @@
 <clr-modal (clrModalOpenChange)="modalClosed()" [clrModalOpen]="loginModalOpen">
   <div class="modal-body">
-    <form class="login" [formGroup]="loginForm" clrForm clrLayout="vertical">
-      <section class="title">
-        <h3
-          *ngIf="registrationCompleted === false; else newUser"
-          class="welcome"
-        >
-          Hallo und Willkommen zurück!
-        </h3>
-        <ng-template #newUser>
-          <h3>Registrierung erfolgreich!</h3>
-        </ng-template>
-        <h5 class="hint">Melde Dich im Shopware Portal an.</h5>
-      </section>
-      <div class="login-group">
-        <clr-input-container>
-          <label>E-Mail-Adresse</label>
-          <input
-            (keypress)="enterLogin($event)"
-            formControlName="username"
-            type="text"
-            name="login_username"
-            clrInput
-          />
-        </clr-input-container>
-        <clr-input-container>
-          <label>Passwort</label>
-          <input
-            (keypress)="enterLogin($event)"
-            formControlName="password"
-            type="password"
-            name="login_password"
-            clrInput
-          />
-        </clr-input-container>
-        <div style="text-align: center" *ngIf="isLogging">
-          <span class="spinner spinner-inline"></span>
-          <span class="ml-1">Logging in...</span>
+    <ng-container *ngIf="false === passwordResetMode; else passwordReset">
+      <form class="login" [formGroup]="loginForm" clrForm clrLayout="vertical">
+        <section class="title">
+          <h3
+            *ngIf="registrationCompleted === false; else newUser"
+            class="welcome"
+          >
+            Hallo und Willkommen zurück!
+          </h3>
+          <ng-template #newUser>
+            <h3>Registrierung erfolgreich!</h3>
+          </ng-template>
+          <h5 class="hint">Melde Dich im Shopware Portal an.</h5>
+        </section>
+        <div class="login-group">
+          <clr-input-container>
+            <label>E-Mail-Adresse</label>
+            <input
+              (keypress)="enterLogin($event)"
+              formControlName="username"
+              type="text"
+              name="login_username"
+              clrInput
+            />
+          </clr-input-container>
+          <clr-input-container>
+            <label>Passwort</label>
+            <input
+              (keypress)="enterLogin($event)"
+              formControlName="password"
+              type="password"
+              name="login_password"
+              clrInput
+            />
+          </clr-input-container>
+          <div style="text-align: center" *ngIf="isLogging">
+            <span class="spinner spinner-inline"></span>
+            <span class="ml-1">Logging in...</span>
+          </div>
+          <div class="error active" *ngIf="loginFailed">
+            Invalid user name or password
+          </div>
         </div>
-        <div class="error active" *ngIf="loginFailed">
-          Invalid user name or password
+      </form>
+      <div class="modal-footer">
+        <div class="login-footer-wrapper">
+          <a href="#" (click)="passwordResetMode=true">Passwort vergessen?</a>
+          <button
+            type="button"
+            (click)="doLogin()"
+            class="btn btn-primary"
+            [disabled]="loginForm.invalid || isLogging"
+          >
+            LOGIN
+          </button>
         </div>
       </div>
-    </form>
-    <div class="modal-footer">
+    </ng-container>
+  </div>
+</clr-modal>
+
+
+<ng-template #passwordReset>
+  <form class="login" [formGroup]="passwordResetForm" clrForm clrLayout="vertical">
+    <section class="title">
+      <h3>Passwort zurücksetzen</h3>
+      <h5 class="hint">Nach dem zurücksetzen bekommst du eine E-Mail.</h5>
+    </section>
+    <clr-input-container>
+      <label>E-Mail-Adresse</label>
+      <input
+        formControlName="email"
+        type="text"
+        name="email"
+        clrInput
+      />
+    </clr-input-container>
+  </form>
+  <div class="modal-footer">
+    <div class="login-footer-wrapper">
+      <a href="#" (click)="passwordResetMode=false">zurück</a>
       <button
         type="button"
-        (click)="doLogin()"
+        (click)="doPasswordReset()"
         class="btn btn-primary"
-        [disabled]="loginForm.invalid || isLogging"
+        [disabled]="passwordResetForm.invalid"
       >
-        LOGIN
+        Passwort zurücksetzen
       </button>
     </div>
   </div>
-</clr-modal>
+</ng-template>

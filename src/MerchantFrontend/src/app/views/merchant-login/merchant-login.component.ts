@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import { LoginService } from '../../core/services/login.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MerchantApiService } from '../../core/services/merchant-api.service';
 
 @Component({
   selector: 'portal-merchant-login',
@@ -15,16 +16,21 @@ export class MerchantLoginComponent implements OnInit {
   @Input() loginModalOpen: boolean;
   @Input() registrationCompleted = false;
   loginForm: FormGroup;
+  passwordResetForm: FormGroup;
+  passwordResetMode = false;
   private initialFormState: any;
+  private initialResetFormValues: any;
 
   constructor(
     private readonly router: Router,
     private readonly loginService: LoginService,
-    private readonly formBuilder: FormBuilder
+    private readonly formBuilder: FormBuilder,
+    private readonly merchantApiService: MerchantApiService
   ) { }
 
   ngOnInit(): void {
     this.initializeForm();
+    this.initializeResetForm();
   }
 
   enterLogin($event: KeyboardEvent) {
@@ -46,6 +52,15 @@ export class MerchantLoginComponent implements OnInit {
       });
   }
 
+  doPasswordReset() {
+    this.merchantApiService.resetPassword(this.passwordResetForm.value).subscribe(() => {
+      this.passwordResetForm.reset(this.initialResetFormValues);
+      this.passwordResetMode = false;
+      this.modalClosed()
+    });
+    //TODO: what should happen on errors?
+  }
+
   initializeForm(): void {
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
@@ -57,5 +72,12 @@ export class MerchantLoginComponent implements OnInit {
   modalClosed(): void {
     this.loginForm.reset();
     this.loginModalOpen = false;
+  }
+
+  private initializeResetForm() {
+    this.passwordResetForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]]
+    });
+    this.initialResetFormValues = this.passwordResetForm.value;
   }
 }
