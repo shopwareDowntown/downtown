@@ -35,6 +35,7 @@ class AuthoritiesController
     {
         $criteria = new Criteria();
         $criteria->addAssociation('domains');
+        $criteria->addFilter(new EqualsFilter('active', 1));
         $criteria->addFilter(new EqualsFilter('typeId', Defaults::SALES_CHANNEL_TYPE_STOREFRONT));
 
         /** @var SalesChannelCollection $salesChannelCollection */
