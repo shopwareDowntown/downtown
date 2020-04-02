@@ -8,6 +8,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\System\SalesChannel\Entity\SalesChannelRepositoryInterface;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
+use Shopware\Production\Merchants\Content\Merchant\MerchantAvailableFilter;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
 use Shopware\Production\Merchants\Content\Merchant\Storefront\Page\MerchantPage;
 use Shopware\Production\Merchants\Content\Merchant\Storefront\Service\MerchantCriteriaLoaderInterface;
@@ -38,21 +39,14 @@ class MerchantController extends StorefrontController
      */
     private $genericPageLoader;
 
-    /**
-     * @var MerchantCriteriaLoaderInterface
-     */
-    private $criteriaLoader;
-
     public function __construct(
         SalesChannelRepositoryInterface $productRepository,
         EntityRepositoryInterface $merchantRepository,
-        GenericPageLoader $genericPageLoader,
-        MerchantCriteriaLoaderInterface $criteriaLoader
+        GenericPageLoader $genericPageLoader
     ) {
         $this->productRepository = $productRepository;
         $this->merchantRepository = $merchantRepository;
         $this->genericPageLoader = $genericPageLoader;
-        $this->criteriaLoader = $criteriaLoader;
     }
 
     /**
@@ -76,9 +70,7 @@ class MerchantController extends StorefrontController
         $criteria = new Criteria([$id]);
         $criteria->addAssociation('products');
         $criteria->addAssociation('country');
-        $criteria->addFilter(new EqualsFilter('salesChannelId', $context->getSalesChannel()->getId()));
-
-        $criteria = $this->criteriaLoader->getMerchantCriteria($criteria);
+        $criteria->addFilter(new MerchantAvailableFilter($context->getSalesChannel()->getId()));
 
         /** @var MerchantEntity|null $merchant */
         $merchant = $this->merchantRepository->search($criteria, $context->getContext())->first();
