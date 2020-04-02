@@ -49,5 +49,9 @@ And here is an example of a retailer's landing page:
 # How to install
 
 # Contributing
+Downtown is an open-source project that was created in collaboration with the community to help local traders in this trying time. Help local traders by contributing to this project. 
+
+How to contribute?
+You have an idea or you found an issue? Please open an issue here: https://github.com/shopwareDowntown/portal/issues
 
 # Authors
