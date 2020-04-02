@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ClarityModule } from '@clr/angular';
@@ -15,9 +15,13 @@ import { OrganizationRegisterModule } from './views/organization-register/organi
 import { OrganizationLoginModule } from './views/organization-login/organization-login.module';
 import { HttpClientModule } from '@angular/common/http';
 import { LocalDeliveryModule } from './views/local-delivery/local-delivery.module';
+import localeDe from '@angular/common/locales/de';
+registerLocaleData(localeDe);
 
 import { MerchantAccountModule } from './views/merchant-account/merchant-account.module';
 import { MerchantHomeModule } from './views/merchant-home/merchant-home.module';
+import { MerchantOrdersModule } from './views/merchant-orders/merchant-orders.module';
+import { registerLocaleData } from '@angular/common';
 
 @NgModule({
   imports: [
@@ -39,12 +43,15 @@ import { MerchantHomeModule } from './views/merchant-home/merchant-home.module';
     OrganizationDetailsModule,
     OrganizationRegisterModule,
     OrganizationLoginModule,
-    LocalDeliveryModule
+    LocalDeliveryModule,
+    MerchantOrdersModule
   ],
   declarations: [
     AppComponent,
   ],
-  providers: [],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'de-DE' }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

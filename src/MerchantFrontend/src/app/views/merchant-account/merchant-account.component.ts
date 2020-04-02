@@ -37,7 +37,7 @@ export class MerchantAccountComponent implements OnInit {
       firstName: [this.merchant.firstName, [Validators.required]],
       lastName: [this.merchant.lastName, [Validators.required]],
       currentEmail: [
-        this.merchant.email,
+        {value: this.merchant.email, disabled: true},
         [Validators.required, Validators.email]
       ]
     });

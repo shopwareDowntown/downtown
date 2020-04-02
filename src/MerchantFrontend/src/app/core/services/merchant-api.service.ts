@@ -9,6 +9,7 @@ import { map, take } from 'rxjs/operators';
 import { Category } from '../models/category.model';
 import { Country } from '../models/country.model';
 import { environment } from '../../../environments/environment';
+import { Order } from '../models/order.model';
 
 @Injectable({
   providedIn: 'root'
@@ -164,6 +165,10 @@ export class MerchantApiService {
     headers = headers.set('Content-Type', 'application/json');
 
     return this.http.post<any>(this.apiUrl + '/merchant-api/v1/reset-password-confirm', JSON.stringify(body), {headers: headers})
+  }
+
+  getOrders(): Observable<Order[]> {
+    return this.http.get<Order[]>(this.apiUrl + '/merchant-api/v1/orders', {headers: this.getJsonContentTypeHeaders()});
   }
 
   private getHeaders(): { [header: string]: string | string[];} {
