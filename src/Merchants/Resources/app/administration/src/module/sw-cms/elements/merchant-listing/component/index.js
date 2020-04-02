@@ -24,17 +24,6 @@ Component.register('sw-cms-el-merchant-listing', {
                         source: 'static',
                         value: this.element.config.boxLayout.value
                     },
-                },
-                data: {
-                    merchant: {
-                        name: 'Sample Merchant',
-                        email: 'sample@merchant.com',
-                        website: 'https://sample.merchant.com',
-                        description: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-                    sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-                    sed diam voluptua.`.trim(),
-                        phone_number: '+49 00 1324 5678'
-                    }
                 }
             };
         },

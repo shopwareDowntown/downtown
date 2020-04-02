@@ -1,6 +1,7 @@
 @import "~scss/variables";
 
 .sw-cms-el-merchant-listing {
+    width: 100%;
     .sw-cms-el-merchant-listing__content {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
