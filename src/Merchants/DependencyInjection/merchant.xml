@@ -56,10 +56,6 @@
             <tag name="shopware.entity.definition" entity="sales_channel_landing_page"/>
         </service>
 
-        <service id="Shopware\Production\Merchants\Content\Merchant\CustomerEntityExtension">
-            <tag name="shopware.entity.extension"/>
-        </service>
-
         <service id="Shopware\Production\Merchants\Content\Merchant\CategoryEntityExtension">
             <tag name="shopware.entity.extension"/>
         </service>
@@ -132,12 +128,6 @@
         <service id="Shopware\Production\Merchants\Content\Merchant\Services\CartValidator">
             <argument type="service" id="product.repository"/>
             <tag name="shopware.cart.validator"/>
-        </service>
-
-        <service id="Shopware\Production\Merchants\Content\Merchant\Subscriber\AbortMerchantLoginInStorefrontSubscriber">
-            <argument type="service" id="merchant.repository"/>
-            <argument type="service" id="request_stack"/>
-            <tag name="kernel.event_listener"/>
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Api\MerchantProductController" public="true">
