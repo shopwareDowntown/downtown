@@ -1,0 +1,17 @@
+{% block sw_cms_merchant_box_preview %}
+    <div class="sw-cms-merchant-box-preview"
+         :class="{ 'has--text': hasText }">
+
+        <div class="sw-cms-merchant-box-preview__image">
+            <img :src="'/static/img/cms/merchant.svg' | asset">
+        </div>
+
+        <div v-if="hasText">
+            <div class="sw-cms-merchant-box-preview__name">Merchant</div>
+
+            <div class="sw-cms-merchant-box-preview__description">Merchant description</div>
+        </div>
+
+        <div class="sw-cms-merchant-box-preview__action">Details</div>
+    </div>
+{% endblock %}

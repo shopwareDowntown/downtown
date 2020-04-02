@@ -7,7 +7,8 @@
     justify-content: stretch;
     align-items: start;
     align-content: stretch;
-    grid-template-columns: 60px 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 15px;
     grid-gap: 10px;
     height: 100%;
 
@@ -28,5 +29,9 @@
         &:last-child {
             margin-bottom: 0;
         }
+    }
+
+    .sw-cms-merchant-box-preview__description {
+        margin-top: 10px;
     }
 }
