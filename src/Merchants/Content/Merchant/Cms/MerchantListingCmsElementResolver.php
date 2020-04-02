@@ -10,6 +10,7 @@ use Shopware\Core\Content\Cms\DataResolver\ResolverContext\ResolverContext;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
+use Shopware\Production\Merchants\Content\Merchant\MerchantAvailableFilter;
 use Shopware\Production\Merchants\Content\Merchant\Storefront\Listing\MerchantListingCriteriaEvent;
 use Shopware\Production\Merchants\Content\Merchant\Storefront\Listing\MerchantListingResult;
 use Shopware\Production\Merchants\Content\Merchant\Storefront\Listing\MerchantListingResultEvent;
@@ -63,8 +64,7 @@ class MerchantListingCmsElementResolver extends AbstractCmsElementResolver
 
         $criteria = new Criteria();
         $criteria->addFilter(new EqualsFilter('categoryId', $categoryId));
-        $criteria->addFilter(new EqualsFilter('public', 1));
-        $criteria->addFilter(new EqualsFilter('salesChannelId', $salesChannelId));
+        $criteria->addFilter(new MerchantAvailableFilter($salesChannelId));
         $criteria->setTotalCountMode(Criteria::TOTAL_COUNT_MODE_EXACT);
 
         $salesChannelContext = $resolverContext->getSalesChannelContext();

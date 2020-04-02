@@ -109,15 +109,10 @@
             <argument type="service" id="sales_channel.product.repository"/>
             <argument type="service" id="merchant.repository"/>
             <argument type="service" id="Shopware\Storefront\Page\GenericPageLoader"/>
-            <argument type="service" id="Shopware\Production\Merchants\Content\Merchant\Storefront\Service\MerchantCriteriaLoaderInterface"/>
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Storefront\Controller\DoubleOptinController" public="true">
             <argument type="service" id="merchant.repository"/>
-        </service>
-
-        <service id="Shopware\Production\Merchants\Content\Merchant\Storefront\Service\MerchantCriteriaLoaderInterface"
-                 class="Shopware\Production\Merchants\Content\Merchant\Storefront\Service\MerchantProductCriteriaLoader">
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Subscriber\OrderPlacedSubscriber">
