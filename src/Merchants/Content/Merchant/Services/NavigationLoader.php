@@ -232,6 +232,7 @@ class NavigationLoader extends ShopwareNavigationLoader
 
         $criteria->addAssociation('media');
         $criteria->addAssociation('merchants');
+        $criteria->getAssociation('merchants')->addFilter(new MerchantAvailableFilter($context->getSalesChannel()->getId()));
 
         $criteria->addFilter(new MerchantAvailableFilter($context->getSalesChannel()->getId(), 'merchants'));
 
