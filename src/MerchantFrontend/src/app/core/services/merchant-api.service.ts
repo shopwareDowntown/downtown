@@ -82,7 +82,7 @@ export class MerchantApiService {
   }
 
   updateMerchant(merchant: Merchant): Observable<Merchant> {
-      return this.http.patch<Merchant>(this.apiUrl + '/merchant-api/v1/profile', JSON.stringify(merchant), {headers: this.getJsonContentTypeHeaders() });
+    return this.http.patch<Merchant>(this.apiUrl + '/merchant-api/v1/profile', JSON.stringify(merchant), { headers: this.getJsonContentTypeHeaders() });
   }
 
   addCoverToMerchant(image: File[]): Observable<any> {

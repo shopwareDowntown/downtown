@@ -348,6 +348,8 @@ body.downtown {
     }
 
     .nav-link.btn {
+      border-bottom: 2px solid transparent;
+      font-weight: 400;
       font-size: 15px;
       padding: 0 16px;
       height: 42px;
