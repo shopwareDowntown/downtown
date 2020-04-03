@@ -12,8 +12,8 @@ use Shopware\Core\System\StateMachine\StateMachineRegistry;
 use Shopware\Core\System\StateMachine\Transition;
 use Shopware\Production\Merchants\Content\Merchant\Exception\OrderAlreadyCompletedException;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
-use Shopware\Production\Merchants\Content\Merchant\SalesChannelContextExtension;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -48,22 +48,43 @@ class OrderController
     }
 
     /**
-     * @Route(name="merchant-api.orders.load", path="/merchant-api/v{version}/orders")
+     * @Route(name="merchant-api.orders.load", path="/merchant-api/v{version}/orders", methods={"GET"})
      */
-    public function load(MerchantEntity $merchant): JsonResponse
+    public function load(MerchantEntity $merchant, Request $request): JsonResponse
     {
-        $criteria = new Criteria([$merchant->getId()]);
-        $criteria->addAssociation('orders.deliveries');
-        $criteria->addAssociation('orders.lineItems');
+        $orderState = $request->query->getAlnum('state');
+        $limit = $request->query->getInt('limit', 25);
+        $offset = $request->query->getInt('offset', 0);
 
-        /** @var MerchantEntity $merchant */
-        $merchant = $this->merchantRepository->search($criteria, Context::createDefaultContext())->first();
+        $criteria = new Criteria();
+        $criteria->addAssociation('merchants');
+        $criteria->addAssociation('deliveries');
+        $criteria->addAssociation('lineItems');
+        $criteria->setTotalCountMode(Criteria::TOTAL_COUNT_MODE_EXACT)
+            ->addFilter(new EqualsFilter('merchants.id', $merchant->getId()))
+            ->setLimit($limit)
+            ->setOffset($offset);
 
-        return new JsonResponse($merchant->getOrders());
+        if ($orderState !== '') {
+            $criteria->addFilter(
+                new EqualsFilter('stateMachineState.technicalName', $orderState)
+            );
+        }
+
+        $orders = $this->orderRepository->search($criteria, Context::createDefaultContext());
+
+        if ($orders->count() <= 0) {
+            throw new NotFoundHttpException('No orders found.');
+        }
+
+        return new JsonResponse([
+            'data' => $orders->getElements(),
+            'total' => $orders->getTotal()
+        ]);
     }
 
     /**
-     * @Route(name="merchant-api.orders.detail", path="/merchant-api/v{version}/order/{orderId}")
+     * @Route(name="merchant-api.orders.detail", path="/merchant-api/v{version}/order/{orderId}", methods={"GET"})
      */
     public function detail(MerchantEntity $merchant, string $orderId): JsonResponse
     {
