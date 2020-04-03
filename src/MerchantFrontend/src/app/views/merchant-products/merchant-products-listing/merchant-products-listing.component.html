@@ -1,14 +1,14 @@
 <h1>
-  Products
+  Produkte
 </h1>
 
 <button type="button" (click)="openAddProductForm()" class="btn btn-primary">
-  Add Product
+  Produkt hinzufügen
 </button>
 
 <!-- Datagrid Table -->
 <clr-datagrid (clrDgRefresh)="refresh()" [clrDgLoading]="loading">
-  <clr-dg-placeholder>No products found.</clr-dg-placeholder>
+  <clr-dg-placeholder>Keine Produkte gefunden.</clr-dg-placeholder>
 
   <!-- Columns -->
   <clr-dg-column [clrDgField]="'name'">
@@ -25,7 +25,7 @@
   <clr-dg-column>
     Aktiv
   </clr-dg-column>
-  <clr-dg-column [clrDgField]="'options'"> </clr-dg-column>
+  <clr-dg-column>Aktionen</clr-dg-column>
 
   <!-- Row -->
   <clr-dg-row *ngFor="let product of products">
@@ -48,8 +48,8 @@
 
   <!-- Footer -->
   <clr-dg-footer>
-    {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
-    {{ total }} Products
+    {{ fromProduct }} - {{ tillProduct }} von
+    {{ total }} Produkten
     <clr-dg-pagination
       [(clrDgPage)]="currentPage"
       #pagination

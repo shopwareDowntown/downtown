@@ -1,29 +1,22 @@
 <clr-main-container>
-
-  <!-- Header Toolbar -->
   <clr-header class="header portal-header">
-    <!-- Branding -->
     <div class="branding">
       <a routerLink="/" >
-        <img class="logo" src="assets/img/shopware_logo_blue.svg"> <!-- can be replaced with favicon -->
+        <img class="logo" src="assets/images/downtown.svg">
         <span class="title">Portal</span>
       </a>
     </div>
-
     <div class="header-actions clr-hidden-sm-down">
       <button (click)="openLogin()" class="btn btn-primary login-button">Login</button>
     </div>
   </clr-header>
-
-  <!-- Content Area-->
   <div class="content-container">
     <div class="content-area" [style.padding]="0">
       <router-outlet #content></router-outlet>
     </div>
   </div>
-
 </clr-main-container>
 
-<portal-merchant-login [loginModalOpen]="showLogin">
-
+<portal-merchant-login
+  [loginModalOpen]="showLogin">
 </portal-merchant-login>

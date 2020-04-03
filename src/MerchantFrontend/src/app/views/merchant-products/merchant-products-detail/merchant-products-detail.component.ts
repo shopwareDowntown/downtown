@@ -78,8 +78,9 @@ export class MerchantProductsDetailComponent implements OnInit{
           return of(product);
         }
       })).subscribe((product: {data: Product}) => {
+        this.form.get('media').setValue(null);
         this.product = product.data;
-      });
+    });
   }
 
   imageSelected(value: any) {

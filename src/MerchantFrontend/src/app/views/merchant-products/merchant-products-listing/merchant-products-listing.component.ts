@@ -16,6 +16,8 @@ export class MerchantProductsListingComponent implements OnInit {
   limit = 10;
   offset: number;
   currentPage = 1;
+  fromProduct: number;
+  tillProduct: number;
 
   constructor(private merchantService: MerchantApiService, private router: Router) {}
 
@@ -30,6 +32,7 @@ export class MerchantProductsListingComponent implements OnInit {
     this.merchantService.getProducts(this.limit, this.offset).subscribe((value) => {
       this.products = value.data;
       this.total = value.total;
+      this.pageChange();
       this.loading = false;
     });
   }
@@ -44,5 +47,20 @@ export class MerchantProductsListingComponent implements OnInit {
 
   pageChange(): void {
     this.offset = (this.currentPage - 1) * 10;
+
+    if (this.currentPage === 1) {
+      this.fromProduct = this.fromProduct = 1;
+    } else {
+      this.fromProduct = (this.currentPage -1) * this.limit;
+    }
+
+    if (this.fromProduct + this.limit <= this.total) {
+      this.tillProduct = this.fromProduct + this.limit;
+      if (this.fromProduct === 1) {
+        this.tillProduct -= 1;
+      }
+    } else {
+      this.tillProduct = this.total;
+    }
   }
 }
