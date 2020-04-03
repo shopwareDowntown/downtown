@@ -1,6 +1,7 @@
 # About this project
 
 This is a non-profit project.
+The portal is an open-source project that was created in collaboration with the Shopware community to help local retailers in this trying time.
 
 It allows local governments, cities, or similar authorities to give local merchants an easy way of
 keeping in touch with their customers and selling goods and services online.
@@ -49,9 +50,8 @@ And here is an example of a retailer's landing page:
 # How to install
 
 # Contributing
-Downtown is an open-source project that was created in collaboration with the community to help local traders in this trying time. Help local traders by contributing to this project. 
 
-How to contribute?
-You have an idea or you found an issue? Please open an issue here: https://github.com/shopwareDowntown/portal/issues
+You have an idea or you found an issue? Please open an issue here: [shopwareDowntown/portal/issues](https://github.com/shopwareDowntown/portal/issues)
+Help retailers by contributing to this project. 
 
 # Authors
