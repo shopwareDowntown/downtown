@@ -154,8 +154,10 @@
             <argument type="service" id="merchant.repository"/>
         </service>
 
-        <service id="Shopware\Production\Merchants\Content\Merchant\Api\OrderListController" public="true">
+        <service id="Shopware\Production\Merchants\Content\Merchant\Api\OrderController" public="true">
             <argument type="service" id="merchant.repository"/>
+            <argument type="service" id="order.repository"/>
+            <argument type="service" id="Shopware\Core\System\StateMachine\StateMachineRegistry"/>
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Api\CountryController" public="true">
