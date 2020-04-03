@@ -51,6 +51,88 @@ And here is an example of a retailer's landing page:
 
 # How to install
 
+## The Portal
+
+Prerequisites: [docker](https://docs.docker.com/install/), [docker-compose](https://docs.docker.com/compose/install/), [node/npm](https://nodejs.org/en/download/) 
+
+Clone the project:
+
+```shell script
+git clone git@github.com:shopwareDowntown/downtown.git
+```
+
+Change into the project directory, then start the docker containers and change into the app container:
+
+```shell script
+docker-compose build  && \
+docker-compose up -d  && \
+docker-compose exec app_server sh
+```
+
+When inside the app container, do a basic install, generate a JWT secret and an App Secret, then exit the container:
+
+```shell script
+bin/console system:install --create-database --basic-setup --force && \
+bin/console system:generate-jwt-secret --force && \
+bin/console system:generate-app-secret  && \# put into docker-compose.yml 
+exit 
+```
+
+The App Secret is only shown on screen, you have to put it manually into the `docker-compose.yml`, right after `- APP_SECRET=`.
+
+Then regenerate the containers by re-executing up:
+
+```shell script
+docker-compose up -d  
+```
+
+Please note:
+
+- Administration is available at http://localhost:8000/admin with user `admin` and password `shopware`
+- Each sales channel represents an organisation/local authority
+- Merchants show up in categories after registration and activation
+- Merchants register through the separate Angular Merchant Administration described below
+
+You can shut down the portal with this command:
+
+```shell script
+docker-compose down --remove-orphans
+```
+
+## The Angular Merchant Administration
+
+Currently there is no docker container available, so you need to start the project using npm.
+
+Change into the directory `src/MerchantFrontend`. Then install dependencies and run the project: 
+
+```shell script
+npm install && npm run start
+```
+
+After the build and start has finished, the merchant portal is available at [http://localhost:4200/](http://localhost:4200/).
+
+Please be aware: The registration for organisations is currently not wired up to the portal, it's just a hubspot form,
+for production use replace it with your own. For new organisations please create a sales channel manually in [the portal](http://localhost:8000/admin).
+
+Merchants are able to register and choose a category. To activate a merchant either click on the link in the registration request e-mail or,
+in case you haven't set up e-mail sending in the portal, do it directly in the database:
+
+```shell script
+docker-compose exec mysql mysql -p # password is root
+```
+
+```sql
+USE downtown;
+```
+
+```sql
+UPDATE merchant SET active=1 WHERE email='merchant@email.example';
+```
+
+```sql
+quit;
+```
+
 # Contributing
 
 You have an idea or you found an issue? Please open an issue here: [shopwareDowntown/portal/issues](https://github.com/shopwareDowntown/portal/issues)
