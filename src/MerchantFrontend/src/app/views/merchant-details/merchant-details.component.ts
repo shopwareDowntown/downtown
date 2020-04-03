@@ -32,18 +32,13 @@ export class MerchantDetailsComponent implements OnInit {
   countries: Country[] = [];
 
   ngOnInit(): void {
-    this.stateService.getMerchant().subscribe(
-      (merchant: Merchant | null) => {
-        if (merchant !== null) {
-          this.merchant = merchant;
-          this.merchantLoaded = true;
-          this.createForm();
-        }
-      },
-      () => {
-        this.toastService.error('Händler konnte nicht geladen werden.');
-      }
-    );
+    this.stateService.getMerchant().subscribe((merchant: Merchant) => {
+      this.merchant = merchant;
+      this.merchantLoaded = true;
+      this.createForm();
+    }, () => {
+      this.toastService.error('Händler konnte nicht geladen werden');
+    });
 
     this.merchantApiService
       .getCategories()
@@ -106,7 +101,7 @@ export class MerchantDetailsComponent implements OnInit {
       this.toastService.success('Änderungen erfolgreich gespeichert.')
     },
       () => {
-        this.toastService.error('Änderungen konnten nicht gespeichert werden.')
+        this.toastService.error('Fehler beim Speichern');
       });
   }
 

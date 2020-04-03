@@ -24,14 +24,11 @@ export class MerchantAccountComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.stateService.getMerchant().subscribe(
-      (merchant: Merchant) => {
-        this.merchant = merchant;
-      },
-      () => {
-        this.toastService.error('Händler konnte nicht geladen werden');
-      }
-    );
+    this.stateService.getMerchant().subscribe((merchant: Merchant) => {
+      this.merchant = merchant;
+    }, () => {
+      this.toastService.error('Händler konnte nicht geladen werden');
+    });
 
     this.form = this.formBuilder.group({
       firstName: [this.merchant.firstName, [Validators.required]],
@@ -52,11 +49,12 @@ export class MerchantAccountComponent implements OnInit {
       lastName: this.form.value.lastName
     } as Merchant;
 
-    this.merchantApiService
-      .updateMerchant(updateData)
-      .subscribe((merchant: Merchant) => {
-        this.merchant = merchant;
-      });
+    this.merchantApiService.updateMerchant(updateData).subscribe((merchant: Merchant) => {
+      this.merchant = merchant;
+      this.toastService.success('Erfolgreich gespeichert');
+    }, () => {
+      this.toastService.error('Fehler beim Speichern');
+    });
   }
 
   openChangePassword() {
@@ -85,6 +83,8 @@ export class MerchantAccountComponent implements OnInit {
       .subscribe((merchant: Merchant) => {
         this.merchant = merchant;
         this.toastService.success('Passwort erfolgreich geändert');
+      }, () => {
+        this.toastService.error('Fehler beim Speichern');
       });
   }
 
@@ -100,6 +100,8 @@ export class MerchantAccountComponent implements OnInit {
         this.merchant = merchant;
         this.form.get('currentEmail').setValue(merchant.email);
         this.toastService.success('E-Mail erfolgreich geändert');
+      }, () => {
+        this.toastService.error('Fehler beim Speichern');
       });
   }
 }
