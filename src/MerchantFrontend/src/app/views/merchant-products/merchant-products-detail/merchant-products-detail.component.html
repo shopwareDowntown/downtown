@@ -5,6 +5,7 @@
     <select clrSelect name="types" formControlName="productType">
       <option value="product">{{'COMMON.PRODUCT' | translate}}</option>
       <option value="storeWindow">{{'COMMON.SHOWCASE' | translate}}</option>
+      <option value="voucher">{{'COMMON.VOUCHER' | translate}}</option>
     </select>
   </clr-select-container>
   <clr-input-container>
@@ -30,15 +31,19 @@
     <input clrInput type="checkbox" formControlName="active" clrToggle />
   </clr-input-container>
   <h3>{{'MERCHANT.PRODUCTS.DETAILS.PRODUCT_IMAGE' | translate}}</h3>
-  <div class="image-wrapper">
-    <img style="max-width: 100%" [src]="product.media[0]" *ngIf="product.media; else noImage">
-    <ng-template #noImage>
-      <div *ngIf="form.get('media').value; else placeholderText">{{form.get('media').value[0].name}}</div>
-      <ng-template #placeholderText>{{'MERCHANT.PRODUCTS.DETAILS.NO_IMAGE' | translate}}</ng-template>
-    </ng-template>
+  <div class="picture-outer-container">
+    <div class="picture-inner-container">
+      <div *ngIf="form.get('media').value; else imageOrPlaceholder">{{form.get('media').value[0].name}}</div>
+      <ng-template #imageOrPlaceholder>
+        <img style="max-width: 100%" [src]="product.media[0]" *ngIf="product.media; else placeholderText">
+        <ng-template #placeholderText>{{'MERCHANT.PRODUCTS.DETAILS.NO_IMAGE' | translate}}</ng-template>
+      </ng-template>
+      <div class="control">
+        <portal-file-upload maxFileSize="5097152" accept="image/x-png,image/jpeg" [label]="'+'" (onSelect)="imageSelected($event)"></portal-file-upload>
+      </div>
+    </div>
   </div>
-  <portal-file-upload maxFileSize="5097152" accept="image/x-png,image/jpeg" [label]="'Bild hochladen'" (onSelect)="imageSelected($event)"></portal-file-upload>
-  <ng-container *ngIf="'product' === form.get('productType').value">
+  <ng-container *ngIf="'storeWindow' !== form.get('productType').value">
     <h3>{{'COMMON.PRICE' | translate}}</h3>
     <clr-input-container>
       <label>{{'COMMON.PRICE' | translate}}</label>

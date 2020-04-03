@@ -10,6 +10,7 @@ import { Category } from '../models/category.model';
 import { Country } from '../models/country.model';
 import { environment } from '../../../environments/environment';
 import { Order, OrderListData } from '../models/order.model';
+import { Voucher, VoucherListData } from '../models/voucher.model';
 
 @Injectable({
   providedIn: 'root'
@@ -131,6 +132,16 @@ export class MerchantApiService {
     return this.http.delete<void>(this.apiUrl + '/merchant-api/products/' + product.id, {headers: this.getJsonContentTypeHeaders()});
   }
 
+  getVouchers(limit: number, offset: number): Observable<VoucherListData> {
+    let params = new HttpParams();
+    params = params.append('limit', limit.toString());
+    params = params.append('offset', offset.toString());
+    return this.http.get<VoucherListData>(this.apiUrl + '/merchant-api/v1/voucher-funding/sold/vouchers', {
+      params: params,
+      headers: this.getJsonContentTypeHeaders()
+    });
+  }
+
   addImageToProduct(image: File, productId: string): Observable<any> {
     let headers = new HttpHeaders();
     headers = headers.set('sw-context-token', this.getSwContextToken());
@@ -183,6 +194,10 @@ export class MerchantApiService {
 
   setOrderCompleted(id: string): Observable<Order> {
     return this.http.patch<Order>(this.apiUrl + '/merchant-api/v1/order/' + id +'/done', null, {headers: this.getJsonContentTypeHeaders()});
+  }
+
+  redeemVoucher(voucher: Voucher): Observable<{data: string}> {
+    return this.http.post<{data: string}>(this.apiUrl + '/merchant-api/v1/voucher-funding/voucher/redeem', JSON.stringify({ code: voucher.code}), {headers: this.getJsonContentTypeHeaders()});
   }
 
   private getHeaders(): { [header: string]: string | string[];} {

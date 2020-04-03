@@ -39,6 +39,7 @@
 	"COMMON.TAX_RATE": "Steuersatz",
 	"COMMON.TYPE": "Typ",
 	"COMMON.VALUE_ADDED_TAX": "Mehrwertsteuer",
+	"COMMON.VOUCHER": "Gutschein",
 	"COMMON.ZIP_CODE": "PLZ",
 	"DASHBOARD.EXISTING_ORGANISATIONS.HEADLINE": "Schau, wer schon im Händlerportal registriert ist:",
 	"DASHBOARD.INTRODUCTION.HEADLINE": "Willkommen, lass uns zusammen helfen.",
@@ -143,8 +144,19 @@
 	"MERCHANT.REGISTER.SUB_HEADLINE": "Für lokale Einzelhandelsunternehmen oder Dienstleister",
 	"MERCHANT.REGISTER.TOAST_MESSAGES.ERROR_HEADLINE": "Registrierung fehlgeschlagen",
 	"MERCHANT.REGISTER.TOAST_MESSAGES.SUCCESS_HEADLINE": "Erfolgreich registriert",
+	"MERCHANT.VOUCHERS.CODE": "Code",
+	"MERCHANT.VOUCHERS.CREATED_AT": "erstellt am",
+	"MERCHANT.VOUCHERS.NAME": "Name",
+	"MERCHANT.VOUCHERS.NO_VOUCHERS_FOUND": "Keine Gutscheine gefunden",
+	"MERCHANT.VOUCHERS.PRICE": "Preis",
+	"MERCHANT.VOUCHERS.REDEEEM_SUCCESSFUL_BODY": "Gutschein erfolgreich eingelöst",
+	"MERCHANT.VOUCHERS.REDEEEM_SUCCESSFUL_HEADER": "Erfolgreich eingelöst",
+	"MERCHANT.VOUCHERS.REDEEMED_AT": "eingelöst am",
+	"MERCHANT.VOUCHERS.REDEEM_VOUCHER": "Gutschein einlösen",
+	"MERCHANT.VOUCHERS.TITLE": "Gutscheine",
 	"SIDEBAR.HOME": "Home",
 	"SIDEBAR.INFORMATION": "Informationen",
 	"SIDEBAR.LOGOUT": "Logout",
-	"SIDEBAR.PRODUCTS": "Produkte"
+	"SIDEBAR.PRODUCTS": "Produkte",
+	"SIDEBAR.VOUCHERS": "Gutscheine"
 }

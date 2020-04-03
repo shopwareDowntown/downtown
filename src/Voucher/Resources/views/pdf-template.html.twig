@@ -1,0 +1,36 @@
+{% for voucher in vouchers %}
+<table style="width: 100%; line-height: 18px; margin-bottom: 40px; page-break-inside: avoid">
+    <tbody>
+        <tr>
+            <td valign="top" style="background-color: #e6e7e9; text-align: center;">
+               <div style="color: #3c3c3c; padding-top: 80px; font-size: 50px;">{{ 'voucher.voucher'|trans }}</div>
+               <div style="margin: 80px 120px; padding: 140px 60px 80px; color: #a79056; font-size: 110px; border-radius: 30px; background-color: white;">{{ voucher.value.price|currency(order.currency.isoCode) }}</div>
+               <img src="https://downtowns.io/assets/images/downtown.svg" height="60px" style="margin-bottom: 40px" />
+           </td>
+            <td style="width: 240px; padding: 30px">
+               <p><strong>{{ 'voucher.redemptionAddress'|trans }}</strong></p>
+               <p>{{ merchant.publicCompanyName }}<br>{{ merchant.country.translated.name }}, {{ merchant.city }}<br>{{ merchant.street }}</p>
+               <p>
+                   {% if merchant.publicPhoneNumber %}
+                        {{ 'voucher.phone'|trans }} {{ merchant.publicPhoneNumber }}<br>
+                   {% endif %}
+                   {% if merchant.publicEmail %}
+                        {{ 'voucher.email'|trans }} <a href="mailto:{{ merchant.publicEmail }}">{{ merchant.publicEmail }}</a><br>
+                   {% endif %}
+                   {% if merchant.publicWebsite%}
+                        {{ 'voucher.website'|trans }} <a href="{{ merchant.publicWebsite }}">{{ merchant.publicWebsite }}</a>
+                   {% endif %}
+               </p>
+               <p><br><strong>{{ 'voucher.issuedOn'|trans }}</strong><p>
+               <p>{{ customerName }}</p>
+               <p><br><strong>{{ 'voucher.createDate'|trans }}</strong></p>
+               <p>{{ today }}</p>
+               <p><br><strong>{{ 'voucher.number'|trans }}</strong></p>
+               <p>{{ voucher.code }}</p>
+            </td>
+       </tr>
+   </tbody>
+   </table>
+{% endfor %}
+
+<style>p {color: #3c3c3c; font-size: 14px} strong {color: #a79056; font-size: 18px} a {color: #189eff; text-decoration: none}</style>

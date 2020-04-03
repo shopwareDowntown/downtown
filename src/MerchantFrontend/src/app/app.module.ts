@@ -28,6 +28,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
+import { MerchantVouchersModule } from './views/merchant-vouchers/merchant-vouchers.module';
 
 @NgModule({
   imports: [
@@ -57,6 +58,8 @@ export function createTranslateLoader(http: HttpClient) {
     OrganizationDetailsModule,
     OrganizationRegisterModule,
     OrganizationLoginModule,
+    LocalDeliveryModule,
+    MerchantVouchersModule,
     LocalDeliveryModule,
     MerchantOrdersModule
   ],

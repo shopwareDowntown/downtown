@@ -97,7 +97,7 @@ class CartValidator implements CartValidatorInterface
 
     private function isOrderAble(ProductEntity $productEntity): bool
     {
-        return $productEntity->getCustomFields()['productType'] !== self::NOT_ORDER_ABLE_TYPE;
+        return $productEntity->getTranslation('customFields')['productType'] !== self::NOT_ORDER_ABLE_TYPE;
     }
 
     private function blockOrderWithInvalidShippingMethod(
