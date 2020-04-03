@@ -21,6 +21,8 @@ export interface Merchant {
   countryId: string; // New interface for countries?
   email: string;
   password?: string;
+  media: Media[];
+  cover: Media;
 }
 
 export interface MerchantRegistration {
@@ -36,4 +38,9 @@ export interface MerchantLoginResult {
 
 export interface PasswordReset {
   email: string
+}
+
+export interface Media {
+  url: string;
+  id: string;
 }

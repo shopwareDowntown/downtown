@@ -6,6 +6,8 @@ import { MerchantApiService } from '../../core/services/merchant-api.service';
 import { Category } from '../../core/models/category.model';
 import { Country } from '../../core/models/country.model';
 import { ToastService } from '../../core/services/toast.service';
+import { switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'portal-merchant-details',
@@ -39,7 +41,7 @@ export class MerchantDetailsComponent implements OnInit {
         }
       },
       () => {
-        this.toastService.error('Händler konnte nicht geladen werden');
+        this.toastService.error('Händler konnte nicht geladen werden.');
       }
     );
 
@@ -76,10 +78,35 @@ export class MerchantDetailsComponent implements OnInit {
       countryId: newData.countryId
     } as Merchant;
 
-    this.merchantApiService
-      .updateMerchant(updatedData)
-      .subscribe((merchant: Merchant) => {
-        this.merchant = merchant;
+    this.merchantApiService.updateMerchant(updatedData).pipe(
+      switchMap((merchant: Merchant) => {
+        if (this.profileForm.get('cover').value !== null) {
+          if (this.merchant.cover !== null) {
+            return this.merchantApiService.deleteMerchantCoverImage(this.merchant.cover.id);
+          }
+          return of([])
+        }
+        return of(merchant);
+      }),
+      switchMap((result: [] | Merchant) => {
+        if (Array.isArray(result)) {
+          return this.merchantApiService.addCoverToMerchant(this.profileForm.get('cover').value);
+        }
+        return of(result);
+      }),
+      switchMap((result: true | Merchant) => {
+        if (result === true) {
+          return this.merchantApiService.getMerchant()
+        }
+        return  of(result);
+      })
+    ).subscribe((merchant: Merchant) => {
+      this.merchant = merchant;
+      this.stateService.setMerchant(merchant);
+      this.toastService.success('Änderungen erfolgreich gespeichert.')
+    },
+      () => {
+        this.toastService.error('Änderungen konnten nicht gespeichert werden.')
       });
   }
 
@@ -97,7 +124,12 @@ export class MerchantDetailsComponent implements OnInit {
       publicEmail: [this.merchant.publicEmail],
       publicWebsite: this.merchant.publicWebsite,
       publicOpeningTimes: [this.merchant.publicOpeningTimes],
-      publicDescription: this.merchant.publicDescription
+      publicDescription: this.merchant.publicDescription,
+      cover: [null]
     });
+  }
+
+  imageSelected(value: File[]) {
+    this.profileForm.get('cover').setValue(value);
   }
 }
