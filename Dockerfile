@@ -17,6 +17,10 @@ RUN apk --no-cache add \
     && adduser -u 1000 -D -h $PROJECT_ROOT sw6 sw6 \
     && rm /etc/nginx/conf.d/default.conf
 
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+    && php -r "unlink('composer-setup.php');"
+
 # Copy system configs
 COPY config/etc /etc
 
@@ -31,6 +35,9 @@ WORKDIR $PROJECT_ROOT
 USER sw6
 
 ADD --chown=sw6 . .
+
+RUN composer install \
+    && chown -R sw6.sw6 .
 
 RUN bin/console assets:install \
     && rm -Rf var/cache \

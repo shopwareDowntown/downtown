@@ -31,16 +31,16 @@ class IndustriesController
     }
 
     /**
-     * @Route(name="merchant-api.industries.load", path="/merchant-api/v{version}/industries", defaults={"auth_required"=false})
+     * @Route(name="merchant-api.industries.load", path="/merchant-api/v{version}/industries")
      */
-    public function load(): JsonResponse
+    public function load(SalesChannelContext $context): JsonResponse
     {
         $criteria = new Criteria();
         $criteria->addFilter(new EqualsFilter('visible', true));
         $criteria->addFilter(new NotFilter(MultiFilter::CONNECTION_AND, [new EqualsFilter('parentId', null)]));
 
         $categories = $this->categoryRepository
-            ->search($criteria, Context::createDefaultContext())->getElements();
+            ->search($criteria, $context->getContext())->getElements();
 
         $responseData = [];
 
@@ -48,7 +48,7 @@ class IndustriesController
         foreach ($categories as $category) {
             $responseData[] = [
                 'id' => $category->getId(),
-                'name' => $category->getName(),
+                'name' => $category->getTranslation('name'),
             ];
         }
 

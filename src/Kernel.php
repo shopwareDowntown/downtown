@@ -1,16 +1,16 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Shopware\Production;
 
 use ReflectionMethod;
+use Shopware\Core\Kernel as ShopwareKernel;
 use Shopware\Core\Profiling\Doctrine\DebugStack;
 use Shopware\Production\Merchants\MerchantBundle;
 use Shopware\Production\Portal\PortalBundle;
+use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
-class Kernel extends \Shopware\Core\Kernel
+class Kernel extends ShopwareKernel
 {
     public const PLACEHOLDER_DATABASE_URL = 'mysql://_placeholder.test';
 
@@ -27,6 +27,11 @@ class Kernel extends \Shopware\Core\Kernel
 
     protected function initializeDatabaseConnectionVariables(): void
     {
+        $envFile = __DIR__ . '/../.env';
+        if (\file_exists($envFile)) {
+            (new Dotenv())->load($envFile, \sprintf('%s.dist', $envFile));
+        }
+
         $url = $_ENV['DATABASE_URL']
             ?? $_SERVER['DATABASE_URL']
             ?? getenv('DATABASE_URL');

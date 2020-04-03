@@ -19,6 +19,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\RangeFilter;
 use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\System\SalesChannel\Entity\SalesChannelRepositoryInterface;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
+use Shopware\Production\Merchants\Content\Merchant\MerchantAvailableFilter;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -231,9 +232,9 @@ class NavigationLoader extends ShopwareNavigationLoader
 
         $criteria->addAssociation('media');
         $criteria->addAssociation('merchants');
+        $criteria->getAssociation('merchants')->addFilter(new MerchantAvailableFilter($context->getSalesChannel()->getId()));
 
-        $criteria->addFilter(new EqualsFilter('merchants.public', 1));
-        $criteria->addFilter(new EqualsFilter('merchants.salesChannelId', $context->getSalesChannel()->getId()));
+        $criteria->addFilter(new MerchantAvailableFilter($context->getSalesChannel()->getId(), 'merchants'));
 
         /** @var CategoryCollection $firstTwoLevels */
         $firstTwoLevels = $this->categoryRepository->search($criteria, $context)->getEntities();

@@ -1,11 +1,7 @@
 {% block sw_cms_element_merchant_listing %}
     <div class="sw-cms-el-merchant-listing">
         <div class="sw-cms-el-merchant-listing__content">
-            <sw-cms-el-product-box
-                :element="demoMerchantElement"
-                v-for="index in demoMerchantCount"
-                :key="index">
-            </sw-cms-el-product-box>
+            <sw-cms-merchant-box-preview v-for="index in demoMerchantCount"></sw-cms-merchant-box-preview>
         </div>
 
         <div class="sw-cms-el-merchant-listing__pagination">

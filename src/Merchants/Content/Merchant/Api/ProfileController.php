@@ -129,7 +129,7 @@ class ProfileController
     }
 
     /**
-     * @Route(name="merchant-api.profile.image.delete", methods={"DELETE"}, path="/merchant-api/v{version}/profile/media/:mediaId")
+     * @Route(name="merchant-api.profile.image.delete", methods={"DELETE"}, path="/merchant-api/v{version}/profile/media/{mediaId}")
      */
     public function delete(string $mediaId, MerchantEntity $merchant, SalesChannelContext $salesChannelContext): JsonResponse
     {

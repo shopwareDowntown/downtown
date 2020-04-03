@@ -30,6 +30,15 @@
     <label>Aktiv</label>
     <input clrInput type="checkbox" formControlName="active" clrToggle />
   </clr-input-container>
+  <h3>Produktbild</h3>
+  <div class="image-wrapper">
+    <img [src]="product.media[0]" *ngIf="product.media; else noImage">
+    <ng-template #noImage>
+      <div *ngIf="form.get('media').value; else placeholderText">{{form.get('media').value[0].name}}</div>
+      <ng-template #placeholderText>Noch kein Bild vorhanden.</ng-template>
+    </ng-template>
+  </div>
+  <portal-file-upload maxFileSize="5097152" accept="image/x-png,image/jpeg" [label]="'Bild hochladen'" (onSelect)="imageSelected($event)"></portal-file-upload>
   <ng-container *ngIf="'product' === form.get('productType').value">
     <h3>Preis</h3>
     <clr-input-container>
@@ -51,15 +60,6 @@
         <option value="19">19% Mehrwertsteuer</option>
       </select>
     </clr-select-container>
-    <h3>Produktbild</h3>
-    <div class="image-wrapper">
-      <div *ngIf="form.get('media').value; else imageOrPlaceholder">{{form.get('media').value[0].name}}</div>
-      <ng-template #imageOrPlaceholder>
-        <img style="max-width: 100%" [src]="product.media[0]" *ngIf="product.media; else placeholderText">
-        <ng-template #placeholderText>Noch kein Bild vorhanden.</ng-template>
-      </ng-template>
-    </div>
-    <portal-file-upload maxFileSize="2097152" accept="image/x-png,image/jpeg" [label]="'Bild hochladen'" (onSelect)="imageSelected($event)"></portal-file-upload>
   </ng-container>
   <div class="button-wrapper">
     <button

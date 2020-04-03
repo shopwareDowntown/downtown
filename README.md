@@ -1,243 +1,143 @@
-# Shopware Merchant Portal
-With our portal, we want to support local authorities and merchants. We want to connect merchants with closed stores to their customers. And we want to keep in mind, that not every merchant has a sophisticated digital strategy - or even a homepage.
+# About this project
 
-# Development
+This is a non-profit project.
+The portal is an open-source project that was created in collaboration with the Shopware community to help local retailers in this trying time.
 
-## Branches and stability
+It allows local governments, cities, or similar authorities to give local merchants an easy way of
+keeping in touch with their customers and selling goods and services online.
 
-In each commit a composer.lock is contained to ensure that the version being
-deployed is the version that was tested in our CI. We currently provide two
-branches:
-- `6.1`: stable patch releases (`v6.1.0-rc2`, `v6.1.0`, `v6.1.19`, `v6.1.*`, but not `v6.2.0`)
-- `master`: stable minor+patch releases (`v6.1.3`, `v6.1.15`, `v6.2.0`, `v6.3.0`...)
+After installing the project on a web server, local authorities can register within the portal.
 
-The `6.1` branch contains all the 6.1 releases. It's stable now and only gets non-breaking bug fixes. (security issues are an exception).
+After registration and activation by the portal owner, a sub-portal will be automatically created for each local authority.
+After this step, local retailers can register within their local authority's sub-portal.
+Next, customers can register and interact with retailers in their area.
 
-The `master` branch contains the newest stable minor release. That may result in plugins being incompatible, so be careful.
+[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Support%20your%20local%20merchants%21&url=https%3A%2F%2Fgithub.com%2FshopwareDowntown%2Fportal&via=ShopwareDevs&hashtags=Shopware6,community)
 
-## Requirements
+## Goal
 
-See [https://docs.shopware.com/en/shopware-platform-dev-en/getting-started/requirements](https://docs.shopware.com/en/shopware-platform-dev-en/getting-started/requirements)
+At the time this project is created, the [COVID-19](https://en.wikipedia.org/wiki/Coronavirus_disease_2019) pandemic
+has a serious impact on the economy. Since retail stores are forced to close, they now need new solutions to generate
+an income.
 
-NPM and Node are only required during the build process and for development. If you dont have javascript customizations, it's not required at all. Because the storefront and admin are pre-build.
+The portal project is trying to help. It is created to serve the project [downtowns.io](https://downtowns.io/), but since
+it is open source anyone is able to set up a a web server and provide the same service as downtowns to their local community. 
 
-If you are using a separate build server, consider having NPM and Node as build-only requirements. Your operating application server doesn't require any of these to run Shopware 6.
+## How it works
 
-## Setup and install
+A picture is worth a thousand words, so here are some example screen designs of the portal. The text is in german,
+since the portal was initially developed for the german market.
 
-To setup the environment and install with a basic setup run the following commands:
+![The registration page](readme_sc_registration.jpg?raw=true "The registration page") 
 
-```bash
-# clone newest 6.1 patch version from github 
-git clone --branch=6.1 https://github.com/shopware/production shopware
-cd shopware
+After the registration, the organisation has to be activated by the portal owner. Then these steps follow:
 
-# install shopware and dependencies according to the composer.lock 
-composer install
 
-# setup the environment
-bin/console system:setup
-# or create .env yourself, if you need more control
-# create jwt secret: bin/console system:generate-jwt-secret
-# create app secret: APP_SECRET=$(bin/console system:generate-app-secret)
-# create .env
+- An organisation (e.g. a city) registers within the portal
+- Organisations are created as a sales channel
+- Retail stores register within the organisation, internally they are handled as categories
+- Retail stores can use an App to upload products
+- Users (buyers) can browse retail stores and see what’s in stock
+ 
+This is how the landing page for an organisation or local authority looks:
 
-# create database with a basic setup (admin user and storefront sales channel)
-bin/console system:install --create-database --basic-setup
+![Landing page for a local authority](readme_sc_lp_org.jpg?raw=true "Landing page for a local authority")
 
-# or use the interactive installer in the browser: /recovery/install/index.php
+And here is an example of a retailer's landing page: 
+ 
+![Landing page for a retailer](readme_sc_lp_retail.jpg?raw=true "Landing page for a retailer") 
+
+## Technology
+
+# How to install
+
+## The Portal
+
+Prerequisites: [docker](https://docs.docker.com/install/), [docker-compose](https://docs.docker.com/compose/install/), [node/npm](https://nodejs.org/en/download/) 
+
+Clone the project:
+
+```shell script
+git clone git@github.com:shopwareDowntown/downtown.git
 ```
 
-## Update
+Change into the project directory, then start the docker containers and change into the app container:
 
-To update Shopware 6 just run this:
-
-```bash
-# pull newest changes from origin
-git pull origin
-
-# the (pre|post)-(install|update)-cmd will execute all steps automatically
-composer install
+```shell script
+docker-compose build  && \
+docker-compose up -d  && \
+docker-compose exec app_server sh
 ```
 
-# Customization
+When inside the app container, do a basic install, generate a JWT secret and an App Secret, then exit the container:
 
-This project is called production template because it can be used to 
-create project specific configurations. The template provides a basic setup
-that is equivalent to the official distribution. If you need customization,
-the workflow could look like this:
-* Fork template
-* Make customization
-* Add dependencies
-* Add project specific plugins
-* Update var/plugins.json (bin/console bundle:dump, paths need to be relative to the project root)
-* Build administration/storefront
-* Update composer.json and composer.lock
-* Commit changes
-
-## Development
-
-### Command overview
-
-The following commands and scripts are available
-
-**Setup/Install/Deployment**
-
-|Command|Description|
-|---|---|
-| `bin/console system:setup` | Configure and create .env and optionally create jwt secret |
-| `bin/console system:generate-jwt-secret` | Generates a new jwt secret |
-| `bin/console system:generate-app-secret` | Outputs a new app secret. This does not update your .env! |
-| `bin/console system:install` | Setup database and optional install some basic data |
-| `bin/console system:update-prepare` | Run update preparations before the update. Do not update if this fails |
-| `bin/console system:update-finish` | Executes the migrations and finishes the update |
-| `bin/console theme:change` | Assign theme to a sales channel |
-
-
-**Build**
-
-*bash is required for the shell scripts* 
-
-|Command|Description|
-|---|---|
-| `bin/console theme:compile` | Compile all assigned themes |
-| `bin/build.sh` | Complete build including composer install|
-| `bin/build-js.sh` | Build administration and storefront, including all plugins in `var/plugins.json`.|
-| `bin/build-administration.sh` | Just build the administration. |
-| `bin/build-storefront.sh` | Just build the storefront. You need to have built the administration once. |
-
-
-**Dev**
-
-Run `bin/build-js.sh` once to install the npm dependencies. 
-
-*bash is required for the shell scripts* 
-
-|Command|Description|
-|---|---|
-| `bin/console theme:refresh` | Reload theme.json of active themes |
-| `bin/watch-administration.sh` | Watcher for administration changes, recompile and reload page if required  |
-| `bin/watch-storefront.sh` | Watcher for storefront changes, recompile and reload page if required  |
-
-## Configuration
-
-See also [config/README.md](config/README.md)
-
-### Template overview
-
-This directory tree should give an overview of the template structure.
-
-```txt
-├── bin/                  # binaries to setup, build and run symfony console commands 
-├── composer.json         # defines dependencies and setups autoloading
-├── composer.lock         # pins all dependencies to allow for reproducible installs
-├── config                # contains application configuration
-│   ├── bundles.php       # defines static symfony bundles - use plugins for dynamic bundles
-│   ├── etc/              # contains the configuration of the docker image
-│   ├── jwt/              # secrets for generating jwt tokens - DO NOT COMMIT these secrets
-│   ├── packages/         # configure packages - see: config/README.md
-│   ├── secrets/          # symfony secrets store - DO NOT COMMIT these secrets
-│   ├── services/         # contains some default overrides
-│   ├── services.xml      # just imports the default overrides - this file should not change
-│   └── services_test.xml # just imports the default overrides for tests
-├── custom                # contains custom files
-│   ├── plugins           # store plugins
-│   ├── static-plugins    # static project specific plugins
-├── docker-compose.yml    # example docker-compose
-├── Dockerfile            # minimal docker image
-├── phpunit.xml.dist      # phpunit config
-├── public                # should be the web root
-│   ├── index.php         # main entrypoint for the web application
-├── README.md             # this file
-├── src
-│   ├── Command/*
-│   ├── Kernel.php        # our kernel extension
-│   └── TestBootstrap.php # required to run unit tests
-└── var
-    ├── log/              # log dir
-    |── cache/            # cache directory for symfony
-    └── plugins.json      # javascript build configuration
+```shell script
+bin/console system:install --create-database --basic-setup --force && \
+bin/console system:generate-jwt-secret --force && \
+bin/console system:generate-app-secret  && \# put into docker-compose.yml 
+exit 
 ```
 
-## Managing Dependencies
+The App Secret is only shown on screen, you have to put it manually into the `docker-compose.yml`, right after `- APP_SECRET=`.
 
-### Composer
+Then regenerate the containers by re-executing up:
 
-You only need to require the things you want. If you only want to run shopware 6 in headless mode, your composer.json could look like this:
-
-```json
-{
-    "name": "acme/shopware-production",
-    "type": "project",
-    "license": "MIT",
-    "config": {
-        "optimize-autoloader": true
-    },
-    "prefer-stable": true,
-    "minimum-stability": "stable",
-    "autoload": {
-        "psr-4": {
-            "Shopware\\Production\\": "src/"
-        }
-    },
-    "require": {
-        "php": "~7.2",
-        "ocramius/package-versions": "1.4.0",
-        "shopware/core": "~v6.1.0"
-    }
-}
+```shell script
+docker-compose up -d  
 ```
 
-### Require project plugins
+Please note:
 
-If you have project specific plugins, place them under `custom/static-plugins/{YourPlugin}` and require them in your `composer.json`.
+- Administration is available at http://localhost:8000/admin with user `admin` and password `shopware`
+- Each sales channel represents an organisation/local authority
+- Merchants show up in categories after registration and activation
+- Merchants register through the separate Angular Merchant Administration described below
 
-Note: The plugins needs a (stable) version to work with the default stability `stable`.
+You can shut down the portal with this command:
 
-```bash
-composer require "exampleorg/myplugin"
+```shell script
+docker-compose down --remove-orphans
 ```
 
-External plugins in private repositories can also be required by adding the repository to your composer.json.
+## The Angular Merchant Administration
 
-See [Using private repositories](https://getcomposer.org/doc/05-repositories.md#using-private-repositories)
+Currently there is no docker container available, so you need to start the project using npm.
 
-### Update shopware packages
+Change into the directory `src/MerchantFrontend`. Then install dependencies and run the project: 
 
-Run the following command, to update all shopware dependencies:
-```bash
-composer update "shopware/*"
+```shell script
+npm install && npm run start
 ```
 
-# Deployment
+After the build and start has finished, the merchant portal is available at [http://localhost:4200/](http://localhost:4200/).
 
-## Docker
+Please be aware: The registration for organisations is currently not wired up to the portal, it's just a hubspot form,
+for production use replace it with your own. For new organisations please create a sales channel manually in [the portal](http://localhost:8000/admin).
 
-The `DOCKERFILE` and docker-compose.yml service definitions should work but are still experimental.
+Merchants are able to register and choose a category. To activate a merchant either click on the link in the registration request e-mail or,
+in case you haven't set up e-mail sending in the portal, do it directly in the database:
 
-
-## Storage and caches
-
-The following directories should be shared by all app servers:
-
-```txt
-.
-├── config
-│   ├── jwt # ro - should be written on first deployment
-│   ├── secrets # rw shared - see, if you want to use it: https://symfony.com/blog/new-in-symfony-4-4-encrypted-secrets-management 
-├── public
-│   ├── bundles # rw shared - Written by `assets:install` / `theme:compile`, can also be initiated by the administration
-│   ├── media # rw shared
-│   ├── theme # rw shared - generated themes by `theme:compile/change`
-│   └── thumbnail # rw shared - media thumbnails
-│   └── sitemap # rw shared - generated sitemaps
-├── var
-│   ├── cache # rw local - contains the containers, which contains additional cache directories (twig, translations, etc)
-│   ├── log # a - append only, can be change in the monlog config
-
-ro - Readonly after deployment
-rw shared - read and write access, it should be shared across the app servers
-rw local - locale read and write access
+```shell script
+docker-compose exec mysql mysql -p # password is root
 ```
 
-Some of these directories like `public` can also be changed to different flysystem to host the files on s3 for example.
+```sql
+USE downtown;
+```
+
+```sql
+UPDATE merchant SET active=1 WHERE email='merchant@email.example';
+```
+
+```sql
+quit;
+```
+
+# Contributing
+
+You have an idea or you found an issue? Please open an issue here: [shopwareDowntown/portal/issues](https://github.com/shopwareDowntown/portal/issues)
+Help retailers by contributing to this project. 
+
+# Contributors
+
+[![shyim](avatars/shyim.png?raw=true "shyim")](https://github.com/shyim) [![arnoldstoba](avatars/arnoldstoba.png?raw=true "arnoldstoba")](https://github.com/arnoldstoba) [![PaddyS](avatars/paddys.png?raw=true "PaddyS")](https://github.com/PaddyS) [![FloBWer](avatars/flobwer.png?raw=true "FloBWer")](https://github.com/FloBWer) [![JanPietrzyk](avatars/janpietrzyk.png?raw=true "JanPietrzyk")](https://github.com/JanPietrzyk) [![PascalThesing](avatars/pascalthesing.png?raw=true "PascalThesing")](https://github.com/PascalThesing) ![Kevin Mattutat](avatars/kevin-mattutat-spaceparrots-dekevin-mattutat.png?raw=true "Kevin Mattutat") ![Andreas Wolf](avatars/a-wolf-shopware-comandreas-wolf.png?raw=true "Andreas Wolf") [![and-wolf](avatars/and-wolf.png?raw=true "and-wolf")](https://github.com/and-wolf) [![oterhaar](avatars/oterhaar.png?raw=true "oterhaar")](https://github.com/oterhaar) [![MalteJanz](avatars/maltejanz.png?raw=true "MalteJanz")](https://github.com/MalteJanz) [![seggewiss](avatars/seggewiss.png?raw=true "seggewiss")](https://github.com/seggewiss) [![maike93](avatars/maike93.png?raw=true "maike93")](https://github.com/maike93) ![Maike Sestendrup](avatars/m-sestendrup-shopware-commaike-sestendrup.png?raw=true "Maike Sestendrup") [![marcelbrode](avatars/marcelbrode.png?raw=true "marcelbrode")](https://github.com/marcelbrode) [![swDennis](avatars/swdennis.png?raw=true "swDennis")](https://github.com/swDennis) ![Oliver Terhaar](avatars/o-terhaar-shopware-comoliver-terhaar.png?raw=true "Oliver Terhaar") [![xPand4B](avatars/xpand4b.png?raw=true "xPand4B")](https://github.com/xPand4B) ![Carlos Jansen](avatars/c-jansen-shopware-comcarlos-jansen.png?raw=true "Carlos Jansen") [![Carlosjan](avatars/carlosjan.png?raw=true "Carlosjan")](https://github.com/Carlosjan) [![Draykee](avatars/draykee.png?raw=true "Draykee")](https://github.com/Draykee) [![jakob-kruse](avatars/jakob-kruse.png?raw=true "jakob-kruse")](https://github.com/jakob-kruse) [![lukasrump](avatars/lukasrump.png?raw=true "lukasrump")](https://github.com/lukasrump) [![SebastianFranze](avatars/sebastianfranze.png?raw=true "SebastianFranze")](https://github.com/SebastianFranze) [![Christian-Rades](avatars/christian-rades.png?raw=true "Christian-Rades")](https://github.com/Christian-Rades) [![florianklockenkemper](avatars/florianklockenkemper.png?raw=true "florianklockenkemper")](https://github.com/florianklockenkemper) [![niklas-rudde](avatars/niklas-rudde.png?raw=true "niklas-rudde")](https://github.com/niklas-rudde) [![dnoegel](avatars/dnoegel.png?raw=true "dnoegel")](https://github.com/dnoegel) ![Jakob Kruse](avatars/j-kruse-shopware-comjakob-kruse.png?raw=true "Jakob Kruse") ![Luke Wenkers](avatars/l-wenkers-shopware-comluke-wenkers.png?raw=true "Luke Wenkers") 

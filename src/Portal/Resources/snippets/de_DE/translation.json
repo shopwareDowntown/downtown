@@ -4,7 +4,11 @@
         "phoneNumber": "Telefonnummer:",
         "website": "Webseite:",
         "ourProducts": "Unsere Angebote",
-        "email": "Email:"
+        "email": "Email:",
+        "address": "Adresse:",
+        "openingTimes": "Öffnungszeiten:",
+        "description": "Beschreibung",
+        "publicOwner": "Inhaber"
     },
     "checkout": {
         "cartContainsMultipleMerchants": "Es können nur Produkte von einem Händler gleichzeitig gekauft werden",

@@ -7,6 +7,7 @@ export const environment = {
   hubspotPortalId: '',
   hubspotFormId: '',
   apiUrl: 'https://sw6.ovh',
+  apiUrl: 'http://localhost:8000',
   accessKey: 'SWSCR2FPWJDMWU9HEXZLMTVWUG'
 };
 

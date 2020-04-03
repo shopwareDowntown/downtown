@@ -9,5 +9,11 @@
             <argument type="service" id="category.repository"/>
             <tag name="console.command"/>
         </service>
+
+        <service id="Shopware\Production\Merchants\Command\CreateDefaultMediaFolderCommand">
+            <argument type="service" id="media_default_folder.repository"/>
+            <argument type="service" id="media_folder.repository"/>
+            <tag name="console.command"/>
+        </service>
     </services>
 </container>
