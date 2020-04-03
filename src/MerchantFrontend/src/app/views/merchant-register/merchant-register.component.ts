@@ -5,6 +5,7 @@ import { MerchantApiService } from '../../core/services/merchant-api.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PasswordValidators } from '../../shared/validators/password.validator';
 import { Merchant, MerchantRegistration } from '../../core/models/merchant.model';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'portal-merchant-register',
@@ -23,6 +24,7 @@ export class MerchantRegisterComponent implements OnInit {
   constructor(
     private readonly merchantApiService: MerchantApiService,
     private readonly formBuilder: FormBuilder,
+    private readonly toastService: ToastService
   ) { }
 
   ngOnInit(): void {
@@ -53,9 +55,12 @@ export class MerchantRegisterComponent implements OnInit {
     this.merchantApiService.registerMerchant(merchant).subscribe(
       () => {
         this.registerModalOpen = false;
-        this.registrationFinished=true;
+        this.registrationFinished = true;
+        this.toastService.success('Erfolgreich registriert');
         },
-      () => {}
+      () => {
+        this.toastService.error('Registrierung fehlgeschlagen');
+      }
     );
   }
 

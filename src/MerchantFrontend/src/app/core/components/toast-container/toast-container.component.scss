@@ -1,0 +1,13 @@
+:host {
+  margin-right: 20px;
+  margin-top: 20px;
+  max-width: 340px;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  display: grid;
+  position: fixed;
+  grid-auto-flow: row dense;
+  gap: 8px;
+  top: 0;
+}

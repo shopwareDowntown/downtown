@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Merchant } from '../../core/models/merchant.model';
 import { StateService } from '../../core/state/state.service';
 import { MerchantApiService } from '../../core/services/merchant-api.service';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'portal-merchant-account',
@@ -10,7 +11,6 @@ import { MerchantApiService } from '../../core/services/merchant-api.service';
   styleUrls: ['./merchant-account.component.scss']
 })
 export class MerchantAccountComponent implements OnInit {
-
   form: FormGroup;
   merchant: Merchant;
   changePasswordModalOpen = false;
@@ -19,18 +19,27 @@ export class MerchantAccountComponent implements OnInit {
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly stateService: StateService,
-    private readonly merchantApiService: MerchantApiService
-  ) { }
+    private readonly merchantApiService: MerchantApiService,
+    private readonly toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
-    this.stateService.getMerchant().subscribe((merchant: Merchant) => {
-      this.merchant = merchant;
-    });
+    this.stateService.getMerchant().subscribe(
+      (merchant: Merchant) => {
+        this.merchant = merchant;
+      },
+      () => {
+        this.toastService.error('Händler konnte nicht geladen werden');
+      }
+    );
 
     this.form = this.formBuilder.group({
       firstName: [this.merchant.firstName, [Validators.required]],
       lastName: [this.merchant.lastName, [Validators.required]],
-      currentEmail: [this.merchant.email, [Validators.required, Validators.email]]
+      currentEmail: [
+        this.merchant.email,
+        [Validators.required, Validators.email]
+      ]
     });
   }
 
@@ -43,11 +52,12 @@ export class MerchantAccountComponent implements OnInit {
       lastName: this.form.value.lastName
     } as Merchant;
 
-    this.merchantApiService.updateMerchant(updateData).subscribe((merchant: Merchant) => {
-      this.merchant = merchant;
-    });
+    this.merchantApiService
+      .updateMerchant(updateData)
+      .subscribe((merchant: Merchant) => {
+        this.merchant = merchant;
+      });
   }
-
 
   openChangePassword() {
     this.changePasswordModalOpen = false;
@@ -70,9 +80,12 @@ export class MerchantAccountComponent implements OnInit {
       lastName: this.merchant.lastName
     } as Merchant;
     this.merchant.password = newPassword;
-    this.merchantApiService.updateMerchant(updatedData).subscribe((merchant: Merchant) => {
-      this.merchant = merchant;
-    });
+    this.merchantApiService
+      .updateMerchant(updatedData)
+      .subscribe((merchant: Merchant) => {
+        this.merchant = merchant;
+        this.toastService.success('Passwort erfolgreich geändert');
+      });
   }
 
   emailChanged(newEmail: string) {
@@ -81,9 +94,12 @@ export class MerchantAccountComponent implements OnInit {
       firstName: this.merchant.firstName,
       lastName: this.merchant.lastName
     } as Merchant;
-    this.merchantApiService.updateMerchant(updatedData).subscribe((merchant: Merchant) => {
-      this.merchant = merchant;
-      this.form.get('currentEmail').setValue(merchant.email);
-    });
+    this.merchantApiService
+      .updateMerchant(updatedData)
+      .subscribe((merchant: Merchant) => {
+        this.merchant = merchant;
+        this.form.get('currentEmail').setValue(merchant.email);
+        this.toastService.success('E-Mail erfolgreich geändert');
+      });
   }
 }

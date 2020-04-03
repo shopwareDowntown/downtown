@@ -22,10 +22,7 @@
 
   // font
   --sw-font: "Inter", sans-serif;
-  @supports (font-variation-settings: normal) {
-    --sw-font: "Inter var", sans-serif;
-  }
-  --clr-font: var(--sw-font);
+  --clr-font: "Inter", sans-serif;
 
   // clarity overrides
   --clr-btn-primary-bg-color: var(--sw-primary);

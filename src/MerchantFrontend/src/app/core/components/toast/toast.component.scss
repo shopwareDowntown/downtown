@@ -1,0 +1,87 @@
+:host {
+  display: grid;
+  align-items: flex-start;
+  grid-template-columns: 24px 1fr 32px;
+  border: var(--sw-border);
+  border-radius: 3px;
+  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  position: relative;
+  align-items: center;
+  padding: 12px;
+  visibility: hidden;
+  opacity: 0;
+  gap: 8px;
+  animation: flyIn .2s ease-in-out;
+  animation-iteration-count: 1;
+
+  &.is--active {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .success clr-icon {
+    color: var(--sw-success);
+  }
+  .error clr-icon {
+    color: var(--sw-danger);
+  }
+  .info clr-icon {
+    color: var(--sw-primary);
+  }
+
+  h4 {
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .toast-icon {
+    display: grid;
+    align-items: center;
+    height: 32px;
+  }
+
+  .toast-content {
+    display: grid;
+    grid-template-rows: min-content 1fr;
+    word-break: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    gap: 0px;
+  }
+
+  .toast-message {
+    font-size: 12px;
+    line-height: 20px;
+  }
+
+  .toast-close {
+    height: 32px;
+    width: 32px;
+    border-radius: 100%;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    &:hover,
+    &:focus,
+    &:active {
+      box-shadow: none;
+      background: #ebebeb;
+    }
+  }
+}
+
+@keyframes flyIn {
+  from {
+    transform: translateX(380px);
+    opacity: .2;
+  }
+  to {
+    transform: translate(0);
+    opacity: 1;
+  }
+}
