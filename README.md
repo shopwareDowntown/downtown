@@ -1,60 +1,143 @@
-# Project Downtown
-With our project, we want to help local cities and communities and the retailers on site to maintain their customer relations even in times of Corona and to be able to quickly offer products without the overhead that a classic shop system of any size entails. The retailer can choose whether to appear in the marketplace exclusively with his name and contact details, or whether he wants to have his products sold directly via the solution. Also the sale of vouchers, with which the own fans / customers can participate in solidarity to keep the shop open, is possible. All this is as minimalistic as possible and requires hardly any technical knowledge or industry expertise. Products can be created via CSV import / table or app. Technically everything is based on Shopware 6 and therefore the project has access to the more than 400 extensions that are already available for Shopware 6. Let's work together with the solution to create pragmatic solutions for retailers who are currently facing the ruins of their existence. 
+# About this project
 
-# More details
-You find much more details in the project wiki: https://github.com/shopwareDowntown/portal/wiki
+This is a non-profit project.
+The portal is an open-source project that was created in collaboration with the Shopware community to help local retailers in this trying time.
 
-For the german speaking region there is already a free-of-use SaaS offering available, that is using this open source project in the backbone.
-http://www.downtowns.io
+It allows local governments, cities, or similar authorities to give local merchants an easy way of
+keeping in touch with their customers and selling goods and services online.
 
-# Development
+After installing the project on a web server, local authorities can register within the portal.
 
-## Being part of it
-This project is being jointly developed by Shopware, community volunteers and other partners to be adapted for different markets / regions and to provide additional functionality.
-If you are interested in participating, please send us a short message or join our Slack Channel
+After registration and activation by the portal owner, a sub-portal will be automatically created for each local authority.
+After this step, local retailers can register within their local authority's sub-portal.
+Next, customers can register and interact with retailers in their area.
 
-## Requirements
+[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Support%20your%20local%20merchants%21&url=https%3A%2F%2Fgithub.com%2FshopwareDowntown%2Fportal&via=ShopwareDevs&hashtags=Shopware6,community)
 
-See [https://docs.shopware.com/en/shopware-platform-dev-en/getting-started/requirements](https://docs.shopware.com/en/shopware-platform-dev-en/getting-started/requirements)
+## Goal
 
-NPM and Node are only required during the build process and for development. If you dont have javascript customizations, it's not required at all. Because the storefront and admin are pre-build.
+At the time this project is created, the [COVID-19](https://en.wikipedia.org/wiki/Coronavirus_disease_2019) pandemic
+has a serious impact on the economy. Since retail stores are forced to close, they now need new solutions to generate
+an income.
 
-If you are using a separate build server, consider having NPM and Node as build-only requirements. Your operating application server doesn't require any of these to run Shopware 6.
+The portal project is trying to help. It is created to serve the project [downtowns.io](https://downtowns.io/), but since
+it is open source anyone is able to set up a a web server and provide the same service as downtowns to their local community. 
 
-## Setup and install
+## How it works
 
-To setup the environment and install with a basic setup run the following commands:
+A picture is worth a thousand words, so here are some example screen designs of the portal. The text is in german,
+since the portal was initially developed for the german market.
 
-```bash
-# clone newest 6.1 patch version from github 
-git clone --branch=6.1 https://github.com/shopware/production shopware
-cd shopware
+![The registration page](readme_sc_registration.jpg?raw=true "The registration page") 
 
-# install shopware and dependencies according to the composer.lock 
-composer install
+After the registration, the organisation has to be activated by the portal owner. Then these steps follow:
 
-# setup the environment
-bin/console system:setup
-# or create .env yourself, if you need more control
-# create jwt secret: bin/console system:generate-jwt-secret
-# create app secret: APP_SECRET=$(bin/console system:generate-app-secret)
-# create .env
 
-# create database with a basic setup (admin user and storefront sales channel)
-bin/console system:install --create-database --basic-setup
+- An organisation (e.g. a city) registers within the portal
+- Organisations are created as a sales channel
+- Retail stores register within the organisation, internally they are handled as categories
+- Retail stores can use an App to upload products
+- Users (buyers) can browse retail stores and see what’s in stock
+ 
+This is how the landing page for an organisation or local authority looks:
 
-# or use the interactive installer in the browser: /recovery/install/index.php
+![Landing page for a local authority](readme_sc_lp_org.jpg?raw=true "Landing page for a local authority")
+
+And here is an example of a retailer's landing page: 
+ 
+![Landing page for a retailer](readme_sc_lp_retail.jpg?raw=true "Landing page for a retailer") 
+
+## Technology
+
+# How to install
+
+## The Portal
+
+Prerequisites: [docker](https://docs.docker.com/install/), [docker-compose](https://docs.docker.com/compose/install/), [node/npm](https://nodejs.org/en/download/) 
+
+Clone the project:
+
+```shell script
+git clone git@github.com:shopwareDowntown/downtown.git
 ```
 
-## Update
+Change into the project directory, then start the docker containers and change into the app container:
 
-To update the project just run this:
-
-```bash
-# pull newest changes from origin
-git pull origin
-
-# the (pre|post)-(install|update)-cmd will execute all steps automatically
-composer install
+```shell script
+docker-compose build  && \
+docker-compose up -d  && \
+docker-compose exec app_server sh
 ```
 
+When inside the app container, do a basic install, generate a JWT secret and an App Secret, then exit the container:
+
+```shell script
+bin/console system:install --create-database --basic-setup --force && \
+bin/console system:generate-jwt-secret --force && \
+bin/console system:generate-app-secret  && \# put into docker-compose.yml 
+exit 
+```
+
+The App Secret is only shown on screen, you have to put it manually into the `docker-compose.yml`, right after `- APP_SECRET=`.
+
+Then regenerate the containers by re-executing up:
+
+```shell script
+docker-compose up -d  
+```
+
+Please note:
+
+- Administration is available at http://localhost:8000/admin with user `admin` and password `shopware`
+- Each sales channel represents an organisation/local authority
+- Merchants show up in categories after registration and activation
+- Merchants register through the separate Angular Merchant Administration described below
+
+You can shut down the portal with this command:
+
+```shell script
+docker-compose down --remove-orphans
+```
+
+## The Angular Merchant Administration
+
+Currently there is no docker container available, so you need to start the project using npm.
+
+Change into the directory `src/MerchantFrontend`. Then install dependencies and run the project: 
+
+```shell script
+npm install && npm run start
+```
+
+After the build and start has finished, the merchant portal is available at [http://localhost:4200/](http://localhost:4200/).
+
+Please be aware: The registration for organisations is currently not wired up to the portal, it's just a hubspot form,
+for production use replace it with your own. For new organisations please create a sales channel manually in [the portal](http://localhost:8000/admin).
+
+Merchants are able to register and choose a category. To activate a merchant either click on the link in the registration request e-mail or,
+in case you haven't set up e-mail sending in the portal, do it directly in the database:
+
+```shell script
+docker-compose exec mysql mysql -p # password is root
+```
+
+```sql
+USE downtown;
+```
+
+```sql
+UPDATE merchant SET active=1 WHERE email='merchant@email.example';
+```
+
+```sql
+quit;
+```
+
+# Contributing
+
+You have an idea or you found an issue? Please open an issue here: [shopwareDowntown/portal/issues](https://github.com/shopwareDowntown/portal/issues)
+Help retailers by contributing to this project. 
+
+# Contributors
+
+[![shyim](avatars/shyim.png?raw=true "shyim")](https://github.com/shyim) [![arnoldstoba](avatars/arnoldstoba.png?raw=true "arnoldstoba")](https://github.com/arnoldstoba) [![PaddyS](avatars/paddys.png?raw=true "PaddyS")](https://github.com/PaddyS) [![FloBWer](avatars/flobwer.png?raw=true "FloBWer")](https://github.com/FloBWer) [![JanPietrzyk](avatars/janpietrzyk.png?raw=true "JanPietrzyk")](https://github.com/JanPietrzyk) [![PascalThesing](avatars/pascalthesing.png?raw=true "PascalThesing")](https://github.com/PascalThesing) ![Kevin Mattutat](avatars/kevin-mattutat-spaceparrots-dekevin-mattutat.png?raw=true "Kevin Mattutat") ![Andreas Wolf](avatars/a-wolf-shopware-comandreas-wolf.png?raw=true "Andreas Wolf") [![and-wolf](avatars/and-wolf.png?raw=true "and-wolf")](https://github.com/and-wolf) [![oterhaar](avatars/oterhaar.png?raw=true "oterhaar")](https://github.com/oterhaar) [![MalteJanz](avatars/maltejanz.png?raw=true "MalteJanz")](https://github.com/MalteJanz) [![seggewiss](avatars/seggewiss.png?raw=true "seggewiss")](https://github.com/seggewiss) [![maike93](avatars/maike93.png?raw=true "maike93")](https://github.com/maike93) ![Maike Sestendrup](avatars/m-sestendrup-shopware-commaike-sestendrup.png?raw=true "Maike Sestendrup") [![marcelbrode](avatars/marcelbrode.png?raw=true "marcelbrode")](https://github.com/marcelbrode) [![swDennis](avatars/swdennis.png?raw=true "swDennis")](https://github.com/swDennis) ![Oliver Terhaar](avatars/o-terhaar-shopware-comoliver-terhaar.png?raw=true "Oliver Terhaar") [![xPand4B](avatars/xpand4b.png?raw=true "xPand4B")](https://github.com/xPand4B) ![Carlos Jansen](avatars/c-jansen-shopware-comcarlos-jansen.png?raw=true "Carlos Jansen") [![Carlosjan](avatars/carlosjan.png?raw=true "Carlosjan")](https://github.com/Carlosjan) [![Draykee](avatars/draykee.png?raw=true "Draykee")](https://github.com/Draykee) [![jakob-kruse](avatars/jakob-kruse.png?raw=true "jakob-kruse")](https://github.com/jakob-kruse) [![lukasrump](avatars/lukasrump.png?raw=true "lukasrump")](https://github.com/lukasrump) [![SebastianFranze](avatars/sebastianfranze.png?raw=true "SebastianFranze")](https://github.com/SebastianFranze) [![Christian-Rades](avatars/christian-rades.png?raw=true "Christian-Rades")](https://github.com/Christian-Rades) [![florianklockenkemper](avatars/florianklockenkemper.png?raw=true "florianklockenkemper")](https://github.com/florianklockenkemper) [![niklas-rudde](avatars/niklas-rudde.png?raw=true "niklas-rudde")](https://github.com/niklas-rudde) [![dnoegel](avatars/dnoegel.png?raw=true "dnoegel")](https://github.com/dnoegel) ![Jakob Kruse](avatars/j-kruse-shopware-comjakob-kruse.png?raw=true "Jakob Kruse") ![Luke Wenkers](avatars/l-wenkers-shopware-comluke-wenkers.png?raw=true "Luke Wenkers") 

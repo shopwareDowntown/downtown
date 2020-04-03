@@ -3,25 +3,19 @@ version: "3.7"
 
 services:
   app_server:
-    image: shopware-production:local
+    image: downtown:local
     build: .
     depends_on:
       - mysql
     ports:
       - 8000:8000
       - 8005:8000
-    extra_hosts:
-      - "docker.vm:127.0.0.1"
     environment:
       # define yourself
-      #- DATABASE_URL
-      - APP_URL=http://docker.vm:8000
+      - DATABASE_URL=mysql://downtown:uptown@mysql:3306/downtown
+      - APP_URL=http://localhost:8000
+      - APP_SECRET=
       - INSTANCE_ID=
-      - SHOPWARE_ES_ENABLED=0
-      - SHOPWARE_ES_HOSTS=elasticsearch:9200
-      - SHOPWARE_ES_INDEXING_ENABLED=0
-      - SHOPWARE_ES_INDEX_PREFIX=sw
-      - SHOPWARE_CDN_STRATEGY_DEFAULT=id
     volumes:
       - "./config/jwt:/sw6/config/jwt"
       - "./public/bundles:/sw6/public/bundles"
@@ -38,9 +32,6 @@ services:
       - /var/lib/mysql:uid=999,gid=999
     environment:
       - MYSQL_ROOT_PASSWORD=root
-
-  elasticsearch:
-    image: elastic/elasticsearch:7.1.1
-    environment:
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - discovery.type=single-node
+      - MYSQL_DATABASE=downtown
+      - MYSQL_USER=downtown
+      - MYSQL_PASSWORD=uptown
