@@ -12,6 +12,8 @@ After registration and activation by the portal owner, a sub-portal will be auto
 After this step, local retailers can register within their local authority's sub-portal.
 Next, customers can register and interact with retailers in their area.
 
+[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Support%20your%20local%20merchants%21&url=https%3A%2F%2Fgithub.com%2FshopwareDowntown%2Fportal&via=ShopwareDevs&hashtags=Shopware6,community)
+
 ## Goal
 
 At the time this project is created, the [COVID-19](https://en.wikipedia.org/wiki/Coronavirus_disease_2019) pandemic
