@@ -1,0 +1,5 @@
+<portal-toast
+  *ngFor="let toast of toasts"
+  (closeToast)="closeToast(toast)"
+  [toast]="toast">
+</portal-toast>

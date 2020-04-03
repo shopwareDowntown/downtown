@@ -34,3 +34,6 @@ export interface MerchantLoginResult {
   'sw-context-token': string;
 }
 
+export interface PasswordReset {
+  email: string
+}

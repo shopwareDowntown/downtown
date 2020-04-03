@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { StateService } from '../../core/state/state.service';
 import { Merchant } from '../../core/models/merchant.model';
-import { LoginService } from '../../core/services/login.service';
-import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MerchantApiService } from '../../core/services/merchant-api.service';
 import { Category } from '../../core/models/category.model';
 import { Country } from '../../core/models/country.model';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'portal-merchant-details',
@@ -14,7 +13,6 @@ import { Country } from '../../core/models/country.model';
   styleUrls: ['./merchant-details.component.scss']
 })
 export class MerchantDetailsComponent implements OnInit {
-
   merchant: Merchant;
   profileForm: FormGroup;
   merchantLoaded = false;
@@ -23,33 +21,40 @@ export class MerchantDetailsComponent implements OnInit {
   categories: Category[];
 
   constructor(
-    private loginService: LoginService,
-    private stateService: StateService,
-    private router: Router,
-    private formBuilder: FormBuilder,
-    private merchantApiService: MerchantApiService
+    private readonly stateService: StateService,
+    private readonly formBuilder: FormBuilder,
+    private readonly merchantApiService: MerchantApiService,
+    private readonly toastService: ToastService
   ) {}
 
   countries: Country[] = [];
 
   ngOnInit(): void {
-
-    this.stateService.getMerchant().subscribe((merchant: Merchant | null) => {
-      if (merchant !== null) {
-        this.merchant = merchant;
-        this.merchantLoaded = true;
-        this.createForm();
+    this.stateService.getMerchant().subscribe(
+      (merchant: Merchant | null) => {
+        if (merchant !== null) {
+          this.merchant = merchant;
+          this.merchantLoaded = true;
+          this.createForm();
+        }
+      },
+      () => {
+        this.toastService.error('Händler konnte nicht geladen werden');
       }
-    });
+    );
 
-    this.merchantApiService.getCategories().subscribe((categories: Category[]) => {
-      this.categories = categories;
-      this.categoriesLoaded = true;
-    });
+    this.merchantApiService
+      .getCategories()
+      .subscribe((categories: Category[]) => {
+        this.categories = categories;
+        this.categoriesLoaded = true;
+      });
 
-    this.merchantApiService.getCountries().subscribe((countries: { data: Country[]}) => {
-      this.countries = countries.data;
-    });
+    this.merchantApiService
+      .getCountries()
+      .subscribe((countries: { data: Country[] }) => {
+        this.countries = countries.data;
+      });
   }
 
   save() {
@@ -71,7 +76,8 @@ export class MerchantDetailsComponent implements OnInit {
       countryId: newData.countryId
     } as Merchant;
 
-    this.merchantApiService.updateMerchant(updatedData)
+    this.merchantApiService
+      .updateMerchant(updatedData)
       .subscribe((merchant: Merchant) => {
         this.merchant = merchant;
       });
@@ -91,7 +97,7 @@ export class MerchantDetailsComponent implements OnInit {
       publicEmail: [this.merchant.publicEmail],
       publicWebsite: this.merchant.publicWebsite,
       publicOpeningTimes: [this.merchant.publicOpeningTimes],
-      publicDescription: this.merchant.publicDescription,
+      publicDescription: this.merchant.publicDescription
     });
   }
 }

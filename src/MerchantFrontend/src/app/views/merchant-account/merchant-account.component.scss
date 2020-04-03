@@ -3,7 +3,6 @@
     display: grid;
     grid-auto-flow: column;
     justify-content: flex-start;
-    margin-top: 32px;
     gap: 12px;
   }
 
@@ -16,14 +15,15 @@
   .sub-text {
     width: 600px;
     font-size: 15px;
-    color: #6b7c8d;
+    color: var(--sw-regular);
+    margin: 0;
   }
 
   form {
     label {
-      color: #607182;
-      height: 24px;
+      color: var(--sw-regular);
       font-weight: normal;
+      height: 24px;
     }
 
     input {
@@ -39,6 +39,5 @@
 .button-wrapper {
   display: grid;
   grid-template-columns: max-content max-content;
-  padding-top: 32px;
   grid-gap: 8px;
 }
