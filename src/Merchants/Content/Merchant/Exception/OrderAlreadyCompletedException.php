@@ -2,6 +2,8 @@
 
 namespace Shopware\Production\Merchants\Content\Merchant\Exception;
 
-class OrderAlreadyCompletedException extends \Exception
+use Shopware\Core\Framework\ShopwareHttpException;
+
+class OrderAlreadyCompletedException extends ShopwareHttpException
 {
 }
