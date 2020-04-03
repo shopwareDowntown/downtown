@@ -26,7 +26,9 @@ const routes: Routes = [
       {path: 'detail/:id', component: MerchantDetailsComponent, canActivate: [AuthGuard]},
       {path: 'profile', component: MerchantDetailsComponent, canActivate: [AuthGuard]},
       {path: 'products', loadChildren: () => import('./views/merchant-products/merchant-products.module').then(value => value.MerchantProductsModule), canActivate: [AuthGuard]},
-      {path: 'delivery', loadChildren: () => import('./views/local-delivery/local-delivery.module').then(value => value.LocalDeliveryModule), canActivate: [AuthGuard]}
+      {path: 'delivery', loadChildren: () => import('./views/local-delivery/local-delivery.module').then(value => value.LocalDeliveryModule), canActivate: [AuthGuard]},
+      {path: 'orders', loadChildren: () => import('./views/merchant-orders/merchant-orders.module').then(value => value.MerchantOrdersModule), canActivate: [AuthGuard]}
+
     ]
   },
 

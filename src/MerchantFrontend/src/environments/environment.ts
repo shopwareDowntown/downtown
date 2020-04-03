@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  hubspotPortalId: '6506294',
-  hubspotFormId: 'e2d4a12e-a1c0-4ac0-87b5-ed89c490ecff',
+  hubspotPortalId: '',
+  hubspotFormId: '',
   apiUrl: 'https://sw6.ovh',
   accessKey: 'SWSCR2FPWJDMWU9HEXZLMTVWUG'
 };
