@@ -1,0 +1,69 @@
+{% block swag_sales_channel_list_overview %}
+    <sw-page class="swag-sales-channel-list-overview">
+        <template #search-bar>
+            <sw-search-bar initialSearchType="salesChannel"
+                :initialSearch="term"
+                @search="onSearch">
+            </sw-search-bar>
+        </template>
+
+        {% block swag_sales_channel_list_overview_actions %}
+            <template slot="smart-bar-actions">
+                <sw-sales-channel-modal v-if="showModal" @modal-close="showModal=false"></sw-sales-channel-modal>
+
+                <sw-button variant="primary" @click="showModal=true">
+                    {{ $tc('sw-sales-channel-list.grid.add-button.text') }}
+                </sw-button>
+            </template>
+        {% endblock %}
+
+        <template slot="content">
+            {% block swag_sales_channel_list_overview_content %}
+                <sw-entity-listing
+                    v-if="salesChannels"
+                    :items="salesChannels"
+                    :repository="repository"
+                    :showSelection="false"
+                    :columns="columns"
+                    detailRoute="sw.sales.channel.detail.base"
+                >
+
+                    {% block swag_sales_channel_list_overview_content_domains %}
+                        <template slot="column-domains" slot-scope="{ item }">
+                            {{ item.domains[0] ? item.domains[0].url : '' }}
+                        </template>
+                    {% endblock %}
+
+                    {% block swag_sales_channel_list_overview_content_active %}
+                        <template slot="column-active" slot-scope="{ item }">
+                            <sw-data-grid-column-boolean v-model="item.active" :isInlineEdit="false"/>
+                        </template>
+                    {% endblock %}
+
+                    <template #pagination>
+                        {% block swag_sales_channel_list_overview_content_pagination %}
+                            <sw-pagination :page="page"
+                                :limit="limit"
+                                :total="total"
+                                :total-visible="7"
+                                @page-change="onPageChange">
+                            </sw-pagination>
+                        {% endblock %}
+                    </template>
+                </sw-entity-listing>
+            {% endblock %}
+        </template>
+
+        <template #sidebar>
+            <sw-sidebar>
+                {% block swag_sales_channel_list_overview_sidebar_refresh %}
+                    <sw-sidebar-item
+                        icon="default-arrow-360-left"
+                        :title="$tc('sw-product.list.titleSidebarItemRefresh')"
+                        @click="onRefresh">
+                    </sw-sidebar-item>
+                {% endblock %}
+            </sw-sidebar>
+        </template>
+    </sw-page>
+{% endblock %}
