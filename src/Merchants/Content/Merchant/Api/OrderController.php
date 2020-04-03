@@ -57,7 +57,6 @@ class OrderController
         $offset = $request->query->getInt('offset', 0);
 
         $criteria = new Criteria();
-        $criteria->addAssociation('merchants');
         $criteria->addAssociation('deliveries');
         $criteria->addAssociation('lineItems');
         $criteria->setTotalCountMode(Criteria::TOTAL_COUNT_MODE_EXACT)
@@ -72,10 +71,6 @@ class OrderController
         }
 
         $orders = $this->orderRepository->search($criteria, Context::createDefaultContext());
-
-        if ($orders->count() <= 0) {
-            throw new NotFoundHttpException('No orders found.');
-        }
 
         return new JsonResponse([
             'data' => $orders->getElements(),
@@ -107,7 +102,6 @@ class OrderController
     public function done(MerchantEntity $merchant, string $orderId): JsonResponse
     {
         $criteria = new Criteria([$orderId]);
-        $criteria->addAssociation('merchants');
         $criteria->addFilter(new EqualsFilter('merchants.id', $merchant->getId()));
 
         /** @var OrderEntity $order */
