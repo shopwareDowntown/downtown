@@ -1,5 +1,9 @@
 <ng-container *ngIf="order">
-  <h1>Bestellung {{order.orderNumber}}</h1>
+  <h1>
+    Bestellung {{order.orderNumber}}
+    <label class="label label-info" *ngIf="order.stateMachineState.technicalName === 'open'">Offen</label>
+    <label class="label label-success" *ngIf="order.stateMachineState.technicalName === 'completed'">Erledigt</label>
+  </h1>
   <span>Hier die Details zu dieser Bestellung:</span>
   <h3>Informationen:</h3>
   <div class="clr-row">
@@ -51,6 +55,9 @@
         </clr-dg-row>
       </clr-datagrid>
     </div>
+  </div>
+  <div class="button-wrapper">
+    <button class="btn btn-primary" [disabled]="order.stateMachineState.technicalName !== 'open'" (click)="markOrderAsCompleted()">Als erledigt markieren</button>
   </div>
 </ng-container>
 

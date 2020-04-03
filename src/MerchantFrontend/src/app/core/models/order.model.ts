@@ -9,6 +9,11 @@ export interface Order {
   lineItems: OrderItem[];
 }
 
+export interface OrderListData {
+  data: Order[],
+  total: number
+}
+
 export interface OrderCustomer {
   firstName: string;
   lastName: string;

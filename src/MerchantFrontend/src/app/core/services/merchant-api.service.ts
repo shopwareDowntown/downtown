@@ -9,7 +9,7 @@ import { map, take } from 'rxjs/operators';
 import { Category } from '../models/category.model';
 import { Country } from '../models/country.model';
 import { environment } from '../../../environments/environment';
-import { Order } from '../models/order.model';
+import { Order, OrderListData } from '../models/order.model';
 
 @Injectable({
   providedIn: 'root'
@@ -167,8 +167,22 @@ export class MerchantApiService {
     return this.http.post<any>(this.apiUrl + '/merchant-api/v1/reset-password-confirm', JSON.stringify(body), {headers: headers})
   }
 
-  getOrders(): Observable<Order[]> {
-    return this.http.get<Order[]>(this.apiUrl + '/merchant-api/v1/orders', {headers: this.getJsonContentTypeHeaders()});
+  getOrders(limit: number, offset:number): Observable<OrderListData> {
+    let params = new HttpParams();
+    params = params.append('limit', limit.toString());
+    params = params.append('offset', offset.toString());
+    return this.http.get<OrderListData>(this.apiUrl + '/merchant-api/v1/orders', {
+      headers: this.getJsonContentTypeHeaders(),
+      params: params
+    });
+  }
+
+  getOrder(id: string): Observable<Order> {
+    return this.http.get<Order>(this.apiUrl + '/merchant-api/v1/order/' + id, {headers: this.getJsonContentTypeHeaders()})
+  }
+
+  setOrderCompleted(id: string): Observable<Order> {
+    return this.http.patch<Order>(this.apiUrl + '/merchant-api/v1/order/' + id +'/done', null, {headers: this.getJsonContentTypeHeaders()});
   }
 
   private getHeaders(): { [header: string]: string | string[];} {
