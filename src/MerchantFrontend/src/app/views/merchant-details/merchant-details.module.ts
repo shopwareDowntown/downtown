@@ -4,6 +4,7 @@ import { MerchantDetailsComponent } from './merchant-details.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule, ClrFormsModule } from '@clr/angular';
 import { MerchantAccountModule } from '../merchant-account/merchant-account.module';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -11,7 +12,8 @@ import { MerchantAccountModule } from '../merchant-account/merchant-account.modu
     ReactiveFormsModule,
     ClrFormsModule,
     ClarityModule,
-    MerchantAccountModule
+    MerchantAccountModule,
+    SharedModule
   ],
   declarations: [
     MerchantDetailsComponent

@@ -73,6 +73,8 @@ export class MerchantApiService {
             countryId: merchantData.countryId || '',
             email: merchantData.email as string,
             password: merchantData.password,
+            media: merchantData.media,
+            cover: merchantData.cover
           } as Merchant;
         })
       );
@@ -80,6 +82,18 @@ export class MerchantApiService {
 
   updateMerchant(merchant: Merchant): Observable<Merchant> {
       return this.http.patch<Merchant>(this.apiUrl + '/merchant-api/v1/profile', JSON.stringify(merchant), {headers: this.getJsonContentTypeHeaders() });
+  }
+
+  addCoverToMerchant(image: File[]): Observable<any> {
+    let headers = new HttpHeaders();
+    headers = headers.set('sw-context-token', this.getSwContextToken());
+    const formData = new FormData();
+    formData.append('cover', image[0]);
+    return this.http.post<Merchant>(this.apiUrl + '/merchant-api/v1/profile/media', formData, {headers: headers})
+  }
+
+  deleteMerchantCoverImage(id: string): Observable<[]> {
+    return this.http.delete<[]>(this.apiUrl + '/merchant-api/v1/profile/media/' + id, {headers: this.getHeaders()})
   }
 
   // category routes
