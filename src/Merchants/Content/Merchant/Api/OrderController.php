@@ -84,8 +84,9 @@ class OrderController
     public function detail(MerchantEntity $merchant, string $orderId): JsonResponse
     {
         $criteria = new Criteria([$orderId]);
-        $criteria->addAssociation('merchants');
         $criteria->addFilter(new EqualsFilter('merchants.id', $merchant->getId()));
+        $criteria->addAssociation('deliveries');
+        $criteria->addAssociation('lineItems');
 
         $order = $this->orderRepository->search($criteria, Context::createDefaultContext())->first();
 
