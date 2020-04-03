@@ -1,0 +1,56 @@
+<ng-container *ngIf="order">
+  <h1>Bestellung {{order.orderNumber}}</h1>
+  <span>Hier die Details zu dieser Bestellung:</span>
+  <h3>Informationen:</h3>
+  <div class="clr-row">
+    <div class="clr-col-lg-5 clr-col-md-8 clr-col-12">
+      <div class="card">
+        <div class="card-header">
+          Anschrift:
+        </div>
+        <div class="card-block">
+          <div class="card-text">
+            {{order.deliveries[0].shippingOrderAddress.firstName}} {{order.deliveries[0].shippingOrderAddress.lastName}} <br />
+            {{order.deliveries[0].shippingOrderAddress.street}} <br>
+            {{order.deliveries[0].shippingOrderAddress.zipcode}} {{order.deliveries[0].shippingOrderAddress.city}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="clr-col-lg-5 clr-col-md-8 clr-col-12">
+      <div class="card">
+        <div class="card-header">
+          {{order.orderCustomer.firstName}} {{order.orderCustomer.lastName}} ist erreichbar über:
+        </div>
+        <div class="card-block">
+          <div class="card-text">
+            <strong>E-Mail:</strong> {{order.orderCustomer.email}} <br/>
+            <ng-container *ngIf="order.deliveries[0].shippingOrderAddress.phoneNumber">
+              <strong>Telefon:</strong> {{order.deliveries[0].shippingOrderAddress.phoneNumber}}
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="clr-row">
+    <div class="clr-col-md-10">
+      <h3>Positionen:</h3>
+      <clr-datagrid>
+        <clr-dg-placeholder>Keine Positionen vorhanden.</clr-dg-placeholder>
+
+        <clr-dg-column>Name</clr-dg-column>
+        <clr-dg-column>Stückpreis</clr-dg-column>
+        <clr-dg-column>Anzahl</clr-dg-column>
+        <clr-dg-column>Gesamtpreis</clr-dg-column>
+        <clr-dg-row *ngFor="let orderItem of order.lineItems">
+          <clr-dg-cell>{{orderItem.label}}</clr-dg-cell>
+          <clr-dg-cell>{{orderItem.price.unitPrice}}€</clr-dg-cell>
+          <clr-dg-cell>{{orderItem.price.quantity}}</clr-dg-cell>
+          <clr-dg-cell>{{orderItem.price.totalPrice}}€</clr-dg-cell>
+        </clr-dg-row>
+      </clr-datagrid>
+    </div>
+  </div>
+</ng-container>
+

@@ -1,12 +1,12 @@
 <h1>
   Bestellungen
 </h1>
-<h3>
-  Hier eine Übersicht über alle erfolgten Bestellungen
-</h3>
+<span>
+  Hier findest Du eine Übersicht über alle erfolgten Bestellungen.
+</span>
 
 <clr-datagrid (clrDgRefresh)="refresh()" [clrDgLoading]="loading">
-  <clr-dg-placeholder>Keine Bestellungen vorhanden</clr-dg-placeholder>
+  <clr-dg-placeholder>Keine Bestellungen vorhanden.</clr-dg-placeholder>
 
   <clr-dg-column>Datum</clr-dg-column>
   <clr-dg-column>Bestellnummer</clr-dg-column>
@@ -18,7 +18,7 @@
     <clr-dg-cell>{{order.orderDateTime | localeDate}}</clr-dg-cell>
     <clr-dg-cell>{{order.orderNumber}}</clr-dg-cell>
     <clr-dg-cell>{{order.orderCustomer.firstName}} {{order.orderCustomer.lastName}}</clr-dg-cell>
-    <clr-dg-cell>{{order.price.netPrice}}€</clr-dg-cell>
+    <clr-dg-cell>{{order.price.totalPrice}}€</clr-dg-cell>
     <clr-dg-cell>
       <ng-container *ngIf="order.stateMachineState.technicalName === 'open'; else orderCompleted">
         <span>Offen</span>
@@ -35,7 +35,7 @@
       <ng-container *ngIf="order.stateMachineState.technicalName === 'open'">
         <a (click)="markOrderAsCompleted(order)" aria-haspopup="true" class="tooltip tooltip-sm">
           <clr-icon size="24" shape="check-circle"></clr-icon>
-          <span class="tooltip-content">Erledingt</span>
+          <span class="tooltip-content">Erledigt</span>
         </a>
       </ng-container>
     </clr-dg-cell>

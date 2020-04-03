@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MerchantApiService } from '../../../core/services/merchant-api.service';
 import { Order } from '../../../core/models/order.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'portal-merchant-orders-listing',
@@ -17,7 +18,10 @@ export class MerchantOrdersListingComponent implements OnInit {
   // fromProduct: number;
   // tillProduct: number;
 
-  constructor(private readonly merchantApiService: MerchantApiService) { }
+  constructor(
+    private readonly merchantApiService: MerchantApiService,
+    private readonly router: Router
+  ) { }
 
   ngOnInit(): void {
      this.refresh();
@@ -34,7 +38,7 @@ export class MerchantOrdersListingComponent implements OnInit {
   }
 
   openDetails(order: Order) {
-
+    this.router.navigate(['/merchant/orders/details/' + order.id]);
   }
 
   markOrderAsCompleted(order: Order) {
