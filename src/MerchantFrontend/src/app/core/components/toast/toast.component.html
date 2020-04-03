@@ -1,0 +1,18 @@
+<div class="toast-icon" [ngSwitch]="toast.type">
+  <div *ngSwitchCase="'success'" class="success">
+    <clr-icon shape="check-circle" class="is-solid" size="24"></clr-icon>
+  </div>
+  <div *ngSwitchCase="'error'" class="error">
+    <clr-icon shape="times-circle" class="is-solid" size="24"></clr-icon>
+  </div>
+  <div *ngSwitchCase="'info'" class="info">
+    <clr-icon shape="info-circle" class="is-solid" size="24"></clr-icon>
+  </div>
+</div>
+<div class="toast-content">
+  <h4>{{ toast.title }}</h4>
+  <div class="toast-message" *ngIf="toast.message" [innerHtml]="toast.message"></div>
+</div>
+<div class="toast-close" (click)="close()">
+  <clr-icon shape="times"></clr-icon>
+</div>

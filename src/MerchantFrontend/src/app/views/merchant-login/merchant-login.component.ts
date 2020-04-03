@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 import { LoginService } from '../../core/services/login.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MerchantApiService } from '../../core/services/merchant-api.service';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'portal-merchant-login',
@@ -10,7 +11,6 @@ import { MerchantApiService } from '../../core/services/merchant-api.service';
   styleUrls: ['./merchant-login.component.scss']
 })
 export class MerchantLoginComponent implements OnInit {
-
   isLogging: boolean;
   loginFailed = false;
   @Input() loginModalOpen: boolean;
@@ -25,8 +25,9 @@ export class MerchantLoginComponent implements OnInit {
     private readonly router: Router,
     private readonly loginService: LoginService,
     private readonly formBuilder: FormBuilder,
-    private readonly merchantApiService: MerchantApiService
-  ) { }
+    private readonly merchantApiService: MerchantApiService,
+    private readonly toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.initializeForm();
@@ -42,23 +43,33 @@ export class MerchantLoginComponent implements OnInit {
 
   public doLogin() {
     this.loginFailed = false;
-    this.loginService.login(this.loginForm.get('username').value, this.loginForm.get('password').value)
-      .subscribe((result) => {
-        this.modalClosed();
-        this.router.navigate(['/merchant/home']);
-
-      },() => {
-        this.loginFailed = true;
-      });
+    this.loginService
+      .login(
+        this.loginForm.get('username').value,
+        this.loginForm.get('password').value
+      )
+      .subscribe(
+        result => {
+          this.modalClosed();
+          this.router.navigate(['/merchant/home']);
+          this.toastService.success('Erfolgreich eingeloggt');
+        },
+        () => {
+          this.loginFailed = true;
+          this.toastService.error('Login fehlgeschlagen');
+        }
+      );
   }
 
   doPasswordReset() {
-    this.merchantApiService.resetPassword(this.passwordResetForm.value).subscribe(() => {
-      this.passwordResetForm.reset(this.initialResetFormValues);
-      this.passwordResetMode = false;
-      this.modalClosed()
-    });
-    //TODO: what should happen on errors?
+    this.merchantApiService
+      .resetPassword(this.passwordResetForm.value)
+      .subscribe(() => {
+        this.passwordResetForm.reset(this.initialResetFormValues);
+        this.toastService.success('E-Mail wurde erfolgreich abgeschickt');
+        this.passwordResetMode = false;
+        this.modalClosed();
+      });
   }
 
   initializeForm(): void {

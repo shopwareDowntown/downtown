@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MerchantApiService } from '../../../core/services/merchant-api.service';
 import { Product } from '../../../core/models/product.model';
 import { Router } from '@angular/router';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'portal-merchant-products-listing',
@@ -17,7 +18,7 @@ export class MerchantProductsListingComponent implements OnInit {
   offset: number;
   currentPage = 1;
 
-  constructor(private merchantService: MerchantApiService, private router: Router) {}
+  constructor(private merchantService: MerchantApiService, private router: Router, private toastService: ToastService) {}
 
   ngOnInit(): void {
     this.offset = 0;
@@ -35,7 +36,10 @@ export class MerchantProductsListingComponent implements OnInit {
   }
 
   openAddProductForm(): void {
-    this.router.navigate(['merchant/products/details']);
+    this.merchantService.getProducts(this.limit, this.offset).subscribe(response => {
+      this.toastService.success('Produkt erfolgreich gespeichert');
+    });
+    // this.router.navigate(['merchant/products/details']);
   }
 
   editProduct(product: Product): void {

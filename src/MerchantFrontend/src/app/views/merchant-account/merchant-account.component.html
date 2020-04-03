@@ -20,36 +20,46 @@
         </clr-input-container>
       </div>
 
-      <h4>E-Mail-Adresse ändern</h4>
-
-      <div class="input-group">
-        <clr-input-container>
-          <label>Aktuelle E-Mail-Adresse</label>
-          <input
-            clrInput
-            disabled
-            type="email"
-            formControlName="currentEmail"
-          />
-        </clr-input-container>
+      <div class="button-wrapper">
+        <button
+          class="btn btn-primary"
+          (click)="saveChanges()"
+          [disabled]="form.invalid || !form.dirty"
+        >
+          Speichern
+        </button>
       </div>
-      <button class="btn btn-primary" type="button" (click)="openChangeEmail()">E-Mail-Adresse ändern</button>
-
-      <h4>Passwort ändern</h4>
-      <button class="btn btn-primary" type="button" (click)="openChangePassword()">Passwort ändern</button>
-
     </form>
 
-    <div class="button-wrapper">
-      <button
-        class="btn btn-primary"
-        (click)="saveChanges()"
-        [disabled]="form.invalid || !form.dirty">
-        Speichern
-      </button>
+    <h4>E-Mail-Adresse ändern</h4>
+
+    <div class="input-group">
+      <clr-input-container>
+        <label>Aktuelle E-Mail-Adresse</label>
+        <input clrInput disabled type="email" formControlName="currentEmail" />
+      </clr-input-container>
     </div>
+
+    <button class="btn btn-primary" type="button" (click)="openChangeEmail()">
+      E-Mail-Adresse ändern
+    </button>
+
+    <h4>Passwort ändern</h4>
+    <button
+      class="btn btn-primary"
+      type="button"
+      (click)="openChangePassword()"
+    >
+      Passwort ändern
+    </button>
   </div>
 </div>
 
-<portal-change-password-modal (passwordChanged)="passwordChanged($event)" [modalOpen]="changePasswordModalOpen"></portal-change-password-modal>
-<portal-change-mail-modal (emailChanged)="emailChanged($event)" [modalOpen]="changeEmailModalOpen"></portal-change-mail-modal>
+<portal-change-password-modal
+  (passwordChanged)="passwordChanged($event)"
+  [modalOpen]="changePasswordModalOpen"
+></portal-change-password-modal>
+<portal-change-mail-modal
+  (emailChanged)="emailChanged($event)"
+  [modalOpen]="changeEmailModalOpen"
+></portal-change-mail-modal>
