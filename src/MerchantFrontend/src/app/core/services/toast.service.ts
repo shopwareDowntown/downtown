@@ -19,7 +19,7 @@ export class ToastService implements OnDestroy {
   private clearOnNavigationSubscription$: Subscription;
   public events$: Observable<ToastEvent> = this.eventSource.asObservable();
 
-  private readonly defaultTimeOut = 5000000;
+  private readonly defaultTimeOut = 4000;
 
   constructor(private router: Router) {}
 
