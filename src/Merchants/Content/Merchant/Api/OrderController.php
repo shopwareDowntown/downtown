@@ -73,7 +73,7 @@ class OrderController
         $orders = $this->orderRepository->search($criteria, Context::createDefaultContext());
 
         return new JsonResponse([
-            'data' => $orders->getElements(),
+            'data' => $orders->getEntities(),
             'total' => $orders->getTotal()
         ]);
     }
