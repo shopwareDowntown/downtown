@@ -56,7 +56,6 @@ export class MerchantLoginComponent implements OnInit {
         },
         () => {
           this.loginFailed = true;
-          this.toastService.error('Login fehlgeschlagen');
         }
       );
   }

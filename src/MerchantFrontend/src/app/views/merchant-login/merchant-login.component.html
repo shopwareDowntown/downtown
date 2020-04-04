@@ -39,8 +39,15 @@
             <span class="spinner spinner-inline"></span>
             <span class="ml-1">Logging in...</span>
           </div>
-          <div class="error active" *ngIf="loginFailed">
-            Falsche E-Mail Adresse oder Passwort
+          <div class="alert alert-danger" *ngIf="loginFailed">
+            <div class="alert-items">
+              <div class="alert-item static">
+                <div class="alert-icon-wrapper">
+                  <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                </div>
+                <span class="alert-text">Falsche E-Mail-Adresse oder falsches Passwort.</span>
+              </div>
+            </div>
           </div>
         </div>
       </form>

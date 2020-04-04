@@ -49,12 +49,16 @@ export class MerchantAccountComponent implements OnInit {
       lastName: this.form.value.lastName
     } as Merchant;
 
-    this.merchantApiService.updateMerchant(updateData).subscribe((merchant: Merchant) => {
-      this.merchant = merchant;
-      this.toastService.success('Erfolgreich gespeichert');
-    }, () => {
-      this.toastService.error('Fehler beim Speichern');
-    });
+    this.merchantApiService
+      .updateMerchant(updateData)
+      .subscribe((merchant: Merchant) => {
+        this.merchant = merchant;
+        this.stateService.setMerchant(merchant);
+        this.toastService.success('Änderungen gespeichert.')
+      },
+        () => {
+        this.toastService.error('Fehler', 'Deine Änderungen konnten nicht gespeichert werden.');
+      });
   }
 
   openChangePassword() {
