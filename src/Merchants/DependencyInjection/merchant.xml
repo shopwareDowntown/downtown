@@ -92,7 +92,7 @@
             <argument type="service" id="Doctrine\DBAL\Connection"/>
             <argument type="service" id="sales_channel.category.repository"/>
             <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="router.default"/>
+            <argument type="service" id="Shopware\Core\Content\Seo\SeoUrlPlaceholderHandlerInterface"/>
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Services\RegistrationService">
@@ -166,6 +166,11 @@
 
         <service id="Shopware\Production\Portal\Hacks\StorefrontMerchantMediaImageValidator">
             <tag name="storefront.media.upload.validator" />
+        </service>
+
+        <service id="Shopware\Production\Merchants\Storefront\SeoUrlRoute\MerchantPageSeoUrlRoute">
+            <argument type="service" id="Shopware\Production\Merchants\Content\Merchant\MerchantDefinition"/>
+            <tag name="shopware.seo_url.route"/>
         </service>
     </services>
 </container>
