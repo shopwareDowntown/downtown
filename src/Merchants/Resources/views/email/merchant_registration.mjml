@@ -1,0 +1,19 @@
+<mjml>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-image width="200px" src="https://downtowns.io/assets/images/downtown.svg"></mj-image>
+
+        <mj-divider border-color="#6666FF"></mj-divider>
+
+        <mj-text font-size="18px" color="#000001" font-family="helvetica">
+        	{{ 'mail.merchant_registration.hello'|trans({'%merchant%': merchant.publicCompanyName}) }}<br/>
+        	<br/>
+          {{ 'mail.merchant_registration.text'|trans }}<br/>
+        </mj-text>
+
+        <mj-button background-color="#6666FF" href="{{ confirmUrl }}">{{ 'mail.merchant_registration.confirmButton'|trans }}</mj-button>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

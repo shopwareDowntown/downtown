@@ -22,6 +22,8 @@
         <service id="Shopware\Production\Merchants\Content\Merchant\Api\RegistrationController" public="true">
             <argument type="service" id="Shopware\Production\Merchants\Content\Merchant\Services\RegistrationService"/>
             <argument type="service" id="Shopware\Core\System\SalesChannel\Context\SalesChannelContextFactory"/>
+            <argument type="service" id="sales_channel.repository"/>
+            <argument type="service" id="translator"/>
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\MerchantDefinition">
@@ -95,10 +97,8 @@
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Services\RegistrationService">
             <argument type="service" id="merchant.repository"/>
-            <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
             <argument type="service" id="Shopware\Core\Framework\Validation\DataValidator"/>
-            <argument type="service" id="twig"/>
-            <argument type="service" id="Shopware\Core\Content\MailTemplate\Service\MailSender"/>
+            <argument type="service" id="Shopware\Production\Portal\Services\TemplateMailSender"/>
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Storefront\Controller\MerchantController" public="true">
@@ -114,9 +114,7 @@
         <service id="Shopware\Production\Merchants\Content\Merchant\Subscriber\OrderPlacedSubscriber">
             <argument type="service" id="product.repository"/>
             <argument type="service" id="order.repository"/>
-            <argument type="service" id="twig"/>
-            <argument type="service" id="Shopware\Core\Content\MailTemplate\Service\MailSender"/>
-            <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
+            <argument type="service" id="Shopware\Production\Portal\Services\TemplateMailSender"/>
             <tag name="kernel.event_listener"/>
         </service>
 
@@ -144,10 +142,8 @@
         <service id="Shopware\Production\Merchants\Content\Merchant\Api\ResetPasswordController" public="true">
             <argument type="service" id="merchant.repository"/>
             <argument type="service" id="merchant_reset_password_token.repository"/>
-            <argument type="service" id="twig"/>
-            <argument type="service" id="Shopware\Core\Content\MailTemplate\Service\MailSender"/>
-            <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
-            <argument type="service" id="Shopware\Core\System\SalesChannel\Context\SalesChannelContextFactory"/>
+            <argument type="service" id="Shopware\Production\Portal\Services\TemplateMailSender"/>
+            <argument type="service" id="translator"/>
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Api\LoginController" public="true">

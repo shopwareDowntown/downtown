@@ -1,0 +1,64 @@
+<mjml>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-image width="200px" src="https://downtowns.io/assets/images/downtown.svg"></mj-image>
+
+        <mj-divider border-color="#6666FF"></mj-divider>
+
+        <mj-text font-size="18px" color="#000001" font-family="helvetica">
+        	{{ 'mail.merchant_order_confirmation.hello'|trans({'%merchant%': merchant.publicCompanyName}) }}<br/><br/>
+          {{ 'mail.merchant_order_confirmation.youHaveNewOrder'|trans }}
+
+        	<br/><br/>
+          <strong>{{ 'mail.merchant_order_confirmation.orderItems'|trans }}</strong><br/>
+          {% set billingAddress = order.addresses.get(order.billingAddressId) %}
+       		{% set delivery = order.deliveries.first %}
+        </mj-text>
+
+         <mj-table>
+          <tr style="border-bottom:1px solid #ecedee;text-align:left;padding:15px 0;">
+            <th style="padding: 0 15px 0 0;">{{ 'mail.merchant_order_confirmation.tableHeader.pos'|trans }}</th>
+            <th style="padding: 0 15px;">{{ 'mail.merchant_order_confirmation.tableHeader.name'|trans }}</th>
+            <th style="padding: 0 0 0 15px;">{{ 'mail.merchant_order_confirmation.tableHeader.amount'|trans }}</th>
+            <th style="padding: 0 0 0 15px;">{{ 'mail.merchant_order_confirmation.tableHeader.price'|trans }}</th>
+            <th style="padding: 0 0 0 15px;">{{ 'mail.merchant_order_confirmation.tableHeader.totalPrice'|trans }}</th>
+          </tr>
+         {% for lineItem in order.lineItems %}
+          <tr>
+            <td style="padding: 0 15px 0 0;">{{ loop.index }}</th>
+            <td style="padding: 0 15px;">{{ lineItem.label|u.wordwrap(80) }}</th>
+            <td style="padding: 0 0 0 15px;">{{ lineItem.quantity }}</th>
+            <td style="padding: 0 0 0 15px;">{{ lineItem.unitPrice|currency(currencyIsoCode) }}</th>
+            <td style="padding: 0 0 0 15px;">{{ lineItem.totalPrice|currency(currencyIsoCode) }}</th>
+          </tr>
+         {% endfor %}
+        </mj-table>
+
+        <mj-text font-size="18px" color="#000001" font-family="helvetica">
+          {{ 'mail.merchant_order_confirmation.totalPrice'|trans }} {{ order.amountTotal|currency(currencyIsoCode) }}
+        </mj-text>
+
+        <mj-text font-size="18px" color="#000001" font-family="helvetica">
+          <strong>{{ 'mail.merchant_order_confirmation.invoiceAddress'|trans }}</strong><br/>
+          {{ billingAddress.company }}<br>
+          {{ billingAddress.firstName }} {{ billingAddress.lastName }}<br>
+          {{ billingAddress.street }} <br>
+          {{ billingAddress.zipcode }} {{ billingAddress.city }}<br>
+          {{ billingAddress.country.name }}<br>
+        </mj-text>
+
+        <mj-text font-size="18px" color="#000001" font-family="helvetica">
+          <strong>{{ 'mail.merchant_order_confirmation.deliveryAddress'|trans }}</strong><br/>
+          {{ delivery.shippingOrderAddress.company }}<br>
+          {{ delivery.shippingOrderAddress.firstName }} {{ delivery.shippingOrderAddress.lastName }}<br>
+          {{ delivery.shippingOrderAddress.street }} <br>
+          {{ delivery.shippingOrderAddress.zipcode}} {{ delivery.shippingOrderAddress.city }}<br>
+          {{ delivery.shippingOrderAddress.country.name }}<br>
+        </mj-text>
+
+
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

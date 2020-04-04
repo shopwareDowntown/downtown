@@ -10,14 +10,12 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\Framework\Util\Random;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
-use Shopware\Core\System\SalesChannel\Context\SalesChannelContextFactory;
-use Shopware\Core\System\SalesChannel\SalesChannelContext;
-use Shopware\Core\System\SystemConfig\SystemConfigService;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
+use Shopware\Production\Portal\Services\TemplateMailSender;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Twig\Environment;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @RouteScope(scopes={"merchant-api"})
@@ -35,39 +33,25 @@ class ResetPasswordController
     private $merchantResetPasswordTokenRepository;
 
     /**
-     * @var Environment
+     * @var TemplateMailSender
      */
-    private $twig;
+    private $templateMailSender;
 
     /**
-     * @var MailSender
+     * @var TranslatorInterface
      */
-    private $mailService;
-
-    /**
-     * @var SystemConfigService
-     */
-    private $systemConfigService;
-
-    /**
-     * @var SalesChannelContextFactory
-     */
-    private $salesChannelContextFactory;
+    private $translator;
 
     public function __construct(
         EntityRepositoryInterface $merchantRepository,
         EntityRepositoryInterface $merchantResetPasswordTokenRepository,
-        Environment $twig,
-        MailSender $mailService,
-        SystemConfigService $systemConfigService,
-        SalesChannelContextFactory $salesChannelContextFactory
+        TemplateMailSender $templateMailSender,
+        TranslatorInterface $translator
     ) {
         $this->merchantRepository = $merchantRepository;
         $this->merchantResetPasswordTokenRepository = $merchantResetPasswordTokenRepository;
-        $this->twig = $twig;
-        $this->mailService = $mailService;
-        $this->systemConfigService = $systemConfigService;
-        $this->salesChannelContextFactory = $salesChannelContextFactory;
+        $this->templateMailSender = $templateMailSender;
+        $this->translator = $translator;
     }
 
     /**
@@ -83,6 +67,7 @@ class ResetPasswordController
 
         $criteria = new Criteria();
         $criteria->addFilter(new EqualsFilter('email', $dataBag->get('email')));
+        $criteria->addAssociation('salesChannel.language.locale');
 
         /** @var MerchantEntity|null $merchant */
         $merchant = $this->merchantRepository->search($criteria, Context::createDefaultContext())->first();
@@ -104,9 +89,7 @@ class ResetPasswordController
             ]
         ], Context::createDefaultContext());
 
-        $context = $this->salesChannelContextFactory->create($token, $merchant->getSalesChannelId());
-
-        $this->sendRecoveryMail($token, $merchant, $context);
+        $this->sendRecoveryMail($token, $merchant);
 
         return $successResponse;
     }
@@ -158,21 +141,22 @@ class ResetPasswordController
         }, $ids), Context::createDefaultContext());
     }
 
-    private function sendRecoveryMail(string $token, MerchantEntity $merchant, SalesChannelContext $context): void
+    private function sendRecoveryMail(string $token, MerchantEntity $merchant): void
     {
-        $html = $this->twig->render('@Merchant/email/merchant_reset_password.html.twig', [
-            'merchant' => $merchant,
-            'salesChannel' => $context->getSalesChannel(),
-            'urlResetPassword' => getenv('MERCHANT_PORTAL') . '/reset-password/' . $token
-        ]);
+        $this->translator->injectSettings(
+            $merchant->getSalesChannelId(),
+            $merchant->getSalesChannel()->getLanguageId(),
+            $merchant->getSalesChannel()->getLanguage()->getLocale()->getCode(),
+            Context::createDefaultContext()
+        );
 
-        $senderEmail = $this->systemConfigService->get('core.basicInformation.email');
-
-        $mail = new \Swift_Message('Passwort zurücksetzen Anfrage');
-        $mail->addTo($merchant->getEmail(), $merchant->getPublicCompanyName());
-        $mail->addFrom($senderEmail);
-        $mail->setBody($html, 'text/html');
-
-        $this->mailService->send($mail);
+        $this->templateMailSender->sendMail(
+            $merchant->getEmail(),
+            'merchant_reset_password',
+            [
+                'merchant' => $merchant,
+                'confirmUrl' => getenv('MERCHANT_PORTAL') . '/reset-password/' . $token
+            ]
+        );
     }
 }

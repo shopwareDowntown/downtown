@@ -21,6 +21,7 @@ class PortalBundle extends Bundle
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/DependencyInjection/'));
         $loader->load('snippets.xml');
         $loader->load('hacks.xml');
+        $loader->load('services.xml');
         $this->registerMigrationPath($container);
     }
 }
