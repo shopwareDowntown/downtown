@@ -1,47 +1,35 @@
 <div class="intro-background">
   <portal-container class="dashboard-intro">
-    <h3 class="intro-ghost">COVID-19 – WIR SIND FÜR DICH DA</h3>
-    <h1>Willkommen, lass uns zusammen helfen.</h1>
-    <p>
-      Mit unserem Portal wollen wir Kommunen und Händler unterstützen. So
-      entsteht eine Handelsplattform, über die der lokale Einzelhandel seine
-      Angebote schnell online verfügbar machen kann. Wir wollen Händler, deren
-      Geschäfte aktuell geschlossen sind, mit ihren Kunden verbinden und
-      gleichzeitig daran erinnern, dass nicht jeder Händler eine ausgefeilte
-      Digital-Strategie oder gar eine Homepage hat.
-    </p>
+    <h3 class="intro-ghost">{{'DASHBOARD.INTRODUCTION.SUB_HEADLINE' | translate}}</h3>
+    <h1>{{'DASHBOARD.INTRODUCTION.HEADLINE' | translate}}</h1>
+    <p>{{'DASHBOARD.INTRODUCTION.TEXT' | translate}}</p>
 
     <div class="dashboard-options">
-      <h3>Wen repräsentierst du?</h3>
+      <h3>{{'DASHBOARD.OPTIONS.HEADLINE' | translate}}</h3>
       <div class="options-grid">
         <div class="option">
           <clr-icon shape="organization" class="is-solid"></clr-icon>
-          <h4>Ich bin eine Organisation</h4>
-          <p>
-            Eine Behörde oder Gemeinde, Händler-Gruppe oder ein anderer
-            Zusammenschluss.
-          </p>
+          <h4>{{'DASHBOARD.OPTIONS.ORGANISATION.HEADLINE' | translate}}</h4>
+          <p>{{'DASHBOARD.OPTIONS.ORGANISATION.TEXT' | translate}}</p>
           <button
             class="btn btn-primary btn-link"
             (click)="registerOrganization()"
           >
-            Registrieren
+            {{'COMMON.REGISTER' | translate}}
           </button>
         </div>
         <div class="option">
           <clr-icon shape="store" class="is-solid"></clr-icon>
-          <h4>Ich bin ein Händler</h4>
-          <p>
-            Zum Beispiel ein lokaler Einzelhandelsunternehmer oder Dienstleister.
-          </p>
+          <h4>{{'DASHBOARD.OPTIONS.MERCHANT.HEADLINE' | translate}}</h4>
+          <p>{{'DASHBOARD.OPTIONS.MERCHANT.TEXT' | translate}}</p>
           <button class="btn btn-primary btn-link" (click)="registerMerchant()">
-            Registrieren
+            {{'COMMON.REGISTER' | translate}}
           </button>
         </div>
       </div>
     </div>
     <div class="dashboard-organizations organizations-wrapper">
-      <h4>Schau, wer schon im Händlerportal registriert ist:</h4>
+      <h4>{{'DASHBOARD.EXISTING_ORGANISATIONS.HEADLINE' | translate}}</h4>
       <div
               *ngFor="let authority of authorities$ | async"
               class="card card-block card-organization"

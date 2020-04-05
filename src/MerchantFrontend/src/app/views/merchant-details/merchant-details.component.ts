@@ -8,6 +8,7 @@ import { Country } from '../../core/models/country.model';
 import { ToastService } from '../../core/services/toast.service';
 import { switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'portal-merchant-details',
@@ -26,7 +27,8 @@ export class MerchantDetailsComponent implements OnInit {
     private readonly stateService: StateService,
     private readonly formBuilder: FormBuilder,
     private readonly merchantApiService: MerchantApiService,
-    private readonly toastService: ToastService
+    private readonly toastService: ToastService,
+    private readonly translateService: TranslateService
   ) {}
 
   countries: Country[] = [];
@@ -37,7 +39,9 @@ export class MerchantDetailsComponent implements OnInit {
       this.merchantLoaded = true;
       this.createForm();
     }, () => {
-      this.toastService.error('Händler konnte nicht geladen werden');
+      this.toastService.error(
+        this.translateService.instant('MERCHANT.DETAILS.TOAST_MESSAGES.MERCHANT_LOAD_ERROR_HEADLINE')
+      );
     });
 
     this.merchantApiService
@@ -98,10 +102,15 @@ export class MerchantDetailsComponent implements OnInit {
     ).subscribe((merchant: Merchant) => {
       this.merchant = merchant;
       this.stateService.setMerchant(merchant);
-      this.toastService.success('Änderungen gespeichert.')
+      this.toastService.success(
+        this.translateService.instant('MERCHANT.DETAILS.TOAST_MESSAGES.UPDATE_MERCHANT_SUCCESS_HEADLINE')
+      );
     },
       () => {
-        this.toastService.error('Fehler', 'Deine Änderungen konnten nicht gespeichert werden.');
+        this.toastService.error(
+          this.translateService.instant('MERCHANT.DETAILS.TOAST_MESSAGES.UPDATE_MERCHANT_ERROR_HEADLINE'),
+          this.translateService.instant('MERCHANT.DETAILS.TOAST_MESSAGES.UPDATE_MERCHANT_ERROR_TEXT')
+        );
       });
   }
 

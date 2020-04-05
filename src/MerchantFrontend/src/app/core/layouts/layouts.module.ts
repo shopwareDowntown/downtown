@@ -5,6 +5,7 @@ import {AdminPageLayoutComponent} from './admin-page-layout/admin-page-layout.co
 import {ClarityModule, ClrIconModule, ClrLayoutModule, ClrVerticalNavModule} from '@clr/angular';
 import {RouterModule} from '@angular/router';
 import { MerchantLoginModule } from '../../views/merchant-login/merchant-login.module';
+import { SharedModule } from '../../shared/shared.module';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { MerchantLoginModule } from '../../views/merchant-login/merchant-login.m
     CommonModule,
     RouterModule,
     ClarityModule,
-    MerchantLoginModule
+    MerchantLoginModule,
+    SharedModule
   ],
   exports: [LandingPageLayoutComponent, AdminPageLayoutComponent]
 })

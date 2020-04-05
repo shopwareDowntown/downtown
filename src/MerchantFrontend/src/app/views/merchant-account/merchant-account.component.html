@@ -3,12 +3,12 @@
     <form clrForm clrLayout="vertical" [formGroup]="form">
       <div class="input-group">
         <clr-input-container>
-          <label>Vorname</label>
+          <label>{{'COMMON.FIRST_NAME' | translate}}</label>
           <input clrInput type="text" formControlName="firstName" />
         </clr-input-container>
 
         <clr-input-container>
-          <label>Nachname</label>
+          <label>{{'COMMON.LAST_NAME' | translate}}</label>
           <input clrInput type="text" formControlName="lastName" />
         </clr-input-container>
       </div>
@@ -19,30 +19,30 @@
           (click)="saveChanges()"
           [disabled]="form.invalid || !form.dirty"
         >
-          Speichern
+          {{'COMMON.SAVE' | translate}}
         </button>
       </div>
 
-      <h4>E-Mail-Adresse ändern</h4>
+      <h4>{{'MERCHANT.ACCOUNT.CHANGE_EMAIL_ADDRESS' | translate}}</h4>
 
       <div class="input-group">
         <clr-input-container>
-          <label>Aktuelle E-Mail-Adresse</label>
+          <label>{{'MERCHANT.ACCOUNT.CURRENT_EMAIL_ADDRESS' | translate}}</label>
           <input clrInput disabled type="email" formControlName="currentEmail" />
         </clr-input-container>
       </div>
 
       <button class="btn btn-primary" type="button" (click)="openChangeEmail()">
-        E-Mail-Adresse ändern
+        {{'MERCHANT.ACCOUNT.CHANGE_EMAIL_ADDRESS' | translate}}
       </button>
 
-      <h4>Passwort ändern</h4>
+      <h4>{{'MERCHANT.ACCOUNT.CHANGE_PASSWORD' | translate}}</h4>
       <button
         class="password-button btn btn-primary"
         type="button"
         (click)="openChangePassword()"
       >
-        Passwort ändern
+        {{'MERCHANT.ACCOUNT.CHANGE_PASSWORD' | translate}}
       </button>
     </form>
   </div>
