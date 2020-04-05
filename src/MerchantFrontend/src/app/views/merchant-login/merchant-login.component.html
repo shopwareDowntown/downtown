@@ -1,4 +1,5 @@
 <clr-modal (clrModalOpenChange)="modalClosed()" [clrModalOpen]="loginModalOpen">
+  <div class="modal-header"></div>
   <div class="modal-body">
     <ng-container *ngIf="false === passwordResetMode; else passwordReset">
       <form class="login" [formGroup]="loginForm" clrForm clrLayout="vertical">
