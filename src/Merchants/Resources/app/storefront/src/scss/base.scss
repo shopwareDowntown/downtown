@@ -83,16 +83,14 @@
         padding: 40px 60px;
 
         .merchant-information--row {
-            max-width: 500px;
-
             h1 {
                 margin-bottom: 5px;
             }
         }
     }
+
     ul.contact-information {
         list-style: none;
-        margin: 20px 0 30px;
         padding: 0;
 
         li {
@@ -108,11 +106,16 @@
             }
         }
     }
+
+    ul.contact-information,
+    .opening-times {
+        margin: 15px 0;
+    }
 }
 
 // Description below banner
 .merchant-description {
-    margin: 60px auto;
+    margin: 20px auto 40px;
     text-align: center;
 
     .merchant-description--holder {
@@ -129,11 +132,15 @@
     #merchant-header-banner {
         .merchant-information {
             padding: 60px 100px;
+
+            .merchant-information--row {
+                max-width: 500px;
+            }
         }
     }
 }
 
-@include media-breakpoint-down(md) {
+@include media-breakpoint-down(sm) {
     #merchant-header-banner {
         .merchant-image {
             height: calc(50px + 15vw + 10vh);
@@ -162,5 +169,9 @@
                 max-width: 500px;
             }
         }
+    }
+
+    .merchant-description {
+        margin: 40px auto 60px;
     }
 }
