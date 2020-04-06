@@ -78,6 +78,14 @@ class ProfileController
             $dataBag->remove('country');
         }
 
+        if ($dataBag->has('publicWebsite')) {
+            $scheme = parse_url($dataBag->get('publicWebsite'), PHP_URL_SCHEME);
+
+            if ($scheme === null) {
+                $dataBag->set('publicWebsite', 'https://' . $dataBag->get('publicWebsite'));
+            }
+        }
+
         $merchantConstraints = $this->createValidationDefinition($salesChannelContext);
 
         $this->dataValidator->validate($dataBag->all(), $merchantConstraints);

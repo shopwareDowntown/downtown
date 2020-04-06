@@ -320,6 +320,18 @@ class MerchantProductController
 
         $this->productRepository->update([$productData], Context::createDefaultContext());
 
+        // customFields are not inherited from translations. So we need to write them in active sales channel language
+        if (isset($productData['customFields'])) {
+            $this->productRepository->update([
+                [
+                    'id' => $productData['id'],
+                    'customFields' => [
+                        'productType' => $request->request->get('productType')
+                    ]
+                ]
+            ], $context->getContext());
+        }
+
         return new JsonResponse(
             ['message' => 'Successfully saved product!', 'data' => $this->fetchProductData($productId, $merchant)]
         );

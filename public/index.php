@@ -9,6 +9,7 @@ use Shopware\Core\Framework\Routing\RequestTransformerInterface;
 use Shopware\Production\HttpKernel;
 use Shopware\Production\Kernel;
 use Shopware\Storefront\Framework\Cache\CacheStore;
+use Shopware\Storefront\Framework\Routing\Exception\SalesChannelMappingException;
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
@@ -80,7 +81,13 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? $_ENV['TRUSTED_HOSTS'] ?? false
 $request = Request::createFromGlobals();
 
 $kernel = new HttpKernel($appEnv, $debug, $classLoader);
-$result = $kernel->handle($request);
+try {
+    $result = $kernel->handle($request);
+} catch (SalesChannelMappingException $e) {
+    // We don't have an sales channel
+    header('Location: ' . getenv('MERCHANT_PORTAL'));
+    exit(0);
+}
 
 $result->getResponse()->send();
 
