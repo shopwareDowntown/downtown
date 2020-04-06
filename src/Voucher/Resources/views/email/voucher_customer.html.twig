@@ -1,54 +1,190 @@
-<div style="font-family:arial; font-size:12px;">
-    <br/>
-        {{order.orderCustomer.salutation.letterName }} {{order.orderCustomer.firstName}} {{order.orderCustomer.lastName}},<br/>
-        <br/>
-        Thank you for your order at {{ order.salesChannel.name }} (Number: {{order.orderNumber}}) on {{ order.orderDateTime|date }}.<br/>
-        The status of this order at {{ order.salesChannel.name }} (Number: {{order.orderNumber}}) on {{ order.orderDateTime|date }} has changed.<br/>
-        <strong>The new status is as follows: {{order.transactions.first.stateMachineState.name}}.</strong><br/>
-        <br/>
-        <strong>Information on your order:</strong><br>
-        <br>
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 
-    <table width="80%" border="0" style="font-family:Arial, Helvetica, sans-serif; font-size:12px;">
+<head>
+    <title> </title>
+    <!--[if !mso]><!-- -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--<![endif]-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+        #outlook a {
+            padding: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        table,
+        td {
+            border-collapse: collapse;
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+
+        img {
+            border: 0;
+            height: auto;
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+            -ms-interpolation-mode: bicubic;
+        }
+
+        p {
+            display: block;
+            margin: 13px 0;
+        }
+    </style>
+    <!--[if mso]>
+    <xml>
+        <o:OfficeDocumentSettings>
+            <o:AllowPNG/>
+            <o:PixelsPerInch>96</o:PixelsPerInch>
+        </o:OfficeDocumentSettings>
+    </xml>
+    <![endif]-->
+    <!--[if lte mso 11]>
+    <style type="text/css">
+        .mj-outlook-group-fix { width:100% !important; }
+    </style>
+    <![endif]-->
+    <!--[if !mso]><!-->
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        @import url(https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700);
+    </style>
+    <!--<![endif]-->
+    <style type="text/css">
+        @media only screen and (min-width:480px) {
+            .mj-column-per-100 {
+                width: 100% !important;
+                max-width: 100%;
+            }
+        }
+    </style>
+    <style type="text/css">
+        @media only screen and (max-width:480px) {
+            table.mj-full-width-mobile {
+                width: 100% !important;
+            }
+            td.mj-full-width-mobile {
+                width: auto !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div style="">
+    <!--[if mso | IE]>
+    <table
+        align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600"
+    >
         <tr>
-            <td bgcolor="#F7F7F2" style="border-bottom:1px solid #cccccc;"><strong>Pos.</strong></td>
-            <td bgcolor="#F7F7F2" style="border-bottom:1px solid #cccccc;"><strong>Description</strong></td>
-            <td bgcolor="#F7F7F2" style="border-bottom:1px solid #cccccc;"><strong>Codes</strong></td>
-            <td bgcolor="#F7F7F2" style="border-bottom:1px solid #cccccc;"><strong>Quantities</strong></td>
-            <td bgcolor="#F7F7F2" style="border-bottom:1px solid #cccccc;"><strong>Price</strong></td>
-            <td bgcolor="#F7F7F2" style="border-bottom:1px solid #cccccc;"><strong>Total</strong></td>
-        </tr>
-
-        {% for lineItem in order.lineItems %}
+            <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">
+    <![endif]-->
+    <div style="margin:0px auto;max-width:600px;">
+        <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+            <tbody>
             <tr>
-                <td style="border-bottom:1px solid #cccccc;">{{ loop.index }} </td>
-                <td style="border-bottom:1px solid #cccccc;">
-                    {{ lineItem.label|u.wordwrap(80) }}<br>
-                    {% if lineItem.payload.productNumber is defined %}Art. No.: {{ lineItem.payload.productNumber|u.wordwrap(80) }}{% endif %}
+                <td style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;">
+                    <!--[if mso | IE]>
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+
+                        <tr>
+
+                            <td
+                                class="" style="vertical-align:top;width:600px;"
+                            >
+                    <![endif]-->
+                    <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
+                            <tr>
+                                <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                    <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;border-spacing:0px;">
+                                        <tbody>
+                                        <tr>
+                                            <td style="width:200px;"> <img height="auto" src="https://downtowns.io/assets/images/downtown.svg" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="200" /> </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                    <p style="border-top:solid 4px #6666FF;font-size:1;margin:0px auto;width:100%;"> </p>
+                                    <!--[if mso | IE]>
+                      <table
+                         align="center" border="0" cellpadding="0" cellspacing="0" style="border-top:solid 4px #6666FF;font-size:1;margin:0px auto;width:550px;" role="presentation" width="550px"
+                      >
+                        <tr>
+                          <td style="height:0;line-height:0;">
+                            &nbsp;
+                          </td>
+                        </tr>
+                      </table>
+                    <![endif]-->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                    <div style="font-family:helvetica;font-size:18px;line-height:1;text-align:left;color:#000001;">{{ 'mail.voucher_customer.hello'|trans({'%name%': customerName}) }}<br/><br/> {{ 'mail.voucher_customer.youHaveNewOrder'|trans }} <br/><br/> <strong>{{ 'mail.voucher_customer.orderItems'|trans }}</strong><br/> {% set billingAddress
+                                            = order.addresses.get(order.billingAddressId) %} {% set delivery = order.deliveries.first %}</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                    <table cellpadding="0" cellspacing="0" width="100%" border="0" style="color:#000000;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:22px;table-layout:auto;width:100%;border:none;">
+                                        <tr style="border-bottom:1px solid #ecedee;text-align:left;padding:15px 0;">
+                                            <th style="padding: 0 15px 0 0;">{{ 'mail.voucher_customer.tableHeader.pos'|trans }}</th>
+                                            <th style="padding: 0 15px;">{{ 'mail.voucher_customer.tableHeader.name'|trans }}</th>
+                                            <th style="padding: 0 0 0 15px;">{{ 'mail.voucher_customer.tableHeader.codes'|trans }}</th>
+                                            <th style="padding: 0 0 0 15px;">{{ 'mail.voucher_customer.tableHeader.amount'|trans }}</th>
+                                            <th style="padding: 0 0 0 15px;">{{ 'mail.voucher_customer.tableHeader.price'|trans }}</th>
+                                            <th style="padding: 0 0 0 15px;">{{ 'mail.voucher_customer.tableHeader.totalPrice'|trans }}</th>
+                                        </tr> {% for lineItem in order.lineItems %}
+                                            <tr>
+                                                <td style="padding: 0 15px 0 0;">{{ loop.index }}</th>
+                                                <td style="padding: 0 15px;">{{ lineItem.label|u.wordwrap(80) }}</th>
+                                                <td style="padding: 0 0 0 15px;">{% set foundVoucher = 0 %} {% for voucher in vouchers %} {% if voucher.orderLineItemId == lineItem.id %} {{ voucher.code }} {% set foundVoucher = foundVoucher + 1 %} {% if foundVoucher
+                                                        < lineItem.quantity %}<br>{% endif %} {% endif %} {% endfor %} </th>
+                                                <td style="padding: 0 0 0 15px;">{{ lineItem.quantity }}</th>
+                                                <td style="padding: 0 0 0 15px;">{{ lineItem.unitPrice|currency(order.currency.isoCode) }}</th>
+                                                <td style="padding: 0 0 0 15px;">{{ lineItem.totalPrice|currency(order.currency.isoCode) }}</th>
+                                            </tr> {% endfor %} </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                    <div style="font-family:helvetica;font-size:18px;line-height:1;text-align:left;color:#000001;">{{ 'mail.voucher_customer.totalPrice'|trans }} {{ order.amountTotal|currency(order.currency.isoCode) }}</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!--[if mso | IE]>
+                    </td>
+
+                    </tr>
+
+                    </table>
+                    <![endif]-->
                 </td>
-                <td style="border-bottom:1px solid #cccccc;">
-                    {% set foundVoucher = 0 %}
-                    {% for voucher in vouchers %}
-                        {% if voucher.orderLineItemId == lineItem.id %}
-                            {{ voucher.code }}
-                            {% set foundVoucher = foundVoucher + 1 %}
-                            {% if foundVoucher < lineItem.quantity %}<br>{% endif %}
-                        {% endif %}
-                    {% endfor %}
-                </td>
-                <td style="border-bottom:1px solid #cccccc;">{{ lineItem.quantity }}</td>
-                <td style="border-bottom:1px solid #cccccc;">{{ lineItem.unitPrice|currency(order.currency.isoCode) }}</td>
-                <td style="border-bottom:1px solid #cccccc;">{{ lineItem.totalPrice|currency(order.currency.isoCode) }}</td>
             </tr>
-        {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!--[if mso | IE]>
+    </td>
+    </tr>
     </table>
-    <p>
-    <br><br>
-    Net total: {{ order.amountNet|currency(order.currency.isoCode) }}<br>
-    {% for calculatedTax in order.price.calculatedTaxes %}
-        {% if order.taxStatus is same as('net') %}plus{% else %}including{% endif %} {{ calculatedTax.taxRate }}% VAT. {{ calculatedTax.tax|currency(order.currency.isoCode) }}<br>
-    {% endfor %}
-    <strong>Total gross: {{ order.amountTotal|currency(order.currency.isoCode) }}</strong><br><br>
-    If you have any questions, do not hesitate to contact us.
-    </p>
+    <![endif]-->
 </div>
+</body>
+
+</html>

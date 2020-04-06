@@ -14,7 +14,6 @@
         </service>
 
         <service id="Shopware\Production\Voucher\Service\VoucherFundingEmailService">
-            <argument type="service" id="system_config.repository"/>
             <argument type="service" id="Shopware\Production\Portal\Services\TemplateMailSender"/>
             <argument type="service" id="twig"/>
         </service>
@@ -37,6 +36,9 @@
         <service id="Shopware\Production\Voucher\Subscriber\OrderStateChangedSubscriber">
             <argument id="Shopware\Production\Voucher\Service\VoucherFundingMerchantService" type="service" />
             <argument type="service" id="order.repository"/>
+            <argument type="service" id="translator"/>
+            <argument type="service" id="Shopware\Core\System\SalesChannel\Context\SalesChannelContextFactory"/>
+            <argument type="service" id="language.repository"/>
             <tag name="kernel.event_subscriber"/>
         </service>
     </services>

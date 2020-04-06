@@ -4,27 +4,15 @@ namespace Shopware\Production\Voucher\Service;
 
 use Dompdf\Options;
 use Shopware\Core\Checkout\Order\OrderEntity;
-use Shopware\Core\Content\MailTemplate\Service\MailService;
-use Shopware\Core\Framework\Adapter\Twig\StringTemplateRenderer;
 use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
-use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\ContainsFilter;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Dompdf\Dompdf;
-use Shopware\Core\Framework\Validation\DataBag\DataBag;
-use Shopware\Core\System\SystemConfig\SystemConfigEntity;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
 use Shopware\Production\Portal\Services\TemplateMailSender;
 use Twig\Environment;
 
 class VoucherFundingEmailService
 {
-    public const VOUCHER_PDF_NAME = 'downtown-gutschein.pdf';
-
-    /**
-     * @var EntityRepositoryInterface
-     */
-    private $systemConfigRepository;
+    public const VOUCHER_PDF_NAME = 'voucher.pdf';
 
     /**
      * @var TemplateMailSender
@@ -37,11 +25,9 @@ class VoucherFundingEmailService
     private $twig;
 
     public function __construct(
-        EntityRepositoryInterface $systemConfigRepository,
         TemplateMailSender $templateMailSender,
         Environment $twig
     ) {
-        $this->systemConfigRepository = $systemConfigRepository;
         $this->templateMailSender = $templateMailSender;
         $this->twig = $twig;
     }
@@ -57,7 +43,7 @@ class VoucherFundingEmailService
         $this->twig->disableStrictVariables();
 
         $customerName = sprintf('%s %s %s',
-            $order->getOrderCustomer()->getSalutation()->getDisplayName(),
+            $order->getOrderCustomer()->getSalutation()->getLetterName(),
             $order->getOrderCustomer()->getFirstName(),
             $order->getOrderCustomer()->getLastName()
         );
