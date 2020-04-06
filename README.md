@@ -53,15 +53,22 @@ And here is an example of a retailer's landing page:
 
 ## The Portal
 
-Prerequisites: [docker](https://docs.docker.com/install/), [docker-compose](https://docs.docker.com/compose/install/), [node/npm](https://nodejs.org/en/download/) 
+Prerequisites: [docker](https://docs.docker.com/install/), [docker-compose](https://docs.docker.com/compose/install/), [node/npm](https://nodejs.org/en/download/)
+
+> :warning: **The docker setup currently only works if your user ID is 1000.**   
+> Execute `id -u` on your terminal to check.
 
 Clone the project:
 
 ```shell script
-git clone git@github.com:shopwareDowntown/downtown.git
+git clone https://github.com/shopwareDowntown/downtown.git
 ```
 
 Change into the project directory, then start the docker containers, add the cache directory and change into the app container:
+
+```shell script
+cd downtown
+```
 
 ```shell script
 docker-compose build
@@ -69,10 +76,6 @@ docker-compose build
 
 ```shell script
 docker-compose up -d
-```
-
-```shell script
-docker-compose exec -u root app_server sh -c "mkdir -p /sw6/var/cache && chown -R sw6.sw6 /sw6"
 ```
 
 ```shell script
@@ -90,11 +93,11 @@ bin/console system:generate-jwt-secret --force
 ```
 
 ```shell script
-bin/console system:generate-app-secret # put into docker-compose.yml 
+bin/console system:generate-app-secret # put into docker-compose.yml
 ```
 
 ```shell script
-exit 
+exit
 ```
 
 The App Secret is only shown on screen, you have to put it manually into the `docker-compose.yml`, right after `- APP_SECRET=`.
@@ -102,7 +105,7 @@ The App Secret is only shown on screen, you have to put it manually into the `do
 Then regenerate the containers by re-executing up:
 
 ```shell script
-docker-compose up -d  
+docker-compose up -d
 ```
 
 Please note:
@@ -125,10 +128,14 @@ Currently there is no docker container available, so you need to start the proje
 Change into the directory `src/MerchantFrontend`. Then install dependencies and run the project: 
 
 ```shell script
+cd src/MerchantFrontend
+```
+
+```shell script
 npm install && npm run start
 ```
 
-After the build and start has finished, the merchant portal is available at [http://localhost:4200/](http://localhost:4200/).
+After the promt `Compiled successfully`, the merchant portal is available at [http://localhost:4200/](http://localhost:4200/).
 
 Please be aware: The registration for organisations is currently not wired up to the portal, it's just a hubspot form,
 for production use replace it with your own. For new organisations please create a sales channel manually in [the portal](http://localhost:8000/admin).
