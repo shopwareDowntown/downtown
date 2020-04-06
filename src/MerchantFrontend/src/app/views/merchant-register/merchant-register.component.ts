@@ -17,6 +17,7 @@ export class MerchantRegisterComponent implements OnInit {
   authorities$: Observable<Authority[]>;
   registerForm: FormGroup;
   registrationFinished = false;
+  showDuplicateMailError = false;
   private initialRegisterFormValues: any;
 
   @Input() registerModalOpen = true;
@@ -58,7 +59,10 @@ export class MerchantRegisterComponent implements OnInit {
         this.registrationFinished = true;
         this.toastService.success('Erfolgreich registriert');
         },
-      () => {
+      (error) => {
+        if("MERCHANT_EMAIL_ALREADY_EXISTS" === error.error.errors[0].code) {
+          this.showDuplicateMailError = true;
+        }
         this.toastService.error('Registrierung fehlgeschlagen');
       }
     );
