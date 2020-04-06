@@ -6,6 +6,11 @@
           <h5 class="hint">Für lokale Einzelhandelsunternehmen oder Dienstleister</h5>
         </section>
         <div>
+          <div class="alert alert-app-level alert-danger" role="alert" *ngIf="showDuplicateMailError">
+            <div class="alert-items">
+              <span class="alert-text">Es existiert bereits ein Händler-Konto mit dieser E-Mail Adresse</span>
+            </div>
+          </div>
           <clr-input-container>
             <label>Firmenname</label>
             <input type="text" name="username" clrInput  formControlName="name"/>
