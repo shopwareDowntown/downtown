@@ -23,7 +23,6 @@
       clrTextarea
       formControlName="description"
       name="description"
-      required
     ></textarea>
   </clr-textarea-container>
   <clr-input-container>
@@ -66,7 +65,7 @@
       class="btn btn-primary"
       type="button"
       (click)="saveProduct()"
-      [disabled]="form.invalid"
+      [disabled]="form.invalid || saveInProgress"
     >
       Speichern
     </button>

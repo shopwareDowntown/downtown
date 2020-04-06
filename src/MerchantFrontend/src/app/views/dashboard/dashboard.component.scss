@@ -33,9 +33,16 @@
 
       .options-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
         margin-top: 48px;
         gap: 48px;
+
+        @media only screen and (min-width: 768px) {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        @media only screen and (max-width: 767px) {
+          grid-template-rows: 1fr 1fr;
+        }
 
         .option {
           border: var(--sw-border);
@@ -57,6 +64,7 @@
             display: block;
             width: 100%;
             margin: 0;
+            max-width: 100%;
           }
 
           clr-icon {
@@ -81,8 +89,16 @@
 
     .card-text {
       display: grid;
-      grid-auto-flow: column;
-      justify-content: space-between;
+
+      @media only screen and (min-width: 500px) {
+        grid-auto-flow: column;
+        justify-content: space-between;
+      }
+
+      @media only screen and (max-width: 499px) {
+        grid-auto-flow: row;
+        align-content: center;
+      }
     }
   }
 }

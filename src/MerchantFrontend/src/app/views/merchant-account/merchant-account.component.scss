@@ -26,10 +26,6 @@
       height: 24px;
     }
 
-    input {
-      width: 480px;
-    }
-
     .input-group {
       margin-bottom: 40px;
     }
@@ -40,4 +36,8 @@
   display: grid;
   grid-template-columns: max-content max-content;
   grid-gap: 8px;
+}
+
+.password-button {
+  margin-top: 16px !important;
 }

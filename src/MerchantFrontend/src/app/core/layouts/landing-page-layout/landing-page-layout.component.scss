@@ -39,8 +39,11 @@
 
 @media (max-width: 768px) {
   .login-button {
-    width: 280px;
-    margin: 32px auto;
+  //  width: 280px;
+    height: 24px !important;
+    padding: 0 !important;
+    align-self:center !important;
+    margin-right: 4px !important;
   }
 
   // Branding logo for the header only

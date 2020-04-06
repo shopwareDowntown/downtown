@@ -40,23 +40,20 @@
         </div>
       </div>
     </div>
+    <div class="dashboard-organizations organizations-wrapper">
+      <h4>Schau, wer schon im Händlerportal registriert ist:</h4>
+      <div
+              *ngFor="let authority of authorities$ | async"
+              class="card card-block card-organization"
+      >
+        <p class="card-text">
+          <strong>{{ authority.name }}</strong>
+          <a [href]="authority.domain">{{ authority.domain }}</a>
+        </p>
+      </div>
+    </div>
   </portal-container>
 </div>
-
-<portal-container class="route-dashboard">
-  <div class="dashboard-organizations organizations-wrapper">
-    <h4>Schau, wer schon im Händlerportal registriert ist:</h4>
-    <div
-      *ngFor="let authority of authorities$ | async"
-      class="card card-block card-organization"
-    >
-      <p class="card-text">
-        <strong>{{ authority.name }}</strong>
-        <a [href]="authority.domain">{{ authority.domain }}</a>
-      </p>
-    </div>
-  </div>
-</portal-container>
 
 <portal-merchant-register [registerModalOpen]="showRegisterMerchantModal">
 </portal-merchant-register>

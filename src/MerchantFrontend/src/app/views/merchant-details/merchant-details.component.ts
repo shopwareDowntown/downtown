@@ -98,10 +98,10 @@ export class MerchantDetailsComponent implements OnInit {
     ).subscribe((merchant: Merchant) => {
       this.merchant = merchant;
       this.stateService.setMerchant(merchant);
-      this.toastService.success('Änderungen erfolgreich gespeichert.')
+      this.toastService.success('Änderungen gespeichert.')
     },
       () => {
-        this.toastService.error('Fehler beim Speichern');
+        this.toastService.error('Fehler', 'Deine Änderungen konnten nicht gespeichert werden.');
       });
   }
 
@@ -109,8 +109,8 @@ export class MerchantDetailsComponent implements OnInit {
     this.profileForm = this.formBuilder.group({
       public: this.merchant.public,
       publicCompanyName: [this.merchant.publicCompanyName, Validators.required],
-      publicOwner: [this.merchant.publicOwner, Validators.required],
-      street: [this.merchant.street, Validators.required],
+      publicOwner: [this.merchant.publicOwner],
+      street: [this.merchant.street],
       zip: [this.merchant.zip, Validators.required],
       city: [this.merchant.city, Validators.required],
       countryId: [this.merchant.countryId, Validators.required],
