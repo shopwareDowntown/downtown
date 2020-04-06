@@ -4,7 +4,7 @@ export interface Product {
   description: string;
   productType: string;
   active: boolean;
-  media: any[];
+  media?: MediaData[];
   price?: number;
   tax?: number;
 }
@@ -12,4 +12,9 @@ export interface Product {
 export interface ProductListData {
   data: Product[];
   total: number;
+}
+
+export interface MediaData {
+  id: string,
+  url: string
 }
