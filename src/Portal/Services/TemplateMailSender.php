@@ -43,7 +43,7 @@ class TemplateMailSender
         $this->translator = $translator;
     }
 
-    public function sendMail(string $receiver, string $template, array $variables): void
+    public function sendMail(string $receiver, string $template, array $variables, ?callable $mailModifier = null): void
     {
         $templateFile = sprintf(self::PATH, $template);
 
@@ -61,6 +61,10 @@ class TemplateMailSender
         $mail->addTo($receiver);
         $mail->addFrom($senderEmail);
         $mail->setBody($this->twig->render($templateFile, $variables), 'text/html');
+
+        if ($mailModifier) {
+            $mailModifier($mail);
+        }
 
         $this->mailService->send($mail);
     }

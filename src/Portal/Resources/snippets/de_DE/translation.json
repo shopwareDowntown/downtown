@@ -13,10 +13,12 @@
     "checkout": {
         "cartContainsMultipleMerchants": "Es können nur Produkte von einem Händler gleichzeitig gekauft werden",
         "cartHasInvalidShippingMethod": "Die ausgewählte Versandart steht nicht zur Verfügung.",
-        "cartWrongProductType": "Es können keine  Anzeigeprodukte gekauft werden."
+        "cartWrongProductType": "Es können keine  Anzeigeprodukte gekauft werden.",
+        "cartContainsMultipleProductTypes": "Es kann nur ein Produkt-Typ gleichzeitig bestellt werden"
     },
     "error": {
-        "cartHasInvalidShippingMethod": "Die ausgewählte Versandart steht nicht zur Verfügung."
+        "cartHasInvalidShippingMethod": "Die ausgewählte Versandart steht nicht zur Verfügung.",
+        "cartContainsMultipleProductTypes": "Es kann nur ein Produkt-Typ gleichzeitig bestellt werden"
     },
     "mail": {
         "merchant_order_confirmation": {
