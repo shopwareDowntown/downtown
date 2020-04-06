@@ -1,0 +1,19 @@
+{
+    "sw-sales-channel-list": {
+        "search-bar": {
+            "placeholder": "Sales Channel durchsuchen..."
+        },
+        "menu-label": "Sales Channel Übersicht",
+        "grid": {
+            "columns": {
+                "name": "Name",
+                "active": "Aktiv",
+                "domain": "Domain"
+            },
+            "headline": "Sales Channel Übersicht",
+            "add-button": {
+                "text": "Sales Channel hinzufügen"
+            }
+        }
+    }
+}
