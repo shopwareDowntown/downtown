@@ -19,7 +19,7 @@ class Migration1586000282MerchantAddSeoTemplate extends MigrationStep
         $connection->insert(
             'seo_url_template',
             [
-                'id' => Uuid::randomHex(),
+                'id' => Uuid::randomBytes(),
                 'route_name' => 'storefront.merchant.detail',
                 'entity_name' => 'merchant',
                 'template' => '{{ merchant.publicCompanyName }}',
