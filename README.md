@@ -61,20 +61,39 @@ Clone the project:
 git clone git@github.com:shopwareDowntown/downtown.git
 ```
 
-Change into the project directory, then start the docker containers and change into the app container:
+Change into the project directory, then start the docker containers, add the cache directory and change into the app container:
 
 ```shell script
-docker-compose build  && \
-docker-compose up -d  && \
+docker-compose build
+```
+
+```shell script
+docker-compose up -d
+```
+
+```shell script
+docker-compose exec -u root app_server sh -c "mkdir -p /sw6/var/cache && chown -R sw6.sw6 /sw6"
+```
+
+```shell script
 docker-compose exec app_server sh
 ```
 
 When inside the app container, do a basic install, generate a JWT secret and an App Secret, then exit the container:
 
 ```shell script
-bin/console system:install --create-database --basic-setup --force && \
-bin/console system:generate-jwt-secret --force && \
-bin/console system:generate-app-secret  && \# put into docker-compose.yml 
+bin/console system:install --create-database --basic-setup --force
+```
+
+```shell script
+bin/console system:generate-jwt-secret --force
+```
+
+```shell script
+bin/console system:generate-app-secret # put into docker-compose.yml 
+```
+
+```shell script
 exit 
 ```
 
