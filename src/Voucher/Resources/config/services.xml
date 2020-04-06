@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="Shopware\Production\Voucher\Checkout\SoldVoucher\SoldVoucherDefinition">
+            <tag name="shopware.entity.definition" entity="sold_voucher"/>
+        </service>
+
+        <service id="Shopware\Production\Voucher\Checkout\OrderLineItemEntityExtension">
+            <tag name="shopware.entity.extension"/>
+        </service>
+
+        <service id="Shopware\Production\Voucher\Service\VoucherFundingEmailService">
+            <argument type="service" id="Shopware\Production\Portal\Services\TemplateMailSender"/>
+            <argument type="service" id="twig"/>
+            <argument type="service" id="Shopware\Core\Checkout\Document\FileGenerator\FileGeneratorRegistry"/>
+        </service>
+
+        <service id="Shopware\Production\Voucher\Service\VoucherFundingMerchantService">
+            <argument type="service" id="sold_voucher.repository"/>
+            <argument type="service" id="Shopware\Production\Voucher\Service\VoucherFundingEmailService"/>
+        </service>
+
+        <service id="Shopware\Production\Voucher\Service\CartValidator">
+            <argument type="service" id="product.repository"/>
+            <tag name="shopware.cart.validator"/>
+        </service>
+
+        <service id="Shopware\Production\Voucher\Controller\VoucherFundingMerchantController" public="true">
+            <argument id="Shopware\Production\Voucher\Service\VoucherFundingMerchantService" type="service"/>
+        </service>
+
+        <service id="Shopware\Production\Voucher\Subscriber\OrderStateChangedSubscriber">
+            <argument id="Shopware\Production\Voucher\Service\VoucherFundingMerchantService" type="service" />
+            <argument type="service" id="order.repository"/>
+            <argument type="service" id="translator"/>
+            <argument type="service" id="Shopware\Core\System\SalesChannel\Context\SalesChannelContextFactory"/>
+            <argument type="service" id="language.repository"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+    </services>
+</container>
