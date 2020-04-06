@@ -31,7 +31,7 @@
   </clr-input-container>
   <h3>Produktbild</h3>
   <div class="image-wrapper">
-    <img [src]="product.media[0]" *ngIf="product.media; else noImage">
+    <img style="max-width: 100%" [src]="product.media[0]" *ngIf="product.media; else noImage">
     <ng-template #noImage>
       <div *ngIf="form.get('media').value; else placeholderText">{{form.get('media').value[0].name}}</div>
       <ng-template #placeholderText>Noch kein Bild vorhanden.</ng-template>
