@@ -13,7 +13,7 @@ import { MerchantRegisterModule } from './views/merchant-register/merchant-regis
 import { OrganizationDetailsModule } from './views/organization-details/organization-details.module';
 import { OrganizationRegisterModule } from './views/organization-register/organization-register.module';
 import { OrganizationLoginModule } from './views/organization-login/organization-login.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { LocalDeliveryModule } from './views/local-delivery/local-delivery.module';
 import localeDe from '@angular/common/locales/de';
 registerLocaleData(localeDe);
@@ -22,6 +22,12 @@ import { MerchantAccountModule } from './views/merchant-account/merchant-account
 import { MerchantHomeModule } from './views/merchant-home/merchant-home.module';
 import { MerchantOrdersModule } from './views/merchant-orders/merchant-orders.module';
 import { registerLocaleData } from '@angular/common';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   imports: [
@@ -32,6 +38,14 @@ import { registerLocaleData } from '@angular/common';
     CoreModule,
     SharedModule,
     HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      },
+      defaultLanguage: 'de'
+    }),
 
     // Pages
     DashboardModule,

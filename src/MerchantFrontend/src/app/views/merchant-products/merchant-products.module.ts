@@ -7,6 +7,7 @@ import { MerchantProductsDetailComponent } from './merchant-products-detail/merc
 import {ClrDatagridModule, ClrFormsModule, ClrIconModule} from '@clr/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FileUploadModule } from '../../shared/components/file-upload/file-upload.module';
+import { SharedModule } from '../../shared/shared.module';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { FileUploadModule } from '../../shared/components/file-upload/file-uploa
     CommonModule,
     MerchantProductsRoutingModule,
     FormsModule,
+    SharedModule,
 
     // Clarity
     ClrDatagridModule,

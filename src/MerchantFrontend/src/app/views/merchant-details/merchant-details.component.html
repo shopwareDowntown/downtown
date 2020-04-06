@@ -1,16 +1,11 @@
-<h1 class="title">
-  Deine Informationen
-</h1>
+<h1 class="title">{{'MERCHANT.DETAILS.HEADLINE' | translate}}</h1>
 
-<span
-  >Zeige Deinen Kunden, wer Du bist und was Du tust. Pflege Kontaktdaten,
-  Öffnungszeiten und gestalte Deine Händlerseite.</span
->
+<span>{{'MERCHANT.DETAILS.SUB_HEADLINE' | translate}}</span>
 
 <clr-tabs>
   <clr-tab>
     <button clrTabLink>
-      Allgemein
+      {{'COMMON.GENERAL' | translate}}
     </button>
 
     <clr-tab-content>
@@ -28,10 +23,10 @@
             formControlName="public"
             name="public"
           />
-          <label>Auf dem Portal veröffentlichen</label>
+          <label>{{'MERCHANT.DETAILS.PUBLISH' | translate}}</label>
         </clr-toggle-wrapper>
         <clr-select-container>
-          <label>Branche</label>
+          <label>{{'COMMON.INDUSTRY' | translate}}</label>
           <select clrSelect name="categoryId" formControlName="categoryId">
             <option *ngFor="let category of categories" [value]="category.id">
               {{ category.name }}
@@ -39,13 +34,13 @@
           </select>
         </clr-select-container>
 
-        <h3>Kontaktdaten</h3>
+        <h3>{{'COMMON.CONTACT_INFORMATION' | translate}}</h3>
 
         <clr-input-container>
-          <label>Firmenname</label>
+          <label>{{'COMMON.COMPANY_NAME' | translate}}</label>
           <input
             clrInput
-            placeholder="Der Name Deiner Firma"
+            placeholder="{{'MERCHANT.DETAILS.COMPANY_NAME_PLACEHOLDER' | translate}}"
             type="text"
             formControlName="publicCompanyName"
             name="publicCompanyName"
@@ -53,10 +48,10 @@
         </clr-input-container>
 
         <clr-input-container>
-          <label>Inhaber*in</label>
+          <label>{{'MERCHANT.DETAILS.OWNER' | translate}}</label>
           <input
             clrInput
-            placeholder="Inhaber*in der Firma"
+            placeholder="{{'MERCHANT.DETAILS.OWNER_PLACEHOLDER' | translate}}"
             type="text"
             formControlName="publicOwner"
             name="publicOwner"
@@ -64,10 +59,10 @@
         </clr-input-container>
 
         <clr-input-container>
-          <label>Straße & Hausnummer</label>
+          <label>{{'MERCHANT.DETAILS.STREET' | translate}}</label>
           <input
             clrInput
-            placeholder="Standort deiner Firma"
+            placeholder="{{'MERCHANT.DETAILS.STREET_PLACEHOLDER' | translate}}"
             type="text"
             formControlName="street"
             name="street"
@@ -75,10 +70,10 @@
         </clr-input-container>
 
         <clr-input-container>
-          <label>PLZ</label>
+          <label>{{'COMMON.ZIP_CODE' | translate}}</label>
           <input
             clrInput
-            placeholder="Postleitzahl"
+            placeholder="{{'MERCHANT.DETAILS.ZIP_CODE_PLACEHOLDER' | translate}}"
             type="text"
             formControlName="zip"
             name="zip"
@@ -86,10 +81,10 @@
         </clr-input-container>
 
         <clr-input-container>
-          <label>Ort</label>
+          <label>{{'COMMON.LOCATION' | translate}}</label>
           <input
             clrInput
-            placeholder="Stadt diner Firma"
+            placeholder="{{'MERCHANT.DETAILS.LOCATION_PLACEHOLDER' | translate}}"
             type="text"
             formControlName="city"
             name="city"
@@ -97,7 +92,7 @@
         </clr-input-container>
 
         <clr-select-container>
-          <label>Land</label>
+          <label>{{'COMMON.COUNTRY' | translate}}</label>
           <select clrSelect name="countryId" formControlName="countryId">
             <option *ngFor="let country of countries" [value]="country.id">
               {{ country.name }}
@@ -106,10 +101,10 @@
         </clr-select-container>
 
         <clr-input-container>
-          <label>Telefonnummer</label>
+          <label>{{'COMMON.PHONE_NUMBER' | translate}}</label>
           <input
             clrInput
-            placeholder="Eine Nummer, die Deine Kunden anrufen können"
+            placeholder="{{'MERCHANT.DETAILS.PHONE_NUMBER_PLACEHOLDER' | translate}}"
             type="text"
             formControlName="publicPhoneNumber"
             name="publicPhoneNumber"
@@ -117,10 +112,10 @@
         </clr-input-container>
 
         <clr-input-container>
-          <label>E-Mail-Adresse</label>
+          <label>{{'COMMON.EMAIL_ADDRESS' | translate}}</label>
           <input
             clrInput
-            placeholder="Eine E-Mail-Adresse, die Deine Kunden anschreiben können"
+            placeholder="{{'MERCHANT.DETAILS.EMAIL_ADDRESS_PLACEHOLDER' | translate}}"
             type="email"
             formControlName="publicEmail"
             name="publicEmail"
@@ -128,44 +123,44 @@
         </clr-input-container>
 
         <clr-input-container>
-          <label>Internetseite (Optional)</label>
+          <label>{{'MERCHANT.DETAILS.HOMEPAGE' | translate}}</label>
           <input
             clrInput
-            placeholder="Du kannst hier den Link Deiner Internetseite angeben"
+            placeholder="{{'MERCHANT.DETAILS.HOMEPAGE_PLACEHOLDER' | translate}}"
             type="text"
             formControlName="publicWebsite"
             name="publicWebsite"
           />
         </clr-input-container>
 
-        <h3>Titelbild</h3>
+        <h3>{{'MERCHANT.DETAILS.COVER_IMAGE' | translate}}</h3>
 
         <div class="image-wrapper">
           <div *ngIf="profileForm.get('cover').value; else imageOrPlaceholder">{{profileForm.get('cover').value[0].name}}</div>
           <ng-template #imageOrPlaceholder>
             <img style="max-width: 100%" [src]="merchant.cover.url" *ngIf="merchant.cover; else placeholderText">
-            <ng-template #placeholderText>Noch kein Bild vorhanden.</ng-template>
+            <ng-template #placeholderText>{{'MERCHANT.DETAILS.NO_IMAGE' | translate}}</ng-template>
           </ng-template>
         </div>
-        <portal-file-upload maxFileSize="5097152" accept="image/x-png,image/jpeg" [label]="'Bild hochladen'" (onSelect)="imageSelected($event)"></portal-file-upload>
+        <portal-file-upload maxFileSize="5097152" accept="image/x-png,image/jpeg" [label]="'MERCHANT.DETAILS.UPLOAD_IMAGE' | translate" (onSelect)="imageSelected($event)"></portal-file-upload>
 
-        <h3>Händlerseite</h3>
+        <h3>{{'MERCHANT.DETAILS.MERCHANT_PAGE' | translate}}</h3>
 
         <clr-textarea-container>
-          <label>Öffnungszeiten</label>
+          <label>{{'MERCHANT.DETAILS.OPENING_HOURS' | translate}}</label>
           <textarea
             clrTextarea
-            placeholder="Die Öffnungszeiten Deiner Firma"
+            placeholder="{{'MERCHANT.DETAILS.OPENING_HOURS_PLACEHOLDER' | translate}}"
             formControlName="publicOpeningTimes"
             name="publicOpeningTimes"
           ></textarea>
         </clr-textarea-container>
 
         <clr-textarea-container>
-          <label>Beschreibung (Optional)</label>
+          <label>{{'MERCHANT.DETAILS.DESCRIPTION' | translate}}</label>
           <textarea
             clrTextarea
-            placeholder="Hier kannst Du Deine Firma in ein paar Sätzen beschreiben"
+            placeholder="{{'MERCHANT.DETAILS.DESCRIPTION_PLACEHOLDER' | translate}}"
             formControlName="publicDescription"
             name="publicDescription"
           ></textarea>
@@ -173,7 +168,7 @@
       </form>
       <ng-template #loading>
         <div>
-          Lädt...
+          {{'MERCHANT.DETAILS.LOADING' | translate}}
         </div>
       </ng-template>
       <button
@@ -183,14 +178,14 @@
         [disabled]="!profileForm.valid"
         [style.margin-top]="'32px'"
       >
-        Speichern
+        {{'COMMON.SAVE' | translate}}
       </button>
     </clr-tab-content>
   </clr-tab>
 
   <clr-tab>
     <button clrTabLink>
-      Account
+      {{'COMMON.ACCOUNT' | translate}}
     </button>
     <clr-tab-content>
       <portal-merchant-account></portal-merchant-account>

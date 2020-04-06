@@ -2,45 +2,45 @@
   <div class="modal-body">
       <form [formGroup]="registerForm" clrForm clrLayout="vertical">
         <section class="title">
-          <h3 class="welcome">Registriere dich als Händler</h3>
-          <h5 class="hint">Für lokale Einzelhandelsunternehmen oder Dienstleister</h5>
+          <h3 class="welcome">{{'MERCHANT.REGISTER.HEADLINE' | translate}}</h3>
+          <h5 class="hint">{{'MERCHANT.REGISTER.SUB_HEADLINE' | translate}}</h5>
         </section>
         <div>
           <clr-input-container>
-            <label>Firmenname</label>
+            <label>{{'COMMON.COMPANY_NAME' | translate}}</label>
             <input type="text" name="username" clrInput  formControlName="name"/>
-            <clr-control-error>Bitte gib einen Firmennamen ein.</clr-control-error>
+            <clr-control-error>{{'MERCHANT.REGISTER.COMPANY_NAME_INVALID' | translate}}</clr-control-error>
           </clr-input-container>
           <clr-input-container>
-            <label>Email</label>
+            <label>{{'COMMON.EMAIL_ADDRESS' | translate}}</label>
             <input type="text" name="mail" clrInput  formControlName="mail"/>
-            <clr-control-error>Bitte gib eine korrekte E-Mail Addresse an.</clr-control-error>
+            <clr-control-error>{{'MERCHANT.REGISTER.EMAIL_ADDRESS_INVALID' | translate}}</clr-control-error>
           </clr-input-container>
           <clr-input-container>
-            <label>Passwort</label>
+            <label>{{'COMMON.PASSWORD' | translate}}</label>
             <input type="password" name="password" formControlName="password"   clrInput/>
-            <clr-control-error>Bitte vergebe ein Passwort mit mindestens Acht Zeichen.</clr-control-error>
+            <clr-control-error>{{'MERCHANT.REGISTER.PASSWORD_INVALID' | translate}}</clr-control-error>
           </clr-input-container>
           <clr-input-container [class.clr-error]="registerForm.errors?.passwordMismatch && registerForm.get('repeatPassword').touched" >
-            <label>Passwort wiederholen</label>
+            <label>{{'COMMON.REPEAT_PASSWORD' | translate}}</label>
             <input type="password" name="repeatPassword" formControlName="repeatPassword"  clrInput/>
-            <clr-control-error>Die Passwörter sind nicht identisch.</clr-control-error>
+            <clr-control-error>{{'MERCHANT.REGISTER.REPEAT_PASSWORD_INVALID' | translate}}</clr-control-error>
           </clr-input-container>
           <clr-select-container *ngIf="authorities$ | async as authorities">
-            <label>Organisation</label>
+            <label>{{'COMMON.AUTHORITY' | translate}}</label>
             <select clrSelect name="authority" formControlName="authority">
               <option *ngFor="let authority of authorities" [ngValue]="authority">{{authority.name}}</option>
             </select>
           </clr-select-container>
           <clr-checkbox-wrapper>
-            <label>Ich habe die Vereinbarung zur Verwendung meiner Daten gelesen.</label>
+            <label>{{'MERCHANT.REGISTER.PRIVACY_POLICY' | translate}}</label>
             <input type="checkbox" name="policy" formControlName="policy" clrCheckbox/>
           </clr-checkbox-wrapper>
         </div>
       </form>
     </div>
   <div class="modal-footer">
-    <button [disabled]="registerForm.invalid" type="submit" class="btn btn-primary" (click)="register()">Registrieren</button>
+    <button [disabled]="registerForm.invalid" type="submit" class="btn btn-primary" (click)="register()">{{'COMMON.REGISTER' | translate}}</button>
   </div>
 </clr-modal>
 
@@ -48,8 +48,8 @@
   <div class="modal-body">
     <div class="success-wrapper">
       <clr-icon shape="success-standard" class="is-solid" size="36"></clr-icon>
-      <h3>Registrierungsanfrage gesendet!</h3>
-      <span>Deine Anfrage wird zur Abstimmung an die von Dir ausgewählte Organisation geschickt. Sobald eine Bestätigung erfolgt ist, melden wir uns bei Dir per E-Mail. Danach kannst Du Deinen Shop eröffnen.</span>
+      <h3>{{'MERCHANT.REGISTER.REGISTRATION_COMPLETED.HEADLINE' | translate}}</h3>
+      <span>{{'MERCHANT.REGISTER.REGISTRATION_COMPLETED.TEXT' | translate}}</span>
     </div>
   </div>
 </clr-modal>

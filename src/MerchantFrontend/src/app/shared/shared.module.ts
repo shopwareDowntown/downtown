@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { ContainerComponent } from './components/container/container.component';
 import { FileUploadModule } from './components/file-upload/file-upload.module';
 import { LocaleDatePipe } from './pipes/locale-date.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
-    FileUploadModule
+    FileUploadModule,
+    TranslateModule
   ],
   declarations: [
     ContainerComponent,
@@ -16,7 +18,8 @@ import { LocaleDatePipe } from './pipes/locale-date.pipe';
   exports: [
     ContainerComponent,
     FileUploadModule,
-    LocaleDatePipe
+    LocaleDatePipe,
+    TranslateModule
   ]
 })
 export class SharedModule {}
