@@ -135,14 +135,18 @@
 
         <h3>{{'MERCHANT.DETAILS.COVER_IMAGE' | translate}}</h3>
 
-        <div class="image-wrapper">
-          <div *ngIf="profileForm.get('cover').value; else imageOrPlaceholder">{{profileForm.get('cover').value[0].name}}</div>
-          <ng-template #imageOrPlaceholder>
-            <img style="max-width: 100%" [src]="merchant.cover.url" *ngIf="merchant.cover; else placeholderText">
-            <ng-template #placeholderText>{{'MERCHANT.DETAILS.NO_IMAGE' | translate}}</ng-template>
-          </ng-template>
+        <div class="picture-outer-container">
+          <div class="picture-inner-container">
+            <div *ngIf="profileForm.get('cover').value; else imageOrPlaceholder">{{profileForm.get('cover').value[0].name}}</div>
+            <ng-template #imageOrPlaceholder>
+              <img style="max-width: 100%" [src]="merchant.cover.url" *ngIf="merchant.cover; else placeholderText">
+              <ng-template #placeholderText>{{'MERCHANT.DETAILS.NO_IMAGE' | translate}}</ng-template>
+            </ng-template>
+            <div class="control">
+              <portal-file-upload maxFileSize="5097152" accept="image/x-png,image/jpeg" [label]="'+'" (onSelect)="imageSelected($event)"></portal-file-upload>
+            </div>
+          </div>
         </div>
-        <portal-file-upload maxFileSize="5097152" accept="image/x-png,image/jpeg" [label]="'MERCHANT.DETAILS.UPLOAD_IMAGE' | translate" (onSelect)="imageSelected($event)"></portal-file-upload>
 
         <h3>{{'MERCHANT.DETAILS.MERCHANT_PAGE' | translate}}</h3>
 
