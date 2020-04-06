@@ -1,8 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Shopware\Production\Voucher\Service;
 
 use Dompdf\Options;
+use Shopware\Core\Checkout\Document\FileGenerator\FileGeneratorRegistry;
+use Shopware\Core\Checkout\Document\FileGenerator\PdfGenerator;
+use Shopware\Core\Checkout\Document\GeneratedDocument;
 use Shopware\Core\Checkout\Order\OrderEntity;
 use Shopware\Core\Framework\Context;
 use Dompdf\Dompdf;
@@ -24,40 +27,33 @@ class VoucherFundingEmailService
      */
     private $twig;
 
+    /**
+     * @var FileGeneratorRegistry
+     */
+    private $fileGeneratorRegistry;
+
     public function __construct(
         TemplateMailSender $templateMailSender,
-        Environment $twig
+        Environment $twig,
+        FileGeneratorRegistry $fileGeneratorRegistry
     ) {
         $this->templateMailSender = $templateMailSender;
         $this->twig = $twig;
+        $this->fileGeneratorRegistry = $fileGeneratorRegistry;
     }
 
     public function sendEmailCustomer(
-        array $vouchers,
+        array $templateData,
         MerchantEntity $merchant,
-        OrderEntity $order,
         Context $context
     ) : void
     {
         $this->twig->addGlobal('context', $context);
         $this->twig->disableStrictVariables();
 
-        $customerName = sprintf('%s %s %s',
-            $order->getOrderCustomer()->getSalutation()->getLetterName(),
-            $order->getOrderCustomer()->getFirstName(),
-            $order->getOrderCustomer()->getLastName()
-        );
-
-        $templateData = [
-            'merchant' => $merchant,
-            'order' => $order,
-            'customerName' => $customerName,
-            'vouchers' => $vouchers,
-            'today' => date('d.m.Y')
-        ];
-
         $pdfTemplate = $this->twig->render('@Voucher/pdf-template.html.twig', $templateData);
-        $voucherPdf = $this->renderVoucherAttachment($pdfTemplate);
+        $pdfGenerator = $this->fileGeneratorRegistry->getGenerator(PdfGenerator::FILE_EXTENSION);
+        $voucherPdf = $pdfGenerator->generate($this->renderVoucherAttachment($pdfTemplate));
 
         $modifier = static function (\Swift_Message $message) use($voucherPdf) {
             $message->attach(new \Swift_Attachment($voucherPdf, self::VOUCHER_PDF_NAME, 'application/pdf'));
@@ -67,39 +63,27 @@ class VoucherFundingEmailService
     }
 
     public function sendEmailMerchant(
-        array $vouchers,
+        array $templateData,
         MerchantEntity $merchant,
-        OrderEntity $order,
         Context $context
     ): void
     {
         $this->twig->addGlobal('context', $context);
         $this->twig->disableStrictVariables();
 
-        $templateData = [
-            'merchant' => $merchant,
-            'order' => $order,
-            'vouchers' => $vouchers,
-            'today' => date('d.m.Y')
-        ];
-
         $this->templateMailSender->sendMail($merchant->getEmail(), 'voucher_merchant', $templateData);
     }
 
-    private function renderVoucherAttachment(string $contentTemplate): string
+    private function renderVoucherAttachment(string $htmlContent): GeneratedDocument
     {
-        $options = new Options();
-        $options->setDefaultFont('Arial');
-        $options->setIsPhpEnabled(true);
-        $options->setIsRemoteEnabled(true);
+        $generatedDocument = new GeneratedDocument();
+        $generatedDocument->setHtml($htmlContent);
+        $generatedDocument->setFilename(self::VOUCHER_PDF_NAME);
+        $generatedDocument->setPageOrientation('landscape');
+        $generatedDocument->setPageSize('a4');
+        $generatedDocument->setContentType(PdfGenerator::FILE_CONTENT_TYPE);
 
-        $dompdf = new Dompdf();
-        $dompdf->setPaper('A4', 'landscape');
-        $dompdf->setOptions($options);
-        $dompdf->loadHtml($contentTemplate);
-        $dompdf->render();
-
-        return $dompdf->output();
+        return $generatedDocument;
     }
 
 }

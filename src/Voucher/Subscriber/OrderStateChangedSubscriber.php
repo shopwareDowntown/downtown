@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Shopware\Production\Voucher\Subscriber;
 
@@ -63,7 +63,7 @@ class OrderStateChangedSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            'state_enter.order_transaction.state.paid' => 'orderTransactionStatePaid',
+            'state_enter.order.state.completed' => 'orderTransactionStatePaid',
         ];
     }
 
@@ -98,6 +98,7 @@ class OrderStateChangedSubscriber implements EventSubscriberInterface
             ->addAssociation('transactions.stateMachineState');
 
         $criteria
+            ->addFilter(new EqualsFilter('lineItems.type', LineItem::PRODUCT_LINE_ITEM_TYPE))
             ->addFilter(new EqualsFilter('lineItems.product.customFields.productType', 'voucher'));
 
         /** @var OrderEntity $orderEntity */

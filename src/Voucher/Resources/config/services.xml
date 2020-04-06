@@ -16,11 +16,11 @@
         <service id="Shopware\Production\Voucher\Service\VoucherFundingEmailService">
             <argument type="service" id="Shopware\Production\Portal\Services\TemplateMailSender"/>
             <argument type="service" id="twig"/>
+            <argument type="service" id="Shopware\Core\Checkout\Document\FileGenerator\FileGeneratorRegistry"/>
         </service>
 
         <service id="Shopware\Production\Voucher\Service\VoucherFundingMerchantService">
             <argument type="service" id="sold_voucher.repository"/>
-            <argument type="service" id="currency.repository"/>
             <argument type="service" id="Shopware\Production\Voucher\Service\VoucherFundingEmailService"/>
         </service>
 
