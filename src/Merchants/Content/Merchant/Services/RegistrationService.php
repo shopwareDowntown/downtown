@@ -17,10 +17,9 @@ use Shopware\Core\Framework\Validation\DataValidationDefinition;
 use Shopware\Core\Framework\Validation\DataValidator;
 use Shopware\Core\Framework\Validation\Exception\ConstraintViolationException;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
-use Shopware\Core\System\SystemConfig\SystemConfigService;
 use Shopware\Production\Merchants\Content\Merchant\Exception\EmailAlreadyExistsException;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Shopware\Production\Portal\Services\TemplateMailSender;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -35,37 +34,23 @@ class RegistrationService
     private $merchantRepository;
 
     /**
-     * @var SystemConfigService
-     */
-    private $systemConfigService;
-
-    /**
      * @var DataValidator
      */
     private $dataValidator;
 
     /**
-     * @var Environment
+     * @var TemplateMailSender
      */
-    private $twig;
-
-    /**
-     * @var MailSender
-     */
-    private $mailService;
+    private $templateMailSender;
 
     public function __construct(
         EntityRepository $merchantRepository,
-        SystemConfigService $systemConfigService,
         DataValidator $dataValidator,
-        Environment $twig,
-        MailSender $mailService
+        TemplateMailSender $templateMailSender
     ) {
         $this->merchantRepository = $merchantRepository;
-        $this->systemConfigService = $systemConfigService;
         $this->dataValidator = $dataValidator;
-        $this->twig = $twig;
-        $this->mailService = $mailService;
+        $this->templateMailSender = $templateMailSender;
     }
 
     public function registerMerchant(array $parameters, SalesChannelContext $salesChannelContext): string
@@ -115,19 +100,10 @@ class RegistrationService
 
     private function sendMail(MerchantEntity $merchant, SalesChannelContext $context): void
     {
-        $html = $this->twig->render('@Merchant/email/merchant_registration.html.twig', [
+        $this->templateMailSender->sendMail($merchant->getEmail(), 'merchant_registration', [
             'merchant' => $merchant,
             'confirmUrl' => $this->getConfirmUrl($merchant, $context)
         ]);
-
-        $senderEmail = $this->systemConfigService->get('core.basicInformation.email');
-
-        $mail = new \Swift_Message('Registrierung Bestätigung');
-        $mail->addTo($merchant->getEmail(), $merchant->getPublicCompanyName());
-        $mail->addFrom($senderEmail);
-        $mail->setBody($html, 'text/html');
-
-        $this->mailService->send($mail);
     }
 
     private function getConfirmUrl(MerchantEntity $merchantEntity, SalesChannelContext $context): string

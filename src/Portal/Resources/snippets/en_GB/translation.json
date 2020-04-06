@@ -17,5 +17,35 @@
     },
     "error": {
         "cartHasInvalidShippingMethod": "The selected shipping method is not available."
+    },
+    "mail": {
+        "merchant_order_confirmation": {
+            "subject": "New order at Downtowns",
+            "hello": "Hello %merchant%,",
+            "youHaveNewOrder": "You have received a new order.",
+            "orderItems": "Order items",
+            "tableHeader": {
+                "pos": "Pos",
+                "name": "Name",
+                "amount": "Amount",
+                "price": "Price",
+                "totalPrice": "Total price"
+            },
+            "totalPrice": "Total price",
+            "invoiceAddress": "Invoice address",
+            "deliveryAddress": "Delivery address"
+        },
+        "merchant_registration": {
+            "subject": "Your registration at Downtowns",
+            "hello": "Hello %merchant%,",
+            "text": "Please confirm your e-mail address. After confirmation you will be redirected to the portal and can log in.",
+            "confirmButton": "Confirm e-mail"
+        },
+        "merchant_reset_password": {
+            "subject": "Forgotten password Downtown request",
+            "hello": "Hello %merchant%,",
+            "text": "a request has been made in the portal to reset your password.<br>\nPlease confirm the link below to define a new password.",
+            "confirmButton": "Reset password"
+        }
     }
 }

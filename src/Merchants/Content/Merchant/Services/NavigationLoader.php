@@ -10,6 +10,7 @@ use Shopware\Core\Content\Category\Exception\CategoryNotFoundException;
 use Shopware\Core\Content\Category\Tree\Tree;
 use Shopware\Core\Content\Category\Tree\TreeItem;
 use \Shopware\Core\Content\Category\Service\NavigationLoader as ShopwareNavigationLoader;
+use Shopware\Core\Content\Seo\SeoUrlPlaceholderHandler;
 use Shopware\Core\Framework\DataAbstractionLayer\Doctrine\FetchModeHelper;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\ContainsFilter;
@@ -21,7 +22,6 @@ use Shopware\Core\System\SalesChannel\Entity\SalesChannelRepositoryInterface;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Production\Merchants\Content\Merchant\MerchantAvailableFilter;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class NavigationLoader extends ShopwareNavigationLoader
@@ -47,11 +47,11 @@ class NavigationLoader extends ShopwareNavigationLoader
     private $connection;
 
     /**
-     * @var RouterInterface
+     * @var SeoUrlPlaceholderHandler
      */
     private $router;
 
-    public function __construct(Connection $connection, SalesChannelRepositoryInterface $repository, EventDispatcherInterface $eventDispatcher, RouterInterface $router)
+    public function __construct(Connection $connection, SalesChannelRepositoryInterface $repository, EventDispatcherInterface $eventDispatcher, SeoUrlPlaceholderHandler $router)
     {
         $this->categoryRepository = $repository;
         $this->treeItem = new TreeItem(null, []);

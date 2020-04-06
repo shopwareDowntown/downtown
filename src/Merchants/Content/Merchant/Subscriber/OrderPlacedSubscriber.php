@@ -10,6 +10,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
 use Shopware\Production\Merchants\Content\Merchant\MerchantCollection;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
+use Shopware\Production\Portal\Services\TemplateMailSender;
 use Twig\Environment;
 
 class OrderPlacedSubscriber
@@ -25,32 +26,18 @@ class OrderPlacedSubscriber
     private $orderRepository;
 
     /**
-     * @var Environment
+     * @var TemplateMailSender
      */
-    private $twig;
-
-    /**
-     * @var MailSender
-     */
-    private $mailService;
-
-    /**
-     * @var SystemConfigService
-     */
-    private $systemConfigService;
+    private $templateMailSender;
 
     public function __construct(
         EntityRepositoryInterface $productRepository,
         EntityRepositoryInterface $orderRepository,
-        Environment $twig,
-        MailSender $mailService,
-        SystemConfigService $systemConfigService
+        TemplateMailSender $templateMailSender
     ) {
         $this->productRepository = $productRepository;
         $this->orderRepository = $orderRepository;
-        $this->twig = $twig;
-        $this->mailService = $mailService;
-        $this->systemConfigService = $systemConfigService;
+        $this->templateMailSender = $templateMailSender;
     }
 
     public function __invoke(CheckoutOrderPlacedEvent $orderPlacedEvent): void
@@ -95,23 +82,9 @@ class OrderPlacedSubscriber
             ]
         ], $orderPlacedEvent->getContext());
 
-        $this->sendConfirmationMailToMerchant($merchant, $orderPlacedEvent);
-    }
-
-    private function sendConfirmationMailToMerchant(MerchantEntity $merchantEntity, CheckoutOrderPlacedEvent $orderPlacedEvent): void
-    {
-        $html = $this->twig->render('@Merchant/email/merchant_order_confirmation.html.twig', [
-            'merchant' => $merchantEntity,
+        $this->templateMailSender->sendMail($merchant->getEmail(), 'merchant_order_confirmation', [
+            'merchant' => $merchant,
             'order' => $orderPlacedEvent->getOrder()
         ]);
-
-        $senderEmail = $this->systemConfigService->get('core.basicInformation.email');
-
-        $mail = new \Swift_Message('Neue Bestellung');
-        $mail->addTo($merchantEntity->getEmail(), $merchantEntity->getPublicCompanyName());
-        $mail->addFrom($senderEmail);
-        $mail->setBody($html, 'text/html');
-
-        $this->mailService->send($mail);
     }
 }

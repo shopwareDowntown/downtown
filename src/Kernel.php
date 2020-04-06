@@ -27,11 +27,6 @@ class Kernel extends ShopwareKernel
 
     protected function initializeDatabaseConnectionVariables(): void
     {
-        $envFile = __DIR__ . '/../.env';
-        if (\file_exists($envFile)) {
-            (new Dotenv())->load($envFile, \sprintf('%s.dist', $envFile));
-        }
-
         $url = $_ENV['DATABASE_URL']
             ?? $_SERVER['DATABASE_URL']
             ?? getenv('DATABASE_URL');

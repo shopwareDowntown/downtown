@@ -17,5 +17,35 @@
     },
     "error": {
         "cartHasInvalidShippingMethod": "Die ausgewählte Versandart steht nicht zur Verfügung."
+    },
+    "mail": {
+        "merchant_order_confirmation": {
+            "subject": "Neue Bestellung bei Downtowns",
+            "hello": "Hallo %merchant%,",
+            "youHaveNewOrder": "Du hast eine neue Bestellung erhalten .",
+            "orderItems": "Bestellpositionen",
+            "tableHeader": {
+                "pos": "Pos",
+                "name": "Name",
+                "amount": "Anzahl",
+                "price": "Preis",
+                "totalPrice": "Summe"
+            },
+            "totalPrice": "Gesammtsumme",
+            "invoiceAddress": "Rechnungsaddresse",
+            "deliveryAddress": "Lieferaddresse"
+        },
+        "merchant_registration": {
+            "subject": "Deine Registrierung bei Downtowns",
+            "hello": "Hallo %merchant%,",
+            "text": "Bitte bestätigen Sie Ihre E-Mail-Adresse. Nach der Bestätigung werden Sie zum Portal weitergeleitet und können Sich einloggen.",
+            "confirmButton": "E-Mail bestätigen"
+        },
+        "merchant_reset_password": {
+            "subject": "Passwort Vergessen Anfrage bei Downtowns",
+            "hello": "Hallo %merchant%,",
+            "text": "im Portal wurde eine Anfrage gestellt, um Ihr Passwort zurückzusetzen.<br>\nBitte bestätigen Sie den untenstehenden Link, um ein neues Passwort zu definieren.",
+            "confirmButton": "Passwort zurücksetzen"
+        }
     }
 }
