@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Shopware\Production\Merchants\Content\Merchant\Storefront\Page;
+namespace Shopware\Production\Merchants\Storefront\Page;
 
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
 use Shopware\Storefront\Page\MetaInformation;

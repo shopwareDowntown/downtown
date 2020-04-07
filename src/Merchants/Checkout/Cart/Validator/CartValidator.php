@@ -1,11 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Shopware\Production\Merchants\Content\Merchant\Services;
+namespace Shopware\Production\Merchants\Checkout\Cart\Validator;
 
 use Shopware\Core\Checkout\Cart\Cart;
 use Shopware\Core\Checkout\Cart\CartValidatorInterface;
 use Shopware\Core\Checkout\Cart\Error\ErrorCollection;
 use Shopware\Core\Checkout\Cart\Error\IncompleteLineItemError;
+use Shopware\Core\Checkout\Shipping\ShippingMethodCollection;
 use Shopware\Core\Content\Product\ProductEntity;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
@@ -15,6 +16,8 @@ use Shopware\Production\Merchants\Content\Merchant\Exception\CartContainsStoreWi
 use Shopware\Production\Merchants\Content\Merchant\Exception\CartInvalidShippingMethod;
 use Shopware\Production\Merchants\Content\Merchant\MerchantCollection;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
+use Shopware\Production\Merchants\Events\BlockShippingMethodsEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CartValidator implements CartValidatorInterface
 {
@@ -25,9 +28,15 @@ class CartValidator implements CartValidatorInterface
      */
     private $productRepository;
 
-    public function __construct(EntityRepositoryInterface $productRepository)
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    public function __construct(EntityRepositoryInterface $productRepository, EventDispatcherInterface $eventDispatcher)
     {
         $this->productRepository = $productRepository;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function validate(Cart $cart, ErrorCollection $errorCollection, SalesChannelContext $salesChannelContext): void
@@ -83,6 +92,16 @@ class CartValidator implements CartValidatorInterface
                 if ($delivery === null) {
                     continue;
                 }
+
+                $shippingMethods = new ShippingMethodCollection([$delivery->getShippingMethod()]);
+                $event = new BlockShippingMethodsEvent($shippingMethods, $merchant, $salesChannelContext);
+                $this->eventDispatcher->dispatch($event);
+
+                if ($event->getShippingMethodCollection()->count() === 0) {
+                    $errorCollection->add(new CartInvalidShippingMethod());
+                    return;
+                }
+
 
                 $shippingMethodId = $delivery->getShippingMethod()->getId();
                 $this->blockOrderWithInvalidShippingMethod(

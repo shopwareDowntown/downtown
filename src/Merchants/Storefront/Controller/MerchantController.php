@@ -1,19 +1,19 @@
 <?php declare(strict_types=1);
 
-namespace Shopware\Production\Merchants\Content\Merchant\Storefront\Controller;
+namespace Shopware\Production\Merchants\Storefront\Controller;
 
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
-use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\System\SalesChannel\Entity\SalesChannelRepositoryInterface;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Production\Merchants\Content\Merchant\MerchantAvailableFilter;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
-use Shopware\Production\Merchants\Content\Merchant\Storefront\Page\MerchantPage;
-use Shopware\Production\Merchants\Content\Merchant\Storefront\Service\MerchantCriteriaLoaderInterface;
+use Shopware\Production\Merchants\Events\MerchantPageCriteriaEvent;
+use Shopware\Production\Merchants\Storefront\Page\MerchantPage;
 use Shopware\Storefront\Controller\StorefrontController;
 use Shopware\Storefront\Page\GenericPageLoader;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -39,14 +39,21 @@ class MerchantController extends StorefrontController
      */
     private $genericPageLoader;
 
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
     public function __construct(
         SalesChannelRepositoryInterface $productRepository,
         EntityRepositoryInterface $merchantRepository,
-        GenericPageLoader $genericPageLoader
+        GenericPageLoader $genericPageLoader,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->productRepository = $productRepository;
         $this->merchantRepository = $merchantRepository;
         $this->genericPageLoader = $genericPageLoader;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -72,6 +79,7 @@ class MerchantController extends StorefrontController
         $criteria->addAssociation('cover.thumbnails');
         $criteria->addAssociation('country');
         $criteria->addFilter(new MerchantAvailableFilter($context->getSalesChannel()->getId()));
+        $this->eventDispatcher->dispatch(new MerchantPageCriteriaEvent($criteria));
 
         /** @var MerchantEntity|null $merchant */
         $merchant = $this->merchantRepository->search($criteria, $context->getContext())->first();

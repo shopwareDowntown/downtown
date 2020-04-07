@@ -4,26 +4,26 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <service id="Shopware\Production\Merchants\Content\Merchant\Cms\MerchantListingCmsElementResolver" public="true">
+        <service id="Shopware\Production\Merchants\Storefront\Cms\MerchantListingCmsElementResolver" public="true">
             <argument type="service" id="merchant.repository"/>
             <argument type="service" id="request_stack"/>
             <argument type="service" id="event_dispatcher"/>
             <tag name="shopware.cms.data_resolver" />
         </service>
 
-        <service id="Shopware\Production\Merchants\Content\Merchant\Storefront\Listing\MerchantListingFeaturesSubscriber">
+        <service id="Shopware\Production\Merchants\Storefront\Listing\MerchantListingFeaturesSubscriber">
             <argument type="service" id="Doctrine\DBAL\Connection"/>
             <argument type="service" id="property_group_option.repository"/>
-            <argument type="service" id="Shopware\Production\Merchants\Content\Merchant\Storefront\Listing\MerchantListingSortingRegistry"/>
+            <argument type="service" id="Shopware\Production\Merchants\Storefront\Listing\MerchantListingSortingRegistry"/>
 
             <tag name="kernel.event_subscriber"/>
         </service>
 
-        <service id="Shopware\Production\Merchants\Content\Merchant\Storefront\Listing\MerchantListingSortingRegistry">
+        <service id="Shopware\Production\Merchants\Storefront\Listing\MerchantListingSortingRegistry">
             <argument type="tagged" tag="shopware.merchant.merchant_listing.sorting" />
         </service>
 
-        <service id="merchant_listing.sorting.name_ascending" class="Shopware\Production\Merchants\Content\Merchant\Storefront\Listing\MerchantListingSorting">
+        <service id="merchant_listing.sorting.name_ascending" class="Shopware\Production\Merchants\Storefront\Listing\MerchantListingSorting">
             <argument>name-asc</argument>
             <argument>Name aufsteigend</argument>
             <argument type="collection">
@@ -32,7 +32,7 @@
             <tag name="shopware.merchant.merchant_listing.sorting" />
         </service>
 
-        <service id="merchant_listing.sorting.name_descending" class="Shopware\Production\Merchants\Content\Merchant\Storefront\Listing\MerchantListingSorting">
+        <service id="merchant_listing.sorting.name_descending" class="Shopware\Production\Merchants\Storefront\Listing\MerchantListingSorting">
             <argument>name-desc</argument>
             <argument>Name absteigend</argument>
             <argument type="collection">

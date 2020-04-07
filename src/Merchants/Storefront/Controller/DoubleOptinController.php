@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Shopware\Production\Merchants\Content\Merchant\Storefront\Controller;
+namespace Shopware\Production\Merchants\Storefront\Controller;
 
 use Shopware\Core\Checkout\Customer\Exception\CustomerAlreadyConfirmedException;
 use Shopware\Core\Checkout\Customer\Exception\CustomerNotFoundByHashException;

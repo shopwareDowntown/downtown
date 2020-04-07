@@ -11,5 +11,9 @@
             <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
             <argument type="service" id="translator"/>
         </service>
+
+        <service id="Shopware\Production\Portal\Hacks\StorefrontMerchantMediaImageValidator">
+            <tag name="storefront.media.upload.validator" />
+        </service>
     </services>
 </container>

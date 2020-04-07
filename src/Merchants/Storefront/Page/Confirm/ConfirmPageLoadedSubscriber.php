@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Shopware\Production\Merchants\Content\Merchant\Subscriber;
+namespace Shopware\Production\Merchants\Storefront\Page\Confirm;
 
 use Shopware\Core\Checkout\Shipping\ShippingMethodCollection;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
@@ -8,8 +8,10 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Production\Merchants\Content\Merchant\MerchantCollection;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
+use Shopware\Production\Merchants\Events\BlockShippingMethodsEvent;
 use Shopware\Storefront\Page\Checkout\Confirm\CheckoutConfirmPage;
 use Shopware\Storefront\Page\Checkout\Confirm\CheckoutConfirmPageLoadedEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ConfirmPageLoadedSubscriber
 {
@@ -18,9 +20,15 @@ class ConfirmPageLoadedSubscriber
      */
     private $productRepository;
 
-    public function __construct(EntityRepositoryInterface $productRepository)
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    public function __construct(EntityRepositoryInterface $productRepository, EventDispatcherInterface $eventDispatcher)
     {
         $this->productRepository = $productRepository;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __invoke(CheckoutConfirmPageLoadedEvent $event): void
@@ -61,7 +69,10 @@ class ConfirmPageLoadedSubscriber
 
     private function filterShippingMethods(MerchantEntity $merchant, ShippingMethodCollection $shippingMethods, SalesChannelContext $context): void
     {
-        foreach ($shippingMethods as $id => $shippingMethod) {
+        $event = new BlockShippingMethodsEvent($shippingMethods, $merchant, $context);
+        $this->eventDispatcher->dispatch($event);
+
+        foreach ($event->getShippingMethodCollection() as $id => $shippingMethod) {
             // The merchant cannot block the default shipping method
             if ($id === $context->getSalesChannel()->getShippingMethodId()) {
                 continue;

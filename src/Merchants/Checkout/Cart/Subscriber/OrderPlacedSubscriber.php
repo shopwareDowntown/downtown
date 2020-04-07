@@ -1,15 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Shopware\Production\Merchants\Content\Merchant\Subscriber;
+namespace Shopware\Production\Merchants\Checkout\Subscriber;
 
 use Shopware\Core\Checkout\Cart\Event\CheckoutOrderPlacedEvent;
-use Shopware\Core\Content\MailTemplate\Service\MailSender;
 use Shopware\Core\Content\Product\ProductEntity;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
-use Shopware\Core\System\SystemConfig\SystemConfigService;
 use Shopware\Production\Merchants\Content\Merchant\MerchantCollection;
-use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
 use Shopware\Production\Portal\Services\TemplateMailSender;
 use Twig\Environment;
 

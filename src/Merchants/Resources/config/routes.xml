@@ -5,4 +5,5 @@
         https://symfony.com/schema/routing/routing-1.0.xsd">
 
     <import resource="../../Content/**/*Controller.php" type="annotation" />
+    <import resource="../../Storefront/**/*Controller.php" type="annotation" />
 </routes>
