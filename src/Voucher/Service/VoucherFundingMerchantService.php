@@ -98,7 +98,7 @@ class VoucherFundingMerchantService
                 $voucher = [];
                 $voucher['merchantId'] = $merchantId;
                 $voucher['orderLineItemId'] = $lineItemEntity->getId();
-                $voucher['name'] = $lineItemEntity->getProduct()->getName();
+                $voucher['name'] = $lineItemEntity->getProduct()->getTranslation('name');
                 $voucher['code'] = $code;
                 $voucher['value'] = $voucherValue;
 
