@@ -20,7 +20,7 @@ At the time this project is created, the [COVID-19](https://en.wikipedia.org/wik
 has a serious impact on the economy. Since retail stores are forced to close, they now need new solutions to generate
 an income.
 
-The portal project is trying to help. It is created to serve the project [downtowns.io](https://downtowns.io/), but since
+The portal project is trying to help. It is created to serve the project [downtown.shop](https://downtown.shop/), but since
 it is open source anyone is able to set up a a web server and provide the same service as downtowns to their local community. 
 
 ## How it works
