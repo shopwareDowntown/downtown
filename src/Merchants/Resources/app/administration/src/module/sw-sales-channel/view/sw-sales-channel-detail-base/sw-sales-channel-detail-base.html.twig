@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block sw_sales_channel_detail_base_options_domains %}
-    <sw-card title="Organization Login">
+    <sw-card title="Organization" v-if="salesChannel">
         <sw-field
             type="text"
             validation="required"
