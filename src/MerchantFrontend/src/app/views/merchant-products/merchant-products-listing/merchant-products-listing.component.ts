@@ -50,6 +50,9 @@ export class MerchantProductsListingComponent implements OnInit {
 
     if (this.currentPage === 1) {
       this.fromProduct = this.fromProduct = 1;
+      if (this.total === 0) {
+        this.fromProduct = 0;
+      }
     } else {
       this.fromProduct = (this.currentPage -1) * this.limit;
     }

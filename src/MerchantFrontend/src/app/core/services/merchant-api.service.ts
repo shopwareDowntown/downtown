@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Merchant, MerchantRegistration, MerchantLoginResult, PasswordReset } from '../models/merchant.model';
+import {
+  Merchant,
+  MerchantRegistration,
+  MerchantLoginResult,
+  PasswordReset,
+  MerchantListData
+} from '../models/merchant.model';
 import { Product, ProductListData } from '../models/product.model';
 import { StateService } from '../state/state.service';
 import { map, take } from 'rxjs/operators';
@@ -217,6 +223,10 @@ export class MerchantApiService {
 
   getOrganization(): Observable<Organization> {
     return this.http.get<Organization>(this.apiUrl + '/organization-api/v1/organization', {headers: this.getJsonContentTypeHeaders()});
+  }
+
+  getMerchantList(): Observable<MerchantListData> {
+    return of({total: 0, data: []});
   }
 
   private getHeaders(): { [header: string]: string | string[];} {
