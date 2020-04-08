@@ -54,7 +54,6 @@ export class LoginService {
   }
 
   loginWithToken(token: string, role: string): Observable<Merchant| Organization> {
-    console.log(token);
     this.stateService.setSwContextToken(token);
     if (role === Role.merchant) {
       return this.merchantApiService.getMerchant()

@@ -48,6 +48,8 @@ export class OrganizationLoginComponent implements OnInit{
       this.toastService.success(
         this.translateService.instant('MERCHANT.LOGIN.TOAST_MESSAGE.LOGIN_SUCCESS_HEADLINE')
       );
-    });
+    },
+      () => this.loginFailed = true
+    );
   }
 }
