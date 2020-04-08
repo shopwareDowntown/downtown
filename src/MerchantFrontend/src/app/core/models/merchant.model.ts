@@ -1,8 +1,8 @@
-import { Authority } from './authority.model';
+import { OrganizationAuthority } from './organization.model';
 
 export interface Merchant {
   id?: string;
-  authority?: Authority;
+  authority?: OrganizationAuthority;
   publicCompanyName: string;
   publicOwner: string;
   publicPhoneNumber: string;
