@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Shopware\Production\Merchants\Content\Merchant\Cms;
+namespace Shopware\Production\Merchants\Storefront\Cms;
 
 use Shopware\Core\Framework\DataAbstractionLayer\Search\EntitySearchResult;
 use Shopware\Core\Framework\Struct\Struct;

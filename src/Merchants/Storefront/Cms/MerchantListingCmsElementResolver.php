@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Shopware\Production\Merchants\Content\Merchant\Cms;
+namespace Shopware\Production\Merchants\Storefront\Cms;
 
 use Shopware\Core\Content\Cms\Aggregate\CmsSlot\CmsSlotEntity;
 use Shopware\Core\Content\Cms\DataResolver\CriteriaCollection;
@@ -11,9 +11,9 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Production\Merchants\Content\Merchant\MerchantAvailableFilter;
-use Shopware\Production\Merchants\Content\Merchant\Storefront\Listing\MerchantListingCriteriaEvent;
-use Shopware\Production\Merchants\Content\Merchant\Storefront\Listing\MerchantListingResult;
-use Shopware\Production\Merchants\Content\Merchant\Storefront\Listing\MerchantListingResultEvent;
+use Shopware\Production\Merchants\Storefront\Listing\MerchantListingCriteriaEvent;
+use Shopware\Production\Merchants\Storefront\Listing\MerchantListingResult;
+use Shopware\Production\Merchants\Storefront\Listing\MerchantListingResultEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 

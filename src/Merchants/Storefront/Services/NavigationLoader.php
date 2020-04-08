@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Shopware\Production\Merchants\Content\Merchant\Services;
+namespace Shopware\Production\Merchants\Storefront\Services;
 
 use Doctrine\DBAL\Connection;
 use Shopware\Core\Content\Category\CategoryCollection;
