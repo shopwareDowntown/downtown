@@ -2,7 +2,6 @@
 
 namespace Shopware\Production\Merchants\Content\Merchant;
 
-use Shopware\Core\Checkout\Customer\CustomerEntity;
 use Shopware\Core\Checkout\Order\OrderCollection;
 use Shopware\Core\Checkout\Shipping\ShippingMethodCollection;
 use Shopware\Core\Content\Category\CategoryEntity;
