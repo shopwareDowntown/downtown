@@ -159,6 +159,12 @@ UPDATE merchant SET active=1 WHERE email='merchant@email.example';
 quit;
 ```
 
+## Using the UI
+
+Explaining how to use a UI is easier done via video, so here is a tutorial video on how to configure organisations and merchants:
+
+[![Youtube: Portal tutorial video](.github/downtown_video_teaser.png?raw=true "Youtube: Portal tutorial video")](https://www.youtube.com/watch?v=7-FxZwOmtv0)
+
 # Contributing
 
 You have an idea or you found an issue? Please open an issue here: [shopwareDowntown/portal/issues](https://github.com/shopwareDowntown/portal/issues)
