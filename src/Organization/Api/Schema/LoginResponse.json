@@ -1,0 +1,8 @@
+{
+    "type": "object",
+    "properties": {
+        "sw-context-token": {
+            "type": "string"
+        }
+    }
+}
