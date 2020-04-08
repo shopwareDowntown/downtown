@@ -29,6 +29,7 @@ class AuthoritiesController
     }
 
     /**
+     * @deprecated Use route /organization-api/v{version}/organizations instead
      * @Route(name="merchant-api.authorities.load", path="/merchant-api/v{version}/authorities", defaults={"auth_required"=false})
      */
     public function load(): JsonResponse

@@ -12,83 +12,102 @@ use Shopware\Core\Framework\DataAbstractionLayer\Entity;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityIdTrait;
 use Shopware\Core\System\Country\CountryEntity;
 use Shopware\Core\System\SalesChannel\SalesChannelEntity;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Schema()
+ */
 class MerchantEntity extends Entity
 {
     use EntityIdTrait;
 
     /**
      * @var bool
+     * @OA\Property()
      */
     protected $active;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $activationCode;
 
     /**
      * @var bool
+     * @OA\Property()
      */
     protected $public;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $publicCompanyName;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $publicOwner;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $publicPhoneNumber;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $publicEmail;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $publicOpeningTimes;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $publicDescription;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $publicWebsite;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $firstName;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $lastName;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $street;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $zip;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $city;
 
@@ -99,21 +118,25 @@ class MerchantEntity extends Entity
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $email;
 
     /**
      * @var string
+     * @OA\Property()
      */
     protected $password;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $phoneNumber;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $salesChannelId;
 
@@ -124,6 +147,7 @@ class MerchantEntity extends Entity
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $categoryId;
 
@@ -154,6 +178,7 @@ class MerchantEntity extends Entity
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $coverId;
 

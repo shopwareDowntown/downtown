@@ -8,5 +8,11 @@
         <service id="Shopware\Production\Organization\System\Organization\Api\LoginController" public="true">
             <argument type="service" id="organization.repository"/>
         </service>
+
+        <service id="Shopware\Production\Organization\System\Organization\Api\OrganizationController" public="true">
+            <argument type="service" id="sales_channel.repository"/>
+            <argument type="service" id="organization.repository"/>
+            <argument type="service" id="merchant.repository"/>
+        </service>
     </services>
 </container>

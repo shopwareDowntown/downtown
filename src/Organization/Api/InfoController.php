@@ -36,7 +36,7 @@ class InfoController extends AbstractController
     public function info(): JsonResponse
     {
         $openApi = scan([
-            dirname(__DIR__)
+            dirname(__DIR__, 2),
         ], ['analysis' => new DeactivateValidationAnalysis()]);
         $this->addDefaults($openApi);
 
