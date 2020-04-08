@@ -78,6 +78,14 @@ class ProfileController
             $dataBag->remove('country');
         }
 
+        if ($dataBag->has('publicWebsite')) {
+            $scheme = parse_url($dataBag->get('publicWebsite'), PHP_URL_SCHEME);
+
+            if ($scheme === null) {
+                $dataBag->set('publicWebsite', 'https://' . $dataBag->get('publicWebsite'));
+            }
+        }
+
         $merchantConstraints = $this->createValidationDefinition($salesChannelContext);
 
         $this->dataValidator->validate($dataBag->all(), $merchantConstraints);
@@ -131,7 +139,7 @@ class ProfileController
     /**
      * @Route(name="merchant-api.profile.image.delete", methods={"DELETE"}, path="/merchant-api/v{version}/profile/media/{mediaId}")
      */
-    public function delete(string $mediaId, MerchantEntity $merchant, SalesChannelContext $salesChannelContext): JsonResponse
+    public function deleteMedia(string $mediaId, MerchantEntity $merchant, SalesChannelContext $salesChannelContext): JsonResponse
     {
         if ($mediaId === $merchant->getCoverId()) {
             $this->merchantRepository

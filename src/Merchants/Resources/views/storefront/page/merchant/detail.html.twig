@@ -9,12 +9,12 @@
 
         {# Image #}
         {% if page.merchant.cover.thumbnails.first.url %}
-            <div class="col-12 col-lg-6 merchant-image">
+            <div class="col-12 col-md-4 col-lg-6 merchant-image">
                 <img src="{{ page.merchant.cover.thumbnails.first.url }}" />
             </div>
         {% endif %}
 
-        <div class="col-12 col-lg-6 merchant-information">
+        <div class="col-12 col-md-8 col-lg-6 merchant-information">
             <div class="row merchant-information--row">
 
                 {# Intro #}
@@ -24,9 +24,9 @@
                 </div>
 
                 {# Contact information #}
-                <div class="col-12 col-md-6 col-lg-12">
-
+                <div class="col-12">
                     <ul class="contact-information">
+
                         {# Phone #}
                         {% if page.merchant.publicPhoneNumber %}
                             <li>
@@ -83,8 +83,8 @@
 
                 {# Opening Hours #}
                 {% if page.merchant.publicOpeningTimes %}
-                    <div class="col-12 col-md-6 col-lg-12">
-                        <p><strong>{{ 'merchant.openingTimes'|trans }}</strong><br>
+                    <div class="col-12">
+                        <p class="opening-times"><strong>{{ 'merchant.openingTimes'|trans }}</strong><br>
                             {{ page.merchant.publicOpeningTimes|nl2br }}
                         </p>
                     </div>

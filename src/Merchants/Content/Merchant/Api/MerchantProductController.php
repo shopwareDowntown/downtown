@@ -159,7 +159,10 @@ class MerchantProductController
                     continue;
                 }
 
-                $productData['media'][] = $mediaEntity->getUrl();
+                $productData['media'][] = [
+                    'url' => $mediaEntity->getUrl(),
+                    'id' => $mediaEntity->getId()
+                ];
             }
 
             $productsArray[] = $productData;
@@ -320,9 +323,57 @@ class MerchantProductController
 
         $this->productRepository->update([$productData], Context::createDefaultContext());
 
+        // customFields are not inherited from translations. So we need to write them in active sales channel language
+        if (isset($productData['customFields'])) {
+            $this->productRepository->update([
+                [
+                    'id' => $productData['id'],
+                    'customFields' => [
+                        'productType' => $request->request->get('productType')
+                    ]
+                ]
+            ], $context->getContext());
+        }
+
         return new JsonResponse(
             ['message' => 'Successfully saved product!', 'data' => $this->fetchProductData($productId, $merchant)]
         );
+    }
+
+    /**
+     * @Route(name="merchant-api.merchant.product.delete_media", path="/merchant-api/v{version}/products/{productId}/media/{mediaId}", methods={"DELETE"})
+     */
+    public function deleteMedia(string $productId, string $mediaId): JsonResponse
+    {
+        $criteria = new Criteria([$productId]);
+        $criteria->addAssociation('media');
+        /** @var ProductEntity $product */
+        $product = $this->productRepository->search($criteria, Context::createDefaultContext())->first();
+
+        $foundProductMediaId = null;
+        foreach($product->getMedia()->getMediaIds() as $productMediaId => $actualMediaId) {
+            if ($actualMediaId !== $mediaId) {
+                continue;
+            }
+
+            $foundProductMediaId = $productMediaId;
+        }
+
+        if (!$foundProductMediaId) {
+            throw new NotFoundHttpException(sprintf('No media found for productId \'%s\' and mediaId \'%s\'', $productId, $mediaId));
+        }
+
+        $this->productMediaRepository->delete([
+            [ 'id' => $foundProductMediaId ]
+        ], Context::createDefaultContext());
+
+        $this->mediaRepository->delete([
+            ['id' => $mediaId]
+        ], Context::createDefaultContext());
+
+        return new JsonResponse([
+            'success' => true
+        ]);
     }
 
     private function getProductFromMerchant(string $productId, MerchantEntity $merchant): ProductEntity
@@ -349,24 +400,6 @@ class MerchantProductController
         }
 
         return $product;
-    }
-
-    private function createMediaIdByFile(UploadedFile $uploadedFile, SalesChannelContext $context): string
-    {
-        $mediaId = Uuid::randomHex();
-
-        $this->mediaRepository->create([['id' => $mediaId]], $context->getContext());
-
-        $mediaFile = new MediaFile(
-            $uploadedFile->getPathname(),
-            $uploadedFile->getMimeType(),
-            $uploadedFile->getClientOriginalExtension(),
-            $uploadedFile->getSize()
-        );
-
-        $this->mediaService->saveMediaFile($mediaFile, md5(random_bytes(10)), $context->getContext(), null, $mediaId);
-
-        return $mediaId;
     }
 
     private function getTaxFromRequest(Request $request, SalesChannelContext $context): TaxEntity
@@ -517,7 +550,10 @@ class MerchantProductController
                     continue;
                 }
 
-                $productData['media'][] = $mediaEntity->getUrl();
+                $productData['media'][] = [
+                    'url' => $mediaEntity->getUrl(),
+                    'id' => $mediaEntity->getId()
+                ];
             }
         }
 

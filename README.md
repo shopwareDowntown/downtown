@@ -28,7 +28,7 @@ it is open source anyone is able to set up a a web server and provide the same s
 A picture is worth a thousand words, so here are some example screen designs of the portal. The text is in german,
 since the portal was initially developed for the german market.
 
-![The registration page](readme_sc_registration.jpg?raw=true "The registration page") 
+![The registration page](.github/readme_sc_registration.jpg?raw=true "The registration page") 
 
 After the registration, the organisation has to be activated by the portal owner. Then these steps follow:
 
@@ -41,11 +41,11 @@ After the registration, the organisation has to be activated by the portal owner
  
 This is how the landing page for an organisation or local authority looks:
 
-![Landing page for a local authority](readme_sc_lp_org.jpg?raw=true "Landing page for a local authority")
+![Landing page for a local authority](.github/readme_sc_lp_org.jpg?raw=true "Landing page for a local authority")
 
 And here is an example of a retailer's landing page: 
  
-![Landing page for a retailer](readme_sc_lp_retail.jpg?raw=true "Landing page for a retailer") 
+![Landing page for a retailer](.github/readme_sc_lp_retail.jpg?raw=true "Landing page for a retailer") 
 
 ## Technology
 
@@ -53,29 +53,51 @@ And here is an example of a retailer's landing page:
 
 ## The Portal
 
-Prerequisites: [docker](https://docs.docker.com/install/), [docker-compose](https://docs.docker.com/compose/install/), [node/npm](https://nodejs.org/en/download/) 
+Prerequisites: [docker](https://docs.docker.com/install/), [docker-compose](https://docs.docker.com/compose/install/), [node/npm](https://nodejs.org/en/download/)
+
+> :warning: **The docker setup currently only works if your user ID is 1000.**   
+> Execute `id -u` on your terminal to check.
 
 Clone the project:
 
 ```shell script
-git clone git@github.com:shopwareDowntown/downtown.git
+git clone https://github.com/shopwareDowntown/downtown.git
 ```
 
-Change into the project directory, then start the docker containers and change into the app container:
+Change into the project directory, then start the docker containers, add the cache directory and change into the app container:
 
 ```shell script
-docker-compose build  && \
-docker-compose up -d  && \
+cd downtown
+```
+
+```shell script
+docker-compose build
+```
+
+```shell script
+docker-compose up -d
+```
+
+```shell script
 docker-compose exec app_server sh
 ```
 
 When inside the app container, do a basic install, generate a JWT secret and an App Secret, then exit the container:
 
 ```shell script
-bin/console system:install --create-database --basic-setup --force && \
-bin/console system:generate-jwt-secret --force && \
-bin/console system:generate-app-secret  && \# put into docker-compose.yml 
-exit 
+bin/console system:install --create-database --basic-setup --force
+```
+
+```shell script
+bin/console system:generate-jwt-secret --force
+```
+
+```shell script
+bin/console system:generate-app-secret # put into docker-compose.yml
+```
+
+```shell script
+exit
 ```
 
 The App Secret is only shown on screen, you have to put it manually into the `docker-compose.yml`, right after `- APP_SECRET=`.
@@ -83,7 +105,7 @@ The App Secret is only shown on screen, you have to put it manually into the `do
 Then regenerate the containers by re-executing up:
 
 ```shell script
-docker-compose up -d  
+docker-compose up -d
 ```
 
 Please note:
@@ -106,10 +128,14 @@ Currently there is no docker container available, so you need to start the proje
 Change into the directory `src/MerchantFrontend`. Then install dependencies and run the project: 
 
 ```shell script
+cd src/MerchantFrontend
+```
+
+```shell script
 npm install && npm run start
 ```
 
-After the build and start has finished, the merchant portal is available at [http://localhost:4200/](http://localhost:4200/).
+After the promt `Compiled successfully`, the merchant portal is available at [http://localhost:4200/](http://localhost:4200/).
 
 Please be aware: The registration for organisations is currently not wired up to the portal, it's just a hubspot form,
 for production use replace it with your own. For new organisations please create a sales channel manually in [the portal](http://localhost:8000/admin).
@@ -140,4 +166,4 @@ Help retailers by contributing to this project.
 
 # Contributors
 
-[![shyim](avatars/shyim.png?raw=true "shyim")](https://github.com/shyim) [![arnoldstoba](avatars/arnoldstoba.png?raw=true "arnoldstoba")](https://github.com/arnoldstoba) [![PaddyS](avatars/paddys.png?raw=true "PaddyS")](https://github.com/PaddyS) [![FloBWer](avatars/flobwer.png?raw=true "FloBWer")](https://github.com/FloBWer) [![JanPietrzyk](avatars/janpietrzyk.png?raw=true "JanPietrzyk")](https://github.com/JanPietrzyk) [![PascalThesing](avatars/pascalthesing.png?raw=true "PascalThesing")](https://github.com/PascalThesing) ![Kevin Mattutat](avatars/kevin-mattutat-spaceparrots-dekevin-mattutat.png?raw=true "Kevin Mattutat") ![Andreas Wolf](avatars/a-wolf-shopware-comandreas-wolf.png?raw=true "Andreas Wolf") [![and-wolf](avatars/and-wolf.png?raw=true "and-wolf")](https://github.com/and-wolf) [![oterhaar](avatars/oterhaar.png?raw=true "oterhaar")](https://github.com/oterhaar) [![MalteJanz](avatars/maltejanz.png?raw=true "MalteJanz")](https://github.com/MalteJanz) [![seggewiss](avatars/seggewiss.png?raw=true "seggewiss")](https://github.com/seggewiss) [![maike93](avatars/maike93.png?raw=true "maike93")](https://github.com/maike93) ![Maike Sestendrup](avatars/m-sestendrup-shopware-commaike-sestendrup.png?raw=true "Maike Sestendrup") [![marcelbrode](avatars/marcelbrode.png?raw=true "marcelbrode")](https://github.com/marcelbrode) [![swDennis](avatars/swdennis.png?raw=true "swDennis")](https://github.com/swDennis) ![Oliver Terhaar](avatars/o-terhaar-shopware-comoliver-terhaar.png?raw=true "Oliver Terhaar") [![xPand4B](avatars/xpand4b.png?raw=true "xPand4B")](https://github.com/xPand4B) ![Carlos Jansen](avatars/c-jansen-shopware-comcarlos-jansen.png?raw=true "Carlos Jansen") [![Carlosjan](avatars/carlosjan.png?raw=true "Carlosjan")](https://github.com/Carlosjan) [![Draykee](avatars/draykee.png?raw=true "Draykee")](https://github.com/Draykee) [![jakob-kruse](avatars/jakob-kruse.png?raw=true "jakob-kruse")](https://github.com/jakob-kruse) [![lukasrump](avatars/lukasrump.png?raw=true "lukasrump")](https://github.com/lukasrump) [![SebastianFranze](avatars/sebastianfranze.png?raw=true "SebastianFranze")](https://github.com/SebastianFranze) [![Christian-Rades](avatars/christian-rades.png?raw=true "Christian-Rades")](https://github.com/Christian-Rades) [![florianklockenkemper](avatars/florianklockenkemper.png?raw=true "florianklockenkemper")](https://github.com/florianklockenkemper) [![niklas-rudde](avatars/niklas-rudde.png?raw=true "niklas-rudde")](https://github.com/niklas-rudde) [![dnoegel](avatars/dnoegel.png?raw=true "dnoegel")](https://github.com/dnoegel) ![Jakob Kruse](avatars/j-kruse-shopware-comjakob-kruse.png?raw=true "Jakob Kruse") ![Luke Wenkers](avatars/l-wenkers-shopware-comluke-wenkers.png?raw=true "Luke Wenkers") 
+[![shyim](.github/avatars/shyim.png?raw=true "shyim")](https://github.com/shyim) [![arnoldstoba](.github/avatars/arnoldstoba.png?raw=true "arnoldstoba")](https://github.com/arnoldstoba) [![PaddyS](.github/avatars/paddys.png?raw=true "PaddyS")](https://github.com/PaddyS) [![FloBWer](.github/avatars/flobwer.png?raw=true "FloBWer")](https://github.com/FloBWer) [![JanPietrzyk](.github/avatars/janpietrzyk.png?raw=true "JanPietrzyk")](https://github.com/JanPietrzyk) [![PascalThesing](.github/avatars/pascalthesing.png?raw=true "PascalThesing")](https://github.com/PascalThesing) ![Kevin Mattutat](.github/avatars/kevin-mattutat-spaceparrots-dekevin-mattutat.png?raw=true "Kevin Mattutat") ![Andreas Wolf](.github/avatars/a-wolf-shopware-comandreas-wolf.png?raw=true "Andreas Wolf") [![and-wolf](.github/avatars/and-wolf.png?raw=true "and-wolf")](https://github.com/and-wolf) [![oterhaar](.github/avatars/oterhaar.png?raw=true "oterhaar")](https://github.com/oterhaar) [![MalteJanz](.github/avatars/maltejanz.png?raw=true "MalteJanz")](https://github.com/MalteJanz) [![seggewiss](.github/avatars/seggewiss.png?raw=true "seggewiss")](https://github.com/seggewiss) [![maike93](.github/avatars/maike93.png?raw=true "maike93")](https://github.com/maike93) ![Maike Sestendrup](.github/avatars/m-sestendrup-shopware-commaike-sestendrup.png?raw=true "Maike Sestendrup") [![marcelbrode](.github/avatars/marcelbrode.png?raw=true "marcelbrode")](https://github.com/marcelbrode) [![swDennis](.github/avatars/swdennis.png?raw=true "swDennis")](https://github.com/swDennis) ![Oliver Terhaar](.github/avatars/o-terhaar-shopware-comoliver-terhaar.png?raw=true "Oliver Terhaar") [![xPand4B](.github/avatars/xpand4b.png?raw=true "xPand4B")](https://github.com/xPand4B) ![Carlos Jansen](.github/avatars/c-jansen-shopware-comcarlos-jansen.png?raw=true "Carlos Jansen") [![Carlosjan](.github/avatars/carlosjan.png?raw=true "Carlosjan")](https://github.com/Carlosjan) [![Draykee](.github/avatars/draykee.png?raw=true "Draykee")](https://github.com/Draykee) [![jakob-kruse](.github/avatars/jakob-kruse.png?raw=true "jakob-kruse")](https://github.com/jakob-kruse) [![lukasrump](.github/avatars/lukasrump.png?raw=true "lukasrump")](https://github.com/lukasrump) [![SebastianFranze](.github/avatars/sebastianfranze.png?raw=true "SebastianFranze")](https://github.com/SebastianFranze) [![Christian-Rades](.github/avatars/christian-rades.png?raw=true "Christian-Rades")](https://github.com/Christian-Rades) [![florianklockenkemper](.github/avatars/florianklockenkemper.png?raw=true "florianklockenkemper")](https://github.com/florianklockenkemper) [![niklas-rudde](.github/avatars/niklas-rudde.png?raw=true "niklas-rudde")](https://github.com/niklas-rudde) [![dnoegel](.github/avatars/dnoegel.png?raw=true "dnoegel")](https://github.com/dnoegel) ![Jakob Kruse](.github/avatars/j-kruse-shopware-comjakob-kruse.png?raw=true "Jakob Kruse") ![Luke Wenkers](.github/avatars/l-wenkers-shopware-comluke-wenkers.png?raw=true "Luke Wenkers") 

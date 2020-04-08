@@ -2,7 +2,6 @@ FROM alpine:3.10
 
 ENV COMPOSER_HOME=/var/cache/composer
 ENV PROJECT_ROOT=/sw6
-ENV ARTIFACTS_DIR=/artifacts
 ENV LD_PRELOAD=/usr/lib/preloadable_libiconv.so
 
 RUN apk --no-cache add \

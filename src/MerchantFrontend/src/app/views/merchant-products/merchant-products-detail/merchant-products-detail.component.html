@@ -35,7 +35,7 @@
     <div class="picture-inner-container">
       <div *ngIf="form.get('media').value; else imageOrPlaceholder">{{form.get('media').value[0].name}}</div>
       <ng-template #imageOrPlaceholder>
-        <img style="max-width: 100%" [src]="product.media[0]" *ngIf="product.media; else placeholderText">
+        <img style="max-width: 100%" [src]="product.media[0].url" *ngIf="product.media; else placeholderText">
         <ng-template #placeholderText>{{'MERCHANT.PRODUCTS.DETAILS.NO_IMAGE' | translate}}</ng-template>
       </ng-template>
       <div class="control">

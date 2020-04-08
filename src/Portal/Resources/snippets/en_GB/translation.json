@@ -11,9 +11,9 @@
         "publicOwner": "Owner"
     },
     "checkout": {
-        "cartContainsMultipleMerchants": "Only products can be purchased from one merchant at a time",
+        "cartContainsMultipleMerchants": "Products can be purchased from only one merchant at a time",
         "cartHasInvalidShippingMethod": "The selected shipping method is not available.",
-        "cartWrongProductType": "Show products can be purchased.",
+        "cartWrongProductType": "Shown products cannot be purchased.",
         "cartContainsMultipleProductTypes": "Only one product type can be ordered at a time"
     },
     "error": {
@@ -22,7 +22,7 @@
     },
     "mail": {
         "merchant_order_confirmation": {
-            "subject": "New order at Downtowns",
+            "subject": "New order at Downtown",
             "hello": "Hello %merchant%,",
             "youHaveNewOrder": "You have received a new order.",
             "orderItems": "Order items",
@@ -38,15 +38,15 @@
             "deliveryAddress": "Delivery address"
         },
         "merchant_registration": {
-            "subject": "Your registration at Downtowns",
+            "subject": "Your registration at Downtown",
             "hello": "Hello %merchant%,",
-            "text": "Please confirm your e-mail address. After confirmation you will be redirected to the portal and can log in.",
+            "text": "Please confirm your e-mail address. After confirming, you will be re-directed to the portal and be able to log in.",
             "confirmButton": "Confirm e-mail"
         },
         "merchant_reset_password": {
             "subject": "Forgotten password Downtown request",
             "hello": "Hello %merchant%,",
-            "text": "a request has been made in the portal to reset your password.<br>\nPlease confirm the link below to define a new password.",
+            "text": "A request has been made in the portal to reset your password.<br>\nPlease confirm the link below to define a new password.",
             "confirmButton": "Reset password"
         },
         "voucher_customer": {
