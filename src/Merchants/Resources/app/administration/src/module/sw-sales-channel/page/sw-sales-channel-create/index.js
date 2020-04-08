@@ -5,6 +5,9 @@ Component.override('sw-sales-channel-create', {
         landingPageRepository() {
             return this.repositoryFactory.create('sales_channel_landing_page');
         },
+        organizationRepository() {
+            return this.repositoryFactory.create('organization');
+        }
     },
 
     methods: {
@@ -13,6 +16,8 @@ Component.override('sw-sales-channel-create', {
 
             this.$set(this.salesChannel.extensions, 'landingPage', this.landingPageRepository.create(Shopware.Context.Api));
             this.salesChannel.extensions.landingPage.salesChannelId = this.salesChannel.id;
+            this.$set(this.salesChannel.extensions, 'organization', this.organizationRepository.create(Shopware.Context.Api));
+            this.salesChannel.extensions.organization.salesChannelId = this.salesChannel.id;
         },
 
         onSave() {

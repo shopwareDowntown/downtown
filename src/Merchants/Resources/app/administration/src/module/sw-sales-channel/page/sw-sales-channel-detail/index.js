@@ -5,6 +5,9 @@ Component.override('sw-sales-channel-detail', {
         landingPageRepository() {
             return this.repositoryFactory.create('sales_channel_landing_page');
         },
+        organizationRepository() {
+            return this.repositoryFactory.create('organization');
+        },
     },
 
     methods: {
@@ -26,10 +29,24 @@ Component.override('sw-sales-channel-detail', {
                         this.salesChannel.extensions.landingPage = landingPage;
                     }
 
+                    if (!this.salesChannel.extensions.organization) {
+                        const organization = this.organizationRepository.create(this.context);
+                        organization.salesChannelId = entity.id;
+                        this.salesChannel.extensions.organization = organization;
+                    }
+
                     this.generateAccessUrl();
 
                     this.isLoading = false;
                 });
+        },
+
+        getLoadSalesChannelCriteria() {
+            let criteria = this.$super('getLoadSalesChannelCriteria');
+
+            criteria.addAssociation('organization');
+
+            return criteria;
         },
 
         onSave() {

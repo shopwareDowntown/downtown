@@ -11,3 +11,27 @@
             required>
     </sw-entity-single-select>
 {% endblock %}
+
+{% block sw_sales_channel_detail_base_options_domains %}
+    <sw-card title="Organization Login">
+        <sw-field
+            type="text"
+            validation="required"
+            required
+            placeholder="Email"
+            label="Email"
+            v-model="salesChannel.extensions.organization.email"
+        ></sw-field>
+
+        <sw-field
+            type="password"
+            validation="required"
+            required
+            placeholder="Password"
+            label="Password"
+            v-model="salesChannel.extensions.organization.password"
+        ></sw-field>
+    </sw-card>
+
+    {% parent %}
+{% endblock %}
