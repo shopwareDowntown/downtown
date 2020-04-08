@@ -1,31 +1,54 @@
 import { Injectable } from '@angular/core';
-import { Authority } from '../models/authority.model';
+
 import { Merchant } from '../models/merchant.model';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Organization } from '../models/organization.model';
+
+export const enum Role {
+  merchant = 'merchant',
+  organization = 'organization'
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class StateService {
 
-  private _authority = new BehaviorSubject<Authority | null>(null);
+  private _organization = new BehaviorSubject<Organization | null>(null);
   private _merchant = new BehaviorSubject<Merchant | null>(null);
   private _swContextToken = new BehaviorSubject<string | null>(null);
 
-  getAuthority(): Observable<Authority | null> {
-    return this._authority;
+  getOrganization(): Observable<Organization | null> {
+    return this._organization;
   }
 
-  setAuthority(value: Authority | null) {
-    this._authority.next(value);
+  setOrganization(value: Organization | null) {
+    this._organization.next(value);
+  }
+
+  getLoggedInRole():Observable<Role|null> {
+    return combineLatest([
+      this.getMerchant(),
+      this.getOrganization()
+    ]).pipe(
+      map(([merchant, organization]: [Merchant, Organization]) => {
+        if (merchant) {
+          return Role.merchant;
+        }
+        if (organization) {
+          return Role.organization;
+        }
+        return null;
+      })
+    )
   }
 
   getMerchant(): Observable<Merchant | null> {
     return this._merchant;
   }
 
-  setMerchant(value: Merchant | null) {
+  setMerchant(value: Merchant | null): void {
     this._merchant.next(value);
   }
 
@@ -33,11 +56,11 @@ export class StateService {
     return this._swContextToken;
   }
 
-  setSwContextToken(value: string | null) {
+  setSwContextToken(value: string | null): void {
     this._swContextToken.next(value);
   }
 
-  isLoggedIn(): Observable<boolean> {
+  isLoggedInAsMerchant(): Observable<boolean> {
     return combineLatest([
       this.getSwContextToken(),
       this.getMerchant()
@@ -49,8 +72,19 @@ export class StateService {
       );
   }
 
-  reset() {
-    this.setAuthority(null);
+  isLoggedInAsOrganization(): Observable<boolean> {
+    return combineLatest([
+      this.getSwContextToken(),
+      this.getOrganization()
+    ]).pipe (
+      map(([swContextToken, authority]: [string | null, Organization | null]) => {
+        return swContextToken && null !== authority;
+      })
+    )
+  }
+
+  reset(): void {
+    this.setOrganization(null);
     this.setMerchant(null);
     this.setSwContextToken(null);
   }

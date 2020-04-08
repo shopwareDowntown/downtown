@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Authority } from '../../core/models/authority.model';
 import { MerchantApiService } from '../../core/services/merchant-api.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PasswordValidators } from '../../shared/validators/password.validator';
 import { Merchant, MerchantRegistration } from '../../core/models/merchant.model';
 import { ToastService } from '../../core/services/toast.service';
 import { TranslateService } from '@ngx-translate/core';
+import { OrganizationAuthority } from '../../core/models/organization.model';
 
 @Component({
   selector: 'portal-merchant-register',
@@ -15,7 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class MerchantRegisterComponent implements OnInit {
 
-  authorities$: Observable<Authority[]>;
+  authorities$: Observable<OrganizationAuthority[]>;
   registerForm: FormGroup;
   registrationFinished = false;
   showDuplicateMailError = false;

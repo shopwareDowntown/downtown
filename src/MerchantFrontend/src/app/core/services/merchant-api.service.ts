@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Merchant, MerchantRegistration, MerchantLoginResult, PasswordReset } from '../models/merchant.model';
 import { Product, ProductListData } from '../models/product.model';
-import { Authority } from '../models/authority.model';
 import { StateService } from '../state/state.service';
 import { map, take } from 'rxjs/operators';
 import { Category } from '../models/category.model';
 import { Country } from '../models/country.model';
 import { environment } from '../../../environments/environment';
 import { Order, OrderListData } from '../models/order.model';
+import { Organization, OrganizationAuthority, OrganizationLoginResult } from '../models/organization.model';
 import { Voucher, VoucherListData } from '../models/voucher.model';
 
 @Injectable({
@@ -26,7 +26,9 @@ export class MerchantApiService {
   ) {
   }
 
-  login(username: string, password: string): Observable<MerchantLoginResult> {
+  // merchant routes
+
+  loginMerchant(username: string, password: string): Observable<MerchantLoginResult> {
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
 
@@ -38,8 +40,6 @@ export class MerchantApiService {
     );
     return this.http.post<MerchantLoginResult>(this.apiUrl + '/merchant-api/v1/login', body, {headers: headers});
   }
-
-  // merchant routes
 
   registerMerchant(merchantRegistration: MerchantRegistration): Observable<any> {
     let headers = new HttpHeaders();
@@ -152,8 +152,8 @@ export class MerchantApiService {
 
   // authority route
 
-  getAuthorities(): Observable<Authority[]> {
-    return this.http.get<Authority[]>(this.apiUrl + '/merchant-api/v1/authorities');
+  getAuthorities(): Observable<OrganizationAuthority[]> {
+    return this.http.get<OrganizationAuthority[]>(this.apiUrl + '/merchant-api/v1/authorities');
   }
 
   getCountries(): Observable<{ data: Country[]}> {
@@ -198,6 +198,25 @@ export class MerchantApiService {
 
   redeemVoucher(voucher: Voucher): Observable<{data: string}> {
     return this.http.post<{data: string}>(this.apiUrl + '/merchant-api/v1/voucher-funding/voucher/redeem', JSON.stringify({ code: voucher.code}), {headers: this.getJsonContentTypeHeaders()});
+  }
+
+  //organization routes
+
+  loginOrganization(username: string, password: string): Observable<OrganizationLoginResult> {
+    let headers = new HttpHeaders();
+    headers = headers.set('Content-Type', 'application/json');
+
+    const body = JSON.stringify(
+      {
+        email: username,
+        password: password,
+      }
+    );
+    return this.http.post<OrganizationLoginResult>(this.apiUrl + '/organization-api/v1/login', body, {headers: headers});
+  }
+
+  getOrganization(): Observable<Organization> {
+    return this.http.get<Organization>(this.apiUrl + '/organization-api/v1/organization', {headers: this.getJsonContentTypeHeaders()});
   }
 
   private getHeaders(): { [header: string]: string | string[];} {

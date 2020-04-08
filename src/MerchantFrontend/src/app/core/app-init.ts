@@ -10,12 +10,13 @@ export function onAppInit(locationAngular: Location, loginService: LoginService,
 
       // check for a valid token
       const token = localStorageService.getItem('sw-context-token');
+      const role = localStorageService.getItem('role');
       if (token) {
-        loginService.loginWithToken(token)
+        loginService.loginWithToken(token, role)
           .pipe(
             catchError((error: any) => {
               loginService.logout();
-              locationAngular.go('login/merchant');
+              locationAngular.go('');
               return of(false);
             })
           )

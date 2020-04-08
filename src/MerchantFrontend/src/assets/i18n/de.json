@@ -18,11 +18,13 @@
 	"COMMON.LAST_NAME": "Nachname",
 	"COMMON.LOCATION": "Ort",
 	"COMMON.LOGIN": "LOGIN",
+	"COMMON.MERCHANT": "Händler",
 	"COMMON.NAME": "Name",
 	"COMMON.OF": "von",
 	"COMMON.OPEN": "Offen",
 	"COMMON.ORDERS": "Bestellungen",
 	"COMMON.ORDER_NUMBER": "Bestellnummer",
+	"COMMON.ORGANIZATION": "Organisation",
 	"COMMON.Order": "Bestellung",
 	"COMMON.PASSWORD": "Passwort",
 	"COMMON.PHONE": "Telefon",
@@ -154,9 +156,12 @@
 	"MERCHANT.VOUCHERS.REDEEMED_AT": "eingelöst am",
 	"MERCHANT.VOUCHERS.REDEEM_VOUCHER": "Gutschein einlösen",
 	"MERCHANT.VOUCHERS.TITLE": "Gutscheine",
+	"ORGANIZATION.LOGIN.HEADLINE": "Hallo und Willkommen zurück!",
+	"ORGANIZATION.LOGIN.SUB_HEADLINE": "Melde Dich im Namen Deiner Organisation bei Downtown an.",
 	"SIDEBAR.HOME": "Home",
 	"SIDEBAR.INFORMATION": "Informationen",
 	"SIDEBAR.LOGOUT": "Logout",
 	"SIDEBAR.PRODUCTS": "Produkte",
-	"SIDEBAR.VOUCHERS": "Gutscheine"
+	"SIDEBAR.VOUCHERS": "Gutscheine",
+	"SIDEBAR.MERCHANTS": "Händler"
 }

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MerchantApiService } from '../../core/services/merchant-api.service';
-import { Authority } from 'src/app/core/models/authority.model';
+
 import { ActivatedRoute } from '@angular/router';
+import { OrganizationAuthority } from '../../core/models/organization.model';
 
 @Component({
   selector: 'portal-dashboard',
@@ -13,7 +14,7 @@ export class DashboardComponent implements OnInit{
   showRegisterOrganizationModal: boolean;
   showRegisterMerchantModal: boolean;
   showPasswordResetConfirmModal = false;
-  authorities$: Observable<Authority[]>;
+  authorities$: Observable<OrganizationAuthority[]>;
   registrationCompleted = false;
   token: string;
 
@@ -35,7 +36,7 @@ export class DashboardComponent implements OnInit{
 
   }
 
-  getAuthorities(): Observable<Authority[]>{
+  getAuthorities(): Observable<OrganizationAuthority[]>{
     return this.authorities$ = this.merchantApiService.getAuthorities();
   }
 
