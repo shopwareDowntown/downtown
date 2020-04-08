@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="Shopware\Production\Merchants\Storefront\Page\Confirm\ConfirmPageLoadedSubscriber">
+            <argument type="service" id="product.repository"/>
+            <argument type="service" id="event_dispatcher"/>
+            <tag name="kernel.event_listener"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Storefront\Controller\MerchantController" public="true">
+            <argument type="service" id="sales_channel.product.repository"/>
+            <argument type="service" id="merchant.repository"/>
+            <argument type="service" id="Shopware\Storefront\Page\GenericPageLoader"/>
+            <argument type="service" id="event_dispatcher"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Storefront\Controller\DoubleOptinController" public="true">
+            <argument type="service" id="merchant.repository"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Storefront\SeoUrlRoute\MerchantPageSeoUrlRoute">
+            <argument type="service" id="Shopware\Production\Merchants\Content\Merchant\MerchantDefinition"/>
+            <tag name="shopware.seo_url.route"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Storefront\Page\Navigation\NavigationPageSubscriber">
+            <argument type="service" id="Shopware\Core\Content\Cms\SalesChannel\SalesChannelCmsPageLoader"/>
+            <argument type="service" id="category.repository"/>
+            <tag name="kernel.event_listener"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Storefront\Pagelet\Footer\FooterPageletSubscriber">
+            <tag name="kernel.event_listener"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Storefront\Services\NavigationLoader" decorates="Shopware\Core\Content\Category\Service\NavigationLoader">
+            <argument type="service" id="Doctrine\DBAL\Connection"/>
+            <argument type="service" id="sales_channel.category.repository"/>
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="Shopware\Core\Content\Seo\SeoUrlPlaceholderHandlerInterface"/>
+        </service>
+    </services>
+</container>

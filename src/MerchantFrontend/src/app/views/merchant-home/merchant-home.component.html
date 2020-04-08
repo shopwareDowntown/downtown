@@ -1,38 +1,28 @@
 <portal-container [centered]="false">
   <div class="home-content">
-    <h1>Willkommen in Deinem Händler-Portal</h1>
-    <p>
-      In der aktuellen Corona-Krise ist das Händler-Portal ein
-      Unterstützungsangebot an Dich. Hier kannst Du Deine aktuellen Angebote
-      hochladen und sie ohne Zeitverlust an Deine Kunden kommunizieren. Du
-      erhöhst Deine Sichtbarkeit und kannst den Kontakt zu Deinen Kunden
-      aufrechthalten.
-    </p>
+    <h1>{{'MERCHANT.HOME.HEADLINE' | translate}}</h1>
+    <p>{{'MERCHANT.HOME.TEXT' | translate}}</p>
   </div>
   <div class="home-steps">
-    <h4>Dein Zwei-Schritte Programm zum Shop</h4>
+    <h4>{{'MERCHANT.HOME.STEPS.HEADLINE' | translate}}</h4>
     <div class="step-section">
       <div class="section-header">
         <clr-icon shape="store" class="is-solid" size="36"></clr-icon>
-        <h4>Hinterlege Deine Shopinformationen</h4>
+        <h4>{{'MERCHANT.HOME.STEPS.INFORMATION.HEADLINE' | translate}}</h4>
       </div>
-      <p>Bearbeite hier die Rahmendaten Deines Shops.</p>
+      <p>{{'MERCHANT.HOME.STEPS.INFORMATION.TEXT' | translate}}</p>
       <button class="btn btn-primary btn-link" routerLink="/merchant/profile">
-        Shopinformationen bearbeiten
+        {{'MERCHANT.HOME.STEPS.INFORMATION.BUTTON_TEXT' | translate}}
       </button>
     </div>
     <div class="step-section">
       <div class="section-header">
         <clr-icon shape="block" class="is-solid" size="36"></clr-icon>
-        <h4>Lade Deine Produkte hoch</h4>
+        <h4>{{'MERCHANT.HOME.STEPS.PRODUCTS.HEADLINE' | translate}}</h4>
       </div>
-      <p>
-        Füge ganz einfach Produkte aus Deinem bestehenden Sortiment hinzu. Tipp:
-        Du kannst Produkte inaktiv schalten, sollte keine Ware mehr vorhanden
-        sein.
-      </p>
+      <p>{{'MERCHANT.HOME.STEPS.PRODUCTS.TEXT' | translate}}</p>
       <button class="btn btn-primary btn-link" routerLink="/merchant/products">
-        Produkte anlegen
+        {{'MERCHANT.HOME.STEPS.PRODUCTS.BUTTON_TEXT' | translate}}
       </button>
     </div>
   </div>

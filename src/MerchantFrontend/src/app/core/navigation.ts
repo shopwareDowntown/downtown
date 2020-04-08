@@ -58,9 +58,10 @@ export class NavigationItem {
 }
 
 export const NAVIGATION_ADMIN_MERCHANT = [
-  new NavigationItem('Home', '/merchant/home').setIcon('home').sidebar(),
-  new NavigationItem('Informationen', '/merchant/profile').setIcon('help-info').sidebar(),
-  new NavigationItem('Produkte', '/merchant/products').setIcon('shopping-bag').sidebar(),
-  new NavigationItem('Bestellungen', '/merchant/orders').setIcon('bundle').sidebar(),
+  new NavigationItem('SIDEBAR.HOME', '/merchant/home').setIcon('home').sidebar(),
+  new NavigationItem('SIDEBAR.INFORMATION', '/merchant/profile').setIcon('help-info').sidebar(),
+  new NavigationItem('SIDEBAR.PRODUCTS', '/merchant/products').setIcon('shopping-bag').sidebar(),
+  new NavigationItem('COMMON.ORDERS', '/merchant/orders').setIcon('bundle').sidebar(),
+  new NavigationItem('SIDEBAR.VOUCHERS', '/merchant/vouchers').setIcon('shopping-bag').sidebar(),
   //new NavigationItem('Lieferungen', '/merchant/delivery').setIcon('truck').sidebar(),
 ];

@@ -13,10 +13,12 @@
     "checkout": {
         "cartContainsMultipleMerchants": "Es können nur Produkte von einem Händler gleichzeitig gekauft werden",
         "cartHasInvalidShippingMethod": "Die ausgewählte Versandart steht nicht zur Verfügung.",
-        "cartWrongProductType": "Es können keine  Anzeigeprodukte gekauft werden."
+        "cartWrongProductType": "Es können keine  Anzeigeprodukte gekauft werden.",
+        "cartContainsMultipleProductTypes": "Es kann nur ein Produkt-Typ gleichzeitig bestellt werden"
     },
     "error": {
-        "cartHasInvalidShippingMethod": "Die ausgewählte Versandart steht nicht zur Verfügung."
+        "cartHasInvalidShippingMethod": "Die ausgewählte Versandart steht nicht zur Verfügung.",
+        "cartContainsMultipleProductTypes": "Es kann nur ein Produkt-Typ gleichzeitig bestellt werden"
     },
     "mail": {
         "merchant_order_confirmation": {
@@ -46,6 +48,48 @@
             "hello": "Hallo %merchant%,",
             "text": "im Portal wurde eine Anfrage gestellt, um Ihr Passwort zurückzusetzen.<br>\nBitte bestätigen Sie den untenstehenden Link, um ein neues Passwort zu definieren.",
             "confirmButton": "Passwort zurücksetzen"
+        },
+        "voucher_customer": {
+            "subject": "Ihr bestellter Gutschein",
+            "hello": "Hallo %name%,",
+            "youHaveNewOrder": "Im Anhang finden Sie den Gutschein als PDF.",
+            "orderItems": "Bestellpositionen",
+            "tableHeader": {
+                "pos": "Pos",
+                "name": "Name",
+                "codes": "Codes",
+                "amount": "Anzahl",
+                "price": "Preis",
+                "totalPrice": "Summe"
+            },
+            "totalPrice": "Gesammtsumme"
+        },
+        "voucher_merchant": {
+            "subject": "Ein Gutschein wurde gekauft",
+            "hello": "Hallo %merchant%,",
+            "youHaveNewOrder": "Ein Gutschein wurde gerade gekauft und bezahlt",
+            "orderItems": "Bestellpositionen",
+            "tableHeader": {
+                "pos": "Pos",
+                "name": "Name",
+                "codes": "Codes",
+                "amount": "Anzahl",
+                "price": "Preis",
+                "totalPrice": "Summe"
+            },
+            "totalPrice": "Gesammtsumme",
+            "invoiceAddress": "Rechnungsaddresse",
+            "deliveryAddress": "Lieferaddresse"
         }
+    },
+    "voucher": {
+        "voucher": "GUTSCHEIN",
+        "redemptionAddress": "Einlöseaddresse",
+        "phone": "Telefon:",
+        "website": "Webseite:",
+        "email": "Email:",
+        "issuedOn": "Ausgestellt auf",
+        "createDate": "Ausstellungsdatum",
+        "number": "Gutscheinnummer"
     }
 }

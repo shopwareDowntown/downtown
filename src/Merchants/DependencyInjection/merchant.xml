@@ -58,15 +58,15 @@
             <tag name="shopware.entity.definition" entity="sales_channel_landing_page"/>
         </service>
 
-        <service id="Shopware\Production\Merchants\Content\Merchant\CategoryEntityExtension">
+        <service id="Shopware\Production\Merchants\Content\Merchant\Extensions\CategoryEntityExtension">
             <tag name="shopware.entity.extension"/>
         </service>
 
-        <service id="Shopware\Production\Merchants\Content\Merchant\ProductEntityExtension">
+        <service id="Shopware\Production\Merchants\Content\Merchant\Extensions\ProductEntityExtension">
             <tag name="shopware.entity.extension"/>
         </service>
 
-        <service id="Shopware\Production\Merchants\Content\Merchant\OrderEntityExtension">
+        <service id="Shopware\Production\Merchants\Content\Merchant\Extensions\OrderEntityExtension">
             <tag name="shopware.entity.extension"/>
         </service>
 
@@ -76,101 +76,6 @@
 
         <service id="Shopware\Production\Merchants\System\SalesChannel\Extensions\CmsPageExtension">
             <tag name="shopware.entity.extension"/>
-        </service>
-
-        <service id="Shopware\Production\Merchants\Storefront\Page\Navigation\NavigationPageSubscriber">
-            <argument type="service" id="Shopware\Core\Content\Cms\SalesChannel\SalesChannelCmsPageLoader"/>
-            <argument type="service" id="category.repository"/>
-            <tag name="kernel.event_listener"/>
-        </service>
-
-        <service id="Shopware\Production\Merchants\Storefront\Pagelet\Footer\FooterPageletSubscriber">
-            <tag name="kernel.event_listener"/>
-        </service>
-
-        <service id="Shopware\Production\Merchants\Content\Merchant\Services\NavigationLoader" decorates="Shopware\Core\Content\Category\Service\NavigationLoader">
-            <argument type="service" id="Doctrine\DBAL\Connection"/>
-            <argument type="service" id="sales_channel.category.repository"/>
-            <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="Shopware\Core\Content\Seo\SeoUrlPlaceholderHandlerInterface"/>
-        </service>
-
-        <service id="Shopware\Production\Merchants\Content\Merchant\Services\RegistrationService">
-            <argument type="service" id="merchant.repository"/>
-            <argument type="service" id="Shopware\Core\Framework\Validation\DataValidator"/>
-            <argument type="service" id="Shopware\Production\Portal\Services\TemplateMailSender"/>
-        </service>
-
-        <service id="Shopware\Production\Merchants\Content\Merchant\Storefront\Controller\MerchantController" public="true">
-            <argument type="service" id="sales_channel.product.repository"/>
-            <argument type="service" id="merchant.repository"/>
-            <argument type="service" id="Shopware\Storefront\Page\GenericPageLoader"/>
-        </service>
-
-        <service id="Shopware\Production\Merchants\Content\Merchant\Storefront\Controller\DoubleOptinController" public="true">
-            <argument type="service" id="merchant.repository"/>
-        </service>
-
-        <service id="Shopware\Production\Merchants\Content\Merchant\Subscriber\OrderPlacedSubscriber">
-            <argument type="service" id="product.repository"/>
-            <argument type="service" id="order.repository"/>
-            <argument type="service" id="Shopware\Production\Portal\Services\TemplateMailSender"/>
-            <tag name="kernel.event_listener"/>
-        </service>
-
-        <service id="Shopware\Production\Merchants\Content\Merchant\Subscriber\ConfirmPageLoadedSubscriber">
-            <argument type="service" id="product.repository"/>
-            <tag name="kernel.event_listener"/>
-        </service>
-
-        <service id="Shopware\Production\Merchants\Content\Merchant\Services\CartValidator">
-            <argument type="service" id="product.repository"/>
-            <tag name="shopware.cart.validator"/>
-        </service>
-
-        <service id="Shopware\Production\Merchants\Content\Merchant\Api\MerchantProductController" public="true">
-            <argument type="service" id="product.repository"/>
-            <argument type="service" id="tax.repository"/>
-            <argument type="service" id="media.repository"/>
-            <argument type="service" id="merchant.repository"/>
-            <argument type="service" id="product_media.repository"/>
-            <argument type="service" id="Shopware\Core\System\NumberRange\ValueGenerator\NumberRangeValueGeneratorInterface"/>
-            <argument type="service" id="Shopware\Core\Content\Media\MediaService"/>
-            <argument type="service" id="Shopware\Production\Portal\Hacks\StorefrontMediaUploader"/>
-        </service>
-
-        <service id="Shopware\Production\Merchants\Content\Merchant\Api\ResetPasswordController" public="true">
-            <argument type="service" id="merchant.repository"/>
-            <argument type="service" id="merchant_reset_password_token.repository"/>
-            <argument type="service" id="Shopware\Production\Portal\Services\TemplateMailSender"/>
-            <argument type="service" id="translator"/>
-        </service>
-
-        <service id="Shopware\Production\Merchants\Content\Merchant\Api\LoginController" public="true">
-            <argument type="service" id="merchant.repository"/>
-        </service>
-
-        <service id="Shopware\Production\Merchants\Content\Merchant\Api\OrderController" public="true">
-            <argument type="service" id="merchant.repository"/>
-            <argument type="service" id="order.repository"/>
-            <argument type="service" id="Shopware\Core\System\StateMachine\StateMachineRegistry"/>
-        </service>
-
-        <service id="Shopware\Production\Merchants\Content\Merchant\Api\CountryController" public="true">
-            <argument type="service" id="sales_channel.country.repository"/>
-        </service>
-
-        <service id="Shopware\Production\Merchants\Content\Merchant\Api\LogoutController" public="true">
-            <argument type="service" id="merchant_access_token.repository"/>
-        </service>
-
-        <service id="Shopware\Production\Portal\Hacks\StorefrontMerchantMediaImageValidator">
-            <tag name="storefront.media.upload.validator" />
-        </service>
-
-        <service id="Shopware\Production\Merchants\Storefront\SeoUrlRoute\MerchantPageSeoUrlRoute">
-            <argument type="service" id="Shopware\Production\Merchants\Content\Merchant\MerchantDefinition"/>
-            <tag name="shopware.seo_url.route"/>
         </service>
     </services>
 </container>

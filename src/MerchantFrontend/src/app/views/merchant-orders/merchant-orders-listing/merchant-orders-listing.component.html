@@ -1,19 +1,19 @@
 <h1>
-  Bestellungen
+  {{'MERCHANT.ORDER.HEADLINE' | translate}}
 </h1>
 <span>
-  Hier findest Du eine Übersicht über alle erfolgten Bestellungen.
+  {{'MERCHANT.ORDER.SUB_HEADLINE' | translate}}
 </span>
 
 <clr-datagrid (clrDgRefresh)="refresh()" [clrDgLoading]="loading">
-  <clr-dg-placeholder>Keine Bestellungen vorhanden.</clr-dg-placeholder>
+  <clr-dg-placeholder>{{'MERCHANT.ORDER.PLACEHOLDER' | translate}}</clr-dg-placeholder>
 
-  <clr-dg-column>Datum</clr-dg-column>
-  <clr-dg-column>Bestellnummer</clr-dg-column>
-  <clr-dg-column>Name des Kunden</clr-dg-column>
-  <clr-dg-column>Summe</clr-dg-column>
-  <clr-dg-column>Status</clr-dg-column>
-  <clr-dg-column>Aktionen</clr-dg-column>
+  <clr-dg-column>{{'COMMON.DATE' | translate}}</clr-dg-column>
+  <clr-dg-column>{{'COMMON.ORDER_NUMBER' | translate}}</clr-dg-column>
+  <clr-dg-column>{{'MERCHANT.ORDER.CUSTOMER_NAME' | translate}}</clr-dg-column>
+  <clr-dg-column>{{'COMMON.SUM' | translate}}</clr-dg-column>
+  <clr-dg-column>{{'COMMON.STATE' | translate}}</clr-dg-column>
+  <clr-dg-column>{{'COMMON.ACTIONS' | translate}}</clr-dg-column>
   <clr-dg-row *ngFor="let order of orders">
     <clr-dg-cell>{{order.orderDateTime | localeDate}}</clr-dg-cell>
     <clr-dg-cell>{{order.orderNumber}}</clr-dg-cell>
@@ -21,28 +21,28 @@
     <clr-dg-cell>{{order.price.totalPrice}}€</clr-dg-cell>
     <clr-dg-cell>
       <ng-container *ngIf="order.stateMachineState.technicalName === 'open'; else orderCompleted">
-        <span>Offen</span>
+        <span>{{'COMMON.OPEN' | translate}}</span>
       </ng-container>
       <ng-template #orderCompleted>
-        <span>Erledigt</span>
+        <span>{{'MERCHANT.ORDER.COMPLETED' | translate}}</span>
       </ng-template>
     </clr-dg-cell>
     <clr-dg-cell>
       <a (click)="openDetails(order)" aria-haspopup="true" class="tooltip tooltip-xs">
         <clr-icon shape="pencil"></clr-icon>
-        <span class="tooltip-content">Details</span>
+        <span class="tooltip-content">{{'COMMON.DETAILS' | translate}}</span>
       </a>
       <ng-container *ngIf="order.stateMachineState.technicalName === 'open'">
         <a (click)="markOrderAsCompleted(order)" aria-haspopup="true" class="tooltip tooltip-sm">
           <clr-icon size="24" shape="check-circle"></clr-icon>
-          <span class="tooltip-content">Erledigt</span>
+          <span class="tooltip-content">{{'MERCHANT.ORDER.COMPLETED' | translate}}</span>
         </a>
       </ng-container>
     </clr-dg-cell>
   </clr-dg-row>
   <clr-dg-footer>
-    {{ fromOrder }} - {{ tillOrder }} von
-    {{ total }} Bestellungen
+    {{ fromOrder }} - {{ tillOrder }} {{'COMMON.OF' | translate}}
+    {{ total }} {{'COMMON.ORDERS' | translate}}
     <clr-dg-pagination
       [(clrDgPage)]="currentPage"
       #pagination

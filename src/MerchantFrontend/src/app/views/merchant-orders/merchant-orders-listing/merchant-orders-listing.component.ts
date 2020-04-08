@@ -4,6 +4,7 @@ import { Order, OrderListData } from '../../../core/models/order.model';
 import { Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { ToastService } from '../../../core/services/toast.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'portal-merchant-orders-listing',
@@ -24,7 +25,8 @@ export class MerchantOrdersListingComponent implements OnInit {
   constructor(
     private readonly merchantApiService: MerchantApiService,
     private readonly router: Router,
-    private readonly toastService: ToastService
+    private readonly toastService: ToastService,
+    private readonly translateService: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -54,9 +56,13 @@ export class MerchantOrdersListingComponent implements OnInit {
       })
     ).subscribe((order: Order) => {
         this.refresh();
-        this.toastService.success('Die Bestellung wurde als erledigt markiert.');
+        this.toastService.success(
+          this.translateService.instant('MERCHANT.ORDER.TOAST_MESSAGES.COMPLETE_ORDER_SUCCESS_HEADLINE')
+        );
       },
-      () => this.toastService.error('Die Bestellung konnte nicht als erledigt markiert werden.')
+      () => this.toastService.error(
+        this.translateService.instant('MERCHANT.ORDER.TOAST_MESSAGES.COMPLETE_ORDER_ERROR_HEADLINE')
+      )
     );
   }
 

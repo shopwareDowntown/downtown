@@ -56,8 +56,6 @@
           {{ delivery.shippingOrderAddress.zipcode}} {{ delivery.shippingOrderAddress.city }}<br>
           {{ delivery.shippingOrderAddress.country.name }}<br>
         </mj-text>
-
-
       </mj-column>
     </mj-section>
   </mj-body>

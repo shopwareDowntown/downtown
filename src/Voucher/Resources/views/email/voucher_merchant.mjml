@@ -1,0 +1,72 @@
+<mjml>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-image width="200px" src="https://downtowns.io/assets/images/downtown.svg"></mj-image>
+
+        <mj-divider border-color="#6666FF"></mj-divider>
+
+        <mj-text font-size="18px" color="#000001" font-family="helvetica">
+        	{{ 'mail.voucher_merchant.hello'|trans({'%merchant%': merchant.publicCompanyName}) }}<br/><br/>
+          {{ 'mail.voucher_merchant.youHaveNewOrder'|trans }}
+
+        	<br/><br/>
+          <strong>{{ 'mail.voucher_merchant.orderItems'|trans }}</strong><br/>
+          {% set billingAddress = order.addresses.get(order.billingAddressId) %}
+       		{% set delivery = order.deliveries.first %}
+        </mj-text>
+
+         <mj-table>
+          <tr style="border-bottom:1px solid #ecedee;text-align:left;padding:15px 0;">
+            <th style="padding: 0 15px 0 0;">{{ 'mail.voucher_merchant.tableHeader.pos'|trans }}</th>
+            <th style="padding: 0 15px;">{{ 'mail.voucher_merchant.tableHeader.name'|trans }}</th>
+            <th style="padding: 0 0 0 15px;">{{ 'mail.voucher_merchant.tableHeader.codes'|trans }}</th>
+            <th style="padding: 0 0 0 15px;">{{ 'mail.voucher_merchant.tableHeader.amount'|trans }}</th>
+            <th style="padding: 0 0 0 15px;">{{ 'mail.voucher_merchant.tableHeader.price'|trans }}</th>
+            <th style="padding: 0 0 0 15px;">{{ 'mail.voucher_merchant.tableHeader.totalPrice'|trans }}</th>
+          </tr>
+         {% for lineItem in order.lineItems %}
+          <tr>
+            <td style="padding: 0 15px 0 0;">{{ loop.index }}</th>
+            <td style="padding: 0 15px;">{{ lineItem.label|u.wordwrap(80) }}</th>
+            <td style="padding: 0 0 0 15px;">{% set foundVoucher = 0 %}
+                 {% for voucher in vouchers %}
+                     {% if voucher.orderLineItemId == lineItem.id %}
+                         {{ voucher.code }}
+                         {% set foundVoucher = foundVoucher + 1 %}
+                         {% if foundVoucher < lineItem.quantity %}<br>{% endif %}
+                     {% endif %}
+                 {% endfor %}
+            </th>
+            <td style="padding: 0 0 0 15px;">{{ lineItem.quantity }}</th>
+            <td style="padding: 0 0 0 15px;">{{ lineItem.unitPrice|currency(order.currency.isoCode) }}</th>
+            <td style="padding: 0 0 0 15px;">{{ lineItem.totalPrice|currency(order.currency.isoCode) }}</th>
+          </tr>
+         {% endfor %}
+        </mj-table>
+
+        <mj-text font-size="18px" color="#000001" font-family="helvetica">
+          {{ 'mail.voucher_merchant.totalPrice'|trans }} {{ order.amountTotal|currency(order.currency.isoCode) }}
+        </mj-text>
+
+        <mj-text font-size="18px" color="#000001" font-family="helvetica">
+          <strong>{{ 'mail.merchant_order_confirmation.invoiceAddress'|trans }}</strong><br/>
+          {{ billingAddress.company }}<br>
+          {{ billingAddress.firstName }} {{ billingAddress.lastName }}<br>
+          {{ billingAddress.street }} <br>
+          {{ billingAddress.zipcode }} {{ billingAddress.city }}<br>
+          {{ billingAddress.country.name }}<br>
+        </mj-text>
+
+        <mj-text font-size="18px" color="#000001" font-family="helvetica">
+          <strong>{{ 'mail.merchant_order_confirmation.deliveryAddress'|trans }}</strong><br/>
+          {{ delivery.shippingOrderAddress.company }}<br>
+          {{ delivery.shippingOrderAddress.firstName }} {{ delivery.shippingOrderAddress.lastName }}<br>
+          {{ delivery.shippingOrderAddress.street }} <br>
+          {{ delivery.shippingOrderAddress.zipcode}} {{ delivery.shippingOrderAddress.city }}<br>
+          {{ delivery.shippingOrderAddress.country.name }}<br>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

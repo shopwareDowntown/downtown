@@ -1,29 +1,29 @@
 <h1>
-  Produkte
+  {{'MERCHANT.PRODUCTS.HEADLINE' | translate}}
 </h1>
 
 <button type="button" (click)="openAddProductForm()" class="btn btn-primary">
-  Produkt hinzufügen
+  {{'MERCHANT.PRODUCTS.ADD_BUTTON' | translate}}
 </button>
 
 <!-- Datagrid Table -->
 <clr-datagrid (clrDgRefresh)="refresh()" [clrDgLoading]="loading">
-  <clr-dg-placeholder>Keine Produkte gefunden.</clr-dg-placeholder>
+  <clr-dg-placeholder>{{'MERCHANT.PRODUCTS.PLACEHOLDER' | translate}}</clr-dg-placeholder>
 
   <!-- Columns -->
   <clr-dg-column>
-    Name
+    {{'COMMON.NAME' | translate}}
   </clr-dg-column>
   <clr-dg-column>
-    Beschreibung
+    {{'COMMON.DESCRIPTION' | translate}}
   </clr-dg-column>
   <clr-dg-column>
-    Typ
+    {{'COMMON.TYPE' | translate}}
   </clr-dg-column>
   <clr-dg-column>
-    Aktiv
+    {{'COMMON.ACTIVE' | translate}}
   </clr-dg-column>
-  <clr-dg-column>Aktionen</clr-dg-column>
+  <clr-dg-column>{{'COMMON.ACTIONS' | translate}}</clr-dg-column>
 
   <!-- Row -->
   <clr-dg-row *ngFor="let product of products">
@@ -46,8 +46,8 @@
 
   <!-- Footer -->
   <clr-dg-footer>
-    {{ fromProduct }} - {{ tillProduct }} von
-    {{ total }} Produkten
+    {{ fromProduct }} - {{ tillProduct }} {{'COMMON.OF' | translate}}
+    {{ total }} {{'MERCHANT.PRODUCTS.PRODUCTS' | translate}}
     <clr-dg-pagination
       [(clrDgPage)]="currentPage"
       #pagination

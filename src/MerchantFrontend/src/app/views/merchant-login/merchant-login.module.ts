@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MerchantLoginComponent } from './merchant-login.component';
 import { ClrFormsModule, ClrModalModule } from '@clr/angular';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -10,7 +11,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     FormsModule,
     ReactiveFormsModule,
     ClrFormsModule,
-    ClrModalModule
+    ClrModalModule,
+    SharedModule
   ],
   declarations: [
     MerchantLoginComponent

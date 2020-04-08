@@ -8,16 +8,16 @@
             *ngIf="registrationCompleted === false; else newUser"
             class="welcome"
           >
-            Hallo und Willkommen zurück!
+            {{'MERCHANT.LOGIN.HEADLINE' | translate}}
           </h3>
           <ng-template #newUser>
-            <h3>Registrierung erfolgreich!</h3>
+            <h3>{{'MERCHANT.LOGIN.HEADLINE_FIRST_LOGIN' | translate}}</h3>
           </ng-template>
-          <h5 class="hint">Melde Dich bei Downtown an.</h5>
+          <h5 class="hint">{{'MERCHANT.LOGIN.SUB_HEADLINE' | translate}}</h5>
         </section>
         <div class="login-group">
           <clr-input-container>
-            <label>E-Mail-Adresse</label>
+            <label>{{'COMMON.EMAIL_ADDRESS' | translate}}</label>
             <input
               (keypress)="enterLogin($event)"
               formControlName="username"
@@ -27,7 +27,7 @@
             />
           </clr-input-container>
           <clr-input-container>
-            <label>Passwort</label>
+            <label>{{'COMMON.PASSWORD' | translate}}</label>
             <input
               (keypress)="enterLogin($event)"
               formControlName="password"
@@ -38,7 +38,7 @@
           </clr-input-container>
           <div style="text-align: center" *ngIf="isLogging">
             <span class="spinner spinner-inline"></span>
-            <span class="ml-1">Logging in...</span>
+            <span class="ml-1">{{'MERCHANT.LOGIN.LOGGING_IN' | translate}}</span>
           </div>
           <div class="alert alert-danger" *ngIf="loginFailed">
             <div class="alert-items">
@@ -46,7 +46,7 @@
                 <div class="alert-icon-wrapper">
                   <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
                 </div>
-                <span class="alert-text">Falsche E-Mail-Adresse oder falsches Passwort.</span>
+                <span class="alert-text">{{'MERCHANT.LOGIN.WRONG_EMAIL_ADDRESS_OR_PASSWORD' | translate}}</span>
               </div>
             </div>
           </div>
@@ -54,14 +54,14 @@
       </form>
       <div class="modal-footer">
         <div class="login-footer-wrapper">
-          <a href="#" (click)="passwordResetMode=true">Passwort vergessen?</a>
+          <a href="#" (click)="passwordResetMode=true">{{'MERCHANT.LOGIN.FORGOT_PASSWORD' | translate}}</a>
           <button
             type="button"
             (click)="doLogin()"
             class="btn btn-primary"
             [disabled]="loginForm.invalid || isLogging"
           >
-            LOGIN
+            {{'COMMON.LOGIN' | translate}}
           </button>
         </div>
       </div>
@@ -73,11 +73,11 @@
 <ng-template #passwordReset>
   <form class="login" [formGroup]="passwordResetForm" clrForm clrLayout="vertical">
     <section class="title">
-      <h3>Passwort zurücksetzen</h3>
-      <h5 class="hint">Nach dem zurücksetzen bekommst du eine E-Mail.</h5>
+      <h3>{{'MERCHANT.LOGIN.RESET_PASSWORD.HEADLINE' | translate}}</h3>
+      <h5 class="hint">{{'MERCHANT.LOGIN.RESET_PASSWORD.SUB_HEADLINE' | translate}}</h5>
     </section>
     <clr-input-container>
-      <label>E-Mail-Adresse</label>
+      <label>{{'COMMON.EMAIL_ADDRESS' | translate}}</label>
       <input
         formControlName="email"
         type="text"
@@ -88,14 +88,14 @@
   </form>
   <div class="modal-footer">
     <div class="login-footer-wrapper">
-      <a href="#" (click)="passwordResetMode=false">zurück</a>
+      <a href="#" (click)="passwordResetMode=false">{{'COMMON.BACK' | translate}}</a>
       <button
         type="button"
         (click)="doPasswordReset()"
         class="btn btn-primary"
         [disabled]="passwordResetForm.invalid"
       >
-        Passwort zurücksetzen
+        {{'MERCHANT.LOGIN.RESET_PASSWORD.RESET_PASSWORD' | translate}}
       </button>
     </div>
   </div>

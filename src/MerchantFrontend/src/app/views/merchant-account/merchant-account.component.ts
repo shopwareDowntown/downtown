@@ -4,6 +4,7 @@ import { Merchant } from '../../core/models/merchant.model';
 import { StateService } from '../../core/state/state.service';
 import { MerchantApiService } from '../../core/services/merchant-api.service';
 import { ToastService } from '../../core/services/toast.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'portal-merchant-account',
@@ -20,14 +21,17 @@ export class MerchantAccountComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly stateService: StateService,
     private readonly merchantApiService: MerchantApiService,
-    private readonly toastService: ToastService
+    private readonly toastService: ToastService,
+    private readonly translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
     this.stateService.getMerchant().subscribe((merchant: Merchant) => {
       this.merchant = merchant;
     }, () => {
-      this.toastService.error('Händler konnte nicht geladen werden');
+      this.toastService.error(
+        this.translateService.instant('MERCHANT.DETAILS.TOAST_MESSAGES.MERCHANT_LOAD_ERROR_HEADLINE')
+      );
     });
 
     this.form = this.formBuilder.group({
@@ -49,16 +53,18 @@ export class MerchantAccountComponent implements OnInit {
       lastName: this.form.value.lastName
     } as Merchant;
 
-    this.merchantApiService
-      .updateMerchant(updateData)
-      .subscribe((merchant: Merchant) => {
-        this.merchant = merchant;
-        this.stateService.setMerchant(merchant);
-        this.toastService.success('Änderungen gespeichert.')
-      },
-        () => {
-        this.toastService.error('Fehler', 'Deine Änderungen konnten nicht gespeichert werden.');
-      });
+    this.merchantApiService.updateMerchant(updateData).subscribe((merchant: Merchant) => {
+      this.merchant = merchant;
+      this.stateService.setMerchant(merchant);
+      this.toastService.success(
+        this.translateService.instant('MERCHANT.DETAILS.TOAST_MESSAGES.UPDATE_MERCHANT_SUCCESS_HEADLINE')
+      );
+    }, () => {
+      this.toastService.error(
+        this.translateService.instant('MERCHANT.DETAILS.TOAST_MESSAGES.UPDATE_MERCHANT_ERROR_HEADLINE'),
+        this.translateService.instant('MERCHANT.DETAILS.TOAST_MESSAGES.UPDATE_MERCHANT_ERROR_TEXT')
+      );
+    });
   }
 
   openChangePassword() {

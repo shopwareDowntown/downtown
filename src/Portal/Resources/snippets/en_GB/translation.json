@@ -13,10 +13,12 @@
     "checkout": {
         "cartContainsMultipleMerchants": "Products can be purchased from only one merchant at a time",
         "cartHasInvalidShippingMethod": "The selected shipping method is not available.",
-        "cartWrongProductType": "Shown products cannot be purchased."
+        "cartWrongProductType": "Shown products cannot be purchased.",
+        "cartContainsMultipleProductTypes": "Only one product type can be ordered at a time"
     },
     "error": {
-        "cartHasInvalidShippingMethod": "The selected shipping method is not available."
+        "cartHasInvalidShippingMethod": "The selected shipping method is not available.",
+        "cartContainsMultipleProductTypes": "Only one product type can be ordered at a time"
     },
     "mail": {
         "merchant_order_confirmation": {
@@ -46,6 +48,48 @@
             "hello": "Hello %merchant%,",
             "text": "A request has been made in the portal to reset your password.<br>\nPlease confirm the link below to define a new password.",
             "confirmButton": "Reset password"
+        },
+        "voucher_customer": {
+            "subject": "Your ordered voucher",
+            "hello": "Hello %name%,",
+            "youHaveNewOrder": "In the attachment you will find the voucher as PDF.",
+            "orderItems": "Ordered items",
+            "tableHeader": {
+                "pos": "Pos",
+                "name": "Name",
+                "codes": "Codes",
+                "amount": "Amount",
+                "price": "Price",
+                "totalPrice": "Total price"
+            },
+            "totalPrice": "Total price"
+        },
+        "voucher_merchant": {
+            "subject": "A voucher was bought",
+            "hello": "Hello %merchant%,",
+            "youHaveNewOrder": "A voucher has just been bought and paid",
+            "orderItems": "Ordered items",
+            "tableHeader": {
+                "pos": "Pos",
+                "name": "Name",
+                "codes": "Codes",
+                "amount": "Amount",
+                "price": "Price",
+                "totalPrice": "Total price"
+            },
+            "totalPrice": "Total price",
+            "invoiceAddress": "Invoice address",
+            "deliveryAddress": "Delivery address"
         }
+    },
+    "voucher": {
+        "voucher": "VOUCHER",
+        "redemptionAddress": "Redemption address",
+        "phone": "Phone:",
+        "website": "Website:",
+        "email": "E-Mail:",
+        "issuedOn": "Issued on",
+        "createDate": "Date of issue",
+        "number": "Voucher number"
     }
 }

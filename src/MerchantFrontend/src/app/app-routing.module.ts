@@ -7,6 +7,7 @@ import {OrganizationDetailsComponent} from './views/organization-details/organiz
 import {LandingPageLayoutComponent} from './core/layouts/landing-page-layout/landing-page-layout.component';
 import {AdminPageLayoutComponent} from './core/layouts/admin-page-layout/admin-page-layout.component';
 import { MerchantHomeComponent } from './views/merchant-home/merchant-home.component';
+import { MerchantVouchersComponent } from './views/merchant-vouchers/merchant-vouchers.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,7 @@ const routes: Routes = [
       {path: 'home', component: MerchantHomeComponent, canActivate: [AuthGuard]},
       {path: 'detail/:id', component: MerchantDetailsComponent, canActivate: [AuthGuard]},
       {path: 'profile', component: MerchantDetailsComponent, canActivate: [AuthGuard]},
+      {path: 'vouchers', component: MerchantVouchersComponent, canActivate: [AuthGuard]},
       {path: 'products', loadChildren: () => import('./views/merchant-products/merchant-products.module').then(value => value.MerchantProductsModule), canActivate: [AuthGuard]},
       {path: 'delivery', loadChildren: () => import('./views/local-delivery/local-delivery.module').then(value => value.LocalDeliveryModule), canActivate: [AuthGuard]},
       {path: 'orders', loadChildren: () => import('./views/merchant-orders/merchant-orders.module').then(value => value.MerchantOrdersModule), canActivate: [AuthGuard]}

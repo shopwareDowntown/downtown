@@ -1,14 +1,15 @@
 <form clrForm clrLayout="vertical" [formGroup]="form" *ngIf="null !== product">
-  <h3>Basis Informationen</h3>
+  <h3>{{'MERCHANT.PRODUCTS.DETAILS.HEADLINE' | translate}}</h3>
   <clr-select-container>
-    <label>Produkttyp</label>
+    <label>{{'MERCHANT.PRODUCTS.DETAILS.PRODUCT_TYPE' | translate}}</label>
     <select clrSelect name="types" formControlName="productType">
-      <option value="product">Produkt</option>
-      <option value="storeWindow">Showcase</option>
+      <option value="product">{{'COMMON.PRODUCT' | translate}}</option>
+      <option value="storeWindow">{{'COMMON.SHOWCASE' | translate}}</option>
+      <option value="voucher">{{'COMMON.VOUCHER' | translate}}</option>
     </select>
   </clr-select-container>
   <clr-input-container>
-    <label>Produktname</label>
+    <label>{{'MERCHANT.PRODUCTS.DETAILS.PRODUCT_NAME' | translate}}</label>
     <input
       clrInput
       type="text"
@@ -18,7 +19,7 @@
     />
   </clr-input-container>
   <clr-textarea-container>
-    <label>Beschreibungstext</label>
+    <label>{{'MERCHANT.PRODUCTS.DETAILS.DESCRIPTION_TEXT' | translate}}</label>
     <textarea
       clrTextarea
       formControlName="description"
@@ -26,22 +27,27 @@
     ></textarea>
   </clr-textarea-container>
   <clr-input-container>
-    <label>Aktiv</label>
+    <label>{{'COMMON.ACTIVE' | translate}}</label>
     <input clrInput type="checkbox" formControlName="active" clrToggle />
   </clr-input-container>
-  <h3>Produktbild</h3>
-  <div class="image-wrapper">
-    <img style="max-width: 100%" [src]="product.media[0].url" *ngIf="product.media; else noImage">
-    <ng-template #noImage>
-      <div *ngIf="form.get('media').value; else placeholderText">{{form.get('media').value[0].name}}</div>
-      <ng-template #placeholderText>Noch kein Bild vorhanden.</ng-template>
-    </ng-template>
+  <h3>{{'MERCHANT.PRODUCTS.DETAILS.PRODUCT_IMAGE' | translate}}</h3>
+  <div class="picture-outer-container">
+    <div class="picture-inner-container">
+      <div *ngIf="form.get('media').value; else imageOrPlaceholder">{{form.get('media').value[0].name}}</div>
+      <ng-template #imageOrPlaceholder>
+        <img style="max-width: 100%" [src]="product.media[0].url" *ngIf="product.media; else placeholderText">
+        <ng-template #placeholderText>{{'MERCHANT.PRODUCTS.DETAILS.NO_IMAGE' | translate}}</ng-template>
+      </ng-template>
+      <div class="control">
+        <portal-file-upload maxFileSize="5097152" accept="image/x-png,image/jpeg" [label]="'+'" (onSelect)="imageSelected($event)"></portal-file-upload>
+      </div>
+    </div>
   </div>
-  <portal-file-upload maxFileSize="5097152" accept="image/x-png,image/jpeg" [label]="'Bild hochladen'" (onSelect)="imageSelected($event)"></portal-file-upload>
-  <ng-container *ngIf="'product' === form.get('productType').value">
-    <h3>Preis</h3>
+
+  <ng-container *ngIf="'storeWindow' !== form.get('productType').value">
+    <h3>{{'COMMON.PRICE' | translate}}</h3>
     <clr-input-container>
-      <label>Preis</label>
+      <label>{{'COMMON.PRICE' | translate}}</label>
       <input
         clrInput
         type="number"
@@ -53,10 +59,10 @@
       <clr-icon shape="euro"></clr-icon>
     </clr-input-container>
     <clr-select-container>
-      <label>Steuersatz</label>
+      <label>{{'COMMON.TAX_RATE' | translate}}</label>
       <select clrSelect name="tax" formControlName="tax">
-        <option value="7">7% Mehrwertsteuer</option>
-        <option value="19">19% Mehrwertsteuer</option>
+        <option value="7">7% {{'COMMON.VALUE_ADDED_TAX' | translate}}</option>
+        <option value="19">19% {{'COMMON.VALUE_ADDED_TAX' | translate}}</option>
       </select>
     </clr-select-container>
   </ng-container>
@@ -67,7 +73,7 @@
       (click)="saveProduct()"
       [disabled]="form.invalid || saveInProgress"
     >
-      Speichern
+      {{'COMMON.SAVE' | translate}}
     </button>
   </div>
 </form>

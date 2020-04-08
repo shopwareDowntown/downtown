@@ -25,19 +25,19 @@
           <clr-vertical-nav-group-children>
             <a clrVerticalNavLink *ngFor="let child of nav.getChildren()" routerLink='{{child.route}}'
                routerLinkActive='active'>
-              {{child.title}}
+              {{child.title | translate}}
             </a>
           </clr-vertical-nav-group-children>
         </clr-vertical-nav-group>
         <!-- Navigation without children -->
         <a clrVerticalNavLink *ngIf="!nav.hasChildren()" routerLink='{{nav.route}}' routerLinkActive='active'>
           <clr-icon *ngIf="nav.iconName" [attr.shape]="nav.iconName" clrVerticalNavIcon></clr-icon>
-          {{nav.title}}
+          {{nav.title | translate}}
         </a>
       </ng-container>
       <a (click)="doLogout()" [ngClass]="'logout-link'" routerLink='' clrVerticalNavLink>
         <clr-icon shape="logout" clrVerticalNavIcon></clr-icon>
-        Logout
+        {{'SIDEBAR.LOGOUT' | translate}}
       </a>
     </clr-vertical-nav>
   </div>

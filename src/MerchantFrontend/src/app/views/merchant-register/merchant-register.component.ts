@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PasswordValidators } from '../../shared/validators/password.validator';
 import { Merchant, MerchantRegistration } from '../../core/models/merchant.model';
 import { ToastService } from '../../core/services/toast.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'portal-merchant-register',
@@ -25,7 +26,8 @@ export class MerchantRegisterComponent implements OnInit {
   constructor(
     private readonly merchantApiService: MerchantApiService,
     private readonly formBuilder: FormBuilder,
-    private readonly toastService: ToastService
+    private readonly toastService: ToastService,
+    private readonly translateService: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -57,13 +59,17 @@ export class MerchantRegisterComponent implements OnInit {
       () => {
         this.registerModalOpen = false;
         this.registrationFinished = true;
-        this.toastService.success('Erfolgreich registriert');
+        this.toastService.success(
+          this.translateService.instant('MERCHANT.REGISTER.TOAST_MESSAGES.SUCCESS_HEADLINE')
+        );
         },
       (error) => {
         if("MERCHANT_EMAIL_ALREADY_EXISTS" === error.error.errors[0].code) {
           this.showDuplicateMailError = true;
         }
-        this.toastService.error('Registrierung fehlgeschlagen');
+        this.toastService.error(
+          this.translateService.instant('MERCHANT.REGISTER.TOAST_MESSAGES.ERROR_HEADLINE')
+        );
       }
     );
   }

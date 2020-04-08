@@ -2,26 +2,28 @@
   <div class="modal-body">
     <form [formGroup]="emailForm" clrForm clrLayout="vertical">
       <section class="title">
-        <h3 class="welcome">E-Mail-Adresse ändern</h3>
+        <h3 class="welcome">{{'MERCHANT.ACCOUNT.CHANGE_EMAIL_ADDRESS' | translate}}</h3>
       </section>
       <div>
         <clr-input-container>
-          <label>Neue E-Mail-Adresse</label>
+          <label>{{'MERCHANT.ACCOUNT.NEW_EMAIL_ADDRESS' | translate}}</label>
           <input type="email" name="email" formControlName="email" clrInput/>
-          <clr-control-error>Bitte gib eine korrekte E-Mail-Adresse ein</clr-control-error>
+          <clr-control-error>{{'MERCHANT.ACCOUNT.NEW_EMAIL_INVALID' | translate}}</clr-control-error>
         </clr-input-container>
         <clr-input-container [class.clr-error]="emailForm.errors?.emailMismatch && emailForm.get('repeatEmail').touched" >
-          <label>Neue E-Mail-Adresse bestätigen</label>
+          <label>{{'MERCHANT.ACCOUNT.CONFIRM_EMAIL' | translate}}</label>
           <input type="email" name="repeatEmail" formControlName="repeatEmail" clrInput/>
-          <clr-control-error>Die E-Mail-Adressen sind nicht identisch.</clr-control-error>
+          <clr-control-error>{{'MERCHANT.ACCOUNT.CONFIRM_EMAIL_INVALID' | translate}}</clr-control-error>
         </clr-input-container>
       </div>
     </form>
   </div>
   <div class="modal-footer">
     <div class="button-wrapper">
-      <button type="button" class="btn btn-regular" (click)="modalClosed()">Abbrechen</button>
-      <button [disabled]="emailForm.invalid" type="button" class="btn btn-primary" (click)="changeMail()">Speichern</button>
+      <button type="button" class="btn btn-regular" (click)="modalClosed()">{{'COMMON.CANCEL' | translate}}</button>
+      <button [disabled]="emailForm.invalid" type="button" class="btn btn-primary" (click)="changeMail()">
+        {{'COMMON.SAVE' | translate}}
+      </button>
     </div>
   </div>
 </clr-modal>
