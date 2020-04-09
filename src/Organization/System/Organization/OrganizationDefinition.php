@@ -2,6 +2,7 @@
 
 namespace Shopware\Production\Organization\System\Organization;
 
+use Shopware\Core\Content\Media\MediaDefinition;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityDefinition;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\EmailField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\FkField;
@@ -56,6 +57,9 @@ class OrganizationDefinition extends EntityDefinition
             (new LongTextField('imprint', 'imprint')),
             (new LongTextField('tos', 'tos')),
             (new LongTextField('privacy', 'privacy')),
+
+            (new FkField('logo_id', 'logoId', MediaDefinition::class)),
+            (new OneToOneAssociationField('logo', 'logo_id', 'id', MediaDefinition::class, true)),
 
             (new FkField('sales_channel_id', 'salesChannelId', SalesChannelDefinition::class))->addFlags(new Required()),
             (new OneToOneAssociationField('salesChannel', 'sales_channel_id', 'id', SalesChannelDefinition::class, false)),

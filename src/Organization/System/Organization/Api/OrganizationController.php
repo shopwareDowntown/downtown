@@ -14,8 +14,10 @@ use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Shopware\Core\Framework\Validation\DataValidationDefinition;
 use Shopware\Core\Framework\Validation\DataValidator;
 use Shopware\Core\System\SalesChannel\SalesChannelCollection;
+use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Production\Organization\Exception\MerchantForOrganizationNotFoundException;
 use Shopware\Production\Organization\System\Organization\OrganizationEntity;
+use Shopware\Production\Portal\Hacks\StorefrontMediaUploader;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -46,16 +48,23 @@ class OrganizationController
      */
     private $dataValidator;
 
+    /**
+     * @var StorefrontMediaUploader
+     */
+    private $storefrontMediaUploader;
+
     public function __construct(
         EntityRepositoryInterface $salesChannelRepository,
         EntityRepositoryInterface $organizationRepository,
         EntityRepositoryInterface $merchantRepository,
-        DataValidator $dataValidator
+        DataValidator $dataValidator,
+        StorefrontMediaUploader $storefrontMediaUploader
     ) {
         $this->salesChannelRepository = $salesChannelRepository;
         $this->organizationRepository = $organizationRepository;
         $this->merchantRepository = $merchantRepository;
         $this->dataValidator = $dataValidator;
+        $this->storefrontMediaUploader = $storefrontMediaUploader;
     }
 
     /**
@@ -155,6 +164,79 @@ class OrganizationController
         $organizationEntity = $this->organizationRepository->search(new Criteria([$organizationEntity->getId()]), Context::createDefaultContext())->first();
 
         return new JsonResponse($organizationEntity);
+    }
+
+    /**
+     * @OA\Patch(
+     *      path="/organization/logo",
+     *      description="Upload logo",
+     *      operationId="uploadLogo",
+     *      tags={"Organization Media"},
+     *      @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     description="File to upload",
+     *                     property="logo",
+     *                     type="string",
+     *                     format="file",
+     *                 ),
+     *                 required={"file"}
+     *             )
+     *         )
+     *     ),
+     *      @OA\Response(
+     *          response="200",
+     *          description="Success",
+     *          @OA\JsonContent(ref="#/definitions/SuccessResponse")
+     *     )
+     * )
+     * @Route(name="organization-api.organization.upload-logo", path="/organization-api/v{version}/organization/logo", methods={"POST"})
+     */
+    public function uploadLogo(Request $request, OrganizationEntity $organizationEntity, SalesChannelContext $context): JsonResponse
+    {
+        if (!$request->files->has('logo')) {
+            throw new \InvalidArgumentException('Parameter \'logo\' missing.');
+        }
+
+        $mediaId = $this->storefrontMediaUploader->upload($request->files->get('logo'), 'organization', 'organization_images', $context->getContext());
+
+        $this->organizationRepository->update([[
+            'id' => $organizationEntity->getId(),
+            'logoId' => $mediaId
+        ]], Context::createDefaultContext());
+
+        return new JsonResponse([
+            'success' => true
+        ]);
+    }
+
+    /**
+     * @OA\Delete(
+     *      path="/organization/logo",
+     *      description="Remove logo",
+     *      operationId="removeLogo",
+     *      tags={"Organization Media"},
+     *      @OA\Response(
+     *          response="200",
+     *          description="Success",
+     *          @OA\JsonContent(ref="#/definitions/SuccessResponse")
+     *     )
+     * )
+     * @Route(name="organization-api.organization.remove-logo", path="/organization-api/v{version}/organization/logo", methods={"DELETE"})
+     */
+    public function deleteMedia(OrganizationEntity $organizationEntity): JsonResponse
+    {
+        $this->organizationRepository->update([[
+            'id' => $organizationEntity->getId(),
+            'logoId' => null
+        ]], Context::createDefaultContext());
+
+        return new JsonResponse([
+            'success' => true
+        ]);
     }
 
     /**
