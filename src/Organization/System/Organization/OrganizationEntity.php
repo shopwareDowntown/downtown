@@ -67,6 +67,24 @@ class OrganizationEntity extends Entity
      */
     protected $city;
 
+    /**
+     * @OA\Property()
+     * @var string
+     */
+    protected $imprint;
+
+    /**
+     * @OA\Property()
+     * @var string
+     */
+    protected $tos;
+
+    /**
+     * @OA\Property()
+     * @var string
+     */
+    protected $privacy;
+
     public function getEmail(): string
     {
         return $this->email;
