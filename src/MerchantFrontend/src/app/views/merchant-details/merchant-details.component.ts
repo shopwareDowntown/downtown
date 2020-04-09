@@ -7,7 +7,7 @@ import { Category } from '../../core/models/category.model';
 import { Country } from '../../core/models/country.model';
 import { ToastService } from '../../core/services/toast.service';
 import { switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { merge, of} from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -74,7 +74,11 @@ export class MerchantDetailsComponent implements OnInit {
       street: newData.street,
       zip: newData.zip,
       city: newData.city,
-      countryId: newData.countryId
+      countryId: newData.countryId,
+      imprint: newData.imprint,
+      tos: newData.tos,
+      revocation: newData.revocation,
+      privacy: newData.privacy
     } as Merchant;
 
     this.merchantApiService.updateMerchant(updatedData).pipe(
@@ -129,11 +133,44 @@ export class MerchantDetailsComponent implements OnInit {
       publicWebsite: this.merchant.publicWebsite,
       publicOpeningTimes: [this.merchant.publicOpeningTimes],
       publicDescription: this.merchant.publicDescription,
-      cover: [null]
+      cover: [null],
+      imprint: [this.merchant.imprint],
+      tos: [this.merchant.tos],
+      privacy: [this.merchant.privacy],
+      revocation: [this.merchant.revocation],
+    });
+    if (false === this.isAllowedToActivate()) {
+      this.profileForm.get('public').setValue(false);
+      this.profileForm.get('public').disable();
+    }
+
+    const imprintChanges$ = this.profileForm.get('imprint').valueChanges;
+    const tosChanges$ = this.profileForm.get('tos').valueChanges;
+    const privacyChanges$ = this.profileForm.get('privacy').valueChanges;
+    const revocationChanges$ = this.profileForm.get('revocation').valueChanges;
+    merge(imprintChanges$, tosChanges$, privacyChanges$, revocationChanges$).subscribe(() => {
+      if (false === this.isAllowedToActivate()) {
+        this.profileForm.get('public').setValue(false);
+        this.profileForm.get('public').disable();
+      } else {
+        this.profileForm.get('public').enable();
+      }
     });
   }
 
   imageSelected(value: File[]) {
     this.profileForm.get('cover').setValue(value);
+  }
+
+  private isAllowedToActivate() {
+    if (
+      !this.profileForm.get('imprint').value
+      || !this.profileForm.get('tos').value
+      || !this.profileForm.get('revocation').value
+      || !this.profileForm.get('privacy').value
+    ) {
+      return false;
+    }
+    return true;
   }
 }

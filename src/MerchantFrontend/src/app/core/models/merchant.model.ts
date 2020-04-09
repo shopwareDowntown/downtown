@@ -23,6 +23,10 @@ export interface Merchant {
   password?: string;
   media: Media[];
   cover: Media;
+  imprint: string;
+  tos: string;
+  privacy: string;
+  revocation: string;
   active: boolean;
 }
 
