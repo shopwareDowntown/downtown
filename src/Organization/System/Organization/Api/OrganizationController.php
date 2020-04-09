@@ -8,13 +8,19 @@ use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
+use Shopware\Core\Framework\DataAbstractionLayer\Validation\EntityExists;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
+use Shopware\Core\Framework\Validation\DataValidationDefinition;
+use Shopware\Core\Framework\Validation\DataValidator;
 use Shopware\Core\System\SalesChannel\SalesChannelCollection;
 use Shopware\Production\Organization\Exception\MerchantForOrganizationNotFoundException;
 use Shopware\Production\Organization\System\Organization\OrganizationEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * @RouteScope(scopes={"organization-api"})
@@ -36,14 +42,21 @@ class OrganizationController
      */
     private $merchantRepository;
 
+    /**
+     * @var DataValidator
+     */
+    private $dataValidator;
+
     public function __construct(
         EntityRepositoryInterface $salesChannelRepository,
         EntityRepositoryInterface $organizationRepository,
-        EntityRepositoryInterface $merchantRepository
+        EntityRepositoryInterface $merchantRepository,
+        DataValidator $dataValidator
     ) {
         $this->salesChannelRepository = $salesChannelRepository;
         $this->organizationRepository = $organizationRepository;
         $this->merchantRepository = $merchantRepository;
+        $this->dataValidator = $dataValidator;
     }
 
     /**
@@ -100,7 +113,7 @@ class OrganizationController
      *      path="/organization",
      *      description="Get logged in organization",
      *      operationId="loadOrganization",
-     *      tags={"List"},
+     *      tags={"Organization"},
      *      @OA\Response(
      *          response="200",
      *          @OA\JsonContent(ref="#/components/schemas/OrganizationEntity")
@@ -110,6 +123,38 @@ class OrganizationController
      */
     public function loadOne(OrganizationEntity $organizationEntity): JsonResponse
     {
+        return new JsonResponse($organizationEntity);
+    }
+
+    /**
+     * @OA\Patch(
+     *      path="/organization",
+     *      description="Update information about the loggedin organization",
+     *      operationId="saveOrganization",
+     *      tags={"Organization"},
+     *      @OA\Parameter(name="body", in="body", @OA\JsonContent(ref="#/components/schemas/OrganizationEntity")),
+     *      @OA\Response(
+     *          response="200",
+     *          @OA\JsonContent(ref="#/components/schemas/OrganizationEntity")
+     *     )
+     * )
+     * @Route(name="organization-api.organization.save", path="/organization-api/v{version}/organization", methods={"PATCH"})
+     */
+    public function save(RequestDataBag $dataBag, OrganizationEntity $organizationEntity): JsonResponse
+    {
+        $constraints = $this->createValidationDefinition();
+
+        $this->dataValidator->validate($dataBag->all(), $constraints);
+
+        $this->organizationRepository->update([
+            array_merge(
+                ['id' => $organizationEntity->getId()],
+                $dataBag->only(... array_keys($constraints->getProperties()))
+            )
+        ], Context::createDefaultContext());
+
+        $organizationEntity = $this->organizationRepository->search(new Criteria([$organizationEntity->getId()]), Context::createDefaultContext())->first();
+
         return new JsonResponse($organizationEntity);
     }
 
@@ -184,5 +229,18 @@ class OrganizationController
         return new JsonResponse([
             'success' => true
         ]);
+    }
+
+    private function createValidationDefinition(): DataValidationDefinition
+    {
+        return (new DataValidationDefinition())
+            ->add('firstName', new Type('string'))
+            ->add('lastName', new Type('string'))
+            ->add('phone', new Type('string'))
+            ->add('city', new Type('string'))
+            ->add('postCode', new Type('string'))
+            ->add('imprint', new Type('string'))
+            ->add('tos', new Type('string'))
+            ->add('privacy', new Type('string'));
     }
 }
