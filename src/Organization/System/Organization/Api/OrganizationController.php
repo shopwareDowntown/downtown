@@ -8,7 +8,7 @@ use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
-use Shopware\Core\Framework\DataAbstractionLayer\Validation\EntityExists;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Sorting\FieldSorting;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Shopware\Core\Framework\Validation\DataValidationDefinition;
@@ -17,9 +17,8 @@ use Shopware\Core\System\SalesChannel\SalesChannelCollection;
 use Shopware\Production\Organization\Exception\MerchantForOrganizationNotFoundException;
 use Shopware\Production\Organization\System\Organization\OrganizationEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
@@ -164,6 +163,18 @@ class OrganizationController
      *      description="Get all merchants for organization",
      *      operationId="loadAllOrganizationMerchants",
      *      tags={"Merchant"},
+     *      @OA\Parameter(
+     *        name="limit",
+     *        in="body",
+     *        description="Limit",
+     *        @OA\Schema(type="integer", example="100"),
+     *      ),
+     *      @OA\Parameter(
+     *        name="offset",
+     *        in="body",
+     *        description="Offset",
+     *        @OA\Schema(type="integer", example="100"),
+     *      ),
      *      @OA\Response(
      *          response="200",
      *          @OA\JsonContent(
@@ -174,7 +185,7 @@ class OrganizationController
      * )
      * @Route(name="organization-api.organization.merchants", path="/organization-api/v{version}/organization/merchants", methods={"GET"})
      */
-    public function getMerchants(OrganizationEntity $organizationEntity): JsonResponse
+    public function getMerchants(Request $request, OrganizationEntity $organizationEntity): JsonResponse
     {
         $criteria = new Criteria([$organizationEntity->getId()]);
         $criteria->addAssociation('salesChannel.merchants');
@@ -182,7 +193,29 @@ class OrganizationController
         /** @var OrganizationEntity $organization */
         $organization = $this->organizationRepository->search($criteria, Context::createDefaultContext())->first();
 
-        return new JsonResponse(array_values($organization->getSalesChannel()->get('merchants')->getElements()));
+        $salesChannelId = $organization->getSalesChannelId();
+
+        $merchantCriteria = new Criteria();
+        $merchantCriteria->addFilter(new EqualsFilter('salesChannelId', $salesChannelId));
+
+        if ($request->query->has('limit')) {
+            $merchantCriteria->setLimit((int) $request->query->get('limit'));
+        }
+
+        if ($request->query->has('offset')) {
+            $merchantCriteria->setOffset((int) $request->query->get('offset'));
+        }
+
+        $merchantCriteria->setTotalCountMode(Criteria::TOTAL_COUNT_MODE_EXACT);
+
+        $merchantCriteria->addSorting(new FieldSorting('createdAt', FieldSorting::DESCENDING));
+
+        $merchants = $this->merchantRepository->search($merchantCriteria, Context::createDefaultContext());
+
+        return new JsonResponse([
+            'data' => $merchants,
+            'total' => $merchants->getTotal()
+        ]);
     }
 
     /**
