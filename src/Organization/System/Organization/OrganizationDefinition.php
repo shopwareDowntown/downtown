@@ -12,6 +12,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Field\IdField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\OneToManyAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\OneToOneAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\PasswordField;
+use Shopware\Core\Framework\DataAbstractionLayer\Field\StringField;
 use Shopware\Core\Framework\DataAbstractionLayer\FieldCollection;
 use Shopware\Core\System\SalesChannel\SalesChannelDefinition;
 use Shopware\Production\Organization\System\Organization\Aggregate\OrganizationAccessToken\OrganizationAccessTokenDefinition;
@@ -42,6 +43,13 @@ class OrganizationDefinition extends EntityDefinition
 
             (new EmailField('email', 'email'))->addFlags(new Required()),
             (new PasswordField('password', 'password'))->addFlags(new Required()),
+
+            (new StringField('first_name', 'firstName'))->addFlags(new Required()),
+            (new StringField('last_name', 'lastName'))->addFlags(new Required()),
+
+            (new StringField('phone', 'phone')),
+            (new StringField('city', 'city')),
+            (new StringField('post_code', 'postCode')),
 
             (new FkField('sales_channel_id', 'salesChannelId', SalesChannelDefinition::class))->addFlags(new Required()),
             (new OneToOneAssociationField('salesChannel', 'sales_channel_id', 'id', SalesChannelDefinition::class, false)),

@@ -80,6 +80,13 @@
             "totalPrice": "Total price",
             "invoiceAddress": "Invoice address",
             "deliveryAddress": "Delivery address"
+        },
+        "organization_registration": {
+            "subject": "Your account at Downtown",
+            "hello": "Hello %name%, <br>your Organization account has been created. You can login now with the following credentials:",
+            "email": "E-Mail",
+            "password": "Password",
+            "loginButton": "Login"
         }
     },
     "voucher": {

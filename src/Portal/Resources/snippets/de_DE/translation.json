@@ -80,6 +80,13 @@
             "totalPrice": "Gesammtsumme",
             "invoiceAddress": "Rechnungsaddresse",
             "deliveryAddress": "Lieferaddresse"
+        },
+        "organization_registration": {
+            "subject": "Ihr Benutzerkonto bei Downtown",
+            "hello": "Hallo %name%, <br>Ihr Organisationskonto wurde erstellt. Sie können sich jetzt mit den folgenden Anmeldedaten anmelden:",
+            "email": "E-Mail",
+            "password": "Passwort",
+            "loginButton": "Login"
         }
     },
     "voucher": {
