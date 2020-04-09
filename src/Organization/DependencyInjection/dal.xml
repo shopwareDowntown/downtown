@@ -13,6 +13,10 @@
             <tag name="shopware.entity.definition" entity="organization_access_token"/>
         </service>
 
+        <service id="Shopware\Production\Organization\System\Organization\Aggregate\OrganizationResetPasswordToken\OrganizationResetPasswordTokenDefinition">
+            <tag name="shopware.entity.definition" entity="organization_reset_password"/>
+        </service>
+
         <service id="Shopware\Production\Organization\System\Organization\Extensions\SalesChannelEntityExtension">
             <tag name="shopware.entity.extension"/>
         </service>

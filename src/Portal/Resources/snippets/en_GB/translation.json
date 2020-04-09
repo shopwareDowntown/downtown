@@ -87,6 +87,12 @@
             "email": "E-Mail",
             "password": "Password",
             "loginButton": "Login"
+        },
+        "organization_reset_password": {
+            "subject": "Forgotten password Downtown request",
+            "hello": "Hello %name%,",
+            "text": "A request has been made in the portal to reset your password.<br>\nPlease confirm the link below to define a new password.",
+            "confirmButton": "Reset password"
         }
     },
     "voucher": {
