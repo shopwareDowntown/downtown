@@ -3,6 +3,7 @@
 namespace Shopware\Production\Organization\System\Organization;
 
 use OpenApi\Annotations as OA;
+use Shopware\Core\Content\Media\MediaEntity;
 use Shopware\Core\Framework\DataAbstractionLayer\Entity;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityIdTrait;
 use Shopware\Core\System\SalesChannel\SalesChannelEntity;
@@ -85,6 +86,17 @@ class OrganizationEntity extends Entity
      */
     protected $privacy;
 
+    /**
+     * @var string
+     * @OA\Property()
+     */
+    protected $logoId;
+
+    /**
+     * @var MediaEntity|null
+     */
+    protected $logo;
+
     public function getEmail(): string
     {
         return $this->email;
@@ -143,5 +155,15 @@ class OrganizationEntity extends Entity
     public function getPrivacy(): string
     {
         return $this->privacy;
+    }
+
+    public function getLogoId(): string
+    {
+        return $this->logoId;
+    }
+
+    public function getLogo(): ?MediaEntity
+    {
+        return $this->logo;
     }
 }

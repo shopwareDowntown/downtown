@@ -15,5 +15,9 @@
         <service id="Shopware\Production\Portal\Hacks\StorefrontMerchantMediaImageValidator">
             <tag name="storefront.media.upload.validator" />
         </service>
+
+        <service id="Shopware\Production\Portal\Hacks\OrganizationMediaImageValidator">
+            <tag name="storefront.media.upload.validator" />
+        </service>
     </services>
 </container>

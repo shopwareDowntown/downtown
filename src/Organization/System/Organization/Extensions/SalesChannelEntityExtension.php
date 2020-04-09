@@ -15,7 +15,7 @@ class SalesChannelEntityExtension implements EntityExtensionInterface
     public function extendFields(FieldCollection $collection): void
     {
         $collection->add(
-            new OneToOneAssociationField('organization', 'id', 'sales_channel_id', OrganizationDefinition::class, false)
+            new OneToOneAssociationField('organization', 'id', 'sales_channel_id', OrganizationDefinition::class, true)
         );
 
         $collection->add(
