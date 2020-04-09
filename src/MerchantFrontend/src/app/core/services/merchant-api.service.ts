@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Merchant, MerchantRegistration, MerchantLoginResult, PasswordReset } from '../models/merchant.model';
+import {
+  Merchant,
+  MerchantRegistration,
+  MerchantLoginResult,
+  PasswordReset,
+  MerchantListData
+} from '../models/merchant.model';
 import { Product, ProductListData } from '../models/product.model';
 import { StateService } from '../state/state.service';
 import { map, take } from 'rxjs/operators';
@@ -218,6 +224,24 @@ export class MerchantApiService {
   getOrganization(): Observable<Organization> {
     return this.http.get<Organization>(this.apiUrl + '/organization-api/v1/organization', {headers: this.getJsonContentTypeHeaders()});
   }
+
+
+  getMerchantList(limit: number, offset:number): Observable<MerchantListData> {
+    let params = new HttpParams();
+    params = params.append('limit', limit.toString());
+    params = params.append('offset', offset.toString());
+    return this.http.get<MerchantListData>(this.apiUrl + '/organization-api/v1/organization/merchants', {headers: this.getJsonContentTypeHeaders()})
+  }
+
+  changeMerchantsActiveFlag(merchant: Merchant, active: boolean): Observable<boolean> {
+    const body = {
+      active: active
+    };
+    return this.http.patch<boolean>(
+      this.apiUrl + '/organization-api/v1/organization/merchant/' + merchant.id +'/set-active',
+      JSON.stringify(body),
+      {headers: this.getJsonContentTypeHeaders()}
+    )
 
   resetOrganizationPassword(email: string): Observable<void> {
     return this.http.post<void>(

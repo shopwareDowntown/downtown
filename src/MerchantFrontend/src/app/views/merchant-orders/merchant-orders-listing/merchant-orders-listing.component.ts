@@ -73,6 +73,9 @@ export class MerchantOrdersListingComponent implements OnInit {
   paginationChange(): void {
     if (this.currentPage === 1) {
       this.fromOrder = this.fromOrder = 1;
+      if (this.total === 0) {
+        this.fromOrder = 0;
+      }
     } else {
       this.fromOrder = (this.currentPage -1) * this.limit;
     }

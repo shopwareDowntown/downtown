@@ -241,7 +241,7 @@ class OrganizationController
 
     /**
      * @OA\Get(
-     *      path="/organizations/merchants",
+     *      path="/organization/merchants",
      *      description="Get all merchants for organization",
      *      operationId="loadAllOrganizationMerchants",
      *      tags={"Merchant"},
@@ -301,7 +301,7 @@ class OrganizationController
     }
 
     /**
-     * @OA\Post(
+     * @OA\Patch(
      *      path="/organization/merchant/{merchantId}/set-active",
      *      description="Set merchant active state",
      *      operationId="merchantActive",

@@ -27,6 +27,7 @@ export interface Merchant {
   tos: string;
   privacy: string;
   revocation: string;
+  active: boolean;
 }
 
 export interface MerchantRegistration {
@@ -47,4 +48,9 @@ export interface PasswordReset {
 export interface Media {
   url: string;
   id: string;
+}
+
+export interface MerchantListData {
+  total: number;
+  data: Merchant[];
 }
