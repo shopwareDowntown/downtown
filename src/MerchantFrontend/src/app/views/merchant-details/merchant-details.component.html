@@ -15,7 +15,7 @@
         [formGroup]="profileForm"
         *ngIf="merchantLoaded && categoriesLoaded; else loading"
       >
-        <clr-toggle-wrapper>
+        <clr-toggle-wrapper >
           <input
             type="checkbox"
             clrToggle
@@ -169,6 +169,45 @@
             name="publicDescription"
           ></textarea>
         </clr-textarea-container>
+
+        <h3>{{'MERCHANT.DETAILS.LEGAL_INFORMATION' | translate}}</h3>
+
+        <clr-textarea-container>
+          <label>{{'COMMON.IMPRINT' | translate}}</label>
+          <textarea
+            clrTextarea
+            formControlName="imprint"
+            name="imprint">
+          </textarea>
+        </clr-textarea-container>
+
+        <clr-textarea-container>
+          <label>{{'MERCHANT.DETAILS.REVOCATION' | translate}}</label>
+          <textarea
+            clrTextarea
+            formControlName="revocation"
+            name="privacy">
+          </textarea>
+        </clr-textarea-container>
+
+        <clr-textarea-container>
+          <label>{{'COMMON.TOS' | translate}}</label>
+          <textarea
+            clrTextarea
+            formControlName="tos"
+            name="tos">
+          </textarea>
+        </clr-textarea-container>
+
+        <clr-textarea-container>
+          <label>{{'MERCHANT.DETAILS.PRIVACY' | translate}}</label>
+          <textarea
+            clrTextarea
+            formControlName="privacy"
+            name="privacy">
+          </textarea>
+        </clr-textarea-container>
+
       </form>
       <ng-template #loading>
         <div>
