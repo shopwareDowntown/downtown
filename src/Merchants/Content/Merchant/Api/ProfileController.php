@@ -179,7 +179,11 @@ class ProfileController
             ->add('countryId', new EntityExists(['entity' => 'country', 'context' => $salesChannelContext->getContext()]))
             ->add('email', new Email())
             ->add('password', new Length(['min' => 8]))
-            ->add('phoneNumber', new Type('string'));
+            ->add('phoneNumber', new Type('string'))
+            ->add('tos', new Type('string'))
+            ->add('privacy', new Type('string'))
+            ->add('imprint', new Type('string'))
+            ->add('revocation', new Type('string'));
     }
 
     protected function fetchProfileData(SalesChannelContext $salesChannelContext, MerchantEntity $merchant): array

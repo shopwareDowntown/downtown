@@ -187,6 +187,30 @@ class MerchantEntity extends Entity
      */
     protected $cover;
 
+    /**
+     * @var string|null
+     * @OA\Property()
+     */
+    protected $imprint;
+
+    /**
+     * @var string|null
+     * @OA\Property()
+     */
+    protected $tos;
+
+    /**
+     * @var string|null
+     * @OA\Property()
+     */
+    protected $privacy;
+
+    /**
+     * @var string|null
+     * @OA\Property()
+     */
+    protected $revocation;
+
     public function isActive(): bool
     {
         return $this->active;
@@ -469,5 +493,25 @@ class MerchantEntity extends Entity
     public function setCoverId(?string $coverId): void
     {
         $this->coverId = $coverId;
+    }
+
+    public function getImprint(): ?string
+    {
+        return $this->imprint;
+    }
+
+    public function getTos(): ?string
+    {
+        return $this->tos;
+    }
+
+    public function getPrivacy(): ?string
+    {
+        return $this->privacy;
+    }
+
+    public function getRevocation(): ?string
+    {
+        return $this->revocation;
     }
 }
