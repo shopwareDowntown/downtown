@@ -153,7 +153,7 @@ export class MerchantApiService {
   // authority route
 
   getAuthorities(): Observable<OrganizationAuthority[]> {
-    return this.http.get<OrganizationAuthority[]>(this.apiUrl + '/merchant-api/v1/authorities');
+    return this.http.get<OrganizationAuthority[]>(this.apiUrl + '/organization-api/v1/organizations');
   }
 
   getCountries(): Observable<{ data: Country[]}> {
