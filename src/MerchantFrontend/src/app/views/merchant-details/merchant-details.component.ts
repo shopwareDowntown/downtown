@@ -35,6 +35,9 @@ export class MerchantDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.stateService.getMerchant().subscribe((merchant: Merchant) => {
+      if(!merchant) {
+        return;
+      }
       this.merchant = merchant;
       this.merchantLoaded = true;
       this.createForm();
@@ -158,7 +161,7 @@ export class MerchantDetailsComponent implements OnInit {
     });
   }
 
-  imageSelected(value: File[]) {
+  imageSelected(value: File) {
     this.profileForm.get('cover').setValue(value);
   }
 

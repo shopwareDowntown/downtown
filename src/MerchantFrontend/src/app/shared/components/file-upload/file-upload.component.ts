@@ -14,6 +14,7 @@ export class FileUploadComponent {
   @Input() accept: string;
   @Input() multiple = false;
   @Input() disabled = false;
+  @Input() icon = false;
   @Output() onSelect = new EventEmitter<any[]>();
   @Output() onUpload = new EventEmitter<any[]>();
   @Output() onError = new EventEmitter<FileUploadViolation>();
