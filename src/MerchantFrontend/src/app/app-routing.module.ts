@@ -17,7 +17,8 @@ const routes: Routes = [
     component: LandingPageLayoutComponent,
     children: [
       {path: '', component: DashboardComponent},
-      {path: 'reset-password/:token', component: DashboardComponent}
+      {path: 'reset-password/merchant/:tokenMerchant', component: DashboardComponent},
+      {path: 'reset-password/organization/:tokenOrganization', component: DashboardComponent}
     ]
   },
 

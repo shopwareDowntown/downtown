@@ -66,7 +66,7 @@ export class MerchantLoginComponent implements OnInit {
 
   doPasswordReset() {
     this.merchantApiService
-      .resetPassword(this.passwordResetForm.value)
+      .resetMerchantPassword(this.passwordResetForm.value)
       .subscribe(() => {
         this.passwordResetForm.reset(this.initialResetFormValues);
         this.toastService.success(
