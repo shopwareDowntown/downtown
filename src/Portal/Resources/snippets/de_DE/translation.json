@@ -98,5 +98,10 @@
         "issuedOn": "Ausgestellt auf",
         "createDate": "Ausstellungsdatum",
         "number": "Gutscheinnummer"
+    },
+    "page": {
+        "imprint": "Impressum",
+        "tos": "AGB",
+        "privacy": "Datenschutzerklärung"
     }
 }
