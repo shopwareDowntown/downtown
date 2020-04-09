@@ -49,6 +49,9 @@ export class MerchantVouchersComponent implements OnInit {
 
     if (this.currentPage === 1) {
       this.fromVoucher = this.fromVoucher = 1;
+      if (this.total === 0) {
+        this.fromVoucher = 0;
+      }
     } else {
       this.fromVoucher = (this.currentPage -1) * this.limit;
     }

@@ -23,6 +23,7 @@ export interface Merchant {
   password?: string;
   media: Media[];
   cover: Media;
+  active: boolean;
 }
 
 export interface MerchantRegistration {
@@ -43,4 +44,9 @@ export interface PasswordReset {
 export interface Media {
   url: string;
   id: string;
+}
+
+export interface MerchantListData {
+  total: number;
+  data: Merchant[];
 }
