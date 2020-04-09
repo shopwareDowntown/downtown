@@ -160,13 +160,13 @@ export class MerchantApiService {
     return this.http.get<{ data: Country[]}>(this.apiUrl + '/merchant-api/v1/country', {headers: this.getJsonContentTypeHeaders() });
   }
 
-  resetPassword(email: PasswordReset): Observable<void> {
+  resetMerchantPassword(email: PasswordReset): Observable<void> {
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
     return this.http.post<any>(this.apiUrl + '/merchant-api/v1/reset-password', JSON.stringify(email), {headers: headers})
   }
 
-  resetPasswordConfirm(password: string, token: string): Observable<void> {
+  resetMerchantPasswordConfirm(password: string, token: string): Observable<void> {
     const body = {
       newPassword: password,
       token: token
@@ -217,6 +217,26 @@ export class MerchantApiService {
 
   getOrganization(): Observable<Organization> {
     return this.http.get<Organization>(this.apiUrl + '/organization-api/v1/organization', {headers: this.getJsonContentTypeHeaders()});
+  }
+
+  resetOrganizationPassword(email: string): Observable<void> {
+    return this.http.post<void>(
+      this.apiUrl + '/organization-api/v1/reset-password',
+      JSON.stringify(email),
+      {headers: this.getJsonContentTypeHeaders()}
+      );
+  }
+
+  resetOrganizationPasswordConfirm(password: string, token: string) {
+    const body = {
+      token: token,
+      newPassword: password
+    };
+    return this.http.post(
+      this.apiUrl + '/organization-api/v1/reset-password-confirm',
+      JSON.stringify(body),
+      { headers: this.getJsonContentTypeHeaders() }
+    );
   }
 
   private getHeaders(): { [header: string]: string | string[];} {

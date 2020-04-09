@@ -9,6 +9,7 @@ import { OrganizationRegisterModule } from '../organization-register/organizatio
 import { ReactiveFormsModule } from '@angular/forms';
 import { MerchantLoginModule } from '../merchant-login/merchant-login.module';
 import { PasswordResetModalComponent } from './password-reset-modal/password-reset-modal.component';
+import {ToastModule} from "../../core/components/toast/toast.module";
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import { PasswordResetModalComponent } from './password-reset-modal/password-res
     OrganizationRegisterModule,
     ReactiveFormsModule,
     MerchantLoginModule,
-    ClrInputModule
+    ClrInputModule,
+    ToastModule
   ],
   declarations: [
     DashboardComponent,

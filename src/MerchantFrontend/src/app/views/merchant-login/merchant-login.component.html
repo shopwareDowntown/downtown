@@ -80,7 +80,7 @@
           {{'COMMON.ORGANIZATION' | translate}}
         </button>
         <clr-tab-content>
-          <portal-organization-login></portal-organization-login>
+          <portal-organization-login (modalClosed)="modalClosed()"></portal-organization-login>
         </clr-tab-content>
       </clr-tab>
     </clr-tabs>
