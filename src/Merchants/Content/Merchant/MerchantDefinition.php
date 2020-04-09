@@ -87,6 +87,11 @@ class MerchantDefinition extends EntityDefinition
             (new PasswordField('password', 'password'))->addFlags(new Required(), new ReadProtected(SalesChannelApiSource::class)),
             (new StringField('phone_number', 'phoneNumber')),
 
+            (new StringField('imprint', 'imprint')),
+            (new StringField('tos', 'tos')),
+            (new StringField('privacy', 'privacy')),
+            (new StringField('revocation', 'revocation')),
+
             // internal model fields
             (new StringField('activation_code', 'activationCode')),
             (new FkField('sales_channel_id', 'salesChannelId', SalesChannelDefinition::class))->addFlags(new Required()),
