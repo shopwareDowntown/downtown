@@ -23,7 +23,7 @@ export interface Merchant {
   password?: string;
   media: Media[];
   cover: Media;
-  enabled: boolean;
+  active: boolean;
 }
 
 export interface MerchantRegistration {

@@ -5,7 +5,6 @@
   <clr-dg-placeholder>{{'ORGANIZATION.MERCHANTS.GRID_PLACEHOLDER' | translate}}</clr-dg-placeholder>
 
   <clr-dg-column>{{'COMMON.NAME' | translate}}</clr-dg-column>
-  <clr-dg-column>{{'COMMON.INDUSTRY' | translate}}</clr-dg-column>
   <clr-dg-column>{{'COMMON.OWNER' | translate}}</clr-dg-column>
   <clr-dg-column>{{'COMMON.EMAIL_ADDRESS' | translate}}</clr-dg-column>
   <clr-dg-column>{{'COMMON.WEBSITE' | translate}}</clr-dg-column>
@@ -14,42 +13,54 @@
 
   <clr-dg-row *ngFor="let merchant of merchantList">
     <clr-dg-cell>{{ merchant.publicCompanyName}}</clr-dg-cell>
-    <clr-dg-cell>{{ merchant.categoryId }}</clr-dg-cell>
-    <clr-dg-cell>{{ merchant.publicOwner }}</clr-dg-cell>
-    <clr-dg-cell>{{ merchant.publicEmail }}</clr-dg-cell>
-    <clr-dg-cell>{{ merchant.publicWebsite }}</clr-dg-cell>
     <clr-dg-cell>
-      <ng-container *ngIf="merchant.enabled; else disabled">
+      <ng-container *ngIf="merchant.publicOwner; else noValue">
+        {{ merchant.publicOwner }}
+      </ng-container>
+    </clr-dg-cell>
+    <clr-dg-cell>
+      <ng-container *ngIf="merchant.publicEmail; else noValue">
+        {{ merchant.publicEmail }}
+      </ng-container>
+    </clr-dg-cell>
+    <clr-dg-cell>
+      <ng-container *ngIf="merchant.publicWebsite; else noValue">
+        <a [href]="merchant.publicWebsite" target="_blank">{{ merchant.publicWebsite }}</a>
+      </ng-container>
+    </clr-dg-cell>
+    <clr-dg-cell>
+      <ng-container *ngIf="merchant.active; else disabled">
         <clr-icon shape="times"></clr-icon>
       </ng-container>
     </clr-dg-cell>
     <ng-template #disabled>
       <clr-icon shape="check"></clr-icon>
     </ng-template>
-    <clr-dg-cell>
       <clr-dg-cell>
-        <ng-container *ngIf="merchant.enabled; else enabledMerchant">
-          <a (click)="disableMerchant(merchant)">
+        <ng-container *ngIf="merchant.active; else enabledMerchant">
+          <a (click)="disableMerchant(merchant)" class="tooltip tooltip-sm">
             <clr-icon shape="lock" class="is-solid"></clr-icon>
+            <span class="tooltip-content">{{'ORGANIZATION.MERCHANTS.LOCK' | translate}}</span>
           </a>
         </ng-container>
         <ng-template #enabledMerchant>
-          <a (click)="enableMerchant(merchant)">
+          <a (click)="enableMerchant(merchant)" class="tooltip tooltip-sm">
             <clr-icon shape="unlock" class="is-solid"></clr-icon>
+            <span class="tooltip-content">{{'ORGANIZATION.MERCHANTS.UNLOCK' | translate}}</span>
           </a>
         </ng-template>
       </clr-dg-cell>
-    </clr-dg-cell>
   </clr-dg-row>
 
-  <clr-dg-footer>
-    {{ fromMerchant }} - {{ tillMerchant }} {{'COMMON.OF' | translate}}
-    {{ total }} {{'MERCHANT.PRODUCTS.PRODUCTS' | translate}}
-    <clr-dg-pagination
-      [(clrDgPage)]="currentPage"
-      #pagination
-      [clrDgTotalItems]="total"
-    ></clr-dg-pagination>
-  </clr-dg-footer>
+<!--  <clr-dg-footer>-->
+<!--    {{ fromMerchant }} - {{ tillMerchant }} {{'COMMON.OF' | translate}}-->
+<!--    {{ total }} {{'MERCHANT.PRODUCTS.PRODUCTS' | translate}}-->
+<!--    <clr-dg-pagination-->
+<!--      [(clrDgPage)]="currentPage"-->
+<!--      #pagination-->
+<!--      [clrDgTotalItems]="total"-->
+<!--    ></clr-dg-pagination>-->
+<!--  </clr-dg-footer>-->
 </clr-datagrid>
 
+<ng-template #noValue>-</ng-template>
