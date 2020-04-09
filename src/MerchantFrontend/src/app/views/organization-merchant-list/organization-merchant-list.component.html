@@ -52,15 +52,15 @@
       </clr-dg-cell>
   </clr-dg-row>
 
-<!--  <clr-dg-footer>-->
-<!--    {{ fromMerchant }} - {{ tillMerchant }} {{'COMMON.OF' | translate}}-->
-<!--    {{ total }} {{'MERCHANT.PRODUCTS.PRODUCTS' | translate}}-->
-<!--    <clr-dg-pagination-->
-<!--      [(clrDgPage)]="currentPage"-->
-<!--      #pagination-->
-<!--      [clrDgTotalItems]="total"-->
-<!--    ></clr-dg-pagination>-->
-<!--  </clr-dg-footer>-->
+  <clr-dg-footer>
+    {{ fromMerchant }} - {{ tillMerchant }} {{'COMMON.OF' | translate}}
+    {{ total }} {{'MERCHANT.PRODUCTS.PRODUCTS' | translate}}
+    <clr-dg-pagination
+      [(clrDgPage)]="currentPage"
+      #pagination
+      [clrDgTotalItems]="total"
+    ></clr-dg-pagination>
+  </clr-dg-footer>
 </clr-datagrid>
 
 <ng-template #noValue>-</ng-template>

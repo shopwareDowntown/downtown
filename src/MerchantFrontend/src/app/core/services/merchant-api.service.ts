@@ -225,8 +225,11 @@ export class MerchantApiService {
     return this.http.get<Organization>(this.apiUrl + '/organization-api/v1/organization', {headers: this.getJsonContentTypeHeaders()});
   }
 
-  getMerchantList(): Observable<Merchant[]> {
-    return this.http.get<Merchant[]>(this.apiUrl + '/organization-api/v1/organization/merchants', {headers: this.getJsonContentTypeHeaders()})
+  getMerchantList(limit: number, offset:number): Observable<MerchantListData> {
+    let params = new HttpParams();
+    params = params.append('limit', limit.toString());
+    params = params.append('offset', offset.toString());
+    return this.http.get<MerchantListData>(this.apiUrl + '/organization-api/v1/organization/merchants', {headers: this.getJsonContentTypeHeaders()})
   }
 
   changeMerchantsActiveFlag(merchant: Merchant, active: boolean): Observable<boolean> {
