@@ -104,5 +104,10 @@
         "issuedOn": "Issued on",
         "createDate": "Date of issue",
         "number": "Voucher number"
+    },
+    "page": {
+        "imprint": "Imprint",
+        "tos": "Terms of Service",
+        "privacy": "Privacy"
     }
 }

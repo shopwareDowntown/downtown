@@ -129,4 +129,19 @@ class OrganizationEntity extends Entity
     {
         return $this->city;
     }
+
+    public function getImprint(): string
+    {
+        return $this->imprint;
+    }
+
+    public function getTos(): string
+    {
+        return $this->tos;
+    }
+
+    public function getPrivacy(): string
+    {
+        return $this->privacy;
+    }
 }

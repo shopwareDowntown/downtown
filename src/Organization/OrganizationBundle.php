@@ -22,5 +22,6 @@ class OrganizationBundle extends Bundle
         $loader->load('api.xml');
         $loader->load('api_controller.xml');
         $loader->load('dal.xml');
+        $loader->load('storefront.xml');
     }
 }
