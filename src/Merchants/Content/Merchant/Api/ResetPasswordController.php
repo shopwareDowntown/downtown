@@ -155,7 +155,7 @@ class ResetPasswordController
             'merchant_reset_password',
             [
                 'merchant' => $merchant,
-                'confirmUrl' => getenv('MERCHANT_PORTAL') . '/reset-password/' . $token
+                'confirmUrl' => getenv('MERCHANT_PORTAL') . '/reset-password/merchant/' . $token
             ]
         );
     }

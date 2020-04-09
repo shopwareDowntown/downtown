@@ -14,5 +14,12 @@
             <argument type="service" id="organization.repository"/>
             <argument type="service" id="merchant.repository"/>
         </service>
+
+        <service id="Shopware\Production\Organization\System\Organization\Api\ResetPasswordController" public="true">
+            <argument type="service" id="organization.repository"/>
+            <argument type="service" id="organization_reset_password.repository"/>
+            <argument type="service" id="Shopware\Production\Portal\Services\TemplateMailSender"/>
+            <argument type="service" id="translator"/>
+        </service>
     </services>
 </container>
