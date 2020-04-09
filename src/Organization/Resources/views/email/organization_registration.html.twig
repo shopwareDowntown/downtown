@@ -134,16 +134,16 @@
                             </tr>
                             <tr>
                                 <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                    <div style="font-family:helvetica;font-size:18px;line-height:1;text-align:left;color:#000001;">{{ 'mail.merchant_registration.hello'|trans({'%merchant%': merchant.publicCompanyName}) }}<br/> <br/> {{ 'mail.merchant_registration.text'|trans }}<br/></div>
+                                    <div style="font-family:helvetica;font-size:18px;line-height:1;text-align:left;color:#000001;">{{ 'mail.organization_registration.hello'|trans({'%name%': organization.salesChannel.name})|raw }}<br/> <br/> <strong>{{ 'mail.organization_registration.email'|trans }}</strong> {{ organization.email }}<br/> <strong>{{ 'mail.organization_registration.password'|trans }}</strong>                        {{ password }}<br/></div>
                                 </td>
                             </tr>
                             <tr>
                                 <td align="center" vertical-align="middle" style="font-size:0px;padding:10px 25px;word-break:break-word;">
                                     <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;">
                                         <tr>
-                                            <td align="center" bgcolor="#6666FF" role="presentation" style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:10px 25px;background:#6666FF;" valign="middle"> <a href="{{ confirmUrl }}" style="display:inline-block;background:#6666FF;color:#ffffff;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;font-weight:normal;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:3px;"
+                                            <td align="center" bgcolor="#6666FF" role="presentation" style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:10px 25px;background:#6666FF;" valign="middle"> <a href="{{ loginLink }}" style="display:inline-block;background:#6666FF;color:#ffffff;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;font-weight:normal;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:3px;"
                                                                                                                                                                                                                          target="_blank">
-                                                    {{ 'mail.merchant_registration.confirmButton'|trans }}
+                                                    {{ 'mail.organization_registration.loginButton'|trans }}
                                                 </a> </td>
                                         </tr>
                                     </table>

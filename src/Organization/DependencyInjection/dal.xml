@@ -16,5 +16,12 @@
         <service id="Shopware\Production\Organization\System\Organization\Extensions\SalesChannelEntityExtension">
             <tag name="shopware.entity.extension"/>
         </service>
+
+        <service id="Shopware\Production\Organization\System\Organization\Subscriber\OrganizationCreateSubscriber">
+            <argument type="service" id="organization.repository"/>
+            <argument type="service" id="Shopware\Production\Portal\Services\TemplateMailSender"/>
+            <argument type="service" id="translator"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
     </services>
 </container>

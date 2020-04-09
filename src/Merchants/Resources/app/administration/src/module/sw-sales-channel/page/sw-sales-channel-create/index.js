@@ -18,6 +18,9 @@ Component.override('sw-sales-channel-create', {
             this.salesChannel.extensions.landingPage.salesChannelId = this.salesChannel.id;
             this.$set(this.salesChannel.extensions, 'organization', this.organizationRepository.create(Shopware.Context.Api));
             this.salesChannel.extensions.organization.salesChannelId = this.salesChannel.id;
+
+            // This will be later replaced by an entity event
+            this.salesChannel.extensions.organization.password = '12345678';
         },
 
         onSave() {

@@ -31,6 +31,45 @@
             label="Password"
             v-model="salesChannel.extensions.organization.password"
         ></sw-field>
+
+        <sw-field
+            type="text"
+            validation="required"
+            required
+            placeholder="First Name"
+            label="First Name"
+            v-model="salesChannel.extensions.organization.firstName"
+        ></sw-field>
+
+        <sw-field
+            type="text"
+            validation="required"
+            required
+            placeholder="Last Name"
+            label="Last Name"
+            v-model="salesChannel.extensions.organization.lastName"
+        ></sw-field>
+
+        <sw-field
+            type="text"
+            placeholder="Phonenumber"
+            label="Phonenumber"
+            v-model="salesChannel.extensions.organization.phone"
+        ></sw-field>
+
+        <sw-field
+            type="text"
+            placeholder="Postcode"
+            label="Postcode"
+            v-model="salesChannel.extensions.organization.postCode"
+        ></sw-field>
+
+        <sw-field
+            type="text"
+            placeholder="City"
+            label="City"
+            v-model="salesChannel.extensions.organization.city"
+        ></sw-field>
     </sw-card>
 
     {% parent %}

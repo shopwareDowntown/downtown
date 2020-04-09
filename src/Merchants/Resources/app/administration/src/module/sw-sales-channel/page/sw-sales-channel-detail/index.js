@@ -17,24 +17,24 @@ Component.override('sw-sales-channel-detail', {
             this.salesChannelRepository
                 .get(this.$route.params.id, Shopware.Context.api, this.getLoadSalesChannelCriteria())
                 .then((entity) => {
-                    this.salesChannel = entity;
 
-                    if (!this.salesChannel.maintenanceIpWhitelist) {
-                        this.salesChannel.maintenanceIpWhitelist = [];
+                    if (!entity.maintenanceIpWhitelist) {
+                        entity.maintenanceIpWhitelist = [];
                     }
 
-                    if (!this.salesChannel.extensions.landingPage) {
+                    if (!entity.extensions.landingPage) {
                         const landingPage = this.landingPageRepository.create(this.context);
                         landingPage.salesChannelId = entity.id;
-                        this.salesChannel.extensions.landingPage = landingPage;
+                        entity.extensions.landingPage = landingPage;
                     }
 
-                    if (!this.salesChannel.extensions.organization) {
+                    if (!entity.extensions.organization) {
                         const organization = this.organizationRepository.create(this.context);
                         organization.salesChannelId = entity.id;
-                        this.salesChannel.extensions.organization = organization;
+                        entity.extensions.organization = organization;
                     }
 
+                    this.salesChannel = entity;
                     this.generateAccessUrl();
 
                     this.isLoading = false;

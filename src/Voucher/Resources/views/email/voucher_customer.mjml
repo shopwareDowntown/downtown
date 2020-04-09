@@ -2,7 +2,7 @@
   <mj-body>
     <mj-section>
       <mj-column>
-        <mj-image width="200px" src="https://downtowns.io/assets/images/downtown.svg"></mj-image>
+        <mj-image width="200px" src="https://app.downtown.shop/assets/images/downtown.svg"></mj-image>
 
         <mj-divider border-color="#6666FF"></mj-divider>
 
