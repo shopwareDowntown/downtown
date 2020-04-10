@@ -93,7 +93,7 @@ class VoucherFundingMerchantService
             $voucherValue = new AbsolutePriceDefinition($lineItemPrice->getPrice(), $lineItemPrice->getPrecision());
 
             for ($i = 0; $i < $voucherNum; ++$i) {
-                $code = $this->generateUniqueVoucherCode($merchantId, $context);
+                $code = $this->generateUniqueVoucherCode($lineItemEntity->getId(), $context);
 
                 $voucher = [];
                 $voucher['merchantId'] = $merchantId;
@@ -173,21 +173,21 @@ class VoucherFundingMerchantService
         $this->voucherFundingEmailService->sendEmailMerchant($templateData, $merchant, $context);
     }
 
-    private function generateUniqueVoucherCode(string $merchantId, Context $context)
+    private function generateUniqueVoucherCode(string $orderLineItemId, Context $context)
     {
         $code = $this->generateVoucherCode();
 
-        if ($this->checkCodeUnique($merchantId, $code, $context)) {
+        if ($this->checkCodeUnique($orderLineItemId, $code, $context)) {
             return $code;
         }
 
-        return $this->generateUniqueVoucherCode($merchantId, $context);
+        return $this->generateUniqueVoucherCode($orderLineItemId, $context);
     }
 
-    private function checkCodeUnique(string $merchantId, string $code, Context $context)
+    private function checkCodeUnique(string $orderLineItemId, string $code, Context $context)
     {
         $criteria = new Criteria();
-        $criteria->addFilter(new EqualsFilter('merchantId', $merchantId));
+        $criteria->addFilter(new EqualsFilter('orderLineItemId', $orderLineItemId));
         $criteria->addFilter(new EqualsFilter('code', $code));
 
         return $this->soldVoucherRepository->search($criteria, $context)->count() === 0;
