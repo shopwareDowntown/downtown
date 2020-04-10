@@ -3,12 +3,9 @@
 namespace Shopware\Production\Voucher\Service;
 
 use Shopware\Core\Checkout\Cart\Price\Struct\AbsolutePriceDefinition;
-use Shopware\Core\Checkout\Order\Aggregate\OrderLineItem\OrderLineItemCollection;
 use Shopware\Core\Checkout\Order\OrderEntity;
 use Shopware\Core\Defaults;
-use Shopware\Core\Checkout\Order\Aggregate\OrderLineItem\OrderLineItemEntity;
 use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityCollection;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Sorting\FieldSorting;
@@ -52,8 +49,8 @@ class VoucherFundingMerchantService
             $criteria->setOffset((int) $request->query->get('offset', 0));
         }
 
-        $criteria->setTotalCountMode(Criteria::TOTAL_COUNT_MODE_EXACT);
         $criteria->addSorting(new FieldSorting('createdAt', FieldSorting::DESCENDING));
+        $criteria->setTotalCountMode(Criteria::TOTAL_COUNT_MODE_EXACT);
 
         $soldVoucherCollection = $this->soldVoucherRepository->search($criteria, $context->getContext());
         $data = [];
