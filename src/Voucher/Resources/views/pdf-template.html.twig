@@ -4,7 +4,7 @@
         <tr>
             <td valign="top" style="background-color: #e6e7e9; text-align: center;">
                <div style="color: #3c3c3c; padding-top: 80px; font-size: 50px;font-weight: 900">{{ 'voucher.voucher'|trans }}</div>
-               <div style="margin: 80px 120px; padding: 140px 60px 80px; color: #a79056; font-size: 110px; border-radius: 30px; background-color: white;">{{ voucher.value.price|currency(order.currency.isoCode) }}</div>
+               <div style="margin: 80px 120px; padding: 140px 60px 80px; color: #a79056; font-size: 110px; border-radius: 30px; background-color: white;">{{ voucher.value.price|format_currency(order.currency.isoCode, {rounding_mode: 'floor',fraction_digit: 0}, locale=locale) }}</div>
                 {% if merchant.cover %}
                     <img src="{{ merchant.cover|sw_encode_media_url }}" height="60px" style="margin-bottom: 40px" />
                 {% else %}
