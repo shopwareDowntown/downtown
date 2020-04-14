@@ -4,6 +4,7 @@ namespace Shopware\Production\Organization\System\Organization\Api;
 
 use OpenApi\Annotations as OA;
 use Shopware\Core\Defaults;
+use Shopware\Core\Framework\Api\Serializer\JsonEntityEncoder;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
@@ -108,8 +109,7 @@ class OrganizationController
             $result[] = [
                 'id' => $salesChannel->getId(),
                 'name' => $salesChannel->getName(),
-                'domain' => $domainEntity->getUrl(),
-                'accessKey' => $salesChannel->getAccessKey(),
+                'domain' => $domainEntity->getUrl()
             ];
         }
 
@@ -140,7 +140,7 @@ class OrganizationController
      *      description="Update information about the loggedin organization",
      *      operationId="saveOrganization",
      *      tags={"Organization"},
-     *      @OA\Parameter(name="body", in="body", @OA\JsonContent(ref="#/components/schemas/OrganizationEntity")),
+     *      @OA\RequestBody(@OA\JsonContent(ref="#/components/schemas/OrganizationEntity")),
      *      @OA\Response(
      *          response="200",
      *          @OA\JsonContent(ref="#/components/schemas/OrganizationEntity")
