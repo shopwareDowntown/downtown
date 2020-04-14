@@ -40,6 +40,8 @@ class ObjectCacheKeyFinder extends \Shopware\Storefront\Framework\Cache\ObjectCa
             $tags[] = 'theme-' . $theme->getId();
         }
 
+        $tags[] = 'sales_channel-' . $context->getSalesChannel()->getId();
+
         return $tags;
     }
 
