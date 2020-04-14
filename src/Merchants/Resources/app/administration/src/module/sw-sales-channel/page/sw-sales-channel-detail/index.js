@@ -2,9 +2,6 @@ const { Component } = Shopware;
 
 Component.override('sw-sales-channel-detail', {
     computed: {
-        landingPageRepository() {
-            return this.repositoryFactory.create('sales_channel_landing_page');
-        },
         organizationRepository() {
             return this.repositoryFactory.create('organization');
         },
@@ -20,12 +17,6 @@ Component.override('sw-sales-channel-detail', {
 
                     if (!entity.maintenanceIpWhitelist) {
                         entity.maintenanceIpWhitelist = [];
-                    }
-
-                    if (!entity.extensions.landingPage) {
-                        const landingPage = this.landingPageRepository.create(this.context);
-                        landingPage.salesChannelId = entity.id;
-                        entity.extensions.landingPage = landingPage;
                     }
 
                     if (!entity.extensions.organization) {
@@ -47,19 +38,6 @@ Component.override('sw-sales-channel-detail', {
             criteria.addAssociation('organization');
 
             return criteria;
-        },
-
-        onSave() {
-            if (!this.salesChannel.extensions.landingPage.cmsPageId) {
-                this.createNotificationError({
-                    title: this.$tc('sw-sales-channel.detail.titleSaveError'),
-                    message: 'Please specify a landingpage layout'
-                });
-
-                return;
-            }
-
-            this.$super('onSave');
         }
     }
 });
