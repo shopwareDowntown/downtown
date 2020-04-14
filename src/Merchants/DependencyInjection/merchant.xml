@@ -77,5 +77,10 @@
         <service id="Shopware\Production\Merchants\System\SalesChannel\Extensions\CmsPageExtension">
             <tag name="shopware.entity.extension"/>
         </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Subscriber\MerchantSubscriber" public="true">
+            <argument type="service" id="Shopware\Core\Framework\Adapter\Cache\CacheClearer"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
     </services>
 </container>
