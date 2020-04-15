@@ -92,11 +92,11 @@ export class MerchantApiService {
     return this.http.patch<Merchant>(this.apiUrl + '/merchant-api/v1/profile', JSON.stringify(merchant), { headers: this.getJsonContentTypeHeaders() });
   }
 
-  addCoverToMerchant(image: File[]): Observable<any> {
+  addCoverToMerchant(image: File): Observable<any> {
     let headers = new HttpHeaders();
     headers = headers.set('sw-context-token', this.getSwContextToken());
     const formData = new FormData();
-    formData.append('cover', image[0]);
+    formData.append('cover', image);
     return this.http.post<Merchant>(this.apiUrl + '/merchant-api/v1/profile/media', formData, {headers: headers})
   }
 
@@ -152,7 +152,7 @@ export class MerchantApiService {
     let headers = new HttpHeaders();
     headers = headers.set('sw-context-token', this.getSwContextToken());
     const formData = new FormData();
-    formData.append('media[]', image[0]);
+    formData.append('media[]', image);
     return this.http.post<any>(this.apiUrl + '/merchant-api/v1/products/' + productId, formData, {headers: headers});
   }
 
@@ -238,10 +238,11 @@ export class MerchantApiService {
       active: active
     };
     return this.http.patch<boolean>(
-      this.apiUrl + '/organization-api/v1/organization/merchant/' + merchant.id +'/set-active',
+      this.apiUrl + '/organization-api/v1/organization/merchant/' + merchant.id + '/set-active',
       JSON.stringify(body),
       {headers: this.getJsonContentTypeHeaders()}
-    )
+    );
+  }
 
   resetOrganizationPassword(email: string): Observable<void> {
     return this.http.post<void>(
@@ -263,19 +264,43 @@ export class MerchantApiService {
     );
   }
 
+  updateOrganization(updateData: Organization): Observable<Organization> {
+    return this.http.patch <Organization>(
+      this.apiUrl + '/organization-api/v1/organization',
+      JSON.stringify(updateData),
+      {headers: this.getJsonContentTypeHeaders()}
+    );
+  }
+
+
+  setOrganizationLogo(image: File): Observable<any> {
+    let headers = new HttpHeaders();
+    headers = headers.set('sw-context-token', this.getSwContextToken());
+    const formData = new FormData();
+    formData.append('logo', image);
+    return this.http.post<any>(this.apiUrl + '/organization-api/v1/organization/logo', formData, {headers: headers});
+  }
+
+  setOrganizationHomeImage(image: File): Observable<any> {
+
+    let headers = new HttpHeaders();
+    headers = headers.set('sw-context-token', this.getSwContextToken());
+    const formData = new FormData();
+    formData.append('image', image);
+    return this.http.post<any>(this.apiUrl + '/organization-api/v1/organization/home/heroImage', formData, {headers: headers});
+  }
+
   private getHeaders(): { [header: string]: string | string[];} {
     return {
       'sw-context-token': this.getSwContextToken()
     };
   }
-
   private getJsonContentTypeHeaders(): HttpHeaders {
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
     headers = headers.set('sw-context-token', this.getSwContextToken());
     return headers;
   }
-
   private getSwContextToken(): string {
     let token: string;
     this.stateService.getSwContextToken()
