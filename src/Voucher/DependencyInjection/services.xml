@@ -22,6 +22,7 @@
         <service id="Shopware\Production\Voucher\Service\VoucherFundingMerchantService">
             <argument type="service" id="sold_voucher.repository"/>
             <argument type="service" id="Shopware\Production\Voucher\Service\VoucherFundingEmailService"/>
+            <argument type="service" id="translator"/>
         </service>
 
         <service id="Shopware\Production\Voucher\Service\CartValidator">

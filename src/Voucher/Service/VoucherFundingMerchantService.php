@@ -17,6 +17,7 @@ use Shopware\Production\Voucher\Checkout\SoldVoucher\SoldVoucherEntity;
 use Shopware\Production\Voucher\Checkout\SoldVoucher\VoucherStatuses;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class VoucherFundingMerchantService
 {
@@ -26,13 +27,16 @@ class VoucherFundingMerchantService
     private $soldVoucherRepository;
 
     private $voucherFundingEmailService;
+    private $translator;
 
     public function __construct(
         EntityRepositoryInterface $soldVoucherRepository,
-        VoucherFundingEmailService $voucherFundingEmailService
+        VoucherFundingEmailService $voucherFundingEmailService,
+        TranslatorInterface $translator
     ) {
         $this->soldVoucherRepository = $soldVoucherRepository;
         $this->voucherFundingEmailService = $voucherFundingEmailService;
+        $this->translator = $translator;
     }
 
     public function loadSoldVouchers(string $merchantId, Request $request, SalesChannelContext $context): array
@@ -90,7 +94,7 @@ class VoucherFundingMerchantService
             $voucherValue = new AbsolutePriceDefinition($lineItemPrice->getPrice(), $lineItemPrice->getPrecision());
 
             for ($i = 0; $i < $voucherNum; ++$i) {
-                $code = $this->generateUniqueVoucherCode($lineItemEntity->getId(), $context);
+                $code = $this->generateUniqueVoucherCode($merchantId, $context);
 
                 $voucher = [];
                 $voucher['merchantId'] = $merchantId;
@@ -163,28 +167,29 @@ class VoucherFundingMerchantService
             'order' => $order,
             'vouchers' => $vouchers,
             'today' => (new \DateTime())->format(Defaults::STORAGE_DATE_FORMAT),
-            'customerName' => $customerName
+            'customerName' => $customerName,
+            'locale' => $this->translator->getLocale()
         ];
 
         $this->voucherFundingEmailService->sendEmailCustomer($templateData, $merchant, $context);
         $this->voucherFundingEmailService->sendEmailMerchant($templateData, $merchant, $context);
     }
 
-    private function generateUniqueVoucherCode(string $orderLineItemId, Context $context)
+    private function generateUniqueVoucherCode(string $merchantId, Context $context)
     {
         $code = $this->generateVoucherCode();
 
-        if ($this->checkCodeUnique($orderLineItemId, $code, $context)) {
+        if ($this->checkCodeUnique($merchantId, $code, $context)) {
             return $code;
         }
 
-        return $this->generateUniqueVoucherCode($orderLineItemId, $context);
+        return $this->generateUniqueVoucherCode($merchantId, $context);
     }
 
-    private function checkCodeUnique(string $orderLineItemId, string $code, Context $context)
+    private function checkCodeUnique(string $merchantId, string $code, Context $context)
     {
         $criteria = new Criteria();
-        $criteria->addFilter(new EqualsFilter('orderLineItemId', $orderLineItemId));
+        $criteria->addFilter(new EqualsFilter('merchantId', $merchantId));
         $criteria->addFilter(new EqualsFilter('code', $code));
 
         return $this->soldVoucherRepository->search($criteria, $context)->count() === 0;
