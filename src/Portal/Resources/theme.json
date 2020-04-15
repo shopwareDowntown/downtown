@@ -1,6 +1,6 @@
 {
-  "name": "MerchantsTheme",
-  "author": "Shopware AG",
+  "name": "Portal",
+  "author": "shopware AG",
   "views": [
      "@Storefront",
      "@Plugins",
