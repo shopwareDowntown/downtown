@@ -1,0 +1,26 @@
+.product-box.box-standard {
+
+    .product-image-wrapper {
+        height: 325px;
+
+        @include media-breakpoint-up(xl) {
+            height: 425px;
+        }
+    }
+
+    .product-image.is-cover {
+        max-height: 325px;
+
+        @include media-breakpoint-up(xl) {
+            max-height: 425px;
+        }
+    }
+
+    .card-body {
+        padding: 0;
+    }
+
+    .product-info {
+        padding: 0 30px 30px;
+    }
+}

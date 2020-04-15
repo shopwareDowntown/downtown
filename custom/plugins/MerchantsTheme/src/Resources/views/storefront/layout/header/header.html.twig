@@ -1,0 +1,47 @@
+{% sw_extends "@Storefront/storefront/layout/header/header.html.twig" %}
+
+{# Hide currency and language switch in top bar #}
+{% block layout_top_bar %}{% endblock %}
+
+{% block layout_header_logo %}
+    <div class="col-12 col-lg-4 header-logo-col">
+        {% sw_include '@Storefront/storefront/layout/header/logo.html.twig' %}
+    </div>
+{% endblock %}
+
+{% block layout_header_search %}
+    <div class="col-12 order-2 col-sm col-lg-4 order-sm-1 header-search-col">
+        <div class="row">
+            <div class="col-sm-auto d-none d-sm-block d-lg-none">
+                {% block layout_header_navigation_toggle_tablet %}
+                    {{ parent() }}
+                {% endblock %}
+            </div>
+            <div class="col">
+                {% sw_include '@Storefront/storefront/layout/header/search.html.twig' %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block layout_header_actions %}
+    <div class="col-12 order-1 col-sm-auto col-lg-4 orderF-sm-2 header-actions-col">
+        <div class="row no-gutters justify-content-end">
+            {% block layout_header_navigation_toggle %}
+                {{ parent() }}
+            {% endblock %}
+
+            {% block layout_header_search_toggle %}
+                {{ parent() }}
+            {% endblock %}
+
+            {% block layout_header_actions_account %}
+                {{ parent() }}
+            {% endblock %}
+
+            {% block layout_header_actions_cart %}
+                {{ parent() }}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,32 @@
+.availability-wrapper {
+    display: flex;
+    margin-bottom: 25px;
+
+    .availability-badge {
+        padding-top: 6px;
+        padding-bottom: 3px;
+        padding-left: 16px;
+        padding-right: 16px;
+        font-size: 12px;
+        border-radius: 13px;
+        font-weight: $font-weight-bold;
+        line-height: 1.6;
+
+        &.normal {
+            color: rgb(60, 194, 97);
+            background-color: rgb(209, 244, 221);
+        }
+
+        &.pick-up {
+            color: rgb(243, 170, 63);
+            background-color: rgb(255, 242, 223);
+        }
+
+        &.inactive {
+            color: rgb(169, 169, 169);
+            background-color: rgb(238, 238, 238);
+        }
+
+    }
+
+}

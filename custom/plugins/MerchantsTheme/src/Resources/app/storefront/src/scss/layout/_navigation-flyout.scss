@@ -1,0 +1,43 @@
+.navigation-flyout-bar {
+    padding: 10px 0;
+    border-top: 1px solid $border-color;
+    border-bottom: 1px solid $border-color;
+}
+
+.navigation-flyout-category-link {
+    font-size: 14px;
+
+    .nav-link {
+        padding-left: 0;
+    }
+
+    .icon {
+        color: $secondary;
+    }
+}
+
+.navigation-flyout-link {
+    margin: 0;
+    padding: 25px 0;
+}
+
+.navigation-flyout-close {
+    .icon {
+        color: $secondary;
+    }
+}
+
+.navigation-flyout-categories {
+    &:not(.is-level-0) {
+        margin-left: 0;
+    }
+
+    &.is-level-0 > .navigation-flyout-col {
+        margin-bottom: 0;
+
+        &:before {
+            border-left: 0;
+            left: 0;
+        }
+    }
+}
