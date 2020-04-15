@@ -15,6 +15,7 @@ use Shopware\Core\Framework\Validation\DataValidationDefinition;
 use Shopware\Core\Framework\Validation\DataValidator;
 use Shopware\Core\System\SalesChannel\SalesChannelCollection;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
+use Shopware\Core\System\SalesChannel\SalesChannelEntity;
 use Shopware\Production\Organization\Exception\MerchantForOrganizationNotFoundException;
 use Shopware\Production\Organization\System\Organization\OrganizationEntity;
 use Shopware\Production\Portal\Hacks\StorefrontMediaUploader;
@@ -172,9 +173,17 @@ class OrganizationController
             )
         ], Context::createDefaultContext());
 
-        $organizationEntity = $this->organizationRepository->search(new Criteria([$organizationEntity->getId()]), Context::createDefaultContext())->first();
+        $criteria = new Criteria([$organizationEntity->getId()]);
+        $criteria->addAssociation('salesChannel');
 
-        return new JsonResponse($organizationEntity);
+        /** @var OrganizationEntity|null $organizationEntity */
+        $organizationEntity = $this->organizationRepository->search($criteria, Context::createDefaultContext())->first();
+
+        $organization = $organizationEntity->jsonSerialize();
+        $organization['name'] = $organizationEntity->getSalesChannel()->getTranslation('name');
+        unset($organization['salesChannel']);
+
+        return new JsonResponse($organization);
     }
 
     /**
