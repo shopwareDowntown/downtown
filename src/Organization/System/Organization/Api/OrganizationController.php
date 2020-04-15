@@ -128,9 +128,12 @@ class OrganizationController
      * )
      * @Route(name="organization-api.organization", path="/organization-api/v{version}/organization", methods={"GET"})
      */
-    public function loadOne(OrganizationEntity $organizationEntity): JsonResponse
+    public function loadOne(OrganizationEntity $organizationEntity, SalesChannelContext $context): JsonResponse
     {
-        return new JsonResponse($organizationEntity);
+        $organization = $organizationEntity->jsonSerialize();
+        $organization['name'] = $context->getSalesChannel()->getTranslation('name');
+
+        return new JsonResponse($organization);
     }
 
     /**
@@ -152,11 +155,20 @@ class OrganizationController
         $constraints = $this->createValidationDefinition();
 
         $this->dataValidator->validate($dataBag->all(), $constraints);
+        $data = $dataBag->only(... array_keys($constraints->getProperties()));
+
+        if (isset($data['name'])) {
+            $data['salesChannel'] = [
+                'id' => $organizationEntity->getSalesChannelId(),
+                'name' => $data['name']
+            ];
+            unset($data['name']);
+        }
 
         $this->organizationRepository->update([
             array_merge(
                 ['id' => $organizationEntity->getId()],
-                $dataBag->only(... array_keys($constraints->getProperties()))
+                $data
             )
         ], Context::createDefaultContext());
 
@@ -348,6 +360,7 @@ class OrganizationController
     private function createValidationDefinition(): DataValidationDefinition
     {
         return (new DataValidationDefinition())
+            ->add('name', new Type('string'))
             ->add('firstName', new Type('string'))
             ->add('lastName', new Type('string'))
             ->add('phone', new Type('string'))
