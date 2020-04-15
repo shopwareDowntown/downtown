@@ -1,0 +1,13 @@
+{% sw_extends '@Storefront/storefront/page/product-detail/description.html.twig' %}
+
+{% block page_product_detail_description_title %}{% endblock %}
+
+{% block page_product_detail_description_content_properties %}
+    {% if page.product.sortedProperties|length > 0 %}
+        <div class="h3 product-detail-description-title">
+            {{ "detail.descriptionTitle"|trans|sw_sanitize }}
+        </div>
+
+        {% sw_include '@Storefront/storefront/page/product-detail/properties.html.twig' %}
+    {% endif %}
+{% endblock %}

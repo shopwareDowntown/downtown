@@ -1,0 +1,17 @@
+.main-navigation-menu {
+    justify-content: center;
+
+    .main-navigation-link {
+
+        &.active {
+            .main-navigation-link-text {
+                border-color: transparent;
+            }
+        }
+
+        @include media-breakpoint-up(md) {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+    }
+}
