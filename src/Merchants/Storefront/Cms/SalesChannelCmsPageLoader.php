@@ -75,7 +75,7 @@ class SalesChannelCmsPageLoader implements SalesChannelCmsPageLoaderInterface
             $this->addText($cmsPage, $organization, $context->getSalesChannel());
         }
 
-        $this->addMerchantListing($cmsPage, $organization);
+        $this->addMerchantListing($cmsPage);
 
         $slots = $this->cmsSlotsDataResolver->resolve($cmsPage->getSections()->getBlocks()->getSlots(), $resolverContext);
         $cmsPage->getSections()->getBlocks()->setSlots($slots);
@@ -147,7 +147,7 @@ class SalesChannelCmsPageLoader implements SalesChannelCmsPageLoaderInterface
         $cmsPage->getSections()->add($cmsSection);
     }
 
-    private function addMerchantListing(CmsPageEntity $cmsPage, OrganizationEntity $organization): void
+    private function addMerchantListing(CmsPageEntity $cmsPage): void
     {
         $slot = new CmsSlotEntity();
         $slot->setId(Uuid::randomHex());
