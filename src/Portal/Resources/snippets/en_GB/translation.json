@@ -109,5 +109,36 @@
         "imprint": "Imprint",
         "tos": "Terms of use",
         "privacy": "Privacy"
+    },
+    "footer": {
+        "copyrightInfo": "Realised with Downtown",
+        "links": {
+            "merchant": "Merchant Login",
+            "imprint": "Imprint",
+            "generalTerms": "Terms of use",
+            "privacy": "Privacy"
+        }
+    },
+    "merchantsBanner": {
+        "headline": "Help together and be there!",
+        "subline": "Use the power of our community against the Corona crisis",
+        "button": {
+            "text": "Register as a merchant"
+        }
+    },
+    "merchantBox": {
+        "availabilityBadgeOpen": "Regularly open",
+        "availabilityBadgePickUp": "Pick up only",
+        "availabilityBadgeInactive": "Currently not available",
+        "serviceHeadline": "Our services:"
+    },
+    "account": {
+        "loginHeader": "Login"
+    },
+    "listing": {
+        "boxMerchantDetails": "Show more details"
+    },
+    "general": {
+        "privacyNotice": "<a data-toggle=\"modal\" data-url=\"%url%\" href=\"%url%\" title=\"Privacy\">I have taken note of the privacy policy.</a>"
     }
 }

@@ -84,7 +84,7 @@ class StaticPageController extends StorefrontController
     private function addCmsPage(OrganizationEntity $organization, NavigationPage $page, string $field): void
     {
         $textStructure = new TextStruct();
-        $textStructure->setContent($organization->jsonSerialize()[$field]);
+        $textStructure->setContent($organization->jsonSerialize()[$field] ?? '');
 
         $slot = new CmsSlotEntity();
         $slot->setId(Uuid::randomHex());

@@ -111,7 +111,13 @@
         "privacy": "Datenschutzbestimmung"
     },
     "footer": {
-        "copyrightInfo": "Realised with Downtown"
+        "copyrightInfo": "Realised with Downtown",
+        "links": {
+            "merchant": "Händler-Login",
+            "imprint": "Impressum",
+            "generalTerms": "Nutzungsbestimmungen",
+            "privacy": "Datenschutz"
+        }
     },
     "merchantsBanner": {
         "headline": "Gemeinsam helfen und da sein!",

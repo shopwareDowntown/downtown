@@ -11,68 +11,55 @@
                            href="{{ path('frontend.home.page') }}"
                            title="{{ "header.logoLink"|trans|striptags }}">
 
-                            <picture>
-                                {% block layout_header_logo_image_tablet %}
-                                    {% if shopware.theme['sw-logo-tablet'] %}
-                                        <source srcset="{{ context.salesChannel.extension('organization').logo.thumbnails.first().url |sw_encode_url }}"
-                                                media="(min-width: {{ shopware.theme.breakpoint.md }}px) and (max-width: {{ shopware.theme.breakpoint.lg - 1 }}px)">
-                                    {% endif %}
-                                {% endblock %}
-
-                                {% block layout_header_logo_image_mobile %}
-                                    {% if shopware.theme['sw-logo-mobile'] %}
-                                        <source srcset="{{ context.salesChannel.extension('organization').logo.thumbnails.first().url |sw_encode_url }}"
-                                                media="(max-width: {{ shopware.theme.breakpoint.md - 1 }}px)">
-                                    {% endif %}
-                                {% endblock %}
-
-                                {% block layout_header_logo_image_default %}
-                                    {% if shopware.theme['sw-logo-desktop'] %}
-                                        <img src="{{ context.salesChannel.extension('organization').logo.thumbnails.first().url |sw_encode_url }}"
-                                             alt="{{ "header.logoLink"|trans|striptags }}"
-                                             class="img-fluid header-logo-main-img"/>
-                                    {% endif %}
-                                {% endblock %}
-                            </picture>
+                            {% if context.salesChannel.extension('organization').logo %}
+                                <img src="{{ context.salesChannel.extension('organization').logo.url |sw_encode_url }}"
+                                     alt="{{ "header.logoLink"|trans|striptags }}"
+                                     class="img-fluid header-logo-main-img"/>
+                            {% endif %}
                         </a>
                     </div>
                 {% endblock %}
 
                 {% block layout_footer_navigation_columns %}
-                    {% for root in page.footer.navigation.tree %}
-                        {% block layout_footer_navigation_column %}
-                            <div class="col-md-4 footer-column">
-                                {% block layout_footer_navigation_information_headline %}{% endblock %}
+                    {% block layout_footer_navigation_column %}
+                        <div class="col-md-4 footer-column">
+                            {% block layout_footer_navigation_information_headline %}{% endblock %}
 
-                                {% block layout_footer_navigation_information_content %}
-                                    <div class="footer-column-content">
-                                        <div class="footer-column-content-inner">
-                                            {% block layout_footer_navigation_information_links %}
-                                                <ul class="list-unstyled">
-                                                    {% for treeItem in root.children %}
-                                                        {% set category = treeItem.category %}
-                                                        {% set name = category.translated.name %}
-                                                        {% set externalLink = category.translated.externalLink %}
-                                                        {% block layout_footer_navigation_information_link_item %}
-                                                            <li class="footer-link-item">
-                                                                {% block layout_footer_navigation_information_link %}
-                                                                    <a class="footer-link"
-                                                                       href="{% if externalLink %}{{ externalLink }}{% else %}{{ seoUrl('frontend.navigation.page', { navigationId: category.id }) }}{% endif %}"
-                                                                       title="{{ name }}">
-                                                                        {{ name }}
-                                                                    </a>
-                                                                {% endblock %}
-                                                            </li>
-                                                        {% endblock %}
-                                                    {% endfor %}
-                                                </ul>
-                                            {% endblock %}
-                                        </div>
+                            {% block layout_footer_navigation_information_content %}
+                                <div class="footer-column-content">
+                                    <div class="footer-column-content-inner">
+                                        {% block layout_footer_navigation_information_links %}
+                                            <ul class="list-unstyled">
+                                                <li class="footer-link-item">
+                                                    <a class="footer-link" href="{{ page.footer.extensions.portal.url }}">
+                                                        {{ 'footer.links.merchant'|trans }}
+                                                    </a>
+                                                </li>
+
+                                                <li class="footer-link-item">
+                                                    <a class="footer-link" href="{{ path('organization.imprint')}}">
+                                                        {{ 'footer.links.imprint'|trans }}
+                                                    </a>
+                                                </li>
+
+                                                <li class="footer-link-item">
+                                                    <a class="footer-link" href="{{ path('organization.tos')}}">
+                                                        {{ 'footer.links.generalTerms'|trans }}
+                                                    </a>
+                                                </li>
+
+                                                <li class="footer-link-item">
+                                                    <a class="footer-link" href="{{ path('organization.privacy')}}">
+                                                        {{ 'footer.links.privacy'|trans }}
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        {% endblock %}
                                     </div>
-                                {% endblock %}
-                            </div>
-                        {% endblock %}
-                    {% endfor %}
+                                </div>
+                            {% endblock %}
+                        </div>
+                    {% endblock %}
                 {% endblock %}
             </div>
         </div>
