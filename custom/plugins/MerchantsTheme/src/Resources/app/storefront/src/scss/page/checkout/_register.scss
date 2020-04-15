@@ -1,0 +1,12 @@
+.is-act-checkoutregisterpage {
+    .content-main {
+        .checkout {
+            .checkout-aside {
+                @extend .col-xl-4;
+                @extend .offset-xl-0;
+                @extend .col-md-6;
+                @extend .offset-md-6;
+            }
+        }
+    }
+}

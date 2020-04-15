@@ -1,0 +1,59 @@
+.is-ctl-product {
+
+    &.is-act-index {
+
+        .product-detail-headline {
+            margin-top: 25px;
+
+            @include media-breakpoint-up(md) {
+                margin-top: 50px;
+            }
+        }
+
+        .product-detail-headline {
+            margin-bottom: 30px;
+
+            .product-detail-name {
+                font-weight: $font-weight-bold;
+            }
+
+        }
+
+        .product-detail-tax-link {
+            text-decoration: underline;
+            font-size: 11px;
+        }
+
+        .product-detail-quantity-select {
+            height: 44px;
+        }
+
+        // Change the buy button style only for the product detail page.
+        .product-detail-buy {
+
+            .btn-buy {
+                margin-top: 25px;
+                color: #ffffff;
+                border-color: #3cc261;
+                background-color: #3cc261;
+
+                &:hover {
+                    border-color: darken(#3cc261, 10%);
+                    background-color: darken(#3cc261, 10%);
+                }
+            }
+        }
+
+        .container-main {
+            min-height: auto;
+        }
+
+        .container-second {
+            padding: 50px 0;
+            background: rgb(244, 244, 244);
+        }
+
+    }
+
+}
+

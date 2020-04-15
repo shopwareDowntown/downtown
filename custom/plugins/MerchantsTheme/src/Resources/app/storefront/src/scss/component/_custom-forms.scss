@@ -1,0 +1,16 @@
+.custom-select {
+    border-radius: 0;
+}
+
+.custom-checkbox {
+
+    .custom-control-label {
+
+        &::before,
+        &::after {
+            top: 0;
+        }
+
+    }
+
+}

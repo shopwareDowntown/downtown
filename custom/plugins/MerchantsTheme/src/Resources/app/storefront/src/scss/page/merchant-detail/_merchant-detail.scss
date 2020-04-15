@@ -1,0 +1,186 @@
+.is-ctl-merchant {
+
+    &.is-act-detail {
+
+        main.content-main {
+            display: flex;
+            flex-direction: column;
+        }
+
+    }
+
+}
+
+// Banner
+#merchant-header-banner {
+    margin: 0;
+
+    &.no-description {
+        margin-bottom: 40px;
+    }
+
+    .merchant-image {
+        position: relative;
+        padding: 0;
+
+        .merchant-image-container {
+            min-height: 270px;
+
+            @include media-breakpoint-up(md) {
+                min-height: 670px;
+            }
+        }
+
+        img {
+            position: absolute;
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+    }
+
+    .icon-holder {
+        .icon {
+            color: #000;
+            width: 16px;
+            height: 16px;
+
+            & > svg {
+                top: 0;
+            }
+        }
+    }
+
+    .merchant-information {
+        padding: 20px 20px;
+
+        .merchant-information-row {
+            h1 {
+                margin-bottom: 5px;
+            }
+        }
+    }
+
+    ul.contact-information {
+        list-style: none;
+        padding: 0;
+
+        li {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 10px 0;
+
+            .icon-holder {
+                display: inline-block;
+                width: 16px;
+                text-align: center;
+                padding-right: 28px;
+            }
+
+            .phone {
+                font-weight: $font-weight-bold;
+                line-height: 24px;
+            }
+        }
+    }
+
+    ul.contact-information {
+        margin: 15px 0 25px;
+    }
+
+    .opening-times {
+        margin-bottom: 25px;
+
+        @include media-breakpoint-up(md) {
+            margin-bottom: 50px;
+        }
+
+        & > p {
+            margin-bottom: 0;
+        }
+
+    }
+}
+
+.merchant-detail-lower {
+    background-color: rgba(216, 216, 216, .27);
+
+    // Description below banner
+    .merchant-description {
+        margin: 20px auto 40px;
+        text-align: center;
+
+        .merchant-description-holder {
+            max-width: 660px;
+            margin: auto;
+            padding: 30px 0;
+        }
+
+        .text-headline {
+            font-weight: $font-weight-bold;
+            font-size: 24px;
+
+            @include media-breakpoint-up(md) {
+                margin-top: 20px;
+                margin-bottom: 45px;
+            }
+        }
+    }
+
+    .merchant-listing {
+        margin-bottom: 30px;
+
+        .merchant-listing-headline {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .products-wrapper {
+
+            .product {
+                margin-bottom: 30px;
+            }
+
+        }
+
+    }
+
+}
+
+@include media-breakpoint-up(sm) {
+    #merchant-header-banner {
+        .merchant-information {
+            padding: 25px 35px;
+
+            .merchant-information-row {
+                max-width: 500px;
+            }
+        }
+    }
+
+    .merchant-description {
+        margin: 40px auto 60px;
+    }
+}
+
+@include media-breakpoint-up(lg) {
+    #merchant-header-banner {
+        .merchant-information {
+            padding: 60px 70px 30px;
+
+            .merchant-information-row {
+                max-width: 500px;
+            }
+        }
+    }
+}
+
+@include media-breakpoint-up(xl) {
+    #merchant-header-banner {
+        .merchant-information {
+            padding: 60px 110px 30px;
+        }
+    }
+}

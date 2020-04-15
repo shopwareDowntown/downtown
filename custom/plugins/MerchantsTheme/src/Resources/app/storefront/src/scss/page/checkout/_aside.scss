@@ -1,0 +1,13 @@
+.checkout-aside-action {
+    @include media-breakpoint-up(md) {
+        text-align: right;
+    }
+
+    .btn {
+        display: block;
+
+        @include media-breakpoint-up(md) {
+            display: inline-block;
+        }
+    }
+}

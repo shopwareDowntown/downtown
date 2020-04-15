@@ -1,0 +1,25 @@
+.is-act-cartpage {
+    .content-main {
+        .checkout {
+            padding-top: 70px;
+
+            .checkout-aside {
+                @extend .col-xl-4;
+                @extend .offset-xl-0;
+                @extend .col-md-6;
+                @extend .offset-md-6;
+            }
+        }
+    }
+}
+
+.cart-shipping-costs-btn {
+    padding-left: 12px;
+}
+
+
+@include media-breakpoint-up(md) {
+    .cart-add-product {
+        max-width: none;
+    }
+}
