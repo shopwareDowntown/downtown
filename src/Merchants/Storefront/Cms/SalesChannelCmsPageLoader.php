@@ -160,6 +160,7 @@ class SalesChannelCmsPageLoader implements SalesChannelCmsPageLoaderInterface
         $block->setType('merchant-listing');
         $block->setSectionPosition('main');
         $block->setSlots(new CmsSlotCollection([$slot]));
+        $block->setMarginTop('20px');
 
         $cmsSection = new CmsSectionEntity();
         $cmsSection->setId(Uuid::randomHex());
