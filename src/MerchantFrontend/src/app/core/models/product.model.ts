@@ -1,3 +1,5 @@
+import {ServiceBookingTemplate} from "./service-booking-template.model";
+
 export interface Product {
   id?: string;
   name: string;
@@ -7,6 +9,7 @@ export interface Product {
   media?: MediaData[];
   price?: number;
   tax?: number;
+  serviceBookingTemplate?: ServiceBookingTemplate;
 }
 
 export interface ProductListData {

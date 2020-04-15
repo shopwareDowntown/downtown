@@ -2,10 +2,12 @@
   <h3>{{'MERCHANT.PRODUCTS.DETAILS.HEADLINE' | translate}}</h3>
   <clr-select-container>
     <label>{{'MERCHANT.PRODUCTS.DETAILS.PRODUCT_TYPE' | translate}}</label>
-    <select clrSelect name="types" formControlName="productType">
+    <select clrSelect name="types" formControlName="productType"
+    (ngModelChange)="potentiallyAddServiceBookingTemplate($event)">
       <option value="product">{{'COMMON.PRODUCT' | translate}}</option>
       <option value="storeWindow">{{'COMMON.SHOWCASE' | translate}}</option>
       <option value="voucher">{{'COMMON.VOUCHER' | translate}}</option>
+      <option value="service">{{'COMMON.SERVICE' | translate}}</option>
     </select>
   </clr-select-container>
   <clr-input-container>
@@ -59,6 +61,25 @@
       </select>
     </clr-select-container>
   </ng-container>
+
+  <ng-container *ngIf="'service' === form.get('productType').value" formGroupName="serviceBookingTemplate">
+    <h3>{{'COMMON.SERVICE' | translate}}</h3>
+    <input formControlName="type" type="text" name="type">
+    <ng-container *ngFor="let date of product.serviceBookingTemplate.dates; index as i">
+      <clr-date-container>
+        <label>Start Datum:</label>
+        <input type="date" clrDate formControlName="dates[i].start" />
+      </clr-date-container>
+
+      <clr-date-container>
+        <label>End Datum:</label>
+        <input type="date" clrDate formControlName="dates[i].end" />
+      </clr-date-container>
+    </ng-container>
+
+    <button class="btn btn-default" type="submit" (click)="addServiceBookingDate()">Neuen Termin hinzufügen</button>
+  </ng-container>
+
   <div class="button-wrapper">
     <button
       class="btn btn-primary"

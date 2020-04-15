@@ -6,6 +6,7 @@ import { switchMap } from 'rxjs/operators';
 import { Observable, of, Subject } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastService } from '../../../core/services/toast.service';
+import { ServiceBookingDate } from 'src/app/core/models/service-booking-date.model';
 
 @Component({
   selector: 'portal-merchant-products-detail',
@@ -64,15 +65,20 @@ export class MerchantProductsDetailComponent implements OnInit{
       price: [this.product.price],
       tax: [this.product.tax],
       active: [this.product.active, Validators.required],
-      media: [null]
+      media: [null],
+      serviceBookingTemplate: this.formBuilder.group({
+        type: '',
+        dates: this.formBuilder.array([])
+      })
     });
+
     this.form.get('productType').valueChanges.subscribe((value: string) => {
       if (value === 'storeWindow') {
         this.form.get('price').setValidators([]);
       } else {
         this.form.get('price').setValidators(Validators.required);
       }
-      this.form.get('price').updateValueAndValidity();
+      this.form.get('price').setValidators([]);
     })
   }
 
@@ -82,6 +88,7 @@ export class MerchantProductsDetailComponent implements OnInit{
     if(this.form.get('productType').value === 'storeWindow') {
       this.form.get('price').setValue(0);
     }
+
     if (this.product.id) {
       product$ = this.merchantApiService.updateProduct(this.form.value);
     } else {
@@ -117,5 +124,30 @@ export class MerchantProductsDetailComponent implements OnInit{
 
   imageSelected(value: any) {
     this.form.get('media').setValue(value);
+  }
+
+  potentiallyAddServiceBookingTemplate(productType: string): void {
+    if (!productType || productType !== 'service') {
+      return;
+    }
+
+    if (this.product.serviceBookingTemplate) {
+      return;
+    }
+
+    this.product.serviceBookingTemplate = {
+      type: '',
+      dates: []
+    }
+  }
+
+  addServiceBookingDate(): void {
+    this.potentiallyAddServiceBookingTemplate('service');
+
+    this.product.serviceBookingTemplate.dates.push(<ServiceBookingDate>{
+      start: '',
+      end: '',
+      template: this.product.serviceBookingTemplate
+    });
   }
 }
