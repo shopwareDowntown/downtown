@@ -4,7 +4,6 @@ namespace Shopware\Production\Organization\System\Organization\Api;
 
 use OpenApi\Annotations as OA;
 use Shopware\Core\Defaults;
-use Shopware\Core\Framework\Api\Serializer\JsonEntityEncoder;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
@@ -167,7 +166,7 @@ class OrganizationController
     }
 
     /**
-     * @OA\Patch(
+     * @OA\Post(
      *      path="/organization/logo",
      *      description="Upload logo",
      *      operationId="uploadLogo",
@@ -356,6 +355,7 @@ class OrganizationController
             ->add('postCode', new Type('string'))
             ->add('imprint', new Type('string'))
             ->add('tos', new Type('string'))
-            ->add('privacy', new Type('string'));
+            ->add('privacy', new Type('string'))
+            ->add('homeText', new Type('string'));
     }
 }

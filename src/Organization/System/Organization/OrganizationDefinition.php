@@ -61,6 +61,12 @@ class OrganizationDefinition extends EntityDefinition
             (new FkField('logo_id', 'logoId', MediaDefinition::class)),
             (new OneToOneAssociationField('logo', 'logo_id', 'id', MediaDefinition::class, true)),
 
+            // Home fields
+            (new FkField('home_hero_image_id', 'homeHeroImageId', MediaDefinition::class))->addFlags(new CascadeDelete()),
+            (new OneToOneAssociationField('homeHeroImage', 'home_hero_image_id', 'id', MediaDefinition::class, true)),
+
+            (new LongTextField('home_text', 'homeText')),
+
             (new FkField('sales_channel_id', 'salesChannelId', SalesChannelDefinition::class))->addFlags(new Required()),
             (new OneToOneAssociationField('salesChannel', 'sales_channel_id', 'id', SalesChannelDefinition::class, false)),
 

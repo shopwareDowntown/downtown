@@ -23,5 +23,10 @@
             <argument type="service" id="Shopware\Production\Portal\Services\TemplateMailSender"/>
             <argument type="service" id="translator"/>
         </service>
+
+        <service id="Shopware\Production\Organization\System\Organization\Api\HomeController" public="true">
+            <argument type="service" id="organization.repository"/>
+            <argument type="service" id="Shopware\Production\Portal\Hacks\StorefrontMediaUploader"/>
+        </service>
     </services>
 </container>

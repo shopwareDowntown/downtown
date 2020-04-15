@@ -97,6 +97,23 @@ class OrganizationEntity extends Entity
      */
     protected $logo;
 
+    /**
+     * @OA\Property()
+     * @var string|null
+     */
+    protected $homeHeroImageId;
+
+    /**
+     * @var MediaEntity|null
+     */
+    protected $homeHeroImage;
+
+    /**
+     * @OA\Property()
+     * @var string|null
+     */
+    protected $homeText;
+
     public function getEmail(): string
     {
         return $this->email;
@@ -165,5 +182,20 @@ class OrganizationEntity extends Entity
     public function getLogo(): ?MediaEntity
     {
         return $this->logo;
+    }
+
+    public function getHomeHeroImageId(): ?string
+    {
+        return $this->homeHeroImageId;
+    }
+
+    public function getHomeHeroImage(): ?MediaEntity
+    {
+        return $this->homeHeroImage;
+    }
+
+    public function getHomeText(): ?string
+    {
+        return $this->homeText;
     }
 }
