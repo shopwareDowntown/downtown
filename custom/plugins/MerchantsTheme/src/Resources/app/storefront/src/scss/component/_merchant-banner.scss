@@ -1,0 +1,87 @@
+#merchant-banner {
+    height: 100px;
+    width: 100%;
+    background: #1e52b5;
+    color: $white;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+
+    .main-content {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .text-container {
+        z-index: 10;
+        width: 100%;
+    }
+
+    .button-container {
+        z-index: 10;
+        margin-top: 5px;
+    }
+
+  .text-headline {
+    font-weight: $font-weight-bold;
+    font-size: 16px;
+  }
+
+    .text-subline {
+        display: none;
+    }
+
+    .btn-merchant {
+        background: $white;
+        color: $sw-text-color;
+
+        &:hover {
+            background: #eeeeee;
+            cursor: pointer;
+        }
+    }
+
+    .covid-bubble {
+        transform: rotate(180deg);
+        position: absolute;
+
+        right: -20%;
+        bottom: -110px;
+    }
+}
+
+@include media-breakpoint-up(sm) {
+    #merchant-banner {
+        .button-container {
+            margin-left: 20px;
+            margin-top: 0;
+        }
+
+        .covid-bubble {
+            right: 10%;
+        }
+
+        .text-container {
+            width: auto;
+        }
+
+        .text-headline {
+            font-size: 20px;
+        }
+
+        .text-subline {
+            display: block;
+        }
+    }
+}
+
+@include media-breakpoint-up(md) {
+    #merchant-banner {
+        .button-container {
+            margin-left: 50px;
+        }
+    }
+}

@@ -1,0 +1,87 @@
+{% sw_extends '@Storefront/storefront/page/checkout/cart/index.html.twig' %}
+
+{% block base_header %}
+    {% sw_include '@Storefront/storefront/layout/header/header-minimal.html.twig' %}
+{% endblock %}
+
+{% block page_checkout_cart_action_proceed %}
+    <div class="checkout-aside-action">
+        <a href="{{ path('frontend.checkout.confirm.page') }}"
+           class="btn btn-primary btn-lg"
+           title="{{ "checkout.proceedLink"|trans|striptags }}">
+            {{ "checkout.proceedLink"|trans|sw_sanitize }}
+        </a>
+    </div>
+{% endblock %}
+
+{% block page_checkout_cart_add_product %}
+    <div class="col-md-6 cart-add-product-container">
+        <form action="{{ path('frontend.checkout.product.add-by-number') }}"
+              data-form-csrf-handler="true"
+              class="cart-add-product"
+              method="post">
+
+            {% block page_checkout_cart_add_product_csrf %}
+                {{ parent() }}
+            {% endblock %}
+
+            {% block page_checkout_cart_add_product_redirect %}
+                {{ parent() }}
+            {% endblock %}
+
+            {% block page_checkout_cart_add_product_input_group %}
+                {{ parent() }}
+            {% endblock %}
+        </form>
+    </div>
+{% endblock %}
+
+{% block page_checkout_cart_shipping_costs %}
+    <div class="col-md-6 cart-shipping-costs-container pl-md-0">
+        <form name="precalc"
+              method="post"
+              action="{{ path('frontend.checkout.configure') }}"
+              data-form-auto-submit="true">
+
+            {% block page_checkout_cart_shipping_costs_csrf %}
+                {{ parent() }}
+            {% endblock %}
+
+            {% block page_checkout_cart_shipping_costs_trigger %}
+                <a class="btn btn-outline-secondary cart-shipping-costs-btn"
+                   data-toggle="collapse"
+                   href="#collapseShippingCost"
+                   role="button"
+                   aria-expanded="false"
+                   aria-controls="collapseExample">
+                    {{ "checkout.shippingCosts"|trans|sw_sanitize }}
+                    {% block page_checkout_cart_shipping_costs_trigger_icon %}{% endblock %}
+                </a>
+            {% endblock %}
+
+            {% block page_checkout_cart_shipping_costs_form_group %}
+                {{ parent() }}
+            {% endblock %}
+        </form>
+    </div>
+{% endblock %}
+
+{% block page_checkout_cart_shipping_costs_form_group_country %}
+    <div class="form-group pt-3">
+        <label for="countryId">{{ "checkout.shippingCountry"|trans|sw_sanitize }}</label>
+        <select class="custom-select" type="text" id="countryId" name="countryId">
+            {% for country in page.countries %}
+                <option value="{{ country.id }}"
+                        {% if country.id == context.shippingLocation.country.id %}selected="selected"{% endif %}>
+                    {{ country.translated.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+{% endblock %}
+
+{% block base_footer_inner %}
+    <div class="container">
+        {% sw_include '@Storefront/storefront/layout/footer/footer.html.twig' %}
+    </div>
+{% endblock %}

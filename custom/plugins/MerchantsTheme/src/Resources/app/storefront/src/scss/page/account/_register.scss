@@ -1,0 +1,31 @@
+.register-card {
+
+    .card-title {
+        border-bottom: none;
+        padding-bottom: 0;
+        margin-bottom: 30px;
+        font-size: 20px;
+    }
+
+    .privacy-notice {
+        font-weight: $font-weight-normal;
+        margin-bottom: 11px;
+
+        label {
+            margin-bottom: 12px;
+            font-weight: $font-weight-bold;
+            display: flex;
+        }
+
+        a {
+            text-decoration: underline;
+        }
+
+    }
+
+    .register-required-info {
+        font-size: 11px;
+        font-weight: $font-weight-bold;
+    }
+
+}

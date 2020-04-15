@@ -1,0 +1,14 @@
+{% sw_extends '@Storefront/storefront/page/content/index.html.twig' %}
+
+{# Hide breadcrumbs #}
+{% block base_main_inner %}
+    <div class="container-main">
+        {% block page_content %}
+            <div class="cms-page">
+                {% block page_content_blocks %}
+                    {% sw_include "@Storefront/storefront/page/content/detail.html.twig" with {'cmsPage': page.cmsPage} %}
+                {% endblock %}
+            </div>
+        {% endblock %}
+    </div>
+{% endblock %}

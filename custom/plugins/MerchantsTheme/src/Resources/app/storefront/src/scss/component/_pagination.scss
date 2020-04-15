@@ -1,0 +1,12 @@
+.page-link {
+    border-color: $gray-300;
+    font-weight: $font-weight-bold;
+}
+
+.page-item:not(.page-prev):not(.page-last):not(.page-next):not(.page-first),
+.page-item.active {
+    .page-link {
+        padding-top: 12px;
+        line-height: 17px;
+    }
+}

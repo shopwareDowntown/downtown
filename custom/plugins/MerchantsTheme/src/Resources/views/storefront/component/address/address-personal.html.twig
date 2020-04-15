@@ -1,0 +1,66 @@
+{% sw_extends '@Storefront/storefront/component/address/address-personal.html.twig' %}
+
+{% block component_address_personal_fields_salutation %}
+    <div class="form-group col-sm-6">
+        {% block component_address_personal_fields_salutation_label %}
+            <label class="form-label"
+                   for="{{ prefix }}personalSalutation">
+                {{ "account.personalSalutationLabel"|trans|sw_sanitize }}{{ "general.required"|trans|sw_sanitize }}
+            </label>
+        {% endblock %}
+
+        {% block component_address_form_salutation_select %}
+            <select id="{{ prefix }}personalSalutation"
+                    class="custom-select{% if formViolations.getViolations('/salutationId') is not empty %} is-invalid{% endif %}"
+                    name="{% if prefix %}{{ prefix }}[salutationId]{% else %}salutationId{% endif %}"
+                    required="required">
+                {% if not data.get('salutationId') %}
+                    <option disabled="disabled"
+                            selected="selected"
+                            value="">
+                        {{ "account.personalSalutationPlaceholder"|trans|sw_sanitize }}{{ "general.required"|trans|sw_sanitize }}
+                    </option>
+                {% endif %}
+                {% for salutation in page.salutations %}
+                    <option {% if salutation.id == data.get('salutationId') %}
+                        selected="selected"
+                    {% endif %}
+                        value="{{ salutation.id }}">
+                        {{ salutation.translated.displayName }}
+                    </option>
+                {% endfor %}
+            </select>
+        {% endblock %}
+
+        {% block component_address_form_salutation_select_error %}
+            {% if formViolations.getViolations('/salutationId') is not empty %}
+                {% sw_include '@Storefront/storefront/utilities/form-violation.html.twig' with {
+                    violationPath: '/salutationId'
+                } %}
+            {% endif %}
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block component_address_personal_fields_title %}
+    {% if shopware.config.core.loginRegistration.showTitleField %}
+        <div class="form-group col-sm-6">
+            {% block component_address_personal_fields_title_label %}
+                <label class="form-label"
+                       for="{{ prefix }}personalTitle">
+                    {{ "account.personalTitleLabel"|trans|sw_sanitize }}
+                </label>
+            {% endblock %}
+
+            {% block component_address_personal_fields_title_input %}
+                <input type="text"
+                       class="form-control"
+                       autocomplete="section-personal title"
+                       id="{{ prefix }}personalTitle"
+                       placeholder="{{ "account.personalTitlePlaceholder"|trans|striptags }}"
+                       name="{% if prefix %}{{ prefix }}[title]{% else %}title{% endif %}"
+                       value="{{ data.get('title') }}">
+            {% endblock %}
+        </div>
+    {% endif %}
+{% endblock %}
