@@ -23,26 +23,26 @@ class OrganizationDisclaimerEntity extends Entity
     /**
      * @var string|null
      */
-    protected $mediaId;
+    protected $imageId;
 
     /**
      * @var MediaEntity|null
      */
-    protected $media;
+    protected $image;
 
     public function getText(): ?string
     {
         return $this->text;
     }
 
-    public function getMediaId(): ?string
+    public function getImageId(): ?string
     {
-        return $this->mediaId;
+        return $this->imageId;
     }
 
-    public function getMedia(): ?MediaEntity
+    public function getImage(): ?MediaEntity
     {
-        return $this->media;
+        return $this->image;
     }
 
     public function isActive(): bool

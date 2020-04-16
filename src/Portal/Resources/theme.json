@@ -4,7 +4,7 @@
   "views": [
      "@Storefront",
      "@Plugins",
-     "@MerchantsTheme"
+     "@Portal"
   ],
   "style": [
     "app/storefront/src/scss/overrides.scss",

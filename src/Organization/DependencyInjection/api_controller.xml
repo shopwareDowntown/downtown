@@ -28,5 +28,10 @@
             <argument type="service" id="organization.repository"/>
             <argument type="service" id="Shopware\Production\Portal\Hacks\StorefrontMediaUploader"/>
         </service>
+
+        <service id="Shopware\Production\Organization\System\Organization\Api\DisclaimerController" public="true">
+            <argument type="service" id="organization.repository"/>
+            <argument type="service" id="Shopware\Production\Portal\Hacks\StorefrontMediaUploader"/>
+        </service>
     </services>
 </container>
