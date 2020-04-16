@@ -1,22 +1,5 @@
 {% sw_extends '@Storefront/storefront/base.html.twig' %}
 
-{% block base_header %}
-    <header class="header-main">
-        {% block base_header_inner %}
-            <div class="container">
-                {% sw_include '@Storefront/storefront/layout/header/header.html.twig' %}
-            </div>
-        {% endblock %}
-
-        <div class="nav-main">
-            {% sw_include '@Storefront/storefront/layout/navigation/navigation.html.twig' %}
-        </div>
-    </header>
-{% endblock %}
-
-{# Hide navigation here #}
-{% block base_navigation %}{% endblock %}
-
 {% block base_main_inner %}
     <div class="row fullsize{% if not page.merchant.publicDescription %} no-description{% endif %}" id="merchant-header-banner">
 
