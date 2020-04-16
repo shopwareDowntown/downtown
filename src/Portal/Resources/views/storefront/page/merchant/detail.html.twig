@@ -119,6 +119,26 @@
                                 </span>
                                 </li>
                             {% endif %}
+                            {% if page.merchant.imprint %}
+                                <li>
+                                    <a href="#" data-toggle="modal" data-target="#merchantImprint">{{ 'merchant.imprint'|trans }}</a>
+                                </li>
+                            {% endif %}
+                            {% if page.merchant.tos %}
+                                <li>
+                                    <a href="#" data-toggle="modal" data-target="#merchantTos">{{ 'merchant.tos'|trans }}</a>
+                                </li>
+                            {% endif %}
+                            {% if page.merchant.privacy %}
+                                <li>
+                                    <a href="#" data-toggle="modal" data-target="#merchantPrivacy">{{ 'merchant.privacy'|trans }}</a>
+                                </li>
+                            {% endif %}
+                            {% if page.merchant.revocation %}
+                                <li>
+                                    <a href="#" data-toggle="modal" data-target="#merchantRevocation">{{ 'merchant.revocation'|trans }}</a>
+                                </li>
+                            {% endif %}
                         </ul>
                     </div>
 
@@ -199,6 +219,86 @@
             {% endblock %}
         </div>
     </div>
+
+    {% if page.merchant.imprint %}
+        <div class="modal fade" id="merchantImprint" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">{{ 'merchant.imprint'|trans }}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            {{ page.merchant.imprint|nl2br }}
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if page.merchant.tos %}
+        <div class="modal fade" id="merchantTos" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ 'merchant.tos'|trans }}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            {{ page.merchant.tos|nl2br }}
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if page.merchant.privacy %}
+        <div class="modal fade" id="merchantPrivacy" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ 'merchant.privacy'|trans }}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            {{ page.merchant.privacy|nl2br }}
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if page.merchant.revocation %}
+        <div class="modal fade" id="merchantRevocation" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ 'merchant.revocation'|trans }}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            {{ page.merchant.revocation|nl2br }}
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block base_footer_inner %}

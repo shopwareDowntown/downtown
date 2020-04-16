@@ -8,13 +8,20 @@
         "address": "Adresse:",
         "openingTimes": "Öffnungszeiten:",
         "description": "Beschreibung",
-        "publicOwner": "Inhaber"
+        "publicOwner": "Inhaber",
+        "imprint": "Impressum",
+        "tos": "Allgemeine Geschäftsbedingungen",
+        "privacy": "Datenschutz",
+        "revocation": "Wiederrufsrecht"
     },
     "checkout": {
         "cartContainsMultipleMerchants": "Es können nur Produkte von einem Händler gleichzeitig gekauft werden",
         "cartHasInvalidShippingMethod": "Die ausgewählte Versandart steht nicht zur Verfügung.",
         "cartWrongProductType": "Es können keine  Anzeigeprodukte gekauft werden.",
-        "cartContainsMultipleProductTypes": "Es kann nur ein Produkt-Typ gleichzeitig bestellt werden"
+        "cartContainsMultipleProductTypes": "Es kann nur ein Produkt-Typ gleichzeitig bestellt werden",
+        "acceptTos": "Ich habe die <a href=\"#\" data-toggle=\"modal\" data-target=\"#merchantTos\">AGB</a> des Händlers gelesen und bin mit deren Geltung einverstanden.",
+        "acceptPrivacy": "Ich habe die <a href=\"#\" data-toggle=\"modal\" data-target=\"#merchantPrivacy\">Datenschutzerklärung</a> des Händlers gelesen und bin mit deren Geltung einverstanden.",
+        "acceptRevocation": "Ich habe das <a href=\"#\" data-toggle=\"modal\" data-target=\"#merchantRevocation\">Wiederufsrecht</a> des Händlers gelesen und bin mit deren Geltung einverstanden."
     },
     "error": {
         "cartHasInvalidShippingMethod": "Die ausgewählte Versandart steht nicht zur Verfügung.",

@@ -8,13 +8,20 @@
         "address": "Address:",
         "openingTimes": "Opening times:",
         "description": "Description",
-        "publicOwner": "Owner"
+        "publicOwner": "Owner",
+        "imprint": "Imprint",
+        "tos": "Terms of Service",
+        "privacy": "Privacy",
+        "revocation": "Revocation"
     },
     "checkout": {
         "cartContainsMultipleMerchants": "Products can be purchased from only one merchant at a time",
         "cartHasInvalidShippingMethod": "The selected shipping method is not available.",
         "cartWrongProductType": "Shown products cannot be purchased.",
-        "cartContainsMultipleProductTypes": "Only one product type can be ordered at a time"
+        "cartContainsMultipleProductTypes": "Only one product type can be ordered at a time",
+        "acceptTos": "I have read the <a href=\"#\" data-toggle=\"modal\" data-target=\"#merchantTos\">AGB</a> of the merchant and agree with their validity.",
+        "acceptPrivacy": "I have read the <a href=\"#\" data-toggle=\"modal\" data-target=\"#merchantPrivacy\">data protection declaration</a> of the merchant and agree with its validity.",
+        "acceptRevocation": "I have read the <a href=\"#\" data-toggle=\"modal\" data-target=\"#merchantRevocation\">revocation of the merchant and agree to its validity."
     },
     "error": {
         "cartHasInvalidShippingMethod": "The selected shipping method is not available.",
