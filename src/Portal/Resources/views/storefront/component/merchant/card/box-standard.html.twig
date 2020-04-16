@@ -59,9 +59,9 @@
                     {% block component_merchant_box_info %}
                         <div class="product-info">
 
-                            {% block component_merchant_availability %}
-                                {% sw_include '@Storefront/storefront/component/merchant/availability-badge.html.twig' %}
-                            {% endblock %}
+{#                            {% block component_merchant_availability %}#}
+{#                                {% sw_include '@Storefront/storefront/component/merchant/availability-badge.html.twig' %}#}
+{#                            {% endblock %}#}
 
                             {% block component_merchant_box_name %}
                                 <a href="{{ seoUrl('storefront.merchant.detail', {'id': id}) }}"
@@ -108,43 +108,43 @@
                                 </div>
                             {% endblock %}
 
-                            {% block component_merchant_box_tags %}
-                                <div class="tags-wrapper">
-                                    <span class="icon-holder">
-                                        {% sw_icon 'tags' %}
-                                    </span>
-                                    <div class="tag-links">
-                                        {# TODO - Real data #}
-                                        {% set tags = {
-                                            '0': {
-                                                'name': 'Waren',
-                                                'link': '#'
-                                            },
-                                            '1': {
-                                                'name': 'Haushalt',
-                                                'link': '#'
-                                            },
-                                            '2': {
-                                                'name': 'Diensleistung',
-                                                'link': '#'
-                                            }
-                                        } %}
-                                        {% for tag in tags %}
-                                            <a href="{{ tag.link }}"
-                                               title="{{ tag.name }}"
-                                               target="_self">
-                                                {{ tag.name }}
-                                            </a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endblock %}
+{#                            {% block component_merchant_box_tags %}#}
+{#                                <div class="tags-wrapper">#}
+{#                                    <span class="icon-holder">#}
+{#                                        {% sw_icon 'tags' %}#}
+{#                                    </span>#}
+{#                                    <div class="tag-links">#}
+{#                                        #}{# TODO - Real data #}
+{#                                        {% set tags = {#}
+{#                                            '0': {#}
+{#                                                'name': 'Waren',#}
+{#                                                'link': '#'#}
+{#                                            },#}
+{#                                            '1': {#}
+{#                                                'name': 'Haushalt',#}
+{#                                                'link': '#'#}
+{#                                            },#}
+{#                                            '2': {#}
+{#                                                'name': 'Diensleistung',#}
+{#                                                'link': '#'#}
+{#                                            }#}
+{#                                        } %}#}
+{#                                        {% for tag in tags %}#}
+{#                                            <a href="{{ tag.link }}"#}
+{#                                               title="{{ tag.name }}"#}
+{#                                               target="_self">#}
+{#                                                {{ tag.name }}#}
+{#                                            </a>#}
+{#                                        {% endfor %}#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            {% endblock %}#}
 
-                            {% block component_merchant_box_service %}
-                                {% sw_include '@Storefront/storefront/component/merchant/service-items.html.twig' with {
-                                    scope: 'listing'
-                                } %}
-                            {% endblock %}
+{#                            {% block component_merchant_box_service %}#}
+{#                                {% sw_include '@Storefront/storefront/component/merchant/service-items.html.twig' with {#}
+{#                                    scope: 'listing'#}
+{#                                } %}#}
+{#                            {% endblock %}#}
 
                             {% block component_merchant_box_action %}
                                 <a href="{{ seoUrl('storefront.merchant.detail', {'id': id}) }}"

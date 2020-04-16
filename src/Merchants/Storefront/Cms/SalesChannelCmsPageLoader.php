@@ -47,8 +47,9 @@ class SalesChannelCmsPageLoader implements SalesChannelCmsPageLoaderInterface
 
         /** @var OrganizationEntity|null $organization */
         $organization = $context->getSalesChannel()->getExtension('organization');
+        $cmsPageId = $request->attributes->get('id');
 
-        if ($organization && $navigationId === $context->getSalesChannel()->getNavigationCategoryId()) {
+        if ($organization && $cmsPageId === null && $navigationId === $context->getSalesChannel()->getNavigationCategoryId()) {
             return $this->loadStartPage($request, $criteria, $context, $resolverContext, $organization);
         }
 
@@ -77,8 +78,8 @@ class SalesChannelCmsPageLoader implements SalesChannelCmsPageLoaderInterface
 
         $this->addMerchantListing($cmsPage);
 
-        $slots = $this->cmsSlotsDataResolver->resolve($cmsPage->getSections()->getBlocks()->getSlots(), $resolverContext);
-        $cmsPage->getSections()->getBlocks()->setSlots($slots);
+        $slots = $this->cmsSlotsDataResolver->resolve($cmsPage->getSections()->last()->getBlocks()->getSlots(), $resolverContext);
+        $cmsPage->getSections()->last()->getBlocks()->setSlots($slots);
 
         $result = new EntitySearchResult(1, new EntityCollection(), null,  $criteria, $context->getContext());
         $result->set($id, $cmsPage);
