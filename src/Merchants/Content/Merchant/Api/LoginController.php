@@ -42,6 +42,7 @@ class LoginController
         $criteria = new Criteria();
         $criteria->addFilter(new EqualsFilter('email', $dataBag->get('email')));
         $criteria->addFilter(new EqualsFilter('active', 1));
+        $criteria->addFilter(new EqualsFilter('activationCode', null));
 
         /** @var MerchantEntity|null $merchant */
         $merchant = $this->merchantRepository->search($criteria, Context::createDefaultContext())->first();

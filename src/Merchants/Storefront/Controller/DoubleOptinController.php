@@ -56,7 +56,6 @@ class DoubleOptinController extends StorefrontController
         $this->merchantRepository->update([
             [
                 'id' => $merchant->getId(),
-                'active' => true,
                 'activationCode' => null
             ]
         ], $context->getContext());
