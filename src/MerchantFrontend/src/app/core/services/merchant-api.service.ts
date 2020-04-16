@@ -264,7 +264,7 @@ export class MerchantApiService {
     );
   }
 
-  updateOrganization(updateData: Organization): Observable<Organization> {
+  updateOrganization(updateData: Organization|any): Observable<Organization> {
     return this.http.patch <Organization>(
       this.apiUrl + '/organization-api/v1/organization',
       JSON.stringify(updateData),
@@ -290,11 +290,24 @@ export class MerchantApiService {
     return this.http.post<any>(this.apiUrl + '/organization-api/v1/organization/home/heroImage', formData, {headers: headers});
   }
 
+  setDisclaimerImage(image: File) {
+    let headers = new HttpHeaders();
+    headers = headers.set('sw-context-token', this.getSwContextToken());
+    const formData = new FormData();
+    formData.append('image', image);
+    return this.http.post<any>(this.apiUrl + '/organization-api/v1/organization/disclaimer/image', formData, {headers: headers});
+  }
+
+  removeDisclaimerImage(): Observable<any> {
+    return this.http.delete<any>(this.apiUrl + '/organization-api/v1/organization/disclaimer/image', {headers: this.getJsonContentTypeHeaders()});
+  }
+
   private getHeaders(): { [header: string]: string | string[];} {
     return {
       'sw-context-token': this.getSwContextToken()
     };
   }
+
   private getJsonContentTypeHeaders(): HttpHeaders {
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');

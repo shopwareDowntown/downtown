@@ -8,7 +8,9 @@ import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '
 export class SingleImageUploadContainerComponent implements OnChanges {
 
   @Input() existingImageUrl: string = null;
+  @Input() removable = false;
   @Output() newImageSelected = new EventEmitter<File>();
+  @Output() imageRemoved = new EventEmitter<void>();
   selectedImage: File = null;
 
   constructor() { }

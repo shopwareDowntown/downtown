@@ -10,6 +10,7 @@ import { MerchantVouchersComponent } from './views/merchant-vouchers/merchant-vo
 import { OrganizationMerchantListComponent } from './views/organization-merchant-list/organization-merchant-list.component';
 import { OrganizationProfileComponent } from './views/organization-profile/organization-profile.component';
 import { OrganizationHomeComponent } from './views/organization-home/organization-home.component';
+import {OrganizationDisclaimerComponent} from "./views/organization-disclaimer/organization-disclaimer.component";
 
 const routes: Routes = [
   {
@@ -45,7 +46,8 @@ const routes: Routes = [
       {path: '', redirectTo: 'home', pathMatch: 'prefix', canActivate: [AuthGuard]},
       {path: 'home', component: OrganizationHomeComponent, canActivate: [AuthGuard]},
       {path: 'profile', component: OrganizationProfileComponent, canActivate: [AuthGuard]},
-      {path: 'merchants', component: OrganizationMerchantListComponent, canActivate: [AuthGuard]}
+      {path: 'merchants', component: OrganizationMerchantListComponent, canActivate: [AuthGuard]},
+      {path: 'disclaimer', component: OrganizationDisclaimerComponent, canActivate: [AuthGuard]}
     ]
   },
 
