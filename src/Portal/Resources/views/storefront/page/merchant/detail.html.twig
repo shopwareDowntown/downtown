@@ -27,6 +27,8 @@
     </header>
 {% endblock %}
 
+{# Hide navigation here #}
+{% block base_navigation %}{% endblock %}
 
 {% block base_main_inner %}
     <div class="row fullsize{% if not page.merchant.publicDescription %} no-description{% endif %}" id="merchant-header-banner">
