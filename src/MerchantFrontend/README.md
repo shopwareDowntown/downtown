@@ -36,16 +36,47 @@ That means every user can be logged in as an organization or as a merchant.
 Every group has its own sidebar from which the various functionalities for the group are reachable.
 
 
-### State Machine
+### State Service
+
+The `StateService` manages the login state. It differentiates between three different statuses:
+* Logged in as merchant
+* Logged in as organization
+* Not logged in
+
+The service additionally provides the current logged in merchant/ organization. 
+After changes the object in the state service also needs to be updated. The service provides methods for this.
 
 ### Api Service
 
+The `MerchantApiService` provides every method for the communication with the Downtown backend.
+After extensions of the api further methods can be added here.
+
 ## Add functionalities
 
-### 
+This part shows the common way to add new functionalities to the merchant side, or the organization side of the administration
+
+### Create modules
+
+Every new functionality should be encapsulated in a separate module. 
+These modules should have `organization-` or `merchant-` prefixed in the name and should be positioned in the `views` folder of the source code.
+
+The Angular Cli helps to generate modules:
+
+`ng generate module views/organization-name-of-the-functionality`
+
+Then a component belonging to the module can be created:
+
+`ng generate component views/organization-name-of-the-functionality`
+
+Of course several components with individual routing can be added to the module.
 
 ### Add a view to the layout
 
+To add a functionality to the sidebar of the administration area (merchant or organization) two steps are necessary:
+* Add a route to the base component of your functionality. This route must be added in the `app-routing.module.ts`.
+It should be defined as a child route of the merchant or the organization path.
+* Add a new entry to the `NAVIGATION_ADMIN_MERCHANT` or the `NAVIGATION_ADMIN_ORGANIZATION` array in the `navigation.ts`.
+The previously defined route is needed here.
 
 ## Clarity Design System
 [Clarity](https://clarity.design) is an open source design system that brings together UX guidelines, an HTML/CSS framework, Angular components, and Web Components. It is licensed under the MIT License.
