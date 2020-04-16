@@ -11,6 +11,12 @@
         <div class="nav-main">
             {% sw_include '@Storefront/storefront/layout/navigation/navigation.html.twig' %}
         </div>
+
+        {% if context.salesChannel.extensions.organization.disclaimer.active %}
+            <div class="container">
+                <div class="alert alert-success">{{ context.salesChannel.extensions.organization.disclaimer.text }}</div>
+            </div>
+        {% endif %}
     </header>
 {% endblock %}
 

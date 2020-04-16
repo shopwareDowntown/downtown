@@ -7,6 +7,7 @@ use Shopware\Core\Content\Media\MediaEntity;
 use Shopware\Core\Framework\DataAbstractionLayer\Entity;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityIdTrait;
 use Shopware\Core\System\SalesChannel\SalesChannelEntity;
+use Shopware\Production\Organization\System\Organization\Aggregate\OrganizationDisclaimer\OrganizationDisclaimerEntity;
 
 /**
  * @OA\Schema()
@@ -114,6 +115,12 @@ class OrganizationEntity extends Entity
      */
     protected $homeText;
 
+    /**
+     * @OA\Property()
+     * @var OrganizationDisclaimerEntity|null
+     */
+    protected $disclaimer;
+
     public function getEmail(): string
     {
         return $this->email;
@@ -197,5 +204,10 @@ class OrganizationEntity extends Entity
     public function getHomeText(): ?string
     {
         return $this->homeText;
+    }
+
+    public function getDisclaimer(): ?OrganizationDisclaimerEntity
+    {
+        return $this->disclaimer;
     }
 }

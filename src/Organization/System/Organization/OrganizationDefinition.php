@@ -18,6 +18,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Field\StringField;
 use Shopware\Core\Framework\DataAbstractionLayer\FieldCollection;
 use Shopware\Core\System\SalesChannel\SalesChannelDefinition;
 use Shopware\Production\Organization\System\Organization\Aggregate\OrganizationAccessToken\OrganizationAccessTokenDefinition;
+use Shopware\Production\Organization\System\Organization\Aggregate\OrganizationDisclaimer\OrganizationDisclaimerDefinition;
 use Shopware\Production\Organization\System\Organization\Aggregate\OrganizationResetPasswordToken\OrganizationResetPasswordTokenDefinition;
 
 class OrganizationDefinition extends EntityDefinition
@@ -69,6 +70,8 @@ class OrganizationDefinition extends EntityDefinition
 
             (new FkField('sales_channel_id', 'salesChannelId', SalesChannelDefinition::class))->addFlags(new Required()),
             (new OneToOneAssociationField('salesChannel', 'sales_channel_id', 'id', SalesChannelDefinition::class, false)),
+
+            (new OneToOneAssociationField('disclaimer', 'id', 'organization_id', OrganizationDisclaimerDefinition::class, true)),
 
             (new OneToManyAssociationField('accessTokens', OrganizationAccessTokenDefinition::class, 'organization_id'))->addFlags(new CascadeDelete()),
             (new OneToManyAssociationField('resetPasswordTokens', OrganizationResetPasswordTokenDefinition::class, 'organization_id'))->addFlags(new CascadeDelete()),

@@ -156,7 +156,9 @@ class OrganizationController
         $constraints = $this->createValidationDefinition();
 
         $this->dataValidator->validate($dataBag->all(), $constraints);
-        $data = $dataBag->only(... array_keys($constraints->getProperties()));
+        $properties = array_keys($constraints->getProperties());
+        $properties[] = 'disclaimer';
+        $data = array_intersect_key($dataBag->all(), array_flip($properties));
 
         if (isset($data['name'])) {
             $data['salesChannel'] = [
@@ -164,6 +166,10 @@ class OrganizationController
                 'name' => $data['name']
             ];
             unset($data['name']);
+        }
+
+        if ($organizationEntity->getDisclaimer()) {
+            $data['disclaimer']['id'] = $organizationEntity->getDisclaimer()->getId();
         }
 
         $this->organizationRepository->update([
@@ -378,6 +384,10 @@ class OrganizationController
             ->add('imprint', new Type('string'))
             ->add('tos', new Type('string'))
             ->add('privacy', new Type('string'))
-            ->add('homeText', new Type('string'));
+            ->add('homeText', new Type('string'))
+            ->addSub('disclaimer', (new DataValidationDefinition())
+                ->add('active', new Type('boolean'))
+                ->add('text', new Type('string'))
+            );
     }
 }

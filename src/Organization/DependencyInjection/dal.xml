@@ -17,6 +17,10 @@
             <tag name="shopware.entity.definition" entity="organization_reset_password"/>
         </service>
 
+        <service id="Shopware\Production\Organization\System\Organization\Aggregate\OrganizationDisclaimer\OrganizationDisclaimerDefinition">
+            <tag name="shopware.entity.definition" entity="organization_disclaimer"/>
+        </service>
+
         <service id="Shopware\Production\Organization\System\Organization\Extensions\SalesChannelEntityExtension">
             <tag name="shopware.entity.extension"/>
         </service>
