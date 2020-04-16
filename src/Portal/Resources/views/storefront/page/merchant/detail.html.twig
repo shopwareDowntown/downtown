@@ -1,5 +1,33 @@
 {% sw_extends '@Storefront/storefront/base.html.twig' %}
 
+{# Remove this block, when the template inheritance is fixed #}
+{% block base_header %}
+    <header class="header-main">
+        {% block base_header_inner %}
+            <div class="container">
+                {% sw_include '@Storefront/storefront/layout/header/header.html.twig' %}
+            </div>
+        {% endblock %}
+
+        <div class="nav-main">
+            {% sw_include '@Storefront/storefront/layout/navigation/navigation.html.twig' %}
+        </div>
+
+        {% if context.salesChannel.extensions.organization.disclaimer.active %}
+            <div class="container">
+                <div class="alert alert-success">
+                    {% if context.salesChannel.extensions.organization.disclaimer.image %}
+                        <img src="{{ context.salesChannel.extensions.organization.disclaimer.image.url }}"/>
+                    {% endif %}
+
+                    {{ context.salesChannel.extensions.organization.disclaimer.text }}
+                </div>
+            </div>
+        {% endif %}
+    </header>
+{% endblock %}
+
+
 {% block base_main_inner %}
     <div class="row fullsize{% if not page.merchant.publicDescription %} no-description{% endif %}" id="merchant-header-banner">
 
