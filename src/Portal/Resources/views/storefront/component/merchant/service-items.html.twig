@@ -5,28 +5,6 @@
     </div>
 
     <div class="service-items">
-        {# TODO - Real data #}
-        {% set services = {
-            '0': {
-                'name': 'Lieferung'
-            },
-            '1': {
-                'name': 'Lieferung'
-            },
-            '2': {
-                'name': 'Lieferung'
-            },
-            '3': {
-                'name': 'Lieferung'
-            },
-            '4': {
-                'name': 'Lieferung'
-            },
-            '5': {
-                'name': 'Lieferung'
-            }
-        } %}
-
         {# Show only 4 service itmes if the scope == listing and display the left count as 5. item #}
         {% if scope == 'listing' %}
             {% set breakLoop = false %}
@@ -38,7 +16,7 @@
                         <span class="icon-holder">
                             {% sw_icon 'truck' style {'pack': 'sw-icon-kit'} %}
                         </span>
-                        <span class="service-name">{{ service.name }}</span>
+                        <span class="service-name">{{ service.translated.name }}</span>
                     </div>
                 {% else %}
                     <a href="{{ seoUrl('storefront.merchant.detail', {'id': id}) }}" title="{{ "listing.boxMerchantDetails"|trans|striptags }}" class="service-item count">+ 3</a>
@@ -54,7 +32,7 @@
                     <span class="icon-holder">
                         {% sw_icon 'truck' style {'pack': 'sw-icon-kit'} %}
                     </span>
-                    <span class="service-name">{{ service.name }}</span>
+                    <span class="service-name">{{ service.translated.name }}</span>
                 </div>
             {% endfor %}
 

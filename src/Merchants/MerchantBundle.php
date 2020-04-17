@@ -26,6 +26,7 @@ class MerchantBundle extends Bundle
         $loader->load('merchant_api.xml');
         $loader->load('merchant_listing.xml');
         $loader->load('storefront.xml');
+        $loader->load('service.xml');
         $this->registerMigrationPath($container);
     }
 }

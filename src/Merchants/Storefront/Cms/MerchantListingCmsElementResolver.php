@@ -68,6 +68,7 @@ class MerchantListingCmsElementResolver extends AbstractCmsElementResolver
             $criteria->addFilter(new EqualsFilter('categoryId', $categoryId));
         }
 
+        $criteria->addAssociation('services');
         $criteria->addFilter(new MerchantAvailableFilter($salesChannelId));
         $criteria->setTotalCountMode(Criteria::TOTAL_COUNT_MODE_EXACT);
 

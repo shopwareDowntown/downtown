@@ -13,6 +13,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityIdTrait;
 use Shopware\Core\System\Country\CountryEntity;
 use Shopware\Core\System\SalesChannel\SalesChannelEntity;
 use OpenApi\Annotations as OA;
+use Shopware\Production\Merchants\Content\Service\ServiceCollection;
 
 /**
  * @OA\Schema()
@@ -220,6 +221,11 @@ class MerchantEntity extends Entity
      * @var string|null
      */
     protected $availabilityText;
+
+    /**
+     * @var ServiceCollection|null
+     */
+    protected $services;
 
     public function isActive(): bool
     {
@@ -533,5 +539,10 @@ class MerchantEntity extends Entity
     public function getAvailabilityText(): ?string
     {
         return $this->availabilityText;
+    }
+
+    public function getServices(): ?ServiceCollection
+    {
+        return $this->services;
     }
 }

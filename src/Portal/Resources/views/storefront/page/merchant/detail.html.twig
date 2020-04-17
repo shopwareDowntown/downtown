@@ -148,11 +148,14 @@
                         </div>
                     {% endif %}
 
-{#                    <div class="col-12">#}
-{#                        {% sw_include '@Storefront/storefront/component/merchant/service-items.html.twig' with {#}
-{#                            scope: 'detail'#}
-{#                        } %}#}
-{#                    </div>#}
+                    {% if page.merchant.services is not empty %}
+                        <div class="col-12">
+                            {% sw_include '@Storefront/storefront/component/merchant/service-items.html.twig' with {
+                                scope: 'detail',
+                                services: page.merchant.services
+                            } %}
+                        </div>
+                    {% endif %}
 
                 </div>
             </div>

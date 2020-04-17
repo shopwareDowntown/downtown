@@ -46,5 +46,9 @@
         <service id="Shopware\Production\Merchants\Content\Merchant\Api\LogoutController" public="true">
             <argument type="service" id="merchant_access_token.repository"/>
         </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Api\ServiceController" public="true">
+            <argument type="service" id="service.repository"/>
+        </service>
     </services>
 </container>

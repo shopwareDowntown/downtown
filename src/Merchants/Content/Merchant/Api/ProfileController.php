@@ -3,6 +3,7 @@
 namespace Shopware\Production\Merchants\Content\Merchant\Api;
 
 use Shopware\Core\Content\Media\Exception\UploadException;
+use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Validation\EntityExists;
@@ -46,14 +47,21 @@ class ProfileController
      */
     private $merchantMediaRepository;
 
+    /**
+     * @var EntityRepositoryInterface
+     */
+    private $merchantServiceRepository;
+
     public function __construct(
         EntityRepositoryInterface $merchantRepository,
         EntityRepositoryInterface $merchantMediaRepository,
+        EntityRepositoryInterface $merchantServiceRepository,
         DataValidator $dataValidator,
         StorefrontMediaUploader $uploader
     ) {
         $this->merchantRepository = $merchantRepository;
         $this->merchantMediaRepository = $merchantMediaRepository;
+        $this->merchantServiceRepository = $merchantServiceRepository;
         $this->dataValidator = $dataValidator;
         $this->uploader = $uploader;
     }
@@ -87,15 +95,21 @@ class ProfileController
         }
 
         $merchantConstraints = $this->createValidationDefinition($salesChannelContext);
+        $properties = array_keys($merchantConstraints->getProperties());
+        $properties[] = 'services';
 
         $this->dataValidator->validate($dataBag->all(), $merchantConstraints);
 
         $this->merchantRepository->update([
             array_merge(
                 ['id' => $merchant->getId()],
-                $dataBag->only(... array_keys($merchantConstraints->getProperties()))
+                array_intersect_key($dataBag->all(), array_flip($properties))
             )
         ], $salesChannelContext->getContext());
+
+        if ($dataBag->has('services')) {
+            $this->cleanupServices($merchant, array_column($dataBag->all()['services'], 'id'));
+        }
 
         return new JsonResponse($this->fetchProfileData($salesChannelContext, $merchant));
     }
@@ -184,7 +198,8 @@ class ProfileController
             ->add('privacy', new Type('string'))
             ->add('imprint', new Type('string'))
             ->add('revocation', new Type('string'))
-            ->add('availability', new Type('integer'));
+            ->add('availability', new Type('integer'))
+            ->addList('services', (new DataValidationDefinition())->add('id', new EntityExists(['entity' => 'service', 'context' => $salesChannelContext->getContext()])));
     }
 
     protected function fetchProfileData(SalesChannelContext $salesChannelContext, MerchantEntity $merchant): array
@@ -192,6 +207,7 @@ class ProfileController
         $criteria = new Criteria([$merchant->getId()]);
         $criteria->addAssociation('media.thumbnails');
         $criteria->addAssociation('cover');
+        $criteria->addAssociation('services');
 
         $profile = $this->merchantRepository->search($criteria, $salesChannelContext->getContext())->first();
 
@@ -200,5 +216,31 @@ class ProfileController
         unset($profileData['password'], $profileData['extensions'], $profileData['_uniqueIdentifier']);
 
         return $profileData;
+    }
+
+    private function cleanupServices(MerchantEntity $merchant, array $newIds): void
+    {
+        $criteria = new Criteria([$merchant->getId()]);
+        $criteria->addAssociation('services');
+        $merchant = $this->merchantRepository->search($criteria, Context::createDefaultContext())->first();
+
+        $idsToBeDeleted = [];
+
+        foreach ($merchant->getServices() as $service) {
+            if (!in_array($service->getId(), $newIds, true)) {
+                $idsToBeDeleted[] = $service->getId();
+            }
+        }
+
+        if (!count($idsToBeDeleted)) {
+            return;
+        }
+
+        $this->merchantServiceRepository->delete(array_map(static function (string $id) use($merchant) {
+            return [
+                'merchantId' => $merchant->getId(),
+                'serviceId' => $id
+            ];
+        }, $idsToBeDeleted), Context::createDefaultContext());
     }
 }

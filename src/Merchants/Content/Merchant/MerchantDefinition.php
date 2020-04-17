@@ -33,7 +33,9 @@ use Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantMedia\Merch
 use Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantOrder\MerchantOrderDefinition;
 use Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantProduct\MerchantProductDefinition;
 use Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantResetPasswordToken\MerchantResetPasswordTokenDefinition;
+use Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantService\MerchantServiceDefinition;
 use Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantShippingMethod\MerchantShippingMethodDefinition;
+use Shopware\Production\Merchants\Content\Service\ServiceDefinition;
 use Shopware\Production\Voucher\Checkout\SoldVoucher\SoldVoucherDefinition;
 
 class MerchantDefinition extends EntityDefinition
@@ -110,6 +112,7 @@ class MerchantDefinition extends EntityDefinition
             new ManyToManyAssociationField('orders', OrderDefinition::class, MerchantOrderDefinition::class, 'merchant_id', 'order_id'),
             new ManyToManyAssociationField('media', MediaDefinition::class, MerchantMediaDefinition::class, 'merchant_id', 'media_id'),
             new ManyToManyAssociationField('shippingMethods', ShippingMethodDefinition::class, MerchantShippingMethodDefinition::class, 'merchant_id', 'shipping_method_id'),
+            new ManyToManyAssociationField('services', ServiceDefinition::class, MerchantServiceDefinition::class, 'merchant_id', 'service_id'),
             new OneToManyAssociationField('soldVouchers', SoldVoucherDefinition::class, 'merchant_id')
         ]);
     }
