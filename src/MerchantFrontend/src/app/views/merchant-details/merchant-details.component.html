@@ -163,6 +163,21 @@
           ></textarea>
         </clr-textarea-container>
 
+        <ng-container formGroupName="services" *ngIf="services?.length > 0">
+          <clr-control-container>
+            <label>{{'COMMON.SERVICES' | translate}}</label>
+            <clr-toggle-wrapper *ngFor="let service of services">
+              <input
+                  type="checkbox"
+                  clrToggle
+                  value="true"
+                  [formControlName]="service.id"
+              />
+              <label>{{service.translated.name}}</label>
+            </clr-toggle-wrapper>
+          </clr-control-container>
+        </ng-container>
+
         <h3>{{'MERCHANT.DETAILS.LEGAL_INFORMATION' | translate}}</h3>
 
         <clr-textarea-container>
