@@ -60,6 +60,7 @@ class OrderController
         $criteria = new Criteria();
         $criteria->addAssociation('deliveries');
         $criteria->addAssociation('lineItems');
+        $criteria->addAssociation('transactions');
         $criteria->setTotalCountMode(Criteria::TOTAL_COUNT_MODE_EXACT)
             ->addFilter(new EqualsFilter('merchants.id', $merchant->getId()))
             ->setLimit($limit)
@@ -88,6 +89,7 @@ class OrderController
         $criteria->addFilter(new EqualsFilter('merchants.id', $merchant->getId()));
         $criteria->addAssociation('deliveries');
         $criteria->addAssociation('lineItems');
+        $criteria->addAssociation('transactions');
 
         $order = $this->orderRepository->search($criteria, Context::createDefaultContext())->first();
 
