@@ -11,6 +11,7 @@ use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\System\StateMachine\StateMachineRegistry;
 use Shopware\Core\System\StateMachine\Transition;
 use Shopware\Production\Merchants\Content\Merchant\Exception\OrderAlreadyCompletedException;
+use Shopware\Production\Merchants\Content\Merchant\Exception\OrderAlreadyPaidException;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -95,6 +96,40 @@ class OrderController
         }
 
         return new JsonResponse($order);
+    }
+
+    /**
+     * @Route(name="merchant-api.orders.pay", path="/merchant-api/v{version}/order/{orderId}/pay", methods={"PATCH"})
+     */
+    public function pay(MerchantEntity $merchant, string $orderId): JsonResponse
+    {
+        $criteria = new Criteria([$orderId]);
+        $criteria->addFilter(new EqualsFilter('merchants.id', $merchant->getId()));
+        $criteria->addAssociation('transactions');
+
+        /** @var OrderEntity $order */
+        $order = $this->orderRepository->search($criteria, Context::createDefaultContext())->first();
+
+        if (!$order) {
+            throw new NotFoundHttpException(sprintf('Order with ID \'%s\' couldn\'t be found', $orderId));
+        }
+
+        if ($order->getTransactions()->last()->getStateMachineState()->getTechnicalName() === 'paid') {
+            throw new OrderAlreadyPaidException(sprintf('Order with ID \'%s\' is already paid.', $orderId));
+        }
+
+        $this->stateMachineRegistry->transition(
+            new Transition(
+                'order_transaction',
+                $order->getTransactions()->last()->getId(),
+                'pay',
+                'stateId'
+            ), Context::createDefaultContext()
+        );
+
+        return new JsonResponse([
+            'success' => true
+        ]);
     }
 
     /**
