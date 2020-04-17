@@ -1,10 +1,13 @@
 <ng-container *ngIf="order">
   <h1>
     {{'COMMON.Order' | translate}} {{order.orderNumber}}
-    <label class="label label-info" *ngIf="order.stateMachineState.technicalName === 'open'">
+    <label class="label label-warning" *ngIf="orderStatus === 'open'">
       {{'COMMON.OPEN' | translate}}
     </label>
-    <label class="label label-success" *ngIf="order.stateMachineState.technicalName === 'completed'">
+    <label class="label label-info" *ngIf="orderStatus === 'paid'">
+      {{'COMMON.PAID' | translate}}
+    </label>
+    <label class="label label-success" *ngIf="orderStatus === 'completed'">
       {{'MERCHANT.ORDER.COMPLETED' | translate}}
     </label>
   </h1>
@@ -61,7 +64,10 @@
     </div>
   </div>
   <div class="button-wrapper">
-    <button class="btn btn-primary" [disabled]="order.stateMachineState.technicalName !== 'open'" (click)="markOrderAsCompleted()">
+    <button class="btn btn-secondary" [disabled]="orderStatus !== 'open'" (click)="markOrderAsPaid()">
+      {{'MERCHANT.ORDER.DETAILS.MARK_ORDER_PAID_BUTTON' | translate}}
+    </button>
+    <button class="btn btn-primary" [disabled]="orderStatus !== 'paid'" (click)="markOrderAsCompleted()">
       {{'MERCHANT.ORDER.DETAILS.MARK_COMPLETED_BUTTON' | translate}}
     </button>
   </div>

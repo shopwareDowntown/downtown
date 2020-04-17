@@ -7,6 +7,12 @@ import { MerchantApiService } from '../../../core/services/merchant-api.service'
 import { ToastService } from '../../../core/services/toast.service';
 import { TranslateService } from '@ngx-translate/core';
 
+export const enum OrderStatus {
+  open = 'open',
+  paid = 'paid',
+  completed = 'completed'
+}
+
 @Component({
   selector: 'portal-merchant-orders-details',
   templateUrl: './merchant-orders-details.component.html',
@@ -22,6 +28,7 @@ export class MerchantOrdersDetailsComponent implements OnInit {
   ) { }
 
   order: Order;
+  orderStatus:  OrderStatus;
 
   ngOnInit(): void {
     this.activeRoute.params.pipe(
@@ -36,6 +43,7 @@ export class MerchantOrdersDetailsComponent implements OnInit {
         return;
       }
       this.order = (result as Order);
+      this.updateOrderStatus();
     })
   }
 
@@ -49,10 +57,56 @@ export class MerchantOrdersDetailsComponent implements OnInit {
       this.toastService.success(
         this.translateService.instant('MERCHANT.ORDER.TOAST_MESSAGES.COMPLETE_ORDER_SUCCESS_HEADLINE')
       );
+      this.updateOrderStatus();
     },
       () => this.toastService.error(
         this.translateService.instant('MERCHANT.ORDER.TOAST_MESSAGES.COMPLETE_ORDER_ERROR_HEADLINE')
       )
     );
+  }
+
+  markOrderAsPaid() {
+    if (false === confirm(this.translateService.instant('MERCHANT.ORDER.DETAILS.CONFIRM_PAID'))) {
+      return;
+    }
+    this.merchantApiService.setOrderPaid(this.order.id).pipe(
+      switchMap(() => {
+        return this.merchantApiService.getOrder(this.order.id);
+      })
+    ).subscribe((updatedOrder: Order) => {
+      this.order.stateMachineState = updatedOrder.stateMachineState;
+      this.order.transactions = updatedOrder.transactions;
+      this.updateOrderStatus();
+      this.toastService.success(
+        this.translateService.instant('MERCHANT.ORDER.TOAST_MESSAGES.MARK_ORDER_AS_PAID_SUCCESS_HEADLINE')
+      );
+    }, () => {
+      this.toastService.error(
+        this.translateService.instant('MERCHANT.ORDER.TOAST_MESSAGES.MARK_ORDER_AS_PAID_ERROR_HEADLINE')
+      )
+    });
+  }
+
+  private updateOrderStatus(): void {
+    if (
+      this.order.stateMachineState.technicalName === 'open'
+      && this.order.transactions[this.order.transactions.length -1].stateMachineState.technicalName === 'open'
+    ) {
+      this.orderStatus = OrderStatus.open;
+      return;
+    }
+    if (
+      this.order.stateMachineState.technicalName === 'open'
+      && this.order.transactions[this.order.transactions.length -1].stateMachineState.technicalName === 'paid'
+    ) {
+      this.orderStatus = OrderStatus.paid;
+      return;
+    }
+    if (
+      this.order.stateMachineState.technicalName === 'completed'
+    ) {
+      this.orderStatus = OrderStatus.completed;
+      return;
+    }
   }
 }

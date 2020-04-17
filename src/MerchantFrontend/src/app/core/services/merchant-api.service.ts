@@ -202,6 +202,10 @@ export class MerchantApiService {
     return this.http.patch<Order>(this.apiUrl + '/merchant-api/v1/order/' + id +'/done', null, {headers: this.getJsonContentTypeHeaders()});
   }
 
+  setOrderPaid(id: string): Observable<Order> {
+    return this.http.patch<Order>(this.apiUrl + '/merchant-api/v1/order/' + id +'/pay', null, {headers: this.getJsonContentTypeHeaders()});
+  }
+
   redeemVoucher(voucher: Voucher): Observable<{data: string}> {
     return this.http.post<{data: string}>(this.apiUrl + '/merchant-api/v1/voucher-funding/voucher/redeem', JSON.stringify({ code: voucher.code}), {headers: this.getJsonContentTypeHeaders()});
   }

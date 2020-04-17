@@ -7,6 +7,11 @@ export interface Order {
   stateMachineState: OrderState;
   deliveries: OrderDeliveries[];
   lineItems: OrderItem[];
+  transactions: Transaction[];
+}
+
+export interface Transaction {
+  stateMachineState: OrderState;
 }
 
 export interface OrderListData {
