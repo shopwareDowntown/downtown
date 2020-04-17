@@ -17,6 +17,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\PrimaryKey;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\ReadProtected;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\Required;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\IdField;
+use Shopware\Core\Framework\DataAbstractionLayer\Field\IntField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\LongTextField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\ManyToManyAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\ManyToOneAssociationField;
@@ -69,6 +70,7 @@ class MerchantDefinition extends EntityDefinition
             (new LongTextField('public_opening_times', 'publicOpeningTimes'))->addFlags(),
             (new LongTextField('public_description', 'publicDescription'))->addFlags(),
             new StringField('public_website', 'publicWebsite'),
+            (new IntField('availability', 'availability', 0, 2)),
 
             (new FkField('category_id', 'categoryId', CategoryDefinition::class)),
             (new OneToOneAssociationField('category', 'category_id', 'id', CategoryDefinition::class, false)),

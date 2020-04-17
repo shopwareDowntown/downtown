@@ -56,11 +56,11 @@
             <div class="col-12 col-md-6 col-lg-6 merchant-information">
                 <div class="row merchant-information-row">
 
-{#                    {% block component_merchant_availability %}#}
-{#                        <div class="col-12">#}
-{#                            {% sw_include '@Storefront/storefront/component/merchant/availability-badge.html.twig' %}#}
-{#                        </div>#}
-{#                    {% endblock %}#}
+                    {% block component_merchant_availability %}
+                        <div class="col-12">
+                            {% sw_include '@Storefront/storefront/component/merchant/availability-badge.html.twig' with {'availability': page.merchant.availability} %}
+                        </div>
+                    {% endblock %}
 
                     {# Intro #}
                     <div class="col-12">

@@ -183,7 +183,8 @@ class ProfileController
             ->add('tos', new Type('string'))
             ->add('privacy', new Type('string'))
             ->add('imprint', new Type('string'))
-            ->add('revocation', new Type('string'));
+            ->add('revocation', new Type('string'))
+            ->add('availability', new Type('integer'));
     }
 
     protected function fetchProfileData(SalesChannelContext $salesChannelContext, MerchantEntity $merchant): array
