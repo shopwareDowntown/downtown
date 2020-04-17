@@ -59,11 +59,11 @@ class OrderStateChangedSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            'state_enter.order.state.completed' => 'orderStateCompleted',
+            'state_enter.order_transaction.state.paid' => 'orderTransactionPaid',
         ];
     }
 
-    public function orderStateCompleted(OrderStateMachineStateChangeEvent $event) : void
+    public function orderTransactionPaid(OrderStateMachineStateChangeEvent $event) : void
     {
         $salesChannelContext = $this->salesChannelContextFactory->create(Random::getAlphanumericString(16), $event->getSalesChannelId());
 
