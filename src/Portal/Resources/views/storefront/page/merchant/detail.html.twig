@@ -15,12 +15,8 @@
 
         {% if context.salesChannel.extensions.organization.disclaimer.active %}
             <div class="container">
-                <div class="alert alert-success">
-                    {% if context.salesChannel.extensions.organization.disclaimer.image %}
-                        <img src="{{ context.salesChannel.extensions.organization.disclaimer.image.url }}"/>
-                    {% endif %}
-
-                    {{ context.salesChannel.extensions.organization.disclaimer.text }}
+                <div class="alert alert-success disclaimer">
+                    <strong>{{ context.salesChannel.extensions.organization.disclaimer.text }}</strong>
                 </div>
             </div>
         {% endif %}
