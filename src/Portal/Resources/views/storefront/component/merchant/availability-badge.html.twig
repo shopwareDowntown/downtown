@@ -1,16 +1,21 @@
 {% if availability == 1 %}
     {% set availabilityClass = "normal" %}
-    {% set availabilityText =  "merchantBox.availabilityBadgeOpen"|trans %}
+    {% set availabilityDisplayText =  "merchantBox.availabilityBadgeOpen"|trans %}
 {% elseif availability == 2 %}
     {% set availabilityClass = "pick-up" %}
-    {% set availabilityText = "merchantBox.availabilityBadgePickUp"|trans %}
+    {% set availabilityDisplayText = "merchantBox.availabilityBadgePickUp"|trans %}
 {% else %}
     {% set availabilityClass = "inactive" %}
-    {% set availabilityText = "merchantBox.availabilityBadgeInactive"|trans %}
+    {% set availabilityDisplayText = "merchantBox.availabilityBadgeInactive"|trans %}
 {% endif %}
 
 <div class="availability-wrapper">
     <div class="availability-badge {{ availabilityClass }}">
-        {{ availabilityText }}
+        {{ availabilityDisplayText }}
     </div>
+    {% if availabilityText is not empty %}
+        <a title="{{ availabilityText }}" href="#" class="ml-1">
+            {% sw_icon 'info' %}
+        </a>
+    {% endif %}
 </div>

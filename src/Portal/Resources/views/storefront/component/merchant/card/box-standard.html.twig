@@ -60,7 +60,7 @@
                         <div class="product-info">
 
                             {% block component_merchant_availability %}
-                                {% sw_include '@Storefront/storefront/component/merchant/availability-badge.html.twig' with {'availability': merchant.availability} %}
+                                {% sw_include '@Storefront/storefront/component/merchant/availability-badge.html.twig' with {'availability': merchant.availability, 'availabilityText': merchant.availabilityText} %}
                             {% endblock %}
 
                             {% block component_merchant_box_name %}

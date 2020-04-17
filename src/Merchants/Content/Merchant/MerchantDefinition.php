@@ -71,6 +71,7 @@ class MerchantDefinition extends EntityDefinition
             (new LongTextField('public_description', 'publicDescription'))->addFlags(),
             new StringField('public_website', 'publicWebsite'),
             (new IntField('availability', 'availability', 0, 2)),
+            new StringField('availability_text', 'availabilityText'),
 
             (new FkField('category_id', 'categoryId', CategoryDefinition::class)),
             (new OneToOneAssociationField('category', 'category_id', 'id', CategoryDefinition::class, false)),

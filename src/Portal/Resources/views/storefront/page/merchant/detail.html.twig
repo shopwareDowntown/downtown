@@ -58,7 +58,7 @@
 
                     {% block component_merchant_availability %}
                         <div class="col-12">
-                            {% sw_include '@Storefront/storefront/component/merchant/availability-badge.html.twig' with {'availability': page.merchant.availability} %}
+                            {% sw_include '@Storefront/storefront/component/merchant/availability-badge.html.twig' with {'availability': page.merchant.availability, 'availabilityText': page.merchant.availabilityText} %}
                         </div>
                     {% endblock %}
 

@@ -211,6 +211,16 @@ class MerchantEntity extends Entity
      */
     protected $revocation;
 
+    /**
+     * @var int
+     */
+    protected $availability;
+
+    /**
+     * @var string|null
+     */
+    protected $availabilityText;
+
     public function isActive(): bool
     {
         return $this->active;
@@ -513,5 +523,15 @@ class MerchantEntity extends Entity
     public function getRevocation(): ?string
     {
         return $this->revocation;
+    }
+
+    public function getAvailability(): int
+    {
+        return $this->availability;
+    }
+
+    public function getAvailabilityText(): ?string
+    {
+        return $this->availabilityText;
     }
 }
