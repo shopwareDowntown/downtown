@@ -17,6 +17,13 @@ export interface Organization {
     logo: Media;
     homeText: string;
     homeHeroImage: Media;
+    disclaimer: Disclaimer
+}
+
+export interface Disclaimer {
+    active: boolean;
+    text: string;
+    image: Media;
 }
 
 export interface OrganizationAuthority {

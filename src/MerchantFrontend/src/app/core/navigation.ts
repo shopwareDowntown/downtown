@@ -72,4 +72,5 @@ export const NAVIGATION_ADMIN_ORGANIZATION = [
   new NavigationItem('SIDEBAR.HOME', '/organization/home').setIcon('home').sidebar(),
   new NavigationItem('SIDEBAR.INFORMATION', '/organization/profile').setIcon('help-info').sidebar(),
   new NavigationItem('SIDEBAR.MERCHANTS', '/organization/merchants').setIcon('store').sidebar(),
+  new NavigationItem('SIDEBAR.DISCLAIMER', '/organization/disclaimer').setIcon('bullseye').sidebar()
 ];

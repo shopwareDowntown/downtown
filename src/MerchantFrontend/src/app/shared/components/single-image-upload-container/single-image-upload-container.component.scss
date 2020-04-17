@@ -18,9 +18,15 @@
     font-size: large;
     font-weight: 700;
 
-    .control {
+    .control-edit {
       position: absolute;
       bottom: 10px;
+      right: 10px;
+      padding: 5px;
+    }
+    .control-remove {
+      position: absolute;
+      bottom: 230px;
       right: 10px;
       padding: 5px;
     }

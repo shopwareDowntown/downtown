@@ -5,12 +5,14 @@ import { FileUploadModule } from './components/file-upload/file-upload.module';
 import { LocaleDatePipe } from './pipes/locale-date.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 import { SingleImageUploadContainerComponent } from './components/single-image-upload-container/single-image-upload-container.component';
+import { ClrIconModule } from '@clr/angular';
 
 @NgModule({
   imports: [
     CommonModule,
     FileUploadModule,
-    TranslateModule
+    TranslateModule,
+    ClrIconModule
   ],
   declarations: [
     ContainerComponent,
