@@ -348,6 +348,10 @@ class MerchantProductController
             ];
         }
 
+        if ($request->request->has('serviceBookingTemplate')) {
+            $productData['extensions']['serviceBookingTemplate'] = $request->request->get('serviceBookingTemplate');
+        }
+
         if ($request->request->has('productType')) {
             $this->validateProductType($request->request->get('productType'));
             $productData['customFields'] = ['productType' => $request->request->get('productType')];
@@ -559,9 +563,11 @@ class MerchantProductController
         $criteria->addAssociation('merchants');
         $criteria->addFilter(new EqualsFilter('merchants.id', $merchant->getId()));
         $criteria->addAssociation('media');
+        $criteria->addAssociation('serviceBookingTemplate.dates');
 
         /** @var ProductEntity $product */
         $product = $this->productRepository->search($criteria, Context::createDefaultContext())->first();
+
         $priceCollection = $product->getPrice();
         if ($priceCollection === null) {
             return null;
@@ -586,7 +592,8 @@ class MerchantProductController
             'price' => $firstPrice->getGross(),
             'tax' => $taxEntity->getTaxRate(),
             'active' => $product->getActive(),
-            'productType' => $product->getCustomFields()['productType']
+            'productType' => $product->getCustomFields()['productType'],
+            'serviceBookingTemplate' => $product->getExtension('serviceBookingTemplate')
         ];
 
         $productMediaCollection = $product->getMedia();

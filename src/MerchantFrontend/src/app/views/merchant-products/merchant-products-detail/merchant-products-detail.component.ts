@@ -4,7 +4,7 @@ import { Product } from '../../../core/models/product.model';
 import { MerchantApiService } from '../../../core/services/merchant-api.service';
 import { switchMap } from 'rxjs/operators';
 import { Observable, of, Subject } from 'rxjs';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ToastService } from '../../../core/services/toast.service';
 import { ServiceBookingDate } from 'src/app/core/models/service-booking-date.model';
 
@@ -50,6 +50,9 @@ export class MerchantProductsDetailComponent implements OnInit{
           price: 0,
           tax: 19,
           active: false,
+          serviceBookingTemplate: {
+            type: 'default'
+          }
         }
       }
       this.initializeForm();
@@ -67,7 +70,7 @@ export class MerchantProductsDetailComponent implements OnInit{
       active: [this.product.active, Validators.required],
       media: [null],
       serviceBookingTemplate: this.formBuilder.group({
-        type: '',
+        type: 'default',
         dates: this.formBuilder.array([])
       })
     });
@@ -79,7 +82,7 @@ export class MerchantProductsDetailComponent implements OnInit{
         this.form.get('price').setValidators(Validators.required);
       }
       this.form.get('price').setValidators([]);
-    })
+    });
   }
 
   saveProduct(): void {
@@ -109,6 +112,7 @@ export class MerchantProductsDetailComponent implements OnInit{
         } else {
           toastMessage = 'Produkt aktualisiert';
         }
+
         this.form.get('id').setValue(product.data.id);
         this.form.get('media').setValue(null);
         this.product = product.data;
@@ -141,13 +145,22 @@ export class MerchantProductsDetailComponent implements OnInit{
     }
   }
 
-  addServiceBookingDate(): void {
-    this.potentiallyAddServiceBookingTemplate('service');
+  serviceBookingTemplateDates(): FormArray {
+    return this.form.get('serviceBookingTemplate.dates') as FormArray;
+  }
 
-    this.product.serviceBookingTemplate.dates.push(<ServiceBookingDate>{
+  createNewServiceBookingDate(): FormGroup {
+    return this.formBuilder.group({
       start: '',
-      end: '',
-      template: this.product.serviceBookingTemplate
+      end: ''
     });
+  }
+
+  addServiceBookingDate(): void {
+    this.serviceBookingTemplateDates().push(this.createNewServiceBookingDate());
+  }
+
+  removeServiceBookingDate(dateIndex: number) {
+    this.serviceBookingTemplateDates().removeAt(dateIndex);
   }
 }

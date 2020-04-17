@@ -64,20 +64,47 @@
 
   <ng-container *ngIf="'service' === form.get('productType').value" formGroupName="serviceBookingTemplate">
     <h3>{{'COMMON.SERVICE' | translate}}</h3>
-    <input formControlName="type" type="text" name="type">
-    <ng-container *ngFor="let date of product.serviceBookingTemplate.dates; index as i">
-      <clr-date-container>
-        <label>Start Datum:</label>
-        <input type="date" clrDate formControlName="dates[i].start" />
-      </clr-date-container>
 
-      <clr-date-container>
-        <label>End Datum:</label>
-        <input type="date" clrDate formControlName="dates[i].end" />
-      </clr-date-container>
-    </ng-container>
+    <clr-select-container>
+      <label>Service Typ</label>
+      <select clrSelect formControlName="type">
+        <option value="default">Default</option>
+          <option value="webinar">Webinar</option>
+          <option value="consulting">Consulting</option>
+      </select>
+    </clr-select-container>
 
-    <button class="btn btn-default" type="submit" (click)="addServiceBookingDate()">Neuen Termin hinzufügen</button>
+    <div formArrayName="dates" class="clr-row">
+      <ng-container *ngFor="let date of serviceBookingTemplateDates().controls; index as dateIndex">
+        <div [formGroupName]="dateIndex" class="clr-col-lg-3 clr-col-md-3 clr-col-3">
+
+          <div class="card">
+            <div class="card-block">
+              <div class="card-title">
+                Termin {{dateIndex + 1}}
+              </div>
+
+              <div class="card-text">
+                <clr-date-container>
+                  <label>Start Datum:</label>
+                  <input type="datetime" clrDate formControlName="start" />
+                </clr-date-container>
+
+                <clr-date-container>
+                  <label>End Datum:</label>
+                  <input type="datetime" clrDate formControlName="end" />
+                </clr-date-container>
+              </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-sm btn-link btn-danger" (click)="removeServiceBookingDate(dateIndex)">Termin löschen</button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <button class="btn btn-default" style="margin-top: 1.2rem;" type="submit" (click)="addServiceBookingDate()">Neuen Termin hinzufügen</button>
   </ng-container>
 
   <div class="button-wrapper">
@@ -91,3 +118,7 @@
     </button>
   </div>
 </form>
+
+<span *ngIf="this.form">
+{{this.form.value | json}}
+</span>
