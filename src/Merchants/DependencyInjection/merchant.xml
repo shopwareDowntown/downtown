@@ -70,5 +70,9 @@
         <service id="Shopware\Production\Merchants\Content\Merchant\Extensions\OrderEntityExtension">
             <tag name="shopware.entity.extension"/>
         </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Extensions\MediaEntityExtension">
+            <tag name="shopware.entity.extension"/>
+        </service>
     </services>
 </container>

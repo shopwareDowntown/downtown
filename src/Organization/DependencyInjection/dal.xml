@@ -25,6 +25,10 @@
             <tag name="shopware.entity.extension"/>
         </service>
 
+        <service id="Shopware\Production\Organization\System\Organization\Extensions\MediaEntityExtension">
+            <tag name="shopware.entity.extension"/>
+        </service>
+
         <service id="Shopware\Production\Organization\System\Organization\Subscriber\OrganizationCreateSubscriber">
             <argument type="service" id="organization.repository"/>
             <argument type="service" id="Shopware\Production\Portal\Services\TemplateMailSender"/>
