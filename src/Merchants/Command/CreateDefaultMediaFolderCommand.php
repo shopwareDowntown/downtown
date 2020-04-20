@@ -43,7 +43,7 @@ class CreateDefaultMediaFolderCommand extends Command
             $this->mediaDefaultFolderRepository->create([
                 [
                     'entity' => 'merchants',
-                    'associationFields' => [],
+                    'associationFields' => ['merchantMedia'],
                     'folder' => [
                         'name' => 'Merchant Cover Images',
                         'useParentConfiguration' => false,
@@ -83,7 +83,7 @@ class CreateDefaultMediaFolderCommand extends Command
             $this->mediaDefaultFolderRepository->create([
                 [
                     'entity' => 'organization',
-                    'associationFields' => [],
+                    'associationFields' => ['organizationMedia'],
                     'folder' => [
                         'name' => 'Organization Logos',
                         'useParentConfiguration' => false,
