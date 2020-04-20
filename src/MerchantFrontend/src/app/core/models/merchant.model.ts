@@ -28,6 +28,8 @@ export interface Merchant {
   privacy: string;
   revocation: string;
   active: boolean;
+  availability: number;
+  availabilityText: string;
 }
 
 export interface MerchantRegistration {

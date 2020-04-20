@@ -82,7 +82,13 @@ export class MerchantApiService {
             email: merchantData.email as string,
             password: merchantData.password,
             media: merchantData.media,
-            cover: merchantData.cover
+            cover: merchantData.cover,
+            availability: merchantData.availability,
+            availabilityText: merchantData.availabilityText,
+            tos: merchantData.tos,
+            privacy: merchantData.privacy,
+            imprint: merchantData.imprint,
+            revocation: merchantData.revocation,
           } as Merchant;
         })
       );
