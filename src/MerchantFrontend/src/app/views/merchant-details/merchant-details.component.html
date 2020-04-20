@@ -163,6 +163,26 @@
           ></textarea>
         </clr-textarea-container>
 
+
+        <clr-select-container>
+          <label>{{'MERCHANT.DETAILS.AVAILABILITY_STATUS_LABEL' | translate}}</label>
+          <select clrSelect name="availability" formControlName="availability">
+            <option [value]="1">{{'MERCHANT.DETAILS.AVAILABILITY_STATUS.OPEN' | translate}}</option>
+            <option [value]="2">{{'MERCHANT.DETAILS.AVAILABILITY_STATUS.PICK_UP' | translate}}</option>
+            <option [value]="0">{{'MERCHANT.DETAILS.AVAILABILITY_STATUS.CURRENTLY_NOT_AVAILABLE' | translate}}</option>
+          </select>
+        </clr-select-container>
+
+        <clr-textarea-container>
+          <label>{{'MERCHANT.DETAILS.AVAILABILITY_TEXT' | translate}}</label>
+          <textarea
+            clrTextarea
+            placeholder="{{'MERCHANT.DETAILS.AVAILABILITY_PLACEHOLDER' | translate}}"
+            formControlName="availabilityText"
+            name="availabilityText"
+          ></textarea>
+        </clr-textarea-container>
+
         <ng-container formGroupName="services" *ngIf="services?.length > 0">
           <clr-control-container>
             <label>{{'COMMON.SERVICES' | translate}}</label>
@@ -185,8 +205,8 @@
           <textarea
             clrTextarea
             formControlName="imprint"
-            name="imprint">
-          </textarea>
+            name="imprint"
+          ></textarea>
         </clr-textarea-container>
 
         <clr-textarea-container>
@@ -194,8 +214,8 @@
           <textarea
             clrTextarea
             formControlName="revocation"
-            name="privacy">
-          </textarea>
+            name="privacy"
+          ></textarea>
         </clr-textarea-container>
 
         <clr-textarea-container>
@@ -212,8 +232,8 @@
           <textarea
             clrTextarea
             formControlName="privacy"
-            name="privacy">
-          </textarea>
+            name="privacy"
+          ></textarea>
         </clr-textarea-container>
 
       </form>

@@ -83,6 +83,12 @@ export class MerchantApiService {
             password: merchantData.password,
             media: merchantData.media,
             cover: merchantData.cover,
+            availability: merchantData.availability,
+            availabilityText: merchantData.availabilityText,
+            tos: merchantData.tos,
+            privacy: merchantData.privacy,
+            imprint: merchantData.imprint,
+            revocation: merchantData.revocation,
             services: merchantData.services
           } as Merchant;
         })

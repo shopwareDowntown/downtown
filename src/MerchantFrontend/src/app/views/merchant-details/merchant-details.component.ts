@@ -97,6 +97,8 @@ export class MerchantDetailsComponent implements OnInit {
       tos: newData.tos,
       revocation: newData.revocation,
       privacy: newData.privacy,
+      availability: Number.parseInt(newData.availability),
+      availabilityText: newData.availabilityText,
       services: services
     } as Merchant;
 
@@ -157,6 +159,8 @@ export class MerchantDetailsComponent implements OnInit {
       tos: [this.merchant.tos],
       privacy: [this.merchant.privacy],
       revocation: [this.merchant.revocation],
+      availability: [this.merchant.availability],
+      availabilityText: [this.merchant.availabilityText],
     });
     if (false === this.isAllowedToActivate()) {
       this.profileForm.get('public').setValue(false);
