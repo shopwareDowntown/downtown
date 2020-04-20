@@ -2,6 +2,7 @@
 
 namespace Shopware\Production\Merchants\Content\Merchant\Api;
 
+use OpenApi\Annotations as OA;
 use Shopware\Core\Checkout\Order\OrderEntity;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
@@ -49,6 +50,12 @@ class OrderController
     }
 
     /**
+     * @OA\Get(
+     *      path="/orders",
+     *      description="List all orders",
+     *      operationId="listOrders",
+     *      tags={"Merchant"}
+     * )
      * @Route(name="merchant-api.orders.load", path="/merchant-api/v{version}/orders", methods={"GET"})
      */
     public function load(MerchantEntity $merchant, Request $request): JsonResponse
@@ -81,6 +88,12 @@ class OrderController
     }
 
     /**
+     * @OA\Get(
+     *      path="/orders/{orderId}",
+     *      description="List detail information of an order",
+     *      operationId="detailOrder",
+     *      tags={"Merchant"}
+     * )
      * @Route(name="merchant-api.orders.detail", path="/merchant-api/v{version}/order/{orderId}", methods={"GET"})
      */
     public function detail(MerchantEntity $merchant, string $orderId): JsonResponse
@@ -101,6 +114,16 @@ class OrderController
     }
 
     /**
+     * @OA\Patch(
+     *      path="/order/{orderId}/pay",
+     *      description="Mark order as paid",
+     *      operationId="orderMarkPaid",
+     *      tags={"Merchant"},
+     *      @OA\Response(
+     *          response="200",
+     *          ref="#/definitions/SuccessResponse"
+     *     )
+     * )
      * @Route(name="merchant-api.orders.pay", path="/merchant-api/v{version}/order/{orderId}/pay", methods={"PATCH"})
      */
     public function pay(MerchantEntity $merchant, string $orderId): JsonResponse
@@ -135,6 +158,16 @@ class OrderController
     }
 
     /**
+     * @OA\Patch(
+     *      path="/order/{orderId}/done",
+     *      description="Mark order as done",
+     *      operationId="orderMarkDone",
+     *      tags={"Merchant"},
+     *      @OA\Response(
+     *          response="200",
+     *          ref="#/definitions/SuccessResponse"
+     *     )
+     * )
      * @Route(name="merchant-api.orders.done", path="/merchant-api/v{version}/order/{orderId}/done", methods={"PATCH"})
      */
     public function done(MerchantEntity $merchant, string $orderId): JsonResponse

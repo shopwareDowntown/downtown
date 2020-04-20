@@ -42,7 +42,7 @@ class DisclaimerController
      *      path="/organization/disclaimer/image",
      *      description="Upload image for disclaimer",
      *      operationId="uploadDisclaimerImage",
-     *      tags={"Organization Media"},
+     *      tags={"Organization"},
      *      @OA\RequestBody(
      *         required=true,
      *         @OA\MediaType(
@@ -92,7 +92,7 @@ class DisclaimerController
      *      path="/organization/disclaimer/image",
      *      description="Remove disclaimer image",
      *      operationId="removeDisclaimerImage",
-     *      tags={"Organization Media"},
+     *      tags={"Organization"},
      *      @OA\Response(
      *          response="200",
      *          description="Success",

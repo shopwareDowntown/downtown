@@ -73,7 +73,7 @@ class OrganizationController
      *      path="/organizations",
      *      description="Get all organizations",
      *      operationId="loadAllOrganization",
-     *      tags={"List"},
+     *      tags={"Organization"},
      *      @OA\Response(
      *          response="200",
      *          @OA\JsonContent(
@@ -197,7 +197,7 @@ class OrganizationController
      *      path="/organization/logo",
      *      description="Upload logo",
      *      operationId="uploadLogo",
-     *      tags={"Organization Media"},
+     *      tags={"Organization"},
      *      @OA\RequestBody(
      *         required=true,
      *         @OA\MediaType(
@@ -244,7 +244,7 @@ class OrganizationController
      *      path="/organization/logo",
      *      description="Remove logo",
      *      operationId="removeLogo",
-     *      tags={"Organization Media"},
+     *      tags={"Organization"},
      *      @OA\Response(
      *          response="200",
      *          description="Success",
@@ -270,7 +270,7 @@ class OrganizationController
      *      path="/organization/merchants",
      *      description="Get all merchants for organization",
      *      operationId="loadAllOrganizationMerchants",
-     *      tags={"Merchant"},
+     *      tags={"Organization"},
      *      @OA\Parameter(
      *        name="limit",
      *        in="body",
@@ -331,7 +331,7 @@ class OrganizationController
      *      path="/organization/merchant/{merchantId}/set-active",
      *      description="Set merchant active state",
      *      operationId="merchantActive",
-     *      tags={"Merchant"},
+     *      tags={"Organization"},
      *      @OA\Parameter(
      *        name="active",
      *        in="body",

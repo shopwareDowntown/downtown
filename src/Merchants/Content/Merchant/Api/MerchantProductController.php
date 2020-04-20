@@ -2,8 +2,7 @@
 
 namespace Shopware\Production\Merchants\Content\Merchant\Api;
 
-use Shopware\Core\Content\Media\File\MediaFile;
-use Shopware\Core\Content\Media\MediaService;
+use OpenApi\Annotations as OA;
 use Shopware\Core\Content\Product\Aggregate\ProductVisibility\ProductVisibilityDefinition;
 use Shopware\Core\Content\Product\ProductEntity;
 use Shopware\Core\Defaults;
@@ -63,11 +62,6 @@ class MerchantProductController
     private $productMediaRepository;
 
     /**
-     * @var MediaService
-     */
-    private $mediaService;
-
-    /**
      * @var NumberRangeValueGeneratorInterface
      */
     private $numberRangeValueGenerator;
@@ -84,7 +78,6 @@ class MerchantProductController
         EntityRepositoryInterface $merchantRepository,
         EntityRepositoryInterface $productMediaRepository,
         NumberRangeValueGeneratorInterface $numberRangeValueGenerator,
-        MediaService $mediaService,
         StorefrontMediaUploader $storefrontMediaUploader
     ) {
         $this->productRepository = $productRepository;
@@ -93,11 +86,24 @@ class MerchantProductController
         $this->merchantRepository = $merchantRepository;
         $this->productMediaRepository = $productMediaRepository;
         $this->numberRangeValueGenerator = $numberRangeValueGenerator;
-        $this->mediaService = $mediaService;
         $this->storefrontMediaUploader = $storefrontMediaUploader;
     }
 
     /**
+     * @OA\Get(
+     *      path="/products",
+     *      description="Fetch products",
+     *      operationId="products",
+     *      tags={"Merchant"},
+     *      @OA\Response(
+     *          response="200",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="total", type="integer"),
+     *              @OA\Property(property="data", type="array", @OA\Items(ref="#/definitions/MerchantProduct"))
+     *          )
+     *     )
+     * )
      * @Route(name="merchant-api.merchant.product.read", path="/merchant-api/v{version}/products", methods={"GET"})
      */
     public function getList(Request $request, MerchantEntity $merchant): JsonResponse
@@ -175,6 +181,19 @@ class MerchantProductController
     }
 
     /**
+     * @OA\Get(
+     *      path="/products/{productId}",
+     *      description="Fetch product",
+     *      operationId="fetchProduct",
+     *      tags={"Merchant"},
+     *      @OA\Response(
+     *          response="200",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="data", ref="#/definitions/MerchantProduct")
+     *          )
+     *     )
+     * )
      * @Route(name="merchant-api.merchant.product.read-detail", path="/merchant-api/v{version}/products/{productId}", methods={"GET"})
      */
     public function detailProduct(string $productId, MerchantEntity $merchant): JsonResponse
@@ -187,6 +206,17 @@ class MerchantProductController
     }
 
     /**
+     * @OA\Post(
+     *      path="/products",
+     *      description="Create product",
+     *      operationId="createProduct",
+     *      tags={"Merchant"},
+     *      @OA\RequestBody(@OA\JsonContent(ref="#/definitions/MerchantProduct")),
+     *      @OA\Response(
+     *          response="200",
+     *          ref="#/definitions/SuccessResponse"
+     *     )
+     * )
      * @Route(name="merchant-api.merchant.product.create", path="/merchant-api/v{version}/products", methods={"POST"}, defaults={"csrf_protected"=false})
      */
     public function create(Request $request, MerchantEntity $merchant, SalesChannelContext $context): JsonResponse
@@ -256,6 +286,17 @@ class MerchantProductController
     }
 
     /**
+     * @OA\Post(
+     *      path="/products/{productId}",
+     *      description="Update product",
+     *      operationId="updateProduct",
+     *      tags={"Merchant"},
+     *      @OA\RequestBody(@OA\JsonContent(ref="#/definitions/MerchantProduct")),
+     *      @OA\Response(
+     *          response="200",
+     *          ref="#/definitions/SuccessResponse"
+     *     )
+     * )
      * @Route(name="merchant-api.merchant.product.update", path="/merchant-api/v{version}/products/{productId}", methods={"POST"}, defaults={"csrf_protected"=false})
      */
     public function update(Request $request, string $productId, MerchantEntity $merchant, SalesChannelContext $context): JsonResponse
@@ -341,6 +382,16 @@ class MerchantProductController
     }
 
     /**
+     * @OA\Delete(
+     *      path="/products/{productId}/media/{mediaId}",
+     *      description="Delete product media",
+     *      operationId="deleteProductMedia",
+     *      tags={"Merchant"},
+     *      @OA\Response(
+     *          response="200",
+     *          ref="#/definitions/SuccessResponse"
+     *     )
+     * )
      * @Route(name="merchant-api.merchant.product.delete_media", path="/merchant-api/v{version}/products/{productId}/media/{mediaId}", methods={"DELETE"})
      */
     public function deleteMedia(string $productId, string $mediaId): JsonResponse

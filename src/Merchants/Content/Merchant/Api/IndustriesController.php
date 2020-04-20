@@ -2,8 +2,8 @@
 
 namespace Shopware\Production\Merchants\Content\Merchant\Api;
 
+use OpenApi\Annotations as OA;
 use Shopware\Core\Content\Category\CategoryEntity;
-use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
@@ -11,7 +11,6 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\MultiFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\NotFilter;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
-use Shopware\Production\Merchants\Content\Merchant\SalesChannelContextExtension;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -31,6 +30,18 @@ class IndustriesController
     }
 
     /**
+     * @OA\Get(
+     *      path="/industries",
+     *      description="List all available industries",
+     *      operationId="loadindustries",
+     *      tags={"Merchant"},
+     *      @OA\Response(
+     *          response="200",
+     *          @OA\JsonContent(
+     *              ref="#/definitions/IndustriesResponse"
+     *          )
+     *     )
+     * )
      * @Route(name="merchant-api.industries.load", path="/merchant-api/v{version}/industries")
      */
     public function load(SalesChannelContext $context): JsonResponse
