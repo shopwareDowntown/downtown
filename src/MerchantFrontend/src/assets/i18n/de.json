@@ -167,6 +167,7 @@
 	"MERCHANT.REGISTER.SUB_HEADLINE": "Für lokale Einzelhandelsunternehmen oder Dienstleister",
 	"MERCHANT.REGISTER.TOAST_MESSAGES.ERROR_HEADLINE": "Registrierung fehlgeschlagen",
 	"MERCHANT.REGISTER.TOAST_MESSAGES.SUCCESS_HEADLINE": "Erfolgreich registriert",
+	"MERCHANT.REGISTER.TOS": "Ich akzeptiere die allgemeinen Geschäftsbedingungen",
 	"MERCHANT.VOUCHERS.CODE": "Code",
 	"MERCHANT.VOUCHERS.CREATED_AT": "erstellt am",
 	"MERCHANT.VOUCHERS.NAME": "Name",

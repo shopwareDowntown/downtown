@@ -42,7 +42,8 @@ export class MerchantRegisterComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(8)]],
       repeatPassword: ['', [Validators.required, Validators.minLength(8)]],
       authority: [ null, Validators.required],
-      policy: [false, Validators.requiredTrue]
+      policy: [false, Validators.requiredTrue],
+      tos: [false, Validators.requiredTrue]
     }, {validator: Validators.compose([PasswordValidators.matchPassword])});
     this.initialRegisterFormValues = this.registerForm.value;
   }
