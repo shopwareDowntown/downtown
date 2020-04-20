@@ -51,7 +51,8 @@ export class MerchantProductsDetailComponent implements OnInit{
           tax: 19,
           active: false,
           serviceBookingTemplate: {
-            type: 'default'
+            type: 'default',
+            dates: []
           }
         }
       }
