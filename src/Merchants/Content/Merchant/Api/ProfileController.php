@@ -199,7 +199,7 @@ class ProfileController
             ->add('imprint', new Type('string'))
             ->add('revocation', new Type('string'))
             ->add('availability', new Type('integer'))
-            ->addList('services', (new DataValidationDefinition())->add('id', new EntityExists(['entity' => 'service', 'context' => $salesChannelContext->getContext()])));
+            ->addList('services', (new DataValidationDefinition())->add('id', new Type('string')));
     }
 
     protected function fetchProfileData(SalesChannelContext $salesChannelContext, MerchantEntity $merchant): array
