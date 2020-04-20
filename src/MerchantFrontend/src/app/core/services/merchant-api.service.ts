@@ -6,7 +6,7 @@ import {
   MerchantRegistration,
   MerchantLoginResult,
   PasswordReset,
-  MerchantListData
+  MerchantListData, MerchantService
 } from '../models/merchant.model';
 import { Product, ProductListData } from '../models/product.model';
 import { StateService } from '../state/state.service';
@@ -82,7 +82,8 @@ export class MerchantApiService {
             email: merchantData.email as string,
             password: merchantData.password,
             media: merchantData.media,
-            cover: merchantData.cover
+            cover: merchantData.cover,
+            services: merchantData.services
           } as Merchant;
         })
       );
@@ -306,18 +307,22 @@ export class MerchantApiService {
     return this.http.delete<any>(this.apiUrl + '/organization-api/v1/organization/disclaimer/image', {headers: this.getJsonContentTypeHeaders()});
   }
 
+  getMerchantServices(): Observable<MerchantService[]> {
+    return this.http.get<MerchantService[]>(this.apiUrl + '/merchant-api/v1/services', {headers: this.getJsonContentTypeHeaders()});
+  }
+
   private getHeaders(): { [header: string]: string | string[];} {
     return {
       'sw-context-token': this.getSwContextToken()
     };
   }
-
   private getJsonContentTypeHeaders(): HttpHeaders {
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
     headers = headers.set('sw-context-token', this.getSwContextToken());
     return headers;
   }
+
   private getSwContextToken(): string {
     let token: string;
     this.stateService.getSwContextToken()

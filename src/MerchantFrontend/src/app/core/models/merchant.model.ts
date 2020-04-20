@@ -28,6 +28,9 @@ export interface Merchant {
   privacy: string;
   revocation: string;
   active: boolean;
+  services: {
+    id: string;
+  }[];
 }
 
 export interface MerchantRegistration {
@@ -53,4 +56,12 @@ export interface Media {
 export interface MerchantListData {
   total: number;
   data: Merchant[];
+}
+
+export interface MerchantService {
+  id: string;
+  name: string;
+  translated: {
+    name: string;
+  }
 }
