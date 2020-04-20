@@ -49,7 +49,7 @@ class InfoController extends AbstractController
             'tag' => 'Organization',
             'scanDirs' => [
                 __DIR__ . '/../../Portal',
-                __DIR__ . '/../../Merchants',
+                __DIR__ . '/../../Organization',
             ]
         ]
     ];
