@@ -38,8 +38,30 @@
             </select>
           </clr-select-container>
           <clr-checkbox-wrapper>
-            <label>{{'MERCHANT.REGISTER.PRIVACY_POLICY' | translate}}</label>
+            <label>
+              <ng-container *ngIf="registerForm.get('authority').value; else noLinkToPrivacy">
+                <a [href]="registerForm.get('authority').value.domain + '/privacy'" target="_blank">
+                  {{'MERCHANT.REGISTER.PRIVACY_POLICY' | translate}}
+                </a>
+              </ng-container>
+              <ng-template #noLinkToPrivacy>
+                {{'MERCHANT.REGISTER.PRIVACY_POLICY' | translate}}
+              </ng-template>
+            </label>
             <input type="checkbox" name="policy" formControlName="policy" clrCheckbox/>
+          </clr-checkbox-wrapper>
+          <clr-checkbox-wrapper>
+            <label>
+              <ng-container *ngIf="registerForm.get('authority').value; else noLinkToTos">
+                <a [href]="registerForm.get('authority').value.domain + '/tos'" target="_blank">
+                  {{'MERCHANT.REGISTER.TOS' | translate}}
+                </a>
+              </ng-container>
+              <ng-template #noLinkToTos>
+                {{'MERCHANT.REGISTER.TOS' | translate}}
+              </ng-template>
+            </label>
+            <input type="checkbox" name="tos" formControlName="tos" clrCheckbox/>
           </clr-checkbox-wrapper>
         </div>
       </form>

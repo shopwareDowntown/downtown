@@ -30,6 +30,9 @@ export interface Merchant {
   active: boolean;
   availability: number;
   availabilityText: string;
+  services: {
+    id: string;
+  }[];
 }
 
 export interface MerchantRegistration {
@@ -55,4 +58,12 @@ export interface Media {
 export interface MerchantListData {
   total: number;
   data: Merchant[];
+}
+
+export interface MerchantService {
+  id: string;
+  name: string;
+  translated: {
+    name: string;
+  }
 }

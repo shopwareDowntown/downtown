@@ -1,0 +1,32 @@
+{
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "productNumber": {
+            "type": "string"
+        },
+        "stock": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+        "price": {
+            "type": "string"
+        },
+        "tax": {
+            "type": "string"
+        },
+        "active": {
+            "type": "string"
+        },
+        "productType": {
+            "type": "string"
+        }
+    }
+}

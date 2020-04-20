@@ -34,9 +34,9 @@ class LoginController
     /**
      * @OA\Post(
      *      path="/login",
-     *      description="Login as merchant",
+     *      description="Login as organization",
      *      operationId="login",
-     *      tags={"Account"},
+     *      tags={"Organization"},
      *      @OA\Parameter(
      *        name="email",
      *        in="body",

@@ -2,6 +2,7 @@
 
 namespace Shopware\Production\Merchants\Content\Merchant\Api;
 
+use OpenApi\Annotations as OA;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
@@ -25,6 +26,17 @@ class LogoutController
     }
 
     /**
+     * @OA\Post(
+     *      path="/logout",
+     *      description="Logout",
+     *      operationId="Logout",
+     *      tags={"Merchant"},
+     *      @OA\Response(
+     *          response="200",
+     *          description="Logout",
+     *          @OA\JsonContent(ref="#/definitions/SuccessResponse")
+     *     )
+     * )
      * @Route(name="merchant-api.merchant.logout", path="/merchant-api/v{version}/logout", methods={"POST"})
      */
     public function logout(Request $request): JsonResponse

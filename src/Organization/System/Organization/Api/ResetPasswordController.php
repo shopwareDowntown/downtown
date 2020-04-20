@@ -59,7 +59,7 @@ class ResetPasswordController
      *      path="/reset-password",
      *      description="Reset password from organization",
      *      operationId="resetPassword",
-     *      tags={"Account"},
+     *      tags={"Organization"},
      *      @OA\Parameter(
      *        name="email",
      *        in="body",
@@ -116,7 +116,7 @@ class ResetPasswordController
      *      path="/reset-password-confirm",
      *      description="Confirm reset password process",
      *      operationId="resetPasswordConfirm",
-     *      tags={"Account"},
+     *      tags={"Organization"},
      *      @OA\Parameter(
      *        name="token",
      *        in="body",

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { StateService } from '../../core/state/state.service';
-import { Merchant } from '../../core/models/merchant.model';
+import { Merchant, MerchantService } from '../../core/models/merchant.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MerchantApiService } from '../../core/services/merchant-api.service';
 import { Category } from '../../core/models/category.model';
 import { Country } from '../../core/models/country.model';
 import { ToastService } from '../../core/services/toast.service';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 import { merge, of} from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -20,6 +20,7 @@ export class MerchantDetailsComponent implements OnInit {
   profileForm: FormGroup;
   merchantLoaded = false;
   categoriesLoaded = false;
+  services: MerchantService[];
 
   categories: Category[];
 
@@ -34,10 +35,7 @@ export class MerchantDetailsComponent implements OnInit {
   countries: Country[] = [];
 
   ngOnInit(): void {
-    this.stateService.getMerchant().subscribe((merchant: Merchant) => {
-      if(!merchant) {
-        return;
-      }
+    this.stateService.getMerchant().pipe(take(1)).subscribe((merchant: Merchant) => {
       this.merchant = merchant;
       this.merchantLoaded = true;
       this.createForm();
@@ -45,6 +43,11 @@ export class MerchantDetailsComponent implements OnInit {
       this.toastService.error(
         this.translateService.instant('MERCHANT.DETAILS.TOAST_MESSAGES.MERCHANT_LOAD_ERROR_HEADLINE')
       );
+    });
+
+    this.merchantApiService.getMerchantServices().subscribe((merchantServices: MerchantService[]) => {
+      this.addServicesToProfileForm(merchantServices);
+      this.services = merchantServices;
     });
 
     this.merchantApiService
@@ -63,6 +66,18 @@ export class MerchantDetailsComponent implements OnInit {
 
   save() {
     const newData = this.profileForm.getRawValue();
+    const services = [];
+    for (let service of this.services) {
+      const serviceFormValue = this.profileForm.get('services').get(service.id).value;
+      if (serviceFormValue === true) {
+        services.push(
+          {
+            id: service.id
+          }
+        )
+      }
+    }
+
     // update data
     const updatedData = {
       publicCompanyName: newData.publicCompanyName,
@@ -84,6 +99,7 @@ export class MerchantDetailsComponent implements OnInit {
       privacy: newData.privacy,
       availability: Number.parseInt(newData.availability),
       availabilityText: newData.availabilityText,
+      services: services
     } as Merchant;
 
     this.merchantApiService.updateMerchant(updatedData).pipe(
@@ -123,7 +139,7 @@ export class MerchantDetailsComponent implements OnInit {
       });
   }
 
-  private createForm() {
+  private createForm(): void {
     this.profileForm = this.formBuilder.group({
       public: this.merchant.public,
       publicCompanyName: [this.merchant.publicCompanyName, Validators.required],
@@ -165,11 +181,11 @@ export class MerchantDetailsComponent implements OnInit {
     });
   }
 
-  imageSelected(value: File) {
+  imageSelected(value: File): void {
     this.profileForm.get('cover').setValue(value);
   }
 
-  private isAllowedToActivate() {
+  private isAllowedToActivate(): boolean {
     if (
       !this.profileForm.get('imprint').value
       || !this.profileForm.get('tos').value
@@ -179,5 +195,16 @@ export class MerchantDetailsComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  private addServicesToProfileForm(services: MerchantService[]): void {
+    const servicesForm = this.formBuilder.group({});
+    for (let service of services) {
+      const active = undefined !== this.merchant.services.find(
+        (serviceFromMerchant: MerchantService) => serviceFromMerchant.id === service.id
+      );
+      servicesForm.addControl(service.id, this.formBuilder.control(active));
+    }
+    this.profileForm.addControl('services', servicesForm);
   }
 }

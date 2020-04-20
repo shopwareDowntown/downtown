@@ -20,22 +20,50 @@
     <clr-dg-cell>{{order.orderCustomer.firstName}} {{order.orderCustomer.lastName}}</clr-dg-cell>
     <clr-dg-cell>{{order.price.totalPrice}}€</clr-dg-cell>
     <clr-dg-cell>
-      <ng-container *ngIf="order.stateMachineState.technicalName === 'open'; else orderCompleted">
+      <ng-container *ngIf="
+            order.stateMachineState.technicalName === 'open'
+            && order.transactions[order.transactions.length-1].stateMachineState.technicalName === 'open'
+          "
+      >
         <span>{{'COMMON.OPEN' | translate}}</span>
       </ng-container>
-      <ng-template #orderCompleted>
+      <ng-container
+          *ngIf="
+            order.stateMachineState.technicalName === 'open'
+            && order.transactions[order.transactions.length-1].stateMachineState.technicalName === 'paid'
+          "
+      >
+        <span>{{'COMMON.PAID' | translate}}</span>
+      </ng-container>
+      <ng-container *ngIf="order.stateMachineState.technicalName === 'completed'">
         <span>{{'MERCHANT.ORDER.COMPLETED' | translate}}</span>
-      </ng-template>
+      </ng-container>
     </clr-dg-cell>
     <clr-dg-cell>
       <a (click)="openDetails(order)" aria-haspopup="true" class="tooltip tooltip-xs">
         <clr-icon shape="pencil"></clr-icon>
         <span class="tooltip-content">{{'COMMON.DETAILS' | translate}}</span>
       </a>
-      <ng-container *ngIf="order.stateMachineState.technicalName === 'open'">
+      <ng-container
+          *ngIf="
+            order.stateMachineState.technicalName === 'open'
+            && order.transactions[order.transactions.length-1].stateMachineState.technicalName === 'open'
+          "
+      >
+        <a (click)="markOrderAsPaid(order)" aria-haspopup="true" class="tooltip tooltip-sm">
+          <clr-icon shape="coin-bag" class="is-solid"></clr-icon>
+          <span class="tooltip-content">{{'MERCHANT.ORDER.PAID' | translate}}</span>
+        </a>
+      </ng-container>
+      <ng-container
+          *ngIf="
+            order.stateMachineState.technicalName === 'open'
+            && order.transactions[order.transactions.length-1].stateMachineState.technicalName === 'paid'
+          "
+      >
         <a (click)="markOrderAsCompleted(order)" aria-haspopup="true" class="tooltip tooltip-sm">
           <clr-icon size="24" shape="check-circle"></clr-icon>
-          <span class="tooltip-content">{{'MERCHANT.ORDER.COMPLETED' | translate}}</span>
+          <span class="tooltip-content">{{'MERCHANT.ORDER.MARK_COMPLETED' | translate}}</span>
         </a>
       </ng-container>
     </clr-dg-cell>

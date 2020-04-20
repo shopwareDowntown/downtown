@@ -2,6 +2,7 @@
 
 namespace Shopware\Production\Merchants\Content\Merchant\Api;
 
+use OpenApi\Annotations as OA;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\System\SalesChannel\Entity\SalesChannelRepositoryInterface;
@@ -25,6 +26,18 @@ class CountryController
     }
 
     /**
+     * @OA\Get(
+     *      path="/country",
+     *      description="List all available countries",
+     *      operationId="loadAllCountries",
+     *      tags={"Merchant"},
+     *      @OA\Response(
+     *          response="200",
+     *          @OA\JsonContent(
+     *              ref="#/definitions/CountryResponse"
+     *          )
+     *     )
+     * )
      * @Route(name="merchant-api.countries", path="/merchant-api/v{version}/country", methods={"GET"})
      */
     public function load(SalesChannelContext $context): JsonResponse

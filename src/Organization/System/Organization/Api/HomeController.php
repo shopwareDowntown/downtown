@@ -41,7 +41,7 @@ class HomeController
      *      path="/organization/home/heroImage",
      *      description="Upload hero image for home page",
      *      operationId="uploadHeroImage",
-     *      tags={"Organization Media"},
+     *      tags={"Organization"},
      *      @OA\RequestBody(
      *         required=true,
      *         @OA\MediaType(
@@ -88,7 +88,7 @@ class HomeController
      *      path="/organization/home/heroImage",
      *      description="Remove hero image",
      *      operationId="removeHeroImage",
-     *      tags={"Organization Media"},
+     *      tags={"Organization"},
      *      @OA\Response(
      *          response="200",
      *          description="Success",

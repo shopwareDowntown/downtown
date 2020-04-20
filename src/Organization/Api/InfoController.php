@@ -5,6 +5,7 @@ namespace Shopware\Production\Organization\Api;
 use OpenApi\Annotations\Components;
 use OpenApi\Annotations\Info;
 use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations\Operation;
 use OpenApi\Annotations\SecurityScheme;
 use OpenApi\Annotations\Server;
 use Shopware\Core\Framework\Api\ApiDefinition\Generator\OpenApi\DeactivateValidationAnalysis;
@@ -13,32 +14,84 @@ use Shopware\Core\PlatformRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use function OpenApi\scan;
+use const OpenApi\Annotations\UNDEFINED;
 
 /**
- * @RouteScope(scopes={"organization-api"})
+ * @RouteScope(scopes={"organization-api", "merchant-api"})
  */
 class InfoController extends AbstractController
 {
+    private const OPERATION_KEYS = [
+        'get',
+        'post',
+        'put',
+        'patch',
+        'delete',
+    ];
+
+    private const API_INFO = [
+        'merchant' => [
+            'url' => '/merchant-api/v1',
+            'route' => 'merchant-api.info.openapi3',
+            'tag' => 'Merchant',
+            'scanDirs' => [
+                __DIR__ . '/../../Portal',
+                __DIR__ . '/../../Merchants',
+            ]
+        ],
+        'organization' => [
+            'url' => '/merchant-api/v1',
+            'route' => 'organization-api.info.openapi3',
+            'tag' => 'Organization',
+            'scanDirs' => [
+                __DIR__ . '/../../Portal',
+                __DIR__ . '/../../Merchants',
+            ]
+        ]
+    ];
+
     /**
-     * @Route("/organization-api/v{version}/_info/swagger.html", defaults={"auth_required"=false}, name="organization-api.info.swagger", methods={"GET"})
+     * @Route("/organization-api/v{version}/_info/swagger.html", defaults={"auth_required"=false, "type"="organization"}, name="organization-api.info.swagger", methods={"GET"})
+     * @Route("/merchant-api/v{version}/_info/swagger.html", defaults={"auth_required"=false, "type"="merchant"}, name="merchant-api.info.swagger", methods={"GET"})
      */
-    public function infoHtml(int $version): Response
+    public function infoHtml(Request $request, int $version): Response
     {
-        return $this->render('@Framework/swagger.html.twig', ['schemaUrl' => 'organization-api.info.openapi3', 'apiVersion' => '1']);
+        $info = self::API_INFO[$request->attributes->get('type')];
+        return $this->render('@Framework/swagger.html.twig', ['schemaUrl' => $info['route'], 'apiVersion' => '1']);
     }
 
     /**
-     * @Route("/organization-api/v{version}/_info/openapi3.json", defaults={"auth_required"=false}, name="organization-api.info.openapi3", methods={"GET"})
+     * @Route("/organization-api/v{version}/_info/openapi3.json", defaults={"auth_required"=false, "type"="organization"}, name="organization-api.info.openapi3", methods={"GET"})
+     * @Route("/merchant-api/v{version}/_info/openapi3.json", defaults={"auth_required"=false, "type"="merchant"}, name="merchant-api.info.openapi3", methods={"GET"})
      */
-    public function info(): JsonResponse
+    public function info(Request $request): JsonResponse
     {
-        $openApi = scan([
-            dirname(__DIR__, 2),
-        ], ['analysis' => new DeactivateValidationAnalysis()]);
-        $this->addDefaults($openApi);
+        $info = self::API_INFO[$request->attributes->get('type')];
+        $openApi = scan($info['scanDirs'], ['analysis' => new DeactivateValidationAnalysis()]);
+
+        $allUndefined = true;
+        $calculatedPaths = [];
+        foreach ($openApi->paths as $pathItem) {
+            foreach (self::OPERATION_KEYS as $key) {
+                /** @var Operation $operation */
+                $operation = $pathItem->$key;
+                if ($operation instanceof Operation && !in_array($info['tag'], $operation->tags, true)) {
+                    $pathItem->$key = UNDEFINED;
+                }
+                $allUndefined = ($pathItem->$key === UNDEFINED && $allUndefined === true);
+            }
+
+            if (!$allUndefined) {
+                $calculatedPaths[] = $pathItem;
+            }
+        }
+        $openApi->paths = $calculatedPaths;
+
+        $this->addDefaults($openApi, $info);
 
         $data = json_decode($openApi->toJson(), true);
         $finder = (new Finder())->in(__DIR__ . '/Schema')->name('*.json');
@@ -53,14 +106,14 @@ class InfoController extends AbstractController
         return new JsonResponse($data);
     }
 
-    private function addDefaults(OpenApi $openApi): void
+    private function addDefaults(OpenApi $openApi, array $info): void
     {
         $openApi->merge([
-            new Server(['url' => rtrim(getenv('APP_URL'), '/') . '/organization-api/v1']),
+            new Server(['url' => rtrim(getenv('APP_URL'), '/') . $info['url']]),
         ]);
 
         $openApi->info = new Info([
-            'title' => 'Organization-API',
+            'title' => 'API',
             'version' => '1.0.0',
         ]);
 
