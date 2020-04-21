@@ -7,6 +7,7 @@ import { Observable, of, Subject } from 'rxjs';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ToastService } from '../../../core/services/toast.service';
 import { ServiceBookingDate } from 'src/app/core/models/service-booking-date.model';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'portal-merchant-products-detail',
@@ -41,6 +42,8 @@ export class MerchantProductsDetailComponent implements OnInit{
     ).subscribe((product: { data: Product }) => {
       if(product && product.data) {
         this.product = product.data;
+
+        console.log(this.product);
       } else {
         this.newProduct = true;
         this.product = <Product>{
@@ -72,7 +75,7 @@ export class MerchantProductsDetailComponent implements OnInit{
       media: [null],
       serviceBookingTemplate: this.formBuilder.group({
         type: 'default',
-        dates: this.formBuilder.array([])
+        dates: this.hydrateServiceBookingDatesForForm(this.product)
       })
     });
 
@@ -163,5 +166,29 @@ export class MerchantProductsDetailComponent implements OnInit{
 
   removeServiceBookingDate(dateIndex: number) {
     this.serviceBookingTemplateDates().removeAt(dateIndex);
+  }
+
+  hydrateServiceBookingDatesForForm(product: Product): FormArray {
+    const formatServiceBookingDate = (date: Date): string => {
+      return new Intl.DateTimeFormat('de-DE').format(date);
+    }
+
+    if (!product.serviceBookingTemplate || product.serviceBookingTemplate.dates.length <= 0) {
+      return this.formBuilder.array([]);
+    }
+
+    return this.formBuilder.array(product.serviceBookingTemplate.dates.map((item: ServiceBookingDate): FormGroup => {
+      const startDate = new Date(item.start);
+      const endDate = new Date(item.end);
+
+      return this.formBuilder.group({
+        start: [
+          formatServiceBookingDate(startDate)
+        ],
+        end: [
+          formatServiceBookingDate(endDate)
+        ]
+      });
+    }));
   }
 }
