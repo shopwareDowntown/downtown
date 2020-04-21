@@ -32,7 +32,7 @@
   <!-- Footer -->
   <clr-dg-footer>
     {{ fromVoucher }} - {{ tillVoucher }} of
-    {{ total }} {{ 'MERCHANT.VOUCHERS.TITLE' }}
+    {{ total }} {{ 'MERCHANT.VOUCHERS.TITLE' | translate}}
     <clr-dg-pagination
       [(clrDgPage)]="currentPage"
       #pagination

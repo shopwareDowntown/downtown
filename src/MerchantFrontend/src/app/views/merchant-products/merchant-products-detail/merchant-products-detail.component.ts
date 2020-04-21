@@ -49,6 +49,7 @@ export class MerchantProductsDetailComponent implements OnInit{
           price: 0,
           tax: 19,
           active: false,
+          media: []
         }
       }
       this.initializeForm();
