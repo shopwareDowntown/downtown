@@ -1,0 +1,134 @@
+{% sw_extends '@Storefront/storefront/component/product/card/box-standard.html.twig' %}
+
+{% block component_product_box %}
+    {% if merchant %}
+        {% set name = merchant.publicCompanyName %}
+        {% set id = merchant.id %}
+        {% set cover = merchant.cover %}
+
+        <div class="card product-box merchant-box box-{{ layout }}">
+            {% block component_product_box_content %}
+
+                {% block component_merchant_box_image %}
+                    <div class="product-image-wrapper">
+                        {# fallback if display mode is not set #}
+                        {% set displayMode = displayMode ?: 'standard' %}
+
+                        {# set display mode 'cover' for box-image with standard display mode #}
+                        {% if layout == 'image' and displayMode == 'standard' %}
+                            {% set displayMode = 'cover' %}
+                        {% endif %}
+
+                        <a href="{{ seoUrl('storefront.merchant.detail', {'id': id}) }}"
+                           title="{{ name }}"
+                           class="product-image-link is-{{ displayMode }}">
+                            {% if cover.url %}
+                                {% set attributes = {
+                                    'class': 'product-image is-'~displayMode,
+                                    'alt': (cover.translated.alt ?: name),
+                                    'title': (cover.translated.title ?: name)
+                                } %}
+
+                                {% if displayMode == 'cover' or displayMode == 'contain' %}
+                                    {% set attributes = attributes|merge({ 'data-object-fit': displayMode }) %}
+                                {% endif %}
+
+                                {% sw_thumbnails 'product-image-thumbnails' with {
+                                    media: cover,
+                                    sizes: {
+                                        'xs': '501px',
+                                        'sm': '315px',
+                                        'md': '427px',
+                                        'lg': '333px',
+                                        'xl': '284px'
+                                    }
+                                } %}
+                            {% else %}
+                                <div class="product-image-placeholder">
+                                    {% sw_icon 'placeholder' style {
+                                        'size': 'fluid'
+                                    } %}
+                                </div>
+                            {% endif %}
+                        </a>
+                    </div>
+                {% endblock %}
+
+                <div class="card-body">
+
+                    {% block component_merchant_box_info %}
+                        <div class="product-info">
+
+                            {% block component_merchant_availability %}
+                                {% sw_include '@Storefront/storefront/component/merchant/availability-badge.html.twig' with {'availability': merchant.availability, 'availabilityText': merchant.availabilityText} %}
+                            {% endblock %}
+
+                            {% block component_merchant_box_name %}
+                                <a href="{{ seoUrl('storefront.merchant.detail', {'id': id}) }}"
+                                   class="product-name"
+                                   title="{{ name }}">
+                                    {{ name }}
+                                </a>
+                            {% endblock %}
+
+                            {% block component_merchant_box_description %}
+                                <div class="product-description">
+                                    {% if merchant.publicDescription %}
+                                        {{ merchant.publicDescription|striptags|raw }}
+                                    {% endif %}
+                                </div>
+                            {% endblock %}
+
+                            {% block component_merchant_box_phone %}
+                                <div class="phone-wrapper">
+
+                                    {% if merchant.publicPhoneNumber %}
+                                        <span class="icon-holder">
+                                            {% sw_icon 'phone-2' style {'pack': 'sw-icon-kit'} %}
+                                        </span>
+                                        <span>{{ merchant.publicPhoneNumber }}</span>
+                                    {% endif %}
+
+                                </div>
+                            {% endblock %}
+
+                            {% block component_merchant_box_mail %}
+                                <div class="mail-wrapper">
+
+                                    {% if merchant.publicEmail %}
+                                        <span class="icon-holder">
+                                            {% sw_icon 'envelope' %}
+                                        </span>
+                                        <a href="mailto:{{ merchant.publicEmail }}"
+                                           title="{{ merchant.publicEmail }}">
+                                            {{ merchant.publicEmail }}
+                                        </a>
+                                    {% endif %}
+
+                                </div>
+                            {% endblock %}
+
+                            {% if merchant.services is not empty %}
+                                {% block component_merchant_box_service %}
+                                    {% sw_include '@Storefront/storefront/component/merchant/service-items.html.twig' with {
+                                        scope: 'listing',
+                                        services: merchant.services
+                                    } %}
+                                {% endblock %}
+                            {% endif %}
+
+                            {% block component_merchant_box_action %}
+                                <a href="{{ seoUrl('storefront.merchant.detail', {'id': id}) }}"
+                                   class="btn btn-block btn-light"
+                                   title="{{ "listing.boxMerchantDetails"|trans|striptags }}">
+                                    {{ "listing.boxMerchantDetails"|trans|sw_sanitize }}
+                                    {% sw_icon 'arrow-right' %}
+                                </a>
+                            {% endblock %}
+                        </div>
+                    {% endblock %}
+                </div>
+            {% endblock %}
+        </div>
+    {% endif %}
+{% endblock %}

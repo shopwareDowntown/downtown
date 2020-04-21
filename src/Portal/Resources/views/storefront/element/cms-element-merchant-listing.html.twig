@@ -1,0 +1,18 @@
+{% sw_extends '@Storefront/storefront/element/cms-element-product-listing.html.twig' %}
+
+{% block element_product_listing_wrapper %}
+    {% set dataUrl = null %}
+
+    {% set dataUrl = url('frontend.cms.navigation.page', { navigationId: element.data.navigationId }) %}
+    {% set slot = page.cmsPage.firstElementOfType('merchant-listing') %}
+    {% set params = { slots: slot.id, 'no-aggregations': 1 } %}
+
+    {% sw_include '@Storefront/storefront/component/merchant/listing.html.twig' with {
+        searchResult: searchResult,
+        params: params,
+        sidebar: sidebar,
+        boxLayout: element.translated.config.boxLayout.value,
+        displayMode: element.translated.config.displayMode.value,
+        listingColumns: listingColumns
+    } %}
+{% endblock %}

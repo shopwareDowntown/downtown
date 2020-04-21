@@ -2,7 +2,6 @@
 
 namespace Shopware\Production\Merchants\Content\Merchant;
 
-use Shopware\Core\Checkout\Customer\CustomerEntity;
 use Shopware\Core\Checkout\Order\OrderCollection;
 use Shopware\Core\Checkout\Shipping\ShippingMethodCollection;
 use Shopware\Core\Content\Category\CategoryEntity;
@@ -13,83 +12,103 @@ use Shopware\Core\Framework\DataAbstractionLayer\Entity;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityIdTrait;
 use Shopware\Core\System\Country\CountryEntity;
 use Shopware\Core\System\SalesChannel\SalesChannelEntity;
+use OpenApi\Annotations as OA;
+use Shopware\Production\Merchants\Content\Service\ServiceCollection;
 
+/**
+ * @OA\Schema()
+ */
 class MerchantEntity extends Entity
 {
     use EntityIdTrait;
 
     /**
      * @var bool
+     * @OA\Property()
      */
     protected $active;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $activationCode;
 
     /**
      * @var bool
+     * @OA\Property()
      */
     protected $public;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $publicCompanyName;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $publicOwner;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $publicPhoneNumber;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $publicEmail;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $publicOpeningTimes;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $publicDescription;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $publicWebsite;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $firstName;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $lastName;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $street;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $zip;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $city;
 
@@ -100,21 +119,25 @@ class MerchantEntity extends Entity
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $email;
 
     /**
      * @var string
+     * @OA\Property()
      */
     protected $password;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $phoneNumber;
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $salesChannelId;
 
@@ -125,6 +148,7 @@ class MerchantEntity extends Entity
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $categoryId;
 
@@ -155,6 +179,7 @@ class MerchantEntity extends Entity
 
     /**
      * @var string|null
+     * @OA\Property()
      */
     protected $coverId;
 
@@ -162,6 +187,45 @@ class MerchantEntity extends Entity
      * @var MediaEntity|null
      */
     protected $cover;
+
+    /**
+     * @var string|null
+     * @OA\Property()
+     */
+    protected $imprint;
+
+    /**
+     * @var string|null
+     * @OA\Property()
+     */
+    protected $tos;
+
+    /**
+     * @var string|null
+     * @OA\Property()
+     */
+    protected $privacy;
+
+    /**
+     * @var string|null
+     * @OA\Property()
+     */
+    protected $revocation;
+
+    /**
+     * @var int
+     */
+    protected $availability;
+
+    /**
+     * @var string|null
+     */
+    protected $availabilityText;
+
+    /**
+     * @var ServiceCollection|null
+     */
+    protected $services;
 
     public function isActive(): bool
     {
@@ -445,5 +509,40 @@ class MerchantEntity extends Entity
     public function setCoverId(?string $coverId): void
     {
         $this->coverId = $coverId;
+    }
+
+    public function getImprint(): ?string
+    {
+        return $this->imprint;
+    }
+
+    public function getTos(): ?string
+    {
+        return $this->tos;
+    }
+
+    public function getPrivacy(): ?string
+    {
+        return $this->privacy;
+    }
+
+    public function getRevocation(): ?string
+    {
+        return $this->revocation;
+    }
+
+    public function getAvailability(): int
+    {
+        return $this->availability;
+    }
+
+    public function getAvailabilityText(): ?string
+    {
+        return $this->availabilityText;
+    }
+
+    public function getServices(): ?ServiceCollection
+    {
+        return $this->services;
     }
 }

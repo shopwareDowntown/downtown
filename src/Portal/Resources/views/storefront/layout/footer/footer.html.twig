@@ -1,3 +1,92 @@
-{% sw_extends "storefront/layout/footer/footer.html.twig" %}
+{% sw_extends "@Storefront/storefront/layout/footer/footer.html.twig" %}
 
-{% block layout_footer_navigation %}{% endblock %}
+    {% block layout_footer_navigation %}
+        <div id="footerColumns"
+             class="footer-columns">
+
+            <div class="row">
+                {% block layout_footer_navigation_hotline %}
+                    <div class="col-md-4 footer-column">
+                        <a class="footer-logo-main-link"
+                           href="{{ path('frontend.home.page') }}"
+                           title="{{ "header.logoLink"|trans|striptags }}">
+
+                            {% if context.salesChannel.extension('organization').logo %}
+                                <img src="{{ context.salesChannel.extension('organization').logo.url |sw_encode_url }}"
+                                     alt="{{ "header.logoLink"|trans|striptags }}"
+                                     class="img-fluid header-logo-main-img"/>
+                            {% endif %}
+                        </a>
+                    </div>
+                {% endblock %}
+
+                {% block layout_footer_navigation_columns %}
+                    {% block layout_footer_navigation_column %}
+                        <div class="col-md-4 footer-column">
+                            {% block layout_footer_navigation_information_headline %}{% endblock %}
+
+                            {% block layout_footer_navigation_information_content %}
+                                <div class="footer-column-content">
+                                    <div class="footer-column-content-inner">
+                                        {% block layout_footer_navigation_information_links %}
+                                            <ul class="list-unstyled">
+                                                <li class="footer-link-item">
+                                                    <a class="footer-link" href="{{ page.footer.extensions.portal.url }}">
+                                                        {{ 'footer.links.merchant'|trans }}
+                                                    </a>
+                                                </li>
+
+                                                <li class="footer-link-item">
+                                                    <a class="footer-link" href="{{ path('organization.imprint')}}">
+                                                        {{ 'footer.links.imprint'|trans }}
+                                                    </a>
+                                                </li>
+
+                                                <li class="footer-link-item">
+                                                    <a class="footer-link" href="{{ path('organization.tos')}}">
+                                                        {{ 'footer.links.generalTerms'|trans }}
+                                                    </a>
+                                                </li>
+
+                                                <li class="footer-link-item">
+                                                    <a class="footer-link" href="{{ path('organization.privacy')}}">
+                                                        {{ 'footer.links.privacy'|trans }}
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        {% endblock %}
+                                    </div>
+                                </div>
+                            {% endblock %}
+                        </div>
+                    {% endblock %}
+                {% endblock %}
+            </div>
+        </div>
+    {% endblock %}
+
+{# Hide footer logos #}
+{% block layout_footer_payment_shipping_logos %}{% endblock %}
+
+{% block layout_footer_bottom %}
+    <div class="footer-bottom">
+        <div class="row">
+            {% block layout_footer_vat %}
+                <div class="col-12 col-md-6">
+                    {{ parent() }}
+                </div>
+            {% endblock %}
+
+            {# Hide service menu here #}
+            {% block layout_footer_service_menu %}{% endblock %}
+
+            {% block layout_footer_copyright %}
+                <div class="col-12 col-md-6">
+                    <div class="footer-copyright">
+                        {{ "footer.copyrightInfo"|trans|sw_sanitize }}
+                    </div>
+                </div>
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

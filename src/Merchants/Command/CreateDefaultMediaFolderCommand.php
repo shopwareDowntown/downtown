@@ -29,42 +29,77 @@ class CreateDefaultMediaFolderCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->mediaDefaultFolderRepository->create([
-            [
-                'entity' => 'merchants',
-                'associationFields' => [],
-                'folder' => [
-                    'name' => 'Merchant Cover Images',
-                    'useParentConfiguration' => false,
-                    'configuration' =>
-                        [
-                            'createThumbnails' => true,
-                            'mediaThumbnailSizes' => [
-                                [
-                                    'width' => 960,
-                                    'height' => 480
+        $criteria = new Criteria();
+        $folders = $this->mediaDefaultFolderRepository->search($criteria, Context::createDefaultContext());
+
+        $entities = $folders->map(function ($item) {
+            /** @var MediaDefaultFolderEntity $item */
+
+            return $item->getEntity();
+        });
+
+
+        if (!in_array('merchants', $entities, true)) {
+            $this->mediaDefaultFolderRepository->create([
+                [
+                    'entity' => 'merchants',
+                    'associationFields' => ['merchantMedia'],
+                    'folder' => [
+                        'name' => 'Merchant Cover Images',
+                        'useParentConfiguration' => false,
+                        'configuration' =>
+                            [
+                                'createThumbnails' => true,
+                                'mediaThumbnailSizes' => [
+                                    [
+                                        'width' => 960,
+                                        'height' => 480
+                                    ]
                                 ]
                             ]
-                        ]
+                    ]
                 ]
-            ]
-        ], Context::createDefaultContext());
+            ], Context::createDefaultContext());
+        }
 
-        $this->mediaDefaultFolderRepository->create([
-            [
-                'entity' => 'merchant_products',
-                'associationFields' => ['productMedia'],
-                'folder' => [
-                    'name' => 'Merchant Product Images',
-                    'useParentConfiguration' => false,
-                    'configuration' =>
-                        [
+        if (!in_array('merchant_products', $entities, true)) {
+            $this->mediaDefaultFolderRepository->create([
+                [
+                    'entity' => 'merchant_products',
+                    'associationFields' => ['productMedia'],
+                    'folder' => [
+                        'name' => 'Merchant Product Images',
+                        'useParentConfiguration' => false,
+                        'configuration' => [
                             'createThumbnails' => true,
                             'mediaThumbnailSizes' => $this->getProductThumbnails()
                         ]
+                    ]
                 ]
-            ]
-        ], Context::createDefaultContext());
+            ], Context::createDefaultContext());
+        }
+
+        if (!in_array('organization', $entities, true)) {
+            $this->mediaDefaultFolderRepository->create([
+                [
+                    'entity' => 'organization',
+                    'associationFields' => ['organizationMedia'],
+                    'folder' => [
+                        'name' => 'Organization Logos',
+                        'useParentConfiguration' => false,
+                        'configuration' => [
+                            'createThumbnails' => true,
+                            'mediaThumbnailSizes' => [
+                                [
+                                    'width' => 300,
+                                    'height' => 100
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ], Context::createDefaultContext());
+        }
 
         return 0;
     }

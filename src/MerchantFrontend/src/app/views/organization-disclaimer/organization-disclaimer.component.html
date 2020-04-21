@@ -1,0 +1,36 @@
+<h1>{{'ORGANIZATION.DISCLAIMER.HEADLINE' | translate}}</h1>
+<span>{{'ORGANIZATION.DISCLAIMER.SUB_HEADLINE' | translate}}</span>
+<form clrForm clrLayout="vertical" [formGroup]="form">
+  <clr-textarea-container>
+    <label>{{'COMMON.TEXT' | translate}}</label>
+    <textarea clrTextarea formControlName="text"></textarea>
+  </clr-textarea-container>
+  <clr-control-container>
+    <label>{{'COMMON.IMAGE' | translate}}</label>
+    <portal-single-image-upload-container
+        (imageRemoved)="removeImage()"
+        [removable]="true"
+        (newImageSelected)="imageSelected($event)"
+        [existingImageUrl]="organization.disclaimer?.image?.url">
+    </portal-single-image-upload-container>
+  </clr-control-container>
+  <clr-toggle-wrapper>
+    <label>{{'ORGANIZATION.DISCLAIMER.ACTIVE' | translate}}</label>
+    <input
+      type="checkbox"
+      clrToggle
+      value="true"
+      formControlName="active"
+      name="active"
+    />
+  </clr-toggle-wrapper>
+</form>
+<button
+    type="button"
+    (click)="updateDisclaimer()"
+    class="btn btn-primary"
+    [disabled]="form.invalid"
+    [style.margin-top]="'32px'"
+>
+  {{'COMMON.SAVE' | translate}}
+</button>

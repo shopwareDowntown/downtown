@@ -1,0 +1,306 @@
+{% sw_extends '@Storefront/storefront/base.html.twig' %}
+
+{# Remove this block, when the template inheritance is fixed #}
+{% block base_header %}
+    <header class="header-main">
+        {% block base_header_inner %}
+            <div class="container">
+                {% sw_include '@Storefront/storefront/layout/header/header.html.twig' %}
+            </div>
+        {% endblock %}
+
+        <div class="nav-main">
+            {% sw_include '@Storefront/storefront/layout/navigation/navigation.html.twig' %}
+        </div>
+
+        {% if context.salesChannel.extensions.organization.disclaimer.active %}
+            <div class="container">
+                <div class="alert alert-success disclaimer">
+                    <strong>{{ context.salesChannel.extensions.organization.disclaimer.text }}</strong>
+                </div>
+            </div>
+        {% endif %}
+    </header>
+{% endblock %}
+
+{# Hide navigation here #}
+{% block base_navigation %}{% endblock %}
+
+{% block base_main_inner %}
+    <div class="row fullsize{% if not page.merchant.publicDescription %} no-description{% endif %}" id="merchant-header-banner">
+
+        {% if page.merchant.cover is not defined %}
+        <div class="container">
+            {% endif %}
+
+            {# Image #}
+            {% if page.merchant.cover %}
+                <div class="col-12 col-md-6 col-lg-6 merchant-image">
+                    <div class="merchant-image-container">
+                        {% sw_thumbnails 'merchant-thumbnails' with {
+                            media: page.merchant.cover,
+                            sizes: {
+                                'default': '1920px'
+                            },
+                            attributes: {
+                                'class': 'img-fluid',
+                                'alt': page.merchant.publicCompanyName,
+                                'title': page.merchant.publicCompanyName,
+                                'data-object-fit': 'cover'
+                            }
+                        } %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="col-12 col-md-6 col-lg-6 merchant-information">
+                <div class="row merchant-information-row">
+
+                    {% block component_merchant_availability %}
+                        <div class="col-12">
+                            {% sw_include '@Storefront/storefront/component/merchant/availability-badge.html.twig' with {'availability': page.merchant.availability, 'availabilityText': page.merchant.availabilityText} %}
+                        </div>
+                    {% endblock %}
+
+                    {# Intro #}
+                    <div class="col-12">
+                        <h1>{{ page.merchant.publicCompanyName }}</h1>
+                        <p>{{ 'merchant.publicOwner'|trans }}: {{ page.merchant.publicOwner }}</p>
+                    </div>
+
+                    {# Contact information #}
+                    <div class="col-12">
+                        <ul class="contact-information">
+
+                            {# Phone #}
+                            {% if page.merchant.publicPhoneNumber %}
+                                <li>
+                                    <span class="icon-holder">
+                                        {% sw_icon 'phone-2' style {'pack': 'sw-icon-kit'} %}
+                                    </span>
+                                    <span class="contact-information-content phone">{{ page.merchant.publicPhoneNumber }}</span>
+                                </li>
+                            {% endif %}
+
+                            {# Mail #}
+                            {% if page.merchant.publicEmail %}
+                                <li>
+                                    <span class="icon-holder">
+                                        {% sw_icon 'envelope' %}
+                                    </span>
+                                    <span class="contact-information-content"><a href="mailto:{{ page.merchant.publicEmail }}">{{ page.merchant.publicEmail }}</a></span>
+                                </li>
+                            {% endif %}
+
+                            {# Website #}
+                            {% if page.merchant.publicWebsite %}
+                                <li>
+                                    <span class="icon-holder">
+                                        {% sw_icon 'globe' %}
+                                    </span>
+                                    <span class="contact-information-content"><a href="{{ page.merchant.publicWebsite }}">{{ page.merchant.publicWebsite }}</a></span>
+                                </li>
+                            {% endif %}
+
+                            {# Address #}
+                            {% if page.merchant.street %}
+                                <li>
+                                    <span class="icon-holder">
+                                        {% sw_icon 'marker' %}
+                                    </span>
+                                    <span class="contact-information-content">
+                                    {{ page.merchant.street }}<br>
+                                    {{ page.merchant.zip }} {{ page.merchant.city }}<br>
+                                    {{ page.merchant.country.translated.name }}
+                                </span>
+                                </li>
+                            {% endif %}
+                            {% if page.merchant.imprint %}
+                                <li>
+                                    <a href="#" data-toggle="modal" data-target="#merchantImprint">{{ 'merchant.imprint'|trans }}</a>
+                                </li>
+                            {% endif %}
+                            {% if page.merchant.tos %}
+                                <li>
+                                    <a href="#" data-toggle="modal" data-target="#merchantTos">{{ 'merchant.tos'|trans }}</a>
+                                </li>
+                            {% endif %}
+                            {% if page.merchant.privacy %}
+                                <li>
+                                    <a href="#" data-toggle="modal" data-target="#merchantPrivacy">{{ 'merchant.privacy'|trans }}</a>
+                                </li>
+                            {% endif %}
+                            {% if page.merchant.revocation %}
+                                <li>
+                                    <a href="#" data-toggle="modal" data-target="#merchantRevocation">{{ 'merchant.revocation'|trans }}</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+
+                    {# Opening Hours #}
+                    {% if page.merchant.publicOpeningTimes %}
+                        <div class="col-12 opening-times">
+                            <h6>{{ 'merchant.openingTimes'|trans }}</h6>
+                            <p>
+                                {{ page.merchant.publicOpeningTimes|nl2br }}
+                            </p>
+                        </div>
+                    {% endif %}
+
+                    {% if page.merchant.services is not empty %}
+                        <div class="col-12">
+                            {% sw_include '@Storefront/storefront/component/merchant/service-items.html.twig' with {
+                                scope: 'detail',
+                                services: page.merchant.services
+                            } %}
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+
+            {% if page.merchant.cover is not defined %}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="merchant-detail-lower">
+        <div class="container">
+            {% block base_main_container %}
+                <div class="container-main">
+                    {% block base_breadcrumb %}
+                        {% if breadcrumbList %}
+                            {% sw_include '@Storefront/storefront/layout/breadcrumb.html.twig' %}
+                        {% endif %}
+                    {% endblock %}
+
+                    {% block base_content %}
+
+                        {% if page.merchant.publicDescription %}
+                            <div class="row merchant-description">
+                                <div class="col-12">
+                                    <div class="merchant-description-holder">
+                                        <h2 class="text-headline">{{ 'merchant.description'|trans }}</h2>
+                                        <p>{{ page.merchant.publicDescription|nl2br }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if page.merchant.products.count %}
+                            <div class="row merchant-listing">
+                                <h3 class="col-12 merchant-listing-headline">{{ 'merchant.ourProducts'|trans }}</h3>
+
+                                <div class="listing-wrapper col-12">
+
+                                    <div class="products-wrapper row">
+                                        {% for product in page.merchant.products %}
+
+                                            <div class="product col-sm-6 col-lg-4">
+                                                {% sw_include "@Storefront/storefront/component/product/card/box-standard.html.twig" with {
+                                                    product: product,
+                                                    layout: "standard",
+                                                    displayMode: "cover"
+                                                } %}
+                                            </div>
+
+                                        {% endfor %}
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        {% endif %}
+
+                    {% endblock %}
+                </div>
+            {% endblock %}
+        </div>
+    </div>
+
+    {% if page.merchant.imprint %}
+        <div class="modal fade" id="merchantImprint" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">{{ 'merchant.imprint'|trans }}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            {{ page.merchant.imprint|nl2br }}
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if page.merchant.tos %}
+        <div class="modal fade" id="merchantTos" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ 'merchant.tos'|trans }}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            {{ page.merchant.tos|nl2br }}
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if page.merchant.privacy %}
+        <div class="modal fade" id="merchantPrivacy" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ 'merchant.privacy'|trans }}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            {{ page.merchant.privacy|nl2br }}
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if page.merchant.revocation %}
+        <div class="modal fade" id="merchantRevocation" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ 'merchant.revocation'|trans }}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            {{ page.merchant.revocation|nl2br }}
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block base_footer_inner %}
+    {% sw_include '@Storefront/storefront/component/merchant/banner.html.twig' %}
+    {{ parent() }}
+{% endblock %}

@@ -3,10 +3,14 @@
     <tbody>
         <tr>
             <td valign="top" style="background-color: #e6e7e9; text-align: center;">
-               <div style="color: #3c3c3c; padding-top: 80px; font-size: 50px;">{{ 'voucher.voucher'|trans }}</div>
-               <div style="margin: 80px 120px; padding: 140px 60px 80px; color: #a79056; font-size: 110px; border-radius: 30px; background-color: white;">{{ voucher.value.price|currency(order.currency.isoCode) }}</div>
-               <img src="https://downtowns.io/assets/images/downtown.svg" height="60px" style="margin-bottom: 40px" />
-           </td>
+               <div style="color: #3c3c3c; padding-top: 80px; font-size: 50px;font-weight: 900">{{ 'voucher.voucher'|trans }}</div>
+               <div style="margin: 80px 120px; padding: 140px 60px 80px; color: #a79056; font-size: 110px; border-radius: 30px; background-color: white;">{{ voucher.value.price|format_currency(order.currency.isoCode, {rounding_mode: 'floor',fraction_digit: 0}, locale=locale) }}</div>
+                {% if merchant.cover %}
+                    <img src="{{ merchant.cover|sw_encode_media_url }}" height="60px" style="margin-bottom: 40px" />
+                {% else %}
+                    <img src="https://app.downtown.shop/assets/images/downtown.svg" height="60px" style="margin-bottom: 40px" />
+                {% endif %}
+            </td>
             <td style="width: 240px; padding: 30px">
                <p><strong>{{ 'voucher.redemptionAddress'|trans }}</strong></p>
                <p>{{ merchant.publicCompanyName }}<br>{{ merchant.country.translated.name }}, {{ merchant.city }}<br>{{ merchant.street }}</p>
@@ -17,7 +21,7 @@
                    {% if merchant.publicEmail %}
                         {{ 'voucher.email'|trans }} <a href="mailto:{{ merchant.publicEmail }}">{{ merchant.publicEmail }}</a><br>
                    {% endif %}
-                   {% if merchant.publicWebsite%}
+                   {% if merchant.publicWebsite %}
                         {{ 'voucher.website'|trans }} <a href="{{ merchant.publicWebsite }}">{{ merchant.publicWebsite }}</a>
                    {% endif %}
                </p>
@@ -33,4 +37,52 @@
    </table>
 {% endfor %}
 
-<style>p {color: #3c3c3c; font-size: 14px} strong {color: #a79056; font-size: 18px} a {color: #189eff; text-decoration: none}</style>
+<style>
+    /* latin-ext */
+    @font-face {
+        font-family: 'Lato';
+        font-style: italic;
+        font-weight: 100;
+        font-display: swap;
+        src: local('Lato Hairline Italic'), local('Lato-HairlineItalic'), url(https://fonts.gstatic.com/s/lato/v16/S6u-w4BMUTPHjxsIPx-mPCLC79U11vU.woff2) format('woff2');
+        unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+    @font-face {
+        font-family: 'Lato';
+        font-style: italic;
+        font-weight: 400;
+        font-display: swap;
+        src: local('Lato Italic'), local('Lato-Italic'), url(https://fonts.gstatic.com/s/lato/v16/S6u8w4BMUTPHjxsAXC-qNiXg7Q.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+    @font-face {
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 100;
+        font-display: swap;
+        src: local('Lato Hairline'), local('Lato-Hairline'), url(https://fonts.gstatic.com/s/lato/v16/S6u8w4BMUTPHh30AXC-qNiXg7Q.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+    @font-face {
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 300;
+        font-display: swap;
+        src: local('Lato Light'), local('Lato-Light'), url(https://fonts.gstatic.com/s/lato/v16/S6u9w4BMUTPHh7USSwiPGQ3q5d0.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+    @font-face {
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 900;
+        font-display: swap;
+        src: local('Lato Black'), local('Lato-Black'), url(https://fonts.gstatic.com/s/lato/v16/S6u9w4BMUTPHh50XSwiPGQ3q5d0.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+
+    body {
+        font-family: Lato, sans-serif!important;
+    }
+
+    p {color: #3c3c3c; font-size: 14px} strong {color: #a79056; font-size: 18px} a {color: #189eff; text-decoration: none}
+</style>

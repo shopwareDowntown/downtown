@@ -1,0 +1,42 @@
+{% sw_extends '@Storefront/storefront/component/account/login.html.twig' %}
+
+{% block component_account_login_form_description %}{% endblock %}
+
+{% block component_account_login_form_mail %}
+    <div class="form-group col-12">
+        {% block component_account_login_form_mail_label %}
+            <label class="form-label"
+                   for="loginMail">
+                {{ "account.loginMailLabel"|trans|sw_sanitize }}
+            </label>
+        {% endblock %}
+
+        {% block component_account_login_form_mail_input %}
+            <input type="email"
+                   class="form-control col-md-6 col-lg-12{% if loginError %} is-invalid{% endif %}"
+                   id="loginMail"
+                   placeholder="{{ "account.loginMailPlaceholder"|trans|striptags }}"
+                   name="username"
+                   required="required">
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block component_account_login_form_password %}
+    <div class="form-group col-12 password-form-group">
+        {% block component_account_login_form_password_label %}
+            <label class="form-label"
+                   for="loginPassword">
+                {{ "account.loginPasswordLabel"|trans|sw_sanitize }}
+            </label>
+        {% endblock %}
+        {% block component_account_login_form_password_input %}
+            <input type="password"
+                   class="form-control col-md-6 col-lg-12{% if loginError %} is-invalid{% endif %}"
+                   id="loginPassword"
+                   placeholder="{{ "account.loginPasswordPlaceholder"|trans|striptags }}"
+                   name="password"
+                   required="required">
+        {% endblock %}
+    </div>
+{% endblock %}

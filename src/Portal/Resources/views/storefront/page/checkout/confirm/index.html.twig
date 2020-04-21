@@ -1,0 +1,119 @@
+{% sw_extends '@Storefront/storefront/page/checkout/confirm/index.html.twig' %}
+
+{% block base_footer %}
+    <footer class="footer-main">
+        {% block base_footer_inner %}
+            <div class="container">
+                {% sw_include '@Storefront/storefront/layout/footer/footer.html.twig' %}
+            </div>
+        {% endblock %}
+    </footer>
+{% endblock %}
+
+{% block page_checkout_confirm_tos_control %}
+    <div class="custom-control custom-checkbox">
+        {% block page_checkout_confirm_tos_control_checkbox %}
+            <input type="checkbox"
+                   class="custom-control-input{% if formViolations.getViolations('/tos') is not empty %} is-invalid{% endif %}"
+                   required="required"
+                   id="tos"
+                   form="confirmOrderForm"
+                   name="tos"/>
+        {% endblock %}
+
+        {% block page_checkout_confirm_tos_control_label %}
+            <label for="tos"
+                   class="custom-control-label">
+                {{ 'checkout.acceptTos'|trans|raw }}
+            </label>
+        {% endblock %}
+    </div>
+
+    <div class="custom-control custom-checkbox">
+        <input type="checkbox"
+               class="custom-control-input"
+               required="required"
+               id="privacy"
+               form="confirmOrderForm"
+               name="privacy"/>
+
+        <label for="privacy"
+               class="custom-control-label">
+            {{ 'checkout.acceptPrivacy'|trans|raw }}
+        </label>
+    </div>
+
+    <div class="custom-control custom-checkbox">
+        <input type="checkbox"
+               class="custom-control-input"
+               required="required"
+               id="revocation"
+               form="confirmOrderForm"
+               name="revocation"/>
+
+        <label for="revocation"
+               class="custom-control-label">
+            {{ 'checkout.acceptRevocation'|trans|raw }}
+        </label>
+    </div>
+
+    {% if page.extensions.merchant.tos %}
+        <div class="modal fade" id="merchantTos" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ 'merchant.tos'|trans }}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            {{ page.extensions.merchant.tos|nl2br }}
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if page.extensions.merchant.privacy %}
+        <div class="modal fade" id="merchantPrivacy" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ 'merchant.privacy'|trans }}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            {{ page.extensions.merchant.privacy|nl2br }}
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if page.extensions.merchant.revocation %}
+        <div class="modal fade" id="merchantRevocation" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ 'merchant.revocation'|trans }}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            {{ page.extensions.merchant.revocation|nl2br }}
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

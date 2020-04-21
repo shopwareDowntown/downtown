@@ -2,6 +2,7 @@
 
 namespace Shopware\Production\Merchants\Content\Merchant\Api;
 
+use OpenApi\Annotations as OA;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
@@ -52,6 +53,40 @@ class RegistrationController
     }
 
     /**
+     * @OA\Post(
+     *      path="/register",
+     *      description="Register",
+     *      operationId="register",
+     *      @OA\Parameter(
+     *         name="publicCompanyName",
+     *         in="body",
+     *         description="Company",
+     *         @OA\Schema(type="string"),
+     *      ),
+     *      @OA\Parameter(
+     *         name="email",
+     *         in="body",
+     *         description="email",
+     *         @OA\Schema(type="string"),
+     *      ),
+     *      @OA\Parameter(
+     *         name="password",
+     *         in="body",
+     *         description="password",
+     *         @OA\Schema(type="string"),
+     *      ),
+     *      @OA\Parameter(
+     *         name="salesChannelId",
+     *         in="body",
+     *         description="salesChannelId",
+     *         @OA\Schema(type="string"),
+     *      ),
+     *      tags={"Merchant"},
+     *      @OA\Response(
+     *          response="200",
+     *          @OA\JsonContent(ref="#/components/schemas/MerchantEntity")
+     *     )
+     * )
      * @Route(name="merchant-api.account.register.save", path="/merchant-api/v{version}/register", methods={"POST"}, defaults={"auth_required"=false})
      */
     public function register(RequestDataBag $requestData): JsonResponse

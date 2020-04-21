@@ -6,4 +6,8 @@ use Shopware\Core\Framework\ShopwareHttpException;
 
 class OrderAlreadyCompletedException extends ShopwareHttpException
 {
+    public function getErrorCode(): string
+    {
+        return 'MERCHANT_API_ORDER_ALREADY_COMPLETED';
+    }
 }

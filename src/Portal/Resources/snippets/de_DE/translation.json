@@ -3,18 +3,25 @@
         "contactInformation": "Kontaktinformation",
         "phoneNumber": "Telefonnummer:",
         "website": "Webseite:",
-        "ourProducts": "Unsere Angebote",
+        "ourProducts": "Unsere Produkte",
         "email": "Email:",
         "address": "Adresse:",
         "openingTimes": "Öffnungszeiten:",
         "description": "Beschreibung",
-        "publicOwner": "Inhaber"
+        "publicOwner": "Inhaber",
+        "imprint": "Impressum",
+        "tos": "Allgemeine Geschäftsbedingungen",
+        "privacy": "Datenschutz",
+        "revocation": "Wiederrufsrecht"
     },
     "checkout": {
         "cartContainsMultipleMerchants": "Es können nur Produkte von einem Händler gleichzeitig gekauft werden",
         "cartHasInvalidShippingMethod": "Die ausgewählte Versandart steht nicht zur Verfügung.",
         "cartWrongProductType": "Es können keine  Anzeigeprodukte gekauft werden.",
-        "cartContainsMultipleProductTypes": "Es kann nur ein Produkt-Typ gleichzeitig bestellt werden"
+        "cartContainsMultipleProductTypes": "Es kann nur ein Produkt-Typ gleichzeitig bestellt werden",
+        "acceptTos": "Ich habe die <a href=\"#\" data-toggle=\"modal\" data-target=\"#merchantTos\">AGB</a> des Händlers gelesen und bin mit deren Geltung einverstanden.",
+        "acceptPrivacy": "Ich habe die <a href=\"#\" data-toggle=\"modal\" data-target=\"#merchantPrivacy\">Datenschutzerklärung</a> des Händlers gelesen und bin mit deren Geltung einverstanden.",
+        "acceptRevocation": "Ich habe das <a href=\"#\" data-toggle=\"modal\" data-target=\"#merchantRevocation\">Wiederufsrecht</a> des Händlers gelesen und bin mit deren Geltung einverstanden."
     },
     "error": {
         "cartHasInvalidShippingMethod": "Die ausgewählte Versandart steht nicht zur Verfügung.",
@@ -80,6 +87,19 @@
             "totalPrice": "Gesammtsumme",
             "invoiceAddress": "Rechnungsaddresse",
             "deliveryAddress": "Lieferaddresse"
+        },
+        "organization_registration": {
+            "subject": "Ihr Benutzerkonto bei Downtown",
+            "hello": "Hallo %name%, <br>Ihr Organisationskonto wurde erstellt. Sie können sich jetzt mit den folgenden Anmeldedaten anmelden:",
+            "email": "E-Mail",
+            "password": "Passwort",
+            "loginButton": "Login"
+        },
+        "organization_reset_password": {
+            "subject": "Passwort vergessen Anfrage bei Downtown",
+            "hello": "Hallo %name%,",
+            "text": "im Portal wurde eine Anfrage gestellt, um Ihr Passwort zurückzusetzen.<br>\nBitte bestätigen Sie den untenstehenden Link, um ein neues Passwort zu definieren.",
+            "confirmButton": "Passwort zurücksetzen"
         }
     },
     "voucher": {
@@ -91,5 +111,41 @@
         "issuedOn": "Ausgestellt auf",
         "createDate": "Ausstellungsdatum",
         "number": "Gutscheinnummer"
+    },
+    "page": {
+        "imprint": "Impressum",
+        "tos": "Nutzungsbedingungen",
+        "privacy": "Datenschutzbestimmung"
+    },
+    "footer": {
+        "copyrightInfo": "Realised with Downtown",
+        "links": {
+            "merchant": "Händler-Login",
+            "imprint": "Impressum",
+            "generalTerms": "Nutzungsbestimmungen",
+            "privacy": "Datenschutz"
+        }
+    },
+    "merchantsBanner": {
+        "headline": "Gemeinsam helfen und da sein!",
+        "subline": "Nutze die Kraft unserer Community gegen die Corona Krise",
+        "button": {
+            "text": "Als Händler registrieren"
+        }
+    },
+    "merchantBox": {
+        "availabilityBadgeOpen": "Regulär geöffnet",
+        "availabilityBadgePickUp": "Nur Abholung",
+        "availabilityBadgeInactive": "Derzeit nicht verfügbar",
+        "serviceHeadline": "Unser Service:"
+    },
+    "account": {
+        "loginHeader": "Login"
+    },
+    "listing": {
+        "boxMerchantDetails": "Mehr Details anzeigen"
+    },
+    "general": {
+        "privacyNotice": "<a data-toggle=\"modal\" data-url=\"%url%\" href=\"%url%\" title=\"Datenschutzbestimmungen\">Ich habe die Datenschutzbestimmungen zur Kenntnis genommen.</a>"
     }
 }

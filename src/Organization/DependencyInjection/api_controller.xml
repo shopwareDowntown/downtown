@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="Shopware\Production\Organization\System\Organization\Api\LoginController" public="true">
+            <argument type="service" id="organization.repository"/>
+        </service>
+
+        <service id="Shopware\Production\Organization\System\Organization\Api\OrganizationController" public="true">
+            <argument type="service" id="sales_channel.repository"/>
+            <argument type="service" id="organization.repository"/>
+            <argument type="service" id="merchant.repository"/>
+            <argument type="service" id="Shopware\Core\Framework\Validation\DataValidator"/>
+            <argument type="service" id="Shopware\Production\Portal\Hacks\StorefrontMediaUploader"/>
+        </service>
+
+        <service id="Shopware\Production\Organization\System\Organization\Api\ResetPasswordController" public="true">
+            <argument type="service" id="organization.repository"/>
+            <argument type="service" id="organization_reset_password.repository"/>
+            <argument type="service" id="Shopware\Production\Portal\Services\TemplateMailSender"/>
+            <argument type="service" id="translator"/>
+        </service>
+
+        <service id="Shopware\Production\Organization\System\Organization\Api\HomeController" public="true">
+            <argument type="service" id="organization.repository"/>
+            <argument type="service" id="Shopware\Production\Portal\Hacks\StorefrontMediaUploader"/>
+        </service>
+
+        <service id="Shopware\Production\Organization\System\Organization\Api\DisclaimerController" public="true">
+            <argument type="service" id="organization.repository"/>
+            <argument type="service" id="Shopware\Production\Portal\Hacks\StorefrontMediaUploader"/>
+        </service>
+    </services>
+</container>

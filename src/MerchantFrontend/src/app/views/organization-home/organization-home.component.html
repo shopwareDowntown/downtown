@@ -1,0 +1,29 @@
+<portal-container [centered]="false">
+    <div class="home-content">
+        <h1>{{'ORGANIZATION.HOME.HEADLINE' | translate}}</h1>
+        <p>{{'ORGANIZATION.HOME.SUB_HEADLINE' | translate}}</p>
+    </div>
+    <div class="home-steps">
+        <h4>{{'ORGANIZATION.HOME.STEPS.HEADLINE' | translate}}</h4>
+        <div class="step-section">
+            <div class="section-header">
+                <clr-icon shape="help-info" class="is-solid" size="36"></clr-icon>
+                <h4>{{'ORGANIZATION.HOME.STEPS.INFORMATION.HEADLINE' | translate}}</h4>
+            </div>
+            <p>{{'ORGANIZATION.HOME.STEPS.INFORMATION.TEXT' | translate}}</p>
+            <button class="btn btn-primary btn-link" routerLink="/organization/profile">
+                {{'ORGANIZATION.HOME.STEPS.INFORMATION.BUTTON_TEXT' | translate}}
+            </button>
+        </div>
+        <div class="step-section">
+            <div class="section-header">
+                <clr-icon shape="store" class="is-solid" size="36"></clr-icon>
+                <h4>{{'ORGANIZATION.HOME.STEPS.SHOPS.HEADLINE' | translate}}</h4>
+            </div>
+            <p>{{'ORGANIZATION.HOME.STEPS.SHOPS.TEXT' | translate}}</p>
+            <button class="btn btn-primary btn-link" routerLink="/organization/merchants">
+                {{'ORGANIZATION.HOME.STEPS.SHOPS.BUTTON_TEXT' | translate}}
+            </button>
+        </div>
+    </div>
+</portal-container>

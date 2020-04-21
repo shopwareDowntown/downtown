@@ -1,4 +1,9 @@
 <button class="btn btn-regular" type="button" [class.is_disabled]="disabled" (click)="fileInput.click()">
-  <div data-hidden="s">{{ label || (multiple ? 'Dateien hochladen' : 'Datei hochladen') }}</div>
+  <ng-container *ngIf="icon; else noIcon">
+    <clr-icon shape="pencil"></clr-icon>
+  </ng-container>
+  <ng-template #noIcon>
+    <div data-hidden="s">{{ label || (multiple ? 'Dateien hochladen' : 'Datei hochladen') }}</div>
+  </ng-template>
 </button>
 <input [hidden]="true" #fileInput type="file" [accept]="accept" [multiple]="multiple" [disabled]="disabled" (change)="onFileSelect($event)">

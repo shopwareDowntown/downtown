@@ -1,13 +1,62 @@
-{% block sw_sales_channel_detail_base_general_input_footer_category %}
-    {% parent %}
+{% block sw_sales_channel_detail_base_options_domains %}
+    <sw-card title="Organization" v-if="salesChannel">
+        <sw-field
+            type="text"
+            validation="required"
+            required
+            placeholder="Email"
+            label="Email"
+            v-model="salesChannel.extensions.organization.email"
+        ></sw-field>
 
-    <sw-entity-single-select
-            v-if="!!salesChannel.extensions.landingPage"
-            class="sw-sales-channel-detail__select-footer-category-id"
-            id="cmsPageId"
-            label="Landingpage layout"
-            v-model="salesChannel.extensions.landingPage.cmsPageId"
-            entity="cms_page"
-            required>
-    </sw-entity-single-select>
+        <sw-field
+            type="password"
+            validation="required"
+            required
+            placeholder="Password"
+            label="Password"
+            v-model="salesChannel.extensions.organization.password"
+        ></sw-field>
+
+        <sw-field
+            type="text"
+            validation="required"
+            required
+            placeholder="First Name"
+            label="First Name"
+            v-model="salesChannel.extensions.organization.firstName"
+        ></sw-field>
+
+        <sw-field
+            type="text"
+            validation="required"
+            required
+            placeholder="Last Name"
+            label="Last Name"
+            v-model="salesChannel.extensions.organization.lastName"
+        ></sw-field>
+
+        <sw-field
+            type="text"
+            placeholder="Phonenumber"
+            label="Phonenumber"
+            v-model="salesChannel.extensions.organization.phone"
+        ></sw-field>
+
+        <sw-field
+            type="text"
+            placeholder="Postcode"
+            label="Postcode"
+            v-model="salesChannel.extensions.organization.postCode"
+        ></sw-field>
+
+        <sw-field
+            type="text"
+            placeholder="City"
+            label="City"
+            v-model="salesChannel.extensions.organization.city"
+        ></sw-field>
+    </sw-card>
+
+    {% parent %}
 {% endblock %}

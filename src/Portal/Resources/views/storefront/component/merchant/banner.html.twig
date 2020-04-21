@@ -1,0 +1,18 @@
+<div id="merchant-banner">
+    <div class="main-content container">
+        <div class="text-container">
+            <div>
+                <span class="text-headline">{{ "merchantsBanner.headline"|trans }}</span>
+                <div class="text-subline">{{ "merchantsBanner.subline"|trans }}</div>
+            </div>
+        </div>
+
+        {% if page.footer.extensions.portal %}
+            <div class="button-container">
+                <a class="btn btn-merchant" href="{{ page.footer.extensions.portal.url }}" target="_blank">{{ "merchantsBanner.button.text"|trans }}</a>
+            </div>
+        {% endif %}
+
+        <img class="covid-bubble" src="{{ asset('bundles/portal/assets/img/covid-bubble.svg') }}" />
+    </div>
+</div>

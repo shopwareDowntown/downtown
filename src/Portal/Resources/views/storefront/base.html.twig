@@ -1,0 +1,31 @@
+{% sw_extends '@Storefront/storefront/base.html.twig' %}
+
+{% block base_header %}
+    <header class="header-main">
+        {% block base_header_inner %}
+            <div class="container">
+                {% sw_include '@Storefront/storefront/layout/header/header.html.twig' %}
+            </div>
+        {% endblock %}
+
+        <div class="nav-main">
+            {% sw_include '@Storefront/storefront/layout/navigation/navigation.html.twig' %}
+        </div>
+
+        {% if context.salesChannel.extensions.organization.disclaimer.active %}
+            <div class="container">
+                <div class="alert alert-success disclaimer">
+                    <strong>{{ context.salesChannel.extensions.organization.disclaimer.text }}</strong>
+                </div>
+            </div>
+        {% endif %}
+    </header>
+{% endblock %}
+
+{# Hide navigation here #}
+{% block base_navigation %}{% endblock %}
+
+{% block base_footer_inner %}
+    {% sw_include '@Storefront/storefront/component/merchant/banner.html.twig' %}
+    {{ parent() }}
+{% endblock %}

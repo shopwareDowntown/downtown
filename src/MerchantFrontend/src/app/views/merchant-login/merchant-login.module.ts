@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MerchantLoginComponent } from './merchant-login.component';
-import { ClrFormsModule, ClrModalModule } from '@clr/angular';
+import { ClrFormsModule, ClrModalModule, ClrTabsModule } from '@clr/angular';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
+import { OrganizationLoginModule } from '../organization-login/organization-login.module';
 
 @NgModule({
   imports: [
@@ -12,7 +13,9 @@ import { SharedModule } from '../../shared/shared.module';
     ReactiveFormsModule,
     ClrFormsModule,
     ClrModalModule,
-    SharedModule
+    SharedModule,
+    ClrTabsModule,
+    OrganizationLoginModule
   ],
   declarations: [
     MerchantLoginComponent

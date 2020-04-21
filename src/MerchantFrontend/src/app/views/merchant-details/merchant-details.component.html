@@ -15,7 +15,7 @@
         [formGroup]="profileForm"
         *ngIf="merchantLoaded && categoriesLoaded; else loading"
       >
-        <clr-toggle-wrapper>
+        <clr-toggle-wrapper >
           <input
             type="checkbox"
             clrToggle
@@ -135,18 +135,11 @@
 
         <h3>{{'MERCHANT.DETAILS.COVER_IMAGE' | translate}}</h3>
 
-        <div class="picture-outer-container">
-          <div class="picture-inner-container">
-            <div *ngIf="profileForm.get('cover').value; else imageOrPlaceholder">{{profileForm.get('cover').value[0].name}}</div>
-            <ng-template #imageOrPlaceholder>
-              <img style="max-width: 100%" [src]="merchant.cover.url" *ngIf="merchant.cover; else placeholderText">
-              <ng-template #placeholderText>{{'MERCHANT.DETAILS.NO_IMAGE' | translate}}</ng-template>
-            </ng-template>
-            <div class="control">
-              <portal-file-upload maxFileSize="5097152" accept="image/x-png,image/jpeg" [label]="'+'" (onSelect)="imageSelected($event)"></portal-file-upload>
-            </div>
-          </div>
-        </div>
+        <portal-single-image-upload-container
+          (newImageSelected)="imageSelected($event)"
+          [existingImageUrl]="merchant.cover?.url">
+
+        </portal-single-image-upload-container>
 
         <h3>{{'MERCHANT.DETAILS.MERCHANT_PAGE' | translate}}</h3>
 
@@ -169,6 +162,80 @@
             name="publicDescription"
           ></textarea>
         </clr-textarea-container>
+
+
+        <clr-select-container>
+          <label>{{'MERCHANT.DETAILS.AVAILABILITY_STATUS_LABEL' | translate}}</label>
+          <select clrSelect name="availability" formControlName="availability">
+            <option [value]="1">{{'MERCHANT.DETAILS.AVAILABILITY_STATUS.OPEN' | translate}}</option>
+            <option [value]="2">{{'MERCHANT.DETAILS.AVAILABILITY_STATUS.PICK_UP' | translate}}</option>
+            <option [value]="0">{{'MERCHANT.DETAILS.AVAILABILITY_STATUS.CURRENTLY_NOT_AVAILABLE' | translate}}</option>
+          </select>
+        </clr-select-container>
+
+        <clr-textarea-container>
+          <label>{{'MERCHANT.DETAILS.AVAILABILITY_TEXT' | translate}}</label>
+          <textarea
+            clrTextarea
+            placeholder="{{'MERCHANT.DETAILS.AVAILABILITY_PLACEHOLDER' | translate}}"
+            formControlName="availabilityText"
+            name="availabilityText"
+          ></textarea>
+        </clr-textarea-container>
+
+        <ng-container formGroupName="services" *ngIf="services?.length > 0">
+          <clr-control-container>
+            <label>{{'COMMON.SERVICES' | translate}}</label>
+            <clr-toggle-wrapper *ngFor="let service of services">
+              <input
+                  type="checkbox"
+                  clrToggle
+                  value="true"
+                  [formControlName]="service.id"
+              />
+              <label>{{service.translated.name}}</label>
+            </clr-toggle-wrapper>
+          </clr-control-container>
+        </ng-container>
+
+        <h3>{{'MERCHANT.DETAILS.LEGAL_INFORMATION' | translate}}</h3>
+
+        <clr-textarea-container>
+          <label>{{'COMMON.IMPRINT' | translate}}</label>
+          <textarea
+            clrTextarea
+            formControlName="imprint"
+            name="imprint"
+          ></textarea>
+        </clr-textarea-container>
+
+        <clr-textarea-container>
+          <label>{{'MERCHANT.DETAILS.REVOCATION' | translate}}</label>
+          <textarea
+            clrTextarea
+            formControlName="revocation"
+            name="privacy"
+          ></textarea>
+        </clr-textarea-container>
+
+        <clr-textarea-container>
+          <label>{{'COMMON.TOS' | translate}}</label>
+          <textarea
+            clrTextarea
+            formControlName="tos"
+            name="tos">
+          </textarea>
+        </clr-textarea-container>
+
+        <clr-textarea-container>
+          <label>{{'MERCHANT.DETAILS.PRIVACY' | translate}}</label>
+          <textarea
+            clrTextarea
+            formControlName="privacy"
+            name="privacy"
+          ></textarea>
+        </clr-textarea-container>
+
       </form>
       <ng-template #loading>
         <div>

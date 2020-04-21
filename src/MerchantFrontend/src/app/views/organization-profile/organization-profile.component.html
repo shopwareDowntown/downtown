@@ -1,0 +1,87 @@
+<h1>{{'ORGANIZATION.PROFILE.HEADLINE' | translate}}</h1>
+<span>{{'ORGANIZATION.PROFILE.SUB_HEADLINE' | translate}}</span>
+
+<form clrForm clrLayout="vertical" [formGroup]="profileForm">
+  <clr-control-container>
+    <label>{{'COMMON.NAME' | translate}}</label>
+    <input clrInput type="text" formControlName="name" name="name" />
+  </clr-control-container>
+
+  <clr-textarea-container>
+    <label>{{'COMMON.DESCRIPTION' | translate}}</label>
+    <textarea clrTextarea formControlName="homeText" name="homeText"></textarea>
+  </clr-textarea-container>
+
+  <clr-control-container>
+    <label>Logo</label>
+    <portal-single-image-upload-container
+      [existingImageUrl]="organization.logo?.url"
+      (newImageSelected)="logoSelected($event)">
+
+    </portal-single-image-upload-container>
+  </clr-control-container>
+
+  <clr-control-container>
+    <label>{{'COMMON.IMAGE' | translate}}</label>
+    <portal-single-image-upload-container
+      [existingImageUrl]="organization.homeHeroImage?.url"
+      (newImageSelected)="imageSelected($event)">
+
+    </portal-single-image-upload-container>
+  </clr-control-container>
+
+  <h3>{{'MERCHANT.DETAILS.LEGAL_INFORMATION' | translate}}</h3>
+
+  <clr-textarea-container>
+    <label>{{'MERCHANT.DETAILS.PRIVACY' | translate}}</label>
+    <textarea clrTextarea formControlName="privacy" name="privacy"></textarea>
+  </clr-textarea-container>
+
+  <clr-textarea-container>
+    <label>{{'COMMON.TERMS_OF_SERVICE' | translate}}</label>
+    <textarea clrTextarea formControlName="tos" name="tos"></textarea>
+  </clr-textarea-container>
+
+  <clr-textarea-container>
+    <label>{{'COMMON.IMPRINT' | translate}}</label>
+    <textarea clrTextarea formControlName="imprint" name="imprint"></textarea>
+  </clr-textarea-container>
+
+  <h3>{{'ORGANIZATION.PROFILE.CONTACT_PERSON' | translate}}</h3>
+
+  <clr-input-container>
+    <label>{{'COMMON.FIRST_NAME' | translate}}</label>
+    <input clrInput type="text" formControlName="firstName" name="firstName" />
+  </clr-input-container>
+
+  <clr-input-container>
+    <label>{{'COMMON.LAST_NAME' | translate}}</label>
+    <input clrInput type="text" formControlName="lastName" name="lastName" />
+  </clr-input-container>
+
+  <clr-input-container>
+    <label>{{'COMMON.PHONE' | translate}}</label>
+    <input clrInput type="text" formControlName="phone" name="phone" />
+  </clr-input-container>
+
+  <clr-input-container>
+    <label>{{'COMMON.ZIP_CODE' | translate}}</label>
+    <input clrInput type="text" formControlName="postCode" name="postCode" />
+  </clr-input-container>
+
+  <clr-input-container>
+    <label>{{'COMMON.CITY' | translate}}</label>
+    <input clrInput type="text" formControlName="city" name="city" />
+  </clr-input-container>
+</form>
+<button
+  type="button"
+  (click)="updateOrganization()"
+  class="btn btn-primary"
+  [disabled]="profileForm.invalid"
+  [style.margin-top]="'32px'"
+>
+  {{'COMMON.SAVE' | translate}}
+</button>
+
+

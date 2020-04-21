@@ -12,6 +12,11 @@ class MerchantListingStruct extends Struct
      */
     protected $listing;
 
+    /**
+     * @var string
+     */
+    protected $navigationId;
+
     public function getListing(): ?EntitySearchResult
     {
         return $this->listing;
@@ -21,4 +26,15 @@ class MerchantListingStruct extends Struct
     {
         $this->listing = $listing;
     }
+
+    public function getNavigationId(): string
+    {
+        return $this->navigationId;
+    }
+
+    public function setNavigationId(string $navigationId): void
+    {
+        $this->navigationId = $navigationId;
+    }
+
 }

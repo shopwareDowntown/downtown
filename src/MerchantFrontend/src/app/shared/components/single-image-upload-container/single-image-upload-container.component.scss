@@ -1,0 +1,38 @@
+.picture-outer-container {
+  height: 320px;
+  width: 320px;
+  padding: 8px 0;
+
+  .picture-inner-container {
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 1px solid #D8DDE5;
+    border-radius: 4px;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    font-size: large;
+    font-weight: 700;
+
+    .control-edit {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      padding: 5px;
+    }
+    .control-remove {
+      position: absolute;
+      bottom: 230px;
+      right: 10px;
+      padding: 5px;
+    }
+  }
+}
+
+img {
+  max-width: 100%;
+}

@@ -18,7 +18,6 @@
             <argument type="service" id="merchant.repository"/>
             <argument type="service" id="product_media.repository"/>
             <argument type="service" id="Shopware\Core\System\NumberRange\ValueGenerator\NumberRangeValueGeneratorInterface"/>
-            <argument type="service" id="Shopware\Core\Content\Media\MediaService"/>
             <argument type="service" id="Shopware\Production\Portal\Hacks\StorefrontMediaUploader"/>
         </service>
 
@@ -45,6 +44,10 @@
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Api\LogoutController" public="true">
             <argument type="service" id="merchant_access_token.repository"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Content\Merchant\Api\ServiceController" public="true">
+            <argument type="service" id="service.repository"/>
         </service>
     </services>
 </container>

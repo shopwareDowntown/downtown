@@ -31,18 +31,11 @@
     <input clrInput type="checkbox" formControlName="active" clrToggle />
   </clr-input-container>
   <h3>{{'MERCHANT.PRODUCTS.DETAILS.PRODUCT_IMAGE' | translate}}</h3>
-  <div class="picture-outer-container">
-    <div class="picture-inner-container">
-      <div *ngIf="form.get('media').value; else imageOrPlaceholder">{{form.get('media').value[0].name}}</div>
-      <ng-template #imageOrPlaceholder>
-        <img style="max-width: 100%" [src]="product.media[0].url" *ngIf="product.media; else placeholderText">
-        <ng-template #placeholderText>{{'MERCHANT.PRODUCTS.DETAILS.NO_IMAGE' | translate}}</ng-template>
-      </ng-template>
-      <div class="control">
-        <portal-file-upload maxFileSize="5097152" accept="image/x-png,image/jpeg" [label]="'+'" (onSelect)="imageSelected($event)"></portal-file-upload>
-      </div>
-    </div>
-  </div>
+  <portal-single-image-upload-container
+    [existingImageUrl]="product.media[0].url"
+    (newImageSelected)="imageSelected($event)">
+
+  </portal-single-image-upload-container>
 
   <ng-container *ngIf="'storeWindow' !== form.get('productType').value">
     <h3>{{'COMMON.PRICE' | translate}}</h3>

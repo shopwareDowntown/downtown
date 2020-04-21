@@ -1,0 +1,13 @@
+{% sw_extends '@Storefront/storefront/layout/header/search.html.twig' %}
+
+{% block layout_header_search_button %}
+    <div class="input-group-append">
+        <button type="submit"
+                class="btn header-search-btn"
+                aria-label="{{ "header.searchButton"|trans|striptags }}">
+            <span class="header-search-icon">
+                {% sw_icon 'search' style { 'pack': 'feather' } %}
+            </span>
+        </button>
+    </div>
+{% endblock %}

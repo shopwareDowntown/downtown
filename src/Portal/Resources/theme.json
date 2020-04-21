@@ -1,0 +1,52 @@
+{
+  "name": "Portal",
+  "author": "shopware AG",
+  "views": [
+     "@Storefront",
+     "@Plugins",
+     "@Portal"
+  ],
+  "style": [
+    "app/storefront/src/scss/overrides.scss",
+    "@Storefront",
+    "app/storefront/src/scss/base.scss"
+  ],
+  "script": [
+    "@Storefront",
+    "app/storefront/dist/storefront/js/merchants-theme.js"
+  ],
+  "asset": [
+    "app/storefront/src/assets"
+  ],
+  "config": {
+    "fields": {
+      "sw-color-brand-primary": {
+        "value": "#2e5d96"
+      },
+      "sw-color-brand-secondary": {
+        "value": "#161616"
+      },
+      "sw-border-color": {
+        "value": "#e7e7e7"
+      },
+      "sw-headline-color": {
+        "value": "#161616"
+      },
+      "sw-font-family-base": {
+        "value": "'Spartan', sans-serif"
+      },
+      "sw-font-family-headline": {
+        "value": "'Spartan', sans-serif"
+      },
+      "sw-text-color": {
+        "value": "#161616"
+      },
+      "sw-color-price": {
+        "value": "#161616"
+      },
+      "sw-color-buy-button": {
+        "value": "#2e5d96"
+      }
+    }
+  }
+}

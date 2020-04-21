@@ -1,0 +1,38 @@
+{% sw_extends "@Storefront/storefront/layout/navigation/flyout.html.twig" %}
+
+{% block layout_navigation_flyout_bar %}
+    <div class="navigation-flyout-bar">
+        <div class="container">
+            <div class="row">
+                {% block layout_navigation_flyout_bar_category %}
+                    {{ parent() }}
+                {% endblock %}
+
+                {% block layout_navigation_flyout_bar_close %}
+                    {{ parent() }}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block layout_navigation_flyout_content %}
+    <div class="navigation-flyout-content">
+        <div class="container">
+            <div class="row">
+                {% block layout_navigation_flyout_categories %}
+                    <div class="col">
+                        <div class="navigation-flyout-categories">
+                            {% block layout_navigation_flyout_categories_recoursion %}
+                                {{ parent() }}
+                            {% endblock %}
+                        </div>
+                    </div>
+                {% endblock %}
+
+                {# Hide flyout media #}
+                {% block layout_navigation_flyout_teaser %}{% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

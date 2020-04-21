@@ -11,6 +11,7 @@
         <service id="Shopware\Production\Merchants\Content\Merchant\Api\ProfileController" public="true">
             <argument type="service" id="merchant.repository"/>
             <argument type="service" id="merchant_media.repository"/>
+            <argument type="service" id="merchant_service.repository"/>
             <argument type="service" id="Shopware\Core\Framework\Validation\DataValidator"/>
             <argument type="service" id="Shopware\Production\Portal\Hacks\StorefrontMediaUploader"/>
         </service>
@@ -54,8 +55,8 @@
             <tag name="shopware.entity.definition" entity="merchant_access_token"/>
         </service>
 
-        <service id="Shopware\Production\Merchants\System\SalesChannel\SalesChannelLandingPageDefinition">
-            <tag name="shopware.entity.definition" entity="sales_channel_landing_page"/>
+        <service id="Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantService\MerchantServiceDefinition">
+            <tag name="shopware.entity.definition" entity="merchant_service"/>
         </service>
 
         <service id="Shopware\Production\Merchants\Content\Merchant\Extensions\CategoryEntityExtension">
@@ -70,11 +71,7 @@
             <tag name="shopware.entity.extension"/>
         </service>
 
-        <service id="Shopware\Production\Merchants\System\SalesChannel\Extensions\SalesChannelExtension">
-            <tag name="shopware.entity.extension"/>
-        </service>
-
-        <service id="Shopware\Production\Merchants\System\SalesChannel\Extensions\CmsPageExtension">
+        <service id="Shopware\Production\Merchants\Content\Merchant\Extensions\MediaEntityExtension">
             <tag name="shopware.entity.extension"/>
         </service>
 

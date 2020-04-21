@@ -1,0 +1,23 @@
+<div class="picture-outer-container">
+  <div class="picture-inner-container">
+    <div *ngIf="selectedImage; else imageOrPlaceholder">{{selectedImage.name}}</div>
+    <ng-template #imageOrPlaceholder>
+      <img [src]="existingImageUrl" *ngIf="existingImageUrl; else placeholderText">
+      <ng-template #placeholderText>{{'MERCHANT.PRODUCTS.DETAILS.NO_IMAGE' | translate}}</ng-template>
+    </ng-template>
+    <div class="control-remove" *ngIf="removable">
+      <button class="btn" [disabled]="!existingImageUrl" (click)="imageRemoved.emit()">
+        <clr-icon shape="trash" class="is-solid"></clr-icon>
+      </button>
+    </div>
+    <div class="control-edit">
+      <portal-file-upload
+        icon="true"
+        maxFileSize="5097152"
+        accept="image/x-png,image/jpeg"
+        [label]="'+'"
+        (onSelect)="imageSelected($event)">
+      </portal-file-upload>
+    </div>
+  </div>
+</div>

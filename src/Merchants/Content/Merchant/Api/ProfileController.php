@@ -2,7 +2,9 @@
 
 namespace Shopware\Production\Merchants\Content\Merchant\Api;
 
+use OpenApi\Annotations as OA;
 use Shopware\Core\Content\Media\Exception\UploadException;
+use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Validation\EntityExists;
@@ -46,19 +48,36 @@ class ProfileController
      */
     private $merchantMediaRepository;
 
+    /**
+     * @var EntityRepositoryInterface
+     */
+    private $merchantServiceRepository;
+
     public function __construct(
         EntityRepositoryInterface $merchantRepository,
         EntityRepositoryInterface $merchantMediaRepository,
+        EntityRepositoryInterface $merchantServiceRepository,
         DataValidator $dataValidator,
         StorefrontMediaUploader $uploader
     ) {
         $this->merchantRepository = $merchantRepository;
         $this->merchantMediaRepository = $merchantMediaRepository;
+        $this->merchantServiceRepository = $merchantServiceRepository;
         $this->dataValidator = $dataValidator;
         $this->uploader = $uploader;
     }
 
     /**
+     * @OA\Get(
+     *      path="/profile",
+     *      description="Get profile",
+     *      operationId="profile",
+     *      tags={"Merchant"},
+     *      @OA\Response(
+     *          response="200",
+     *          @OA\JsonContent(ref="#/components/schemas/MerchantEntity")
+     *     )
+     * )
      * @Route(name="merchant-api.profile.load", methods={"GET"}, path="/merchant-api/v{version}/profile")
      */
     public function profile(MerchantEntity $merchant, SalesChannelContext $salesChannelContext): JsonResponse
@@ -69,6 +88,17 @@ class ProfileController
     }
 
     /**
+     * @OA\Patch(
+     *      path="/profile",
+     *      description="Update profile",
+     *      operationId="updateProfile",
+     *      tags={"Merchant"},
+     *      @OA\RequestBody(@OA\JsonContent(ref="#/components/schemas/MerchantEntity")),
+     *      @OA\Response(
+     *          response="200",
+     *          @OA\JsonContent(ref="#/components/schemas/MerchantEntity")
+     *     )
+     * )
      * @Route(name="merchant-api.profile.save", methods={"PATCH"}, path="/merchant-api/v{version}/profile")
      */
     public function save(Request $request, RequestDataBag $dataBag, MerchantEntity $merchant, SalesChannelContext $salesChannelContext): JsonResponse
@@ -87,20 +117,52 @@ class ProfileController
         }
 
         $merchantConstraints = $this->createValidationDefinition($salesChannelContext);
+        $properties = array_keys($merchantConstraints->getProperties());
+        $properties[] = 'services';
 
         $this->dataValidator->validate($dataBag->all(), $merchantConstraints);
 
         $this->merchantRepository->update([
             array_merge(
                 ['id' => $merchant->getId()],
-                $dataBag->only(... array_keys($merchantConstraints->getProperties()))
+                array_intersect_key($dataBag->all(), array_flip($properties))
             )
         ], $salesChannelContext->getContext());
+
+        if ($dataBag->has('services')) {
+            $this->cleanupServices($merchant, array_column($dataBag->all()['services'], 'id'));
+        }
 
         return new JsonResponse($this->fetchProfileData($salesChannelContext, $merchant));
     }
 
     /**
+     * @OA\Post(
+     *      path="/profile/media",
+     *      description="Profile media Upload",
+     *      operationId="profileMedia",
+     *      tags={"Merchant"},
+     *      @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     description="File to upload",
+     *                     property="cover",
+     *                     type="string",
+     *                     format="file",
+     *                 ),
+     *                 required={"file"}
+     *             )
+     *         )
+     *     ),
+     *      @OA\Response(
+     *          response="200",
+     *          description="Success",
+     *          @OA\JsonContent(ref="#/definitions/SuccessResponse")
+     *     )
+     * )
      * @Route(name="merchant-api.profile.image.save", methods={"POST"}, path="/merchant-api/v{version}/profile/media", defaults={"csrf_protected"=false})
      */
     public function upload(MerchantEntity $merchant, Request $request, SalesChannelContext $salesChannelContext): JsonResponse
@@ -137,6 +199,16 @@ class ProfileController
     }
 
     /**
+     * @OA\Delete(
+     *      path="/profile/media/{mediaId}",
+     *      description="Delete profile media",
+     *      operationId="deleteProfileMedia",
+     *      tags={"Merchant"},
+     *      @OA\Response(
+     *          response="200",
+     *          ref="#/definitions/SuccessResponse"
+     *     )
+     * )
      * @Route(name="merchant-api.profile.image.delete", methods={"DELETE"}, path="/merchant-api/v{version}/profile/media/{mediaId}")
      */
     public function deleteMedia(string $mediaId, MerchantEntity $merchant, SalesChannelContext $salesChannelContext): JsonResponse
@@ -179,7 +251,14 @@ class ProfileController
             ->add('countryId', new EntityExists(['entity' => 'country', 'context' => $salesChannelContext->getContext()]))
             ->add('email', new Email())
             ->add('password', new Length(['min' => 8]))
-            ->add('phoneNumber', new Type('string'));
+            ->add('phoneNumber', new Type('string'))
+            ->add('tos', new Type('string'))
+            ->add('privacy', new Type('string'))
+            ->add('imprint', new Type('string'))
+            ->add('revocation', new Type('string'))
+            ->add('availability', new Type('integer'))
+            ->add('availabilityText', new Type('string'))
+            ->addList('services', (new DataValidationDefinition())->add('id', new Type('string')));
     }
 
     protected function fetchProfileData(SalesChannelContext $salesChannelContext, MerchantEntity $merchant): array
@@ -187,6 +266,7 @@ class ProfileController
         $criteria = new Criteria([$merchant->getId()]);
         $criteria->addAssociation('media.thumbnails');
         $criteria->addAssociation('cover');
+        $criteria->addAssociation('services');
 
         $profile = $this->merchantRepository->search($criteria, $salesChannelContext->getContext())->first();
 
@@ -195,5 +275,31 @@ class ProfileController
         unset($profileData['password'], $profileData['extensions'], $profileData['_uniqueIdentifier']);
 
         return $profileData;
+    }
+
+    private function cleanupServices(MerchantEntity $merchant, array $newIds): void
+    {
+        $criteria = new Criteria([$merchant->getId()]);
+        $criteria->addAssociation('services');
+        $merchant = $this->merchantRepository->search($criteria, Context::createDefaultContext())->first();
+
+        $idsToBeDeleted = [];
+
+        foreach ($merchant->getServices() as $service) {
+            if (!in_array($service->getId(), $newIds, true)) {
+                $idsToBeDeleted[] = $service->getId();
+            }
+        }
+
+        if (!count($idsToBeDeleted)) {
+            return;
+        }
+
+        $this->merchantServiceRepository->delete(array_map(static function (string $id) use($merchant) {
+            return [
+                'merchantId' => $merchant->getId(),
+                'serviceId' => $id
+            ];
+        }, $idsToBeDeleted), Context::createDefaultContext());
     }
 }

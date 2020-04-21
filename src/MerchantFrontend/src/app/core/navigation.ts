@@ -2,6 +2,8 @@
  * The NavigationItem base class.
  * Used for the global navigation (sidebar/header)
  */
+import { setIconAlias } from '@clr/core/icon-shapes/utils/icon.service-helpers';
+
 export class NavigationItem {
   title: string;
   route: string;
@@ -64,4 +66,11 @@ export const NAVIGATION_ADMIN_MERCHANT = [
   new NavigationItem('COMMON.ORDERS', '/merchant/orders').setIcon('bundle').sidebar(),
   new NavigationItem('SIDEBAR.VOUCHERS', '/merchant/vouchers').setIcon('shopping-bag').sidebar(),
   //new NavigationItem('Lieferungen', '/merchant/delivery').setIcon('truck').sidebar(),
+];
+
+export const NAVIGATION_ADMIN_ORGANIZATION = [
+  new NavigationItem('SIDEBAR.HOME', '/organization/home').setIcon('home').sidebar(),
+  new NavigationItem('SIDEBAR.INFORMATION', '/organization/profile').setIcon('help-info').sidebar(),
+  new NavigationItem('SIDEBAR.MERCHANTS', '/organization/merchants').setIcon('store').sidebar(),
+  new NavigationItem('SIDEBAR.DISCLAIMER', '/organization/disclaimer').setIcon('bullseye').sidebar()
 ];

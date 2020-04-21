@@ -1,1 +1,88 @@
-<p>organization-login works!</p>
+<ng-container *ngIf="false === passwordResetMode; else passwordReset">
+  <section class="title">
+    <h3>{{'ORGANIZATION.LOGIN.HEADLINE' | translate}}</h3>
+    <h5>{{'ORGANIZATION.LOGIN.SUB_HEADLINE' | translate}}</h5>
+  </section>
+  <form class="login" [formGroup]="loginForm" clrForm clrLayout="vertical">
+    <div class="login-group">
+      <clr-input-container>
+        <label>{{'COMMON.EMAIL_ADDRESS' | translate}}</label>
+        <input
+          (keypress)="enterLogin($event)"
+          formControlName="username"
+          type="text"
+          name="login_username"
+          clrInput
+        />
+      </clr-input-container>
+      <clr-input-container>
+        <label>{{'COMMON.PASSWORD' | translate}}</label>
+        <input
+          (keypress)="enterLogin($event)"
+          formControlName="password"
+          type="password"
+          name="login_password"
+          clrInput
+        />
+      </clr-input-container>
+      <div style="text-align: center" *ngIf="isLogging">
+        <span class="spinner spinner-inline"></span>
+        <span class="ml-1">{{'MERCHANT.LOGIN.LOGGING_IN' | translate}}</span>
+      </div>
+      <div class="alert alert-danger" *ngIf="loginFailed">
+        <div class="alert-items">
+          <div class="alert-item static">
+            <div class="alert-icon-wrapper">
+              <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+            </div>
+            <span class="alert-text">{{'MERCHANT.LOGIN.WRONG_EMAIL_ADDRESS_OR_PASSWORD' | translate}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="modal-footer">
+    <div class="login-footer-wrapper">
+      <a href="#" (click)="passwordResetMode=true">{{'MERCHANT.LOGIN.FORGOT_PASSWORD' | translate}}</a>
+      <button
+        type="button"
+        (click)="doLogin()"
+        class="btn btn-primary"
+        [disabled]="loginForm.invalid || isLogging"
+      >
+        {{'COMMON.LOGIN' | translate}}
+      </button>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #passwordReset>
+  <form class="login" [formGroup]="passwordResetForm" clrForm clrLayout="vertical">
+    <section class="title">
+      <h3>{{'MERCHANT.LOGIN.RESET_PASSWORD.HEADLINE' | translate}}</h3>
+      <h5 class="hint">{{'MERCHANT.LOGIN.RESET_PASSWORD.SUB_HEADLINE' | translate}}</h5>
+    </section>
+    <clr-input-container>
+      <label>{{'COMMON.EMAIL_ADDRESS' | translate}}</label>
+      <input
+        formControlName="email"
+        type="text"
+        name="email"
+        clrInput
+      />
+    </clr-input-container>
+  </form>
+  <div class="modal-footer">
+    <div class="login-footer-wrapper">
+      <a href="#" (click)="passwordResetMode=false">{{'COMMON.BACK' | translate}}</a>
+      <button
+        type="button"
+        (click)="doPasswordReset()"
+        class="btn btn-primary"
+        [disabled]="passwordResetForm.invalid"
+      >
+        {{'MERCHANT.LOGIN.RESET_PASSWORD.RESET_PASSWORD' | translate}}
+      </button>
+    </div>
+  </div>
+</ng-template>

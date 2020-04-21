@@ -38,6 +38,8 @@ class ConfirmPageLoadedSubscriber
             return;
         }
 
+        $event->getPage()->addExtension('merchant', $merchant);
+
         $this->filterShippingMethods($merchant, $event->getPage()->getShippingMethods(), $event->getSalesChannelContext());
     }
 

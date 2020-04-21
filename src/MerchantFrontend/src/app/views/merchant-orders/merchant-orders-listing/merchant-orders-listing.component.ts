@@ -54,8 +54,8 @@ export class MerchantOrdersListingComponent implements OnInit {
       switchMap(() => {
         return this.merchantApiService.getOrder(order.id);
       })
-    ).subscribe((order: Order) => {
-        this.refresh();
+    ).subscribe((updatedOrder: Order) => {
+        order.stateMachineState = updatedOrder.stateMachineState;
         this.toastService.success(
           this.translateService.instant('MERCHANT.ORDER.TOAST_MESSAGES.COMPLETE_ORDER_SUCCESS_HEADLINE')
         );
@@ -66,6 +66,27 @@ export class MerchantOrdersListingComponent implements OnInit {
     );
   }
 
+  markOrderAsPaid(order: Order) {
+    if (false === confirm(this.translateService.instant('MERCHANT.ORDER.DETAILS.CONFIRM_PAID'))) {
+      return;
+    }
+    this.merchantApiService.setOrderPaid(order.id).pipe(
+      switchMap(() => {
+        return this.merchantApiService.getOrder(order.id)
+      })
+    ).subscribe((updatedOrder: Order) => {
+      order.stateMachineState = updatedOrder.stateMachineState;
+      order.transactions = updatedOrder.transactions;
+      this.toastService.success(
+        this.translateService.instant('MERCHANT.ORDER.TOAST_MESSAGES.MARK_ORDER_AS_PAID_SUCCESS_HEADLINE')
+      )
+    }, () => {
+      this.toastService.error(
+        this.translateService.instant('MERCHANT.ORDER.TOAST_MESSAGES.MARK_ORDER_AS_PAID_ERROR_HEADLINE')
+      )
+    });
+  }
+
   pageChange(): void {
     this.offset = (this.currentPage - 1) * 10;
   }
@@ -73,6 +94,9 @@ export class MerchantOrdersListingComponent implements OnInit {
   paginationChange(): void {
     if (this.currentPage === 1) {
       this.fromOrder = this.fromOrder = 1;
+      if (this.total === 0) {
+        this.fromOrder = 0;
+      }
     } else {
       this.fromOrder = (this.currentPage -1) * this.limit;
     }

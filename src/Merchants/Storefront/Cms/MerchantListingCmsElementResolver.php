@@ -63,7 +63,12 @@ class MerchantListingCmsElementResolver extends AbstractCmsElementResolver
         $salesChannelId = $resolverContext->getSalesChannelContext()->getSalesChannel()->getId();
 
         $criteria = new Criteria();
-        $criteria->addFilter(new EqualsFilter('categoryId', $categoryId));
+
+        if ($categoryId && $categoryId !== $resolverContext->getSalesChannelContext()->getSalesChannel()->getNavigationCategoryId()) {
+            $criteria->addFilter(new EqualsFilter('categoryId', $categoryId));
+        }
+
+        $criteria->addAssociation('services');
         $criteria->addFilter(new MerchantAvailableFilter($salesChannelId));
         $criteria->setTotalCountMode(Criteria::TOTAL_COUNT_MODE_EXACT);
 
@@ -82,5 +87,6 @@ class MerchantListingCmsElementResolver extends AbstractCmsElementResolver
         );
 
         $data->setListing($listing);
+        $data->setNavigationId($request->attributes->get('navigationId', $resolverContext->getSalesChannelContext()->getSalesChannel()->getNavigationCategoryId()));
     }
 }

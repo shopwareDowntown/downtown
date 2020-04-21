@@ -2,7 +2,7 @@
 
 namespace Shopware\Production\Merchants\Content\Merchant\Api;
 
-use Shopware\Core\Content\MailTemplate\Service\MailSender;
+use OpenApi\Annotations as OA;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
@@ -55,6 +55,22 @@ class ResetPasswordController
     }
 
     /**
+     * @OA\Post(
+     *      path="/reset-password",
+     *      description="Reset",
+     *      operationId="reset",
+     *      @OA\Parameter(
+     *         name="email",
+     *         in="body",
+     *         description="Email",
+     *         @OA\Schema(type="string"),
+     *      ),
+     *      tags={"Merchant"},
+     *      @OA\Response(
+     *          response="200",
+     *          @OA\JsonContent(ref="#/definitions/SuccessResponse")
+     *     )
+     * )
      * @Route(name="merchant-api.account.password.reset", path="/merchant-api/v{version}/reset-password", methods={"POST"}, defaults={"auth_required"=false})
      */
     public function reset(RequestDataBag $dataBag): Response
@@ -95,6 +111,28 @@ class ResetPasswordController
     }
 
     /**
+     * @OA\Post(
+     *      path="/reset-password-confirm",
+     *      description="Reset password confirm",
+     *      operationId="resetConfirm",
+     *      @OA\Parameter(
+     *         name="token",
+     *         in="body",
+     *         description="Token",
+     *         @OA\Schema(type="string"),
+     *      ),
+     *      @OA\Parameter(
+     *         name="newPassword",
+     *         in="body",
+     *         description="New password",
+     *         @OA\Schema(type="string"),
+     *      ),
+     *      tags={"Merchant"},
+     *      @OA\Response(
+     *          response="200",
+     *          @OA\JsonContent(ref="#/definitions/SuccessResponse")
+     *     )
+     * )
      * @Route(name="merchant-api.account.password.confirm", path="/merchant-api/v{version}/reset-password-confirm", methods={"POST"}, defaults={"auth_required"=false})
      */
     public function resetConfirm(RequestDataBag $dataBag): Response
@@ -155,7 +193,7 @@ class ResetPasswordController
             'merchant_reset_password',
             [
                 'merchant' => $merchant,
-                'confirmUrl' => getenv('MERCHANT_PORTAL') . '/reset-password/' . $token
+                'confirmUrl' => getenv('MERCHANT_PORTAL') . '/reset-password/merchant/' . $token
             ]
         );
     }

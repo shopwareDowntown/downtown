@@ -3,11 +3,12 @@
 namespace Shopware\Production\Portal;
 
 use Shopware\Core\Framework\Bundle;
+use Shopware\Storefront\Framework\ThemeInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
-class PortalBundle extends Bundle
+class PortalBundle extends Bundle implements ThemeInterface
 {
     protected $name = 'PortalBundle';
 
@@ -23,5 +24,10 @@ class PortalBundle extends Bundle
         $loader->load('hacks.xml');
         $loader->load('services.xml');
         $this->registerMigrationPath($container);
+    }
+
+    public function getThemeConfigPath(): string
+    {
+        return 'theme.json';
     }
 }

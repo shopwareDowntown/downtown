@@ -1,0 +1,119 @@
+.merchant-box {
+    background: $white;
+    border-radius: 3px;
+    box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+
+    .product-image-wrapper {
+        height: 150px;
+        max-height: 210px;
+        width: 100%;
+        overflow: hidden;
+        flex-basis: auto;
+        margin-bottom: 0;
+
+        @include media-breakpoint-up(lg) {
+            height: 180px;
+        }
+
+        @include media-breakpoint-up(xl) {
+            height: 210px;
+        }
+
+        a {
+            align-items: center;
+
+            img {
+                object-fit: cover;
+                max-height: none;
+            }
+
+        }
+
+    }
+
+    .card-body {
+        padding: 15px 10px;
+
+        @include media-breakpoint-up(md) {
+            padding: 20px 25px;
+        }
+
+        @include media-breakpoint-up(lg) {
+            padding: 25px 50px 40px;
+        }
+
+        .product-name {
+            @include ellipsis(1, hidden);
+        }
+
+        .product-description {
+            @include ellipsis(3, hidden);
+            margin-bottom: 30px;
+            min-height: 52px;
+        }
+
+        .phone-wrapper,
+        .mail-wrapper,
+        .tags-wrapper {
+            display: flex;
+            align-items: end;
+            position: relative;
+            margin-bottom: 6px;
+
+            .icon-holder {
+                margin-right: 12px;
+            }
+
+        }
+
+        .phone-wrapper,
+        .mail-wrapper,
+        .tags-wrapper,
+        .service-wrapper {
+            .icon {
+                color: #000;
+                width: 16px;
+                height: 16px;
+
+                & > svg {
+                    top: 0;
+                }
+            }
+        }
+
+        .phone-wrapper {
+            font-weight: $font-weight-bold;
+        }
+
+        .tags-wrapper {
+            margin-bottom: 30px;
+            max-height: 42px;
+
+            .tag-links {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+
+                a {
+                    padding-right: 10px;
+                    text-decoration: underline;
+
+                    &:last-child {
+                        padding-right: 0;
+                    }
+                }
+
+            }
+        }
+
+        .btn-light {
+
+            .icon {
+                margin-left: 10px;
+            }
+
+        }
+
+    }
+}

@@ -1,0 +1,42 @@
+<div class="service-wrapper">
+
+    <div class="service-headline">
+        {{ "merchantBox.serviceHeadline"|trans }}
+    </div>
+
+    <div class="service-items">
+        {# Show only 4 service itmes if the scope == listing and display the left count as 5. item #}
+        {% if scope == 'listing' %}
+            {% set breakLoop = false %}
+
+            {% for service in services if not breakLoop %}
+
+                {% if loop.index < 5 %}
+                    <div class="service-item">
+                        <span class="icon-holder">
+                            {% sw_icon 'truck' style {'pack': 'sw-icon-kit'} %}
+                        </span>
+                        <span class="service-name">{{ service.translated.name }}</span>
+                    </div>
+                {% else %}
+                    <a href="{{ seoUrl('storefront.merchant.detail', {'id': id}) }}" title="{{ "listing.boxMerchantDetails"|trans|striptags }}" class="service-item count">+ 3</a>
+                    {% set breakLoop = true %}
+                {% endif %}
+
+            {% endfor %}
+
+        {% else %}
+            {# Show all given service items if the scope != listing #}
+            {% for service in services %}
+                <div class="service-item">
+                    <span class="icon-holder">
+                        {% sw_icon 'truck' style {'pack': 'sw-icon-kit'} %}
+                    </span>
+                    <span class="service-name">{{ service.translated.name }}</span>
+                </div>
+            {% endfor %}
+
+        {% endif %}
+    </div>
+
+</div>

@@ -2,6 +2,7 @@
 
 namespace Shopware\Production\Merchants\Content\Merchant\Api;
 
+use OpenApi\Annotations as OA;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
@@ -31,6 +32,29 @@ class LoginController
     }
 
     /**
+     * @OA\Post(
+     *      path="/login",
+     *      description="Login as merchant",
+     *      operationId="merchantLogin",
+     *      tags={"Merchant"},
+     *      @OA\Parameter(
+     *        name="email",
+     *        in="body",
+     *        description="Email",
+     *        @OA\Schema(type="string"),
+     *      ),
+     *      @OA\Parameter(
+     *        name="password",
+     *        in="body",
+     *        description="Password",
+     *        @OA\Schema(type="string"),
+     *      ),
+     *      @OA\Response(
+     *          response="200",
+     *          description="Token",
+     *          @OA\JsonContent(ref="#/definitions/LoginResponse")
+     *     )
+     * )
      * @Route(name="merchant-api.merchant.login", path="/merchant-api/v{version}/login", methods={"POST"}, defaults={"auth_required"=false})
      */
     public function login(RequestDataBag $dataBag): JsonResponse
@@ -42,6 +66,7 @@ class LoginController
         $criteria = new Criteria();
         $criteria->addFilter(new EqualsFilter('email', $dataBag->get('email')));
         $criteria->addFilter(new EqualsFilter('active', 1));
+        $criteria->addFilter(new EqualsFilter('activationCode', null));
 
         /** @var MerchantEntity|null $merchant */
         $merchant = $this->merchantRepository->search($criteria, Context::createDefaultContext())->first();

@@ -6,9 +6,9 @@ use ReflectionMethod;
 use Shopware\Core\Kernel as ShopwareKernel;
 use Shopware\Core\Profiling\Doctrine\DebugStack;
 use Shopware\Production\Merchants\MerchantBundle;
+use Shopware\Production\Organization\OrganizationBundle;
 use Shopware\Production\Portal\PortalBundle;
 use Shopware\Production\Voucher\VoucherBundle;
-use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 class Kernel extends ShopwareKernel
@@ -55,6 +55,7 @@ class Kernel extends ShopwareKernel
         yield new MerchantBundle();
         yield new PortalBundle();
         yield new VoucherBundle();
+        yield new OrganizationBundle();
 //        yield new LocalDeliveryBundle();
     }
 }

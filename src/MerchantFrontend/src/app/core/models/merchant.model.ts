@@ -1,8 +1,8 @@
-import { Authority } from './authority.model';
+import { OrganizationAuthority } from './organization.model';
 
 export interface Merchant {
   id?: string;
-  authority?: Authority;
+  authority?: OrganizationAuthority;
   publicCompanyName: string;
   publicOwner: string;
   publicPhoneNumber: string;
@@ -23,6 +23,16 @@ export interface Merchant {
   password?: string;
   media: Media[];
   cover: Media;
+  imprint: string;
+  tos: string;
+  privacy: string;
+  revocation: string;
+  active: boolean;
+  availability: number;
+  availabilityText: string;
+  services: {
+    id: string;
+  }[];
 }
 
 export interface MerchantRegistration {
@@ -43,4 +53,17 @@ export interface PasswordReset {
 export interface Media {
   url: string;
   id: string;
+}
+
+export interface MerchantListData {
+  total: number;
+  data: Merchant[];
+}
+
+export interface MerchantService {
+  id: string;
+  name: string;
+  translated: {
+    name: string;
+  }
 }

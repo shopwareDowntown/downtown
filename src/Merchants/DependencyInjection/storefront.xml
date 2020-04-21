@@ -27,12 +27,6 @@
             <tag name="shopware.seo_url.route"/>
         </service>
 
-        <service id="Shopware\Production\Merchants\Storefront\Page\Navigation\NavigationPageSubscriber">
-            <argument type="service" id="Shopware\Core\Content\Cms\SalesChannel\SalesChannelCmsPageLoader"/>
-            <argument type="service" id="category.repository"/>
-            <tag name="kernel.event_listener"/>
-        </service>
-
         <service id="Shopware\Production\Merchants\Storefront\Pagelet\Footer\FooterPageletSubscriber">
             <tag name="kernel.event_listener"/>
         </service>
@@ -42,6 +36,11 @@
             <argument type="service" id="sales_channel.category.repository"/>
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="Shopware\Core\Content\Seo\SeoUrlPlaceholderHandlerInterface"/>
+        </service>
+
+        <service id="Shopware\Production\Merchants\Storefront\Cms\SalesChannelCmsPageLoader" decorates="Shopware\Core\Content\Cms\SalesChannel\SalesChannelCmsPageLoader">
+            <argument type="service" id="Shopware\Production\Merchants\Storefront\Cms\SalesChannelCmsPageLoader.inner"/>
+            <argument type="service" id="Shopware\Core\Content\Cms\DataResolver\CmsSlotsDataResolver"/>
         </service>
     </services>
 </container>

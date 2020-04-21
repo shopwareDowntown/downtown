@@ -1,71 +1,89 @@
+<script src="merchant-login.component.ts"></script>
 <clr-modal (clrModalOpenChange)="modalClosed()" [clrModalOpen]="loginModalOpen">
   <div class="modal-header"></div>
   <div class="modal-body">
-    <ng-container *ngIf="false === passwordResetMode; else passwordReset">
-      <form class="login" [formGroup]="loginForm" clrForm clrLayout="vertical">
-        <section class="title">
-          <h3
-            *ngIf="registrationCompleted === false; else newUser"
-            class="welcome"
-          >
-            {{'MERCHANT.LOGIN.HEADLINE' | translate}}
-          </h3>
-          <ng-template #newUser>
-            <h3>{{'MERCHANT.LOGIN.HEADLINE_FIRST_LOGIN' | translate}}</h3>
-          </ng-template>
-          <h5 class="hint">{{'MERCHANT.LOGIN.SUB_HEADLINE' | translate}}</h5>
-        </section>
-        <div class="login-group">
-          <clr-input-container>
-            <label>{{'COMMON.EMAIL_ADDRESS' | translate}}</label>
-            <input
-              (keypress)="enterLogin($event)"
-              formControlName="username"
-              type="text"
-              name="login_username"
-              clrInput
-            />
-          </clr-input-container>
-          <clr-input-container>
-            <label>{{'COMMON.PASSWORD' | translate}}</label>
-            <input
-              (keypress)="enterLogin($event)"
-              formControlName="password"
-              type="password"
-              name="login_password"
-              clrInput
-            />
-          </clr-input-container>
-          <div style="text-align: center" *ngIf="isLogging">
-            <span class="spinner spinner-inline"></span>
-            <span class="ml-1">{{'MERCHANT.LOGIN.LOGGING_IN' | translate}}</span>
-          </div>
-          <div class="alert alert-danger" *ngIf="loginFailed">
-            <div class="alert-items">
-              <div class="alert-item static">
-                <div class="alert-icon-wrapper">
-                  <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+    <clr-tabs>
+      <clr-tab>
+        <button clrTabLink>
+          {{'COMMON.MERCHANT' | translate}}
+        </button>
+        <clr-tab-content>
+          <ng-container *ngIf="false === passwordResetMode; else passwordReset">
+            <form class="login" [formGroup]="loginForm" clrForm clrLayout="vertical">
+              <section class="title">
+                <h3
+                        *ngIf="registrationCompleted === false; else newUser"
+                        class="welcome"
+                >
+                  {{'MERCHANT.LOGIN.HEADLINE' | translate}}
+                </h3>
+                <ng-template #newUser>
+                  <h3>{{'MERCHANT.LOGIN.HEADLINE_FIRST_LOGIN' | translate}}</h3>
+                </ng-template>
+                <h5 class="hint">{{'MERCHANT.LOGIN.SUB_HEADLINE' | translate}}</h5>
+              </section>
+              <div class="login-group">
+                <clr-input-container>
+                  <label>{{'COMMON.EMAIL_ADDRESS' | translate}}</label>
+                  <input
+                          (keypress)="enterLogin($event)"
+                          formControlName="username"
+                          type="text"
+                          name="login_username"
+                          clrInput
+                  />
+                </clr-input-container>
+                <clr-input-container>
+                  <label>{{'COMMON.PASSWORD' | translate}}</label>
+                  <input
+                          (keypress)="enterLogin($event)"
+                          formControlName="password"
+                          type="password"
+                          name="login_password"
+                          clrInput
+                  />
+                </clr-input-container>
+                <div style="text-align: center" *ngIf="isLogging">
+                  <span class="spinner spinner-inline"></span>
+                  <span class="ml-1">{{'MERCHANT.LOGIN.LOGGING_IN' | translate}}</span>
                 </div>
-                <span class="alert-text">{{'MERCHANT.LOGIN.WRONG_EMAIL_ADDRESS_OR_PASSWORD' | translate}}</span>
+                <div class="alert alert-danger" *ngIf="loginFailed">
+                  <div class="alert-items">
+                    <div class="alert-item static">
+                      <div class="alert-icon-wrapper">
+                        <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                      </div>
+                      <span class="alert-text">{{'MERCHANT.LOGIN.WRONG_EMAIL_ADDRESS_OR_PASSWORD' | translate}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <div class="modal-footer">
+              <div class="login-footer-wrapper">
+                <a href="#" (click)="passwordResetMode=true">{{'MERCHANT.LOGIN.FORGOT_PASSWORD' | translate}}</a>
+                <button
+                        type="button"
+                        (click)="doLogin()"
+                        class="btn btn-primary"
+                        [disabled]="loginForm.invalid || isLogging"
+                >
+                  {{'COMMON.LOGIN' | translate}}
+                </button>
               </div>
             </div>
-          </div>
-        </div>
-      </form>
-      <div class="modal-footer">
-        <div class="login-footer-wrapper">
-          <a href="#" (click)="passwordResetMode=true">{{'MERCHANT.LOGIN.FORGOT_PASSWORD' | translate}}</a>
-          <button
-            type="button"
-            (click)="doLogin()"
-            class="btn btn-primary"
-            [disabled]="loginForm.invalid || isLogging"
-          >
-            {{'COMMON.LOGIN' | translate}}
-          </button>
-        </div>
-      </div>
-    </ng-container>
+          </ng-container>
+        </clr-tab-content>
+      </clr-tab>
+      <clr-tab>
+        <button clrTabLink>
+          {{'COMMON.ORGANIZATION' | translate}}
+        </button>
+        <clr-tab-content>
+          <portal-organization-login (modalClosed)="modalClosed()"></portal-organization-login>
+        </clr-tab-content>
+      </clr-tab>
+    </clr-tabs>
   </div>
 </clr-modal>
 

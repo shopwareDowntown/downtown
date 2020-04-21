@@ -33,7 +33,7 @@ export class MerchantLoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm();
-    this.initializeResetForm();
+    this.resetForm();
   }
 
   enterLogin($event: KeyboardEvent) {
@@ -46,7 +46,7 @@ export class MerchantLoginComponent implements OnInit {
   public doLogin() {
     this.loginFailed = false;
     this.loginService
-      .login(
+      .merchantLogin(
         this.loginForm.get('username').value,
         this.loginForm.get('password').value
       )
@@ -66,7 +66,7 @@ export class MerchantLoginComponent implements OnInit {
 
   doPasswordReset() {
     this.merchantApiService
-      .resetPassword(this.passwordResetForm.value)
+      .resetMerchantPassword(this.passwordResetForm.value)
       .subscribe(() => {
         this.passwordResetForm.reset(this.initialResetFormValues);
         this.toastService.success(
@@ -90,7 +90,7 @@ export class MerchantLoginComponent implements OnInit {
     this.loginModalOpen = false;
   }
 
-  private initializeResetForm() {
+  private resetForm() {
     this.passwordResetForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]]
     });

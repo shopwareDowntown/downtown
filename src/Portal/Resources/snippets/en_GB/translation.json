@@ -8,13 +8,20 @@
         "address": "Address:",
         "openingTimes": "Opening times:",
         "description": "Description",
-        "publicOwner": "Owner"
+        "publicOwner": "Owner",
+        "imprint": "Imprint",
+        "tos": "Terms of Service",
+        "privacy": "Privacy",
+        "revocation": "Revocation"
     },
     "checkout": {
         "cartContainsMultipleMerchants": "Products can be purchased from only one merchant at a time",
         "cartHasInvalidShippingMethod": "The selected shipping method is not available.",
         "cartWrongProductType": "Shown products cannot be purchased.",
-        "cartContainsMultipleProductTypes": "Only one product type can be ordered at a time"
+        "cartContainsMultipleProductTypes": "Only one product type can be ordered at a time",
+        "acceptTos": "I have read the <a href=\"#\" data-toggle=\"modal\" data-target=\"#merchantTos\">AGB</a> of the merchant and agree with their validity.",
+        "acceptPrivacy": "I have read the <a href=\"#\" data-toggle=\"modal\" data-target=\"#merchantPrivacy\">data protection declaration</a> of the merchant and agree with its validity.",
+        "acceptRevocation": "I have read the <a href=\"#\" data-toggle=\"modal\" data-target=\"#merchantRevocation\">revocation of the merchant and agree to its validity."
     },
     "error": {
         "cartHasInvalidShippingMethod": "The selected shipping method is not available.",
@@ -80,6 +87,19 @@
             "totalPrice": "Total price",
             "invoiceAddress": "Invoice address",
             "deliveryAddress": "Delivery address"
+        },
+        "organization_registration": {
+            "subject": "Your account at Downtown",
+            "hello": "Hello %name%, <br>your Organization account has been created. You can login now with the following credentials:",
+            "email": "E-Mail",
+            "password": "Password",
+            "loginButton": "Login"
+        },
+        "organization_reset_password": {
+            "subject": "Forgotten password Downtown request",
+            "hello": "Hello %name%,",
+            "text": "A request has been made in the portal to reset your password.<br>\nPlease confirm the link below to define a new password.",
+            "confirmButton": "Reset password"
         }
     },
     "voucher": {
@@ -91,5 +111,41 @@
         "issuedOn": "Issued on",
         "createDate": "Date of issue",
         "number": "Voucher number"
+    },
+    "page": {
+        "imprint": "Imprint",
+        "tos": "Terms of use",
+        "privacy": "Privacy"
+    },
+    "footer": {
+        "copyrightInfo": "Realised with Downtown",
+        "links": {
+            "merchant": "Merchant Login",
+            "imprint": "Imprint",
+            "generalTerms": "Terms of use",
+            "privacy": "Privacy"
+        }
+    },
+    "merchantsBanner": {
+        "headline": "Help together and be there!",
+        "subline": "Use the power of our community against the Corona crisis",
+        "button": {
+            "text": "Register as a merchant"
+        }
+    },
+    "merchantBox": {
+        "availabilityBadgeOpen": "Regularly open",
+        "availabilityBadgePickUp": "Pick up only",
+        "availabilityBadgeInactive": "Currently not available",
+        "serviceHeadline": "Our services:"
+    },
+    "account": {
+        "loginHeader": "Login"
+    },
+    "listing": {
+        "boxMerchantDetails": "Show more details"
+    },
+    "general": {
+        "privacyNotice": "<a data-toggle=\"modal\" data-url=\"%url%\" href=\"%url%\" title=\"Privacy\">I have taken note of the privacy policy.</a>"
     }
 }

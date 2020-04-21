@@ -8,6 +8,8 @@ use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\MultiFilter;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\NotFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Sorting\FieldSorting;
 use Shopware\Core\Framework\Util\Random;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
@@ -17,6 +19,7 @@ use Shopware\Production\Voucher\Checkout\SoldVoucher\SoldVoucherEntity;
 use Shopware\Production\Voucher\Checkout\SoldVoucher\VoucherStatuses;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class VoucherFundingMerchantService
 {
@@ -26,13 +29,16 @@ class VoucherFundingMerchantService
     private $soldVoucherRepository;
 
     private $voucherFundingEmailService;
+    private $translator;
 
     public function __construct(
         EntityRepositoryInterface $soldVoucherRepository,
-        VoucherFundingEmailService $voucherFundingEmailService
+        VoucherFundingEmailService $voucherFundingEmailService,
+        TranslatorInterface $translator
     ) {
         $this->soldVoucherRepository = $soldVoucherRepository;
         $this->voucherFundingEmailService = $voucherFundingEmailService;
+        $this->translator = $translator;
     }
 
     public function loadSoldVouchers(string $merchantId, Request $request, SalesChannelContext $context): array
@@ -49,6 +55,18 @@ class VoucherFundingMerchantService
             $criteria->setOffset((int) $request->query->get('offset', 0));
         }
 
+        if ($request->query->has('status')) {
+            if ($request->query->get('status') === VoucherStatuses::USED_VOUCHER) {
+                $criteria->addFilter(new NotFilter(MultiFilter::CONNECTION_AND, [
+                    new EqualsFilter('redeemedAt', null),
+                ]));
+            }
+
+            if ($request->query->get('status') === VoucherStatuses::UNUSED_VOUCHER) {
+                $criteria->addFilter(new EqualsFilter('redeemedAt', null));
+            }
+        }
+
         $criteria->addSorting(new FieldSorting('createdAt', FieldSorting::DESCENDING));
         $criteria->setTotalCountMode(Criteria::TOTAL_COUNT_MODE_EXACT);
 
@@ -61,7 +79,7 @@ class VoucherFundingMerchantService
                 'updatedAt' => $element->getUpdatedAt(),
                 'createdAt' => $element->getCreatedAt(),
                 'redeemedAt' => $element->getRedeemedAt(),
-                'status' => $element->getRedeemedAt() ? VoucherStatuses::USED_VOUCHER : VoucherStatuses::VALID_VOUCHER,
+                'status' => $element->getRedeemedAt() ? VoucherStatuses::USED_VOUCHER : VoucherStatuses::UNUSED_VOUCHER,
                 'code' => $element->getCode(),
                 'name' => $element->getName(),
                 'orderLineItemId' => $element->getOrderLineItemId(),
@@ -146,14 +164,14 @@ class VoucherFundingMerchantService
 
         return [
             'customer' => $voucher->getOrderLineItem()->getOrder()->getOrderCustomer(),
-            'status' => $voucher->getRedeemedAt() ? VoucherStatuses::USED_VOUCHER : VoucherStatuses::VALID_VOUCHER,
+            'status' => $voucher->getRedeemedAt() ? VoucherStatuses::USED_VOUCHER : VoucherStatuses::UNUSED_VOUCHER,
         ];
     }
 
     private function notifyToMerchantAndCustomer(MerchantEntity $merchant, OrderEntity $order, array $vouchers, Context $context): void
     {
         $customerName = sprintf('%s %s %s',
-            $order->getOrderCustomer()->getSalutation()->getLetterName(),
+            $order->getOrderCustomer()->getSalutation()->getDisplayName(),
             $order->getOrderCustomer()->getFirstName(),
             $order->getOrderCustomer()->getLastName()
         );
@@ -163,7 +181,8 @@ class VoucherFundingMerchantService
             'order' => $order,
             'vouchers' => $vouchers,
             'today' => (new \DateTime())->format(Defaults::STORAGE_DATE_FORMAT),
-            'customerName' => $customerName
+            'customerName' => $customerName,
+            'locale' => $this->translator->getLocale()
         ];
 
         $this->voucherFundingEmailService->sendEmailCustomer($templateData, $merchant, $context);

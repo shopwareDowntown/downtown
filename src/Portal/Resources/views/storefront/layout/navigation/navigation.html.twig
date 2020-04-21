@@ -1,0 +1,10 @@
+{% sw_extends "@Storefront/storefront/layout/navigation/navigation.html.twig" %}
+
+{% block layout_main_navigation_menu_flyout %}
+    <div class="navigation-flyout"
+         data-flyout-menu-id="{{ treeItem.category.id }}">
+        {% block layout_main_navigation_menu_flyout_include %}
+            {{ parent() }}
+        {% endblock %}
+    </div>
+{% endblock %}

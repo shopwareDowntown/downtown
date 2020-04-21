@@ -17,8 +17,10 @@ use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\PrimaryKey;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\ReadProtected;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\Required;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\IdField;
+use Shopware\Core\Framework\DataAbstractionLayer\Field\IntField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\LongTextField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\ManyToManyAssociationField;
+use Shopware\Core\Framework\DataAbstractionLayer\Field\ManyToOneAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\OneToManyAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\OneToOneAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\PasswordField;
@@ -31,7 +33,9 @@ use Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantMedia\Merch
 use Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantOrder\MerchantOrderDefinition;
 use Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantProduct\MerchantProductDefinition;
 use Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantResetPasswordToken\MerchantResetPasswordTokenDefinition;
+use Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantService\MerchantServiceDefinition;
 use Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantShippingMethod\MerchantShippingMethodDefinition;
+use Shopware\Production\Merchants\Content\Service\ServiceDefinition;
 use Shopware\Production\Voucher\Checkout\SoldVoucher\SoldVoucherDefinition;
 
 class MerchantDefinition extends EntityDefinition
@@ -68,6 +72,8 @@ class MerchantDefinition extends EntityDefinition
             (new LongTextField('public_opening_times', 'publicOpeningTimes'))->addFlags(),
             (new LongTextField('public_description', 'publicDescription'))->addFlags(),
             new StringField('public_website', 'publicWebsite'),
+            (new IntField('availability', 'availability', 0, 2)),
+            new StringField('availability_text', 'availabilityText'),
 
             (new FkField('category_id', 'categoryId', CategoryDefinition::class)),
             (new OneToOneAssociationField('category', 'category_id', 'id', CategoryDefinition::class, false)),
@@ -86,10 +92,15 @@ class MerchantDefinition extends EntityDefinition
             (new PasswordField('password', 'password'))->addFlags(new Required(), new ReadProtected(SalesChannelApiSource::class)),
             (new StringField('phone_number', 'phoneNumber')),
 
+            (new StringField('imprint', 'imprint')),
+            (new StringField('tos', 'tos')),
+            (new StringField('privacy', 'privacy')),
+            (new StringField('revocation', 'revocation')),
+
             // internal model fields
             (new StringField('activation_code', 'activationCode')),
             (new FkField('sales_channel_id', 'salesChannelId', SalesChannelDefinition::class))->addFlags(new Required()),
-            (new OneToOneAssociationField('salesChannel', 'sales_channel_id', 'id', SalesChannelDefinition::class, false)),
+            (new ManyToOneAssociationField('salesChannel', 'sales_channel_id', SalesChannelDefinition::class)),
 
             (new FkField('cover_id', 'coverId', MediaDefinition::class)),
             (new OneToOneAssociationField('cover', 'cover_id', 'id', MediaDefinition::class, false))->addFlags(new CascadeDelete()),
@@ -101,6 +112,7 @@ class MerchantDefinition extends EntityDefinition
             new ManyToManyAssociationField('orders', OrderDefinition::class, MerchantOrderDefinition::class, 'merchant_id', 'order_id'),
             new ManyToManyAssociationField('media', MediaDefinition::class, MerchantMediaDefinition::class, 'merchant_id', 'media_id'),
             new ManyToManyAssociationField('shippingMethods', ShippingMethodDefinition::class, MerchantShippingMethodDefinition::class, 'merchant_id', 'shipping_method_id'),
+            new ManyToManyAssociationField('services', ServiceDefinition::class, MerchantServiceDefinition::class, 'merchant_id', 'service_id'),
             new OneToManyAssociationField('soldVouchers', SoldVoucherDefinition::class, 'merchant_id')
         ]);
     }

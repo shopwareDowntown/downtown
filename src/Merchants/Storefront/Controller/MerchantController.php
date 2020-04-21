@@ -78,6 +78,7 @@ class MerchantController extends StorefrontController
         $criteria->addAssociation('products');
         $criteria->addAssociation('cover.thumbnails');
         $criteria->addAssociation('country');
+        $criteria->addAssociation('services');
         $criteria->addFilter(new MerchantAvailableFilter($context->getSalesChannel()->getId()));
         $this->eventDispatcher->dispatch(new MerchantPageCriteriaEvent($criteria));
 

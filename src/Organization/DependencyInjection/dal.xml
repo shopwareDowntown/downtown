@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="Shopware\Production\Organization\System\Organization\OrganizationDefinition">
+            <tag name="shopware.entity.definition" entity="organization"/>
+        </service>
+
+        <service id="Shopware\Production\Organization\System\Organization\Aggregate\OrganizationAccessToken\OrganizationAccessTokenDefinition">
+            <tag name="shopware.entity.definition" entity="organization_access_token"/>
+        </service>
+
+        <service id="Shopware\Production\Organization\System\Organization\Aggregate\OrganizationResetPasswordToken\OrganizationResetPasswordTokenDefinition">
+            <tag name="shopware.entity.definition" entity="organization_reset_password"/>
+        </service>
+
+        <service id="Shopware\Production\Organization\System\Organization\Aggregate\OrganizationDisclaimer\OrganizationDisclaimerDefinition">
+            <tag name="shopware.entity.definition" entity="organization_disclaimer"/>
+        </service>
+
+        <service id="Shopware\Production\Organization\System\Organization\Extensions\SalesChannelEntityExtension">
+            <tag name="shopware.entity.extension"/>
+        </service>
+
+        <service id="Shopware\Production\Organization\System\Organization\Extensions\MediaEntityExtension">
+            <tag name="shopware.entity.extension"/>
+        </service>
+
+        <service id="Shopware\Production\Organization\System\Organization\Subscriber\OrganizationCreateSubscriber">
+            <argument type="service" id="organization.repository"/>
+            <argument type="service" id="Shopware\Production\Portal\Services\TemplateMailSender"/>
+            <argument type="service" id="translator"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+    </services>
+</container>
