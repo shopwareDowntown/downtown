@@ -9,6 +9,7 @@ use Shopware\Production\Merchants\MerchantBundle;
 use Shopware\Production\Organization\OrganizationBundle;
 use Shopware\Production\Portal\PortalBundle;
 use Shopware\Production\Voucher\VoucherBundle;
+use Shopware\Production\ServiceBooking\ServiceBookingBundle;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 class Kernel extends ShopwareKernel
@@ -53,6 +54,7 @@ class Kernel extends ShopwareKernel
         yield from parent::registerBundles();
 
         yield new MerchantBundle();
+        yield new ServiceBookingBundle();
         yield new PortalBundle();
         yield new VoucherBundle();
         yield new OrganizationBundle();
