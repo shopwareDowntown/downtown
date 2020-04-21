@@ -97,6 +97,14 @@ class MerchantDefinition extends EntityDefinition
             (new StringField('privacy', 'privacy')),
             (new StringField('revocation', 'revocation')),
 
+
+            (new StringField('mollie_prod_key', 'mollieProdKey')),
+            (new StringField('mollie_test_key', 'mollieTestKey')),
+            (new BoolField('mollie_test_enabled', 'mollieTestEnabled')),
+
+            (new StringField('payment_methods', 'paymentMethods')),
+
+
             // internal model fields
             (new StringField('activation_code', 'activationCode')),
             (new FkField('sales_channel_id', 'salesChannelId', SalesChannelDefinition::class))->addFlags(new Required()),

@@ -152,7 +152,7 @@ USE downtown;
 ```
 
 ```sql
-UPDATE merchant SET active=1 WHERE email='merchant@email.example';
+UPDATE merchant SET active=1, activation_code = null WHERE email='merchant@email.example';
 ```
 
 ```sql
@@ -164,6 +164,22 @@ quit;
 Explaining how to use a UI is easier done via video, so here is a tutorial video on how to configure organisations and merchants:
 
 [![Youtube: Portal tutorial video](.github/downtown_video_teaser.png?raw=true "Youtube: Portal tutorial video")](https://www.youtube.com/watch?v=7-FxZwOmtv0)
+
+### Payments
+
+#### Mollie Plugin
+Mollie is the selected payment provider for downtown.
+If you want to enable these payment methods, please install and activate the Mollie plugin.
+Then activate required payment methods and assign it to your sales channel.
+
+#### Enable Payment Methods for Merchants
+If you sign is as merchant you'll have access to a new payments tab in your account data.
+Here you can set your molli API keys and test modes.
+
+In addition to this, you can select what payments of your assigned sales channel should be enabled
+for your merchant. 
+Only payment methods that are valid for the sales channel and are enabled in here will be 
+shown during the checkout.
 
 # Contributing
 

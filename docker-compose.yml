@@ -13,11 +13,12 @@ services:
     environment:
       # define yourself
       - DATABASE_URL=mysql://downtown:uptown@mysql:3306/downtown
-      - APP_URL=http://localhost:8000
+      - APP_URL=http://downtown.diwc.de:8000
       - APP_SECRET=
       - INSTANCE_ID=
     volumes:
       - "./config/jwt:/sw6/config/jwt"
+      - "./custom:/sw6/custom"
       - "./public/bundles:/sw6/public/bundles"
       - "./public/media:/sw6/public/media"
       - "./public/sitemap:/sw6/public/sitemap"

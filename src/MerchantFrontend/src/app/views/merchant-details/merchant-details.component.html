@@ -15,7 +15,7 @@
         [formGroup]="profileForm"
         *ngIf="merchantLoaded && categoriesLoaded; else loading"
       >
-        <clr-toggle-wrapper >
+        <clr-toggle-wrapper>
           <input
             type="checkbox"
             clrToggle
@@ -188,10 +188,10 @@
             <label>{{'COMMON.SERVICES' | translate}}</label>
             <clr-toggle-wrapper *ngFor="let service of services">
               <input
-                  type="checkbox"
-                  clrToggle
-                  value="true"
-                  [formControlName]="service.id"
+                type="checkbox"
+                clrToggle
+                value="true"
+                [formControlName]="service.id"
               />
               <label>{{service.translated.name}}</label>
             </clr-toggle-wrapper>
@@ -262,4 +262,69 @@
       <portal-merchant-account></portal-merchant-account>
     </clr-tab-content>
   </clr-tab>
+
+  <clr-tab>
+    <button clrTabLink>
+      {{'COMMON.PAYMENTS' | translate}}
+    </button>
+    <clr-tab-content>
+      <form clrForm clrLayout="vertical" [formGroup]="paymentsForm" *ngIf="merchantLoaded && paymentmethodsLoaded; else loading">
+        <clr-toggle-wrapper>
+          <input
+            type="checkbox"
+            clrToggle
+            value="true"
+            formControlName="mollieTestEnabled"
+            name="mollieTestEnabled"
+          />
+          <label>{{'MERCHANT.PAYMENTS.MOLLIE_TEST_MODE' | translate}}</label>
+        </clr-toggle-wrapper>
+        <clr-input-container>
+          <label>{{'MERCHANT.PAYMENTS.MOLLIE_PROD_KEY' | translate}}</label>
+          <input
+            clrInput
+            placeholder=""
+            type="text"
+            formControlName="mollieProdKey"
+            name="mollieProdKey"
+          />
+        </clr-input-container>
+        <clr-input-container>
+          <label>{{'MERCHANT.PAYMENTS.MOLLIE_TEST_KEY' | translate}}</label>
+          <input
+            clrInput
+            placeholder=""
+            type="text"
+            formControlName="mollieTestKey"
+            name="mollieTestKey"
+          />
+        </clr-input-container>
+
+        <br/>
+
+        <h3>{{'MERCHANT.PAYMENTS.PAYMENTMETHODS' | translate}}</h3>
+        <ng-container formGroupName="paymentmethods" *ngIf="paymentmethods?.length > 0">
+          <clr-control-container>
+            <label>{{'MERCHANT.PAYMENTS.PAYMENTMETHODS.INSTRUCTIONS' | translate}}</label>
+            <br/>
+            <clr-toggle-wrapper *ngFor="let method of paymentmethods">
+              <input type="checkbox" clrToggle value="true" [formControlName]="method.id"/>
+              <label>{{method.translated.name}}</label>
+            </clr-toggle-wrapper>
+          </clr-control-container>
+        </ng-container>
+      </form>
+
+      <button
+        type="button"
+        (click)="savePayment()"
+        class="btn btn-primary"
+        [style.margin-top]="'32px'"
+      >
+        {{'COMMON.SAVE' | translate}}
+      </button>
+
+    </clr-tab-content>
+  </clr-tab>
+
 </clr-tabs>
