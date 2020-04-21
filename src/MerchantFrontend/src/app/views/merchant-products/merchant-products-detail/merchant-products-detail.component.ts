@@ -7,15 +7,13 @@ import { Observable, of, Subject } from 'rxjs';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ToastService } from '../../../core/services/toast.service';
 import { ServiceBookingDate } from 'src/app/core/models/service-booking-date.model';
-import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'portal-merchant-products-detail',
   templateUrl: './merchant-products-detail.component.html',
   styleUrls: ['./merchant-products-detail.component.scss']
 })
-export class MerchantProductsDetailComponent implements OnInit{
-
+export class MerchantProductsDetailComponent implements OnInit {
   product: Product = null;
   form: FormGroup;
   newProduct = false;
@@ -42,8 +40,6 @@ export class MerchantProductsDetailComponent implements OnInit{
     ).subscribe((product: { data: Product }) => {
       if(product && product.data) {
         this.product = product.data;
-
-        console.log(this.product);
       } else {
         this.newProduct = true;
         this.product = <Product>{
@@ -164,7 +160,7 @@ export class MerchantProductsDetailComponent implements OnInit{
     this.serviceBookingTemplateDates().push(this.createNewServiceBookingDate());
   }
 
-  removeServiceBookingDate(dateIndex: number) {
+  removeServiceBookingDate(dateIndex: number): void {
     this.serviceBookingTemplateDates().removeAt(dateIndex);
   }
 
