@@ -146,6 +146,6 @@
         "boxMerchantDetails": "Show more details"
     },
     "general": {
-        "privacyNotice": "<a data-toggle=\"modal\" data-url=\"%url%\" href=\"%url%\" title=\"Privacy\">I have taken note of the privacy policy.</a>"
+        "privacyNotice": "<a target=\"_blank\" href=\"%url%\" title=\"Privacy\">I have taken note of the privacy policy.</a>"
     }
 }

@@ -7,7 +7,7 @@
                 {{ "general.privacyTitle"|trans|sw_sanitize }}
             </label>
             {{ "general.privacyNotice"|trans({
-                '%url%': path('frontend.cms.page',{ id: shopware.config.core.basicInformation.privacyPage })
+                '%url%': 'https://www.shopware.com/de/datenschutz/'
             })|raw }}
         {% endblock %}
     </p>
