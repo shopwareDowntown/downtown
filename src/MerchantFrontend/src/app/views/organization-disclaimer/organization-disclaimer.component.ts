@@ -94,8 +94,8 @@ export class OrganizationDisclaimerComponent implements OnInit {
 
   private initializeForm() {
     this.form = this.formBuilder.group({
-      active: [this.organization.disclaimer.active],
-      text: [this.organization.disclaimer.text],
+      active: [this.organization.disclaimer?.active],
+      text: [this.organization.disclaimer?.text],
       image: [null]
     });
 

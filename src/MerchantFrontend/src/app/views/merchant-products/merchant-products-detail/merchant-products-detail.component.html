@@ -32,7 +32,7 @@
   </clr-input-container>
   <h3>{{'MERCHANT.PRODUCTS.DETAILS.PRODUCT_IMAGE' | translate}}</h3>
   <portal-single-image-upload-container
-    [existingImageUrl]="product.media[0].url"
+    [existingImageUrl]="product.media[0]?.url"
     (newImageSelected)="imageSelected($event)">
 
   </portal-single-image-upload-container>
