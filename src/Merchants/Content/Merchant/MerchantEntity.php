@@ -227,6 +227,33 @@ class MerchantEntity extends Entity
      */
     protected $services;
 
+
+    /**
+     * @var string|null
+     * @OA\Property()
+     */
+    protected $mollieProdKey;
+
+    /**
+     * @var string|null
+     * @OA\Property()
+     */
+    protected $mollieTestKey;
+
+    /**
+     * @var bool
+     * @OA\Property()
+     */
+    protected $mollieTestEnabled;
+
+    /**
+     * @var string|null
+     * @OA\Property()
+     */
+    protected $paymentMethods;
+
+
+
     public function isActive(): bool
     {
         return $this->active;
@@ -545,4 +572,69 @@ class MerchantEntity extends Entity
     {
         return $this->services;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getMollieProdKey(): ?string
+    {
+        return $this->mollieProdKey;
+    }
+
+    /**
+     * @param string|null $mollieProdKey
+     */
+    public function setMollieProdKey(?string $mollieProdKey): void
+    {
+        $this->mollieProdKey = $mollieProdKey;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMollieTestKey(): ?string
+    {
+        return $this->mollieTestKey;
+    }
+
+    /**
+     * @param string|null $mollieTestKey
+     */
+    public function setMollieTestKey(?string $mollieTestKey): void
+    {
+        $this->mollieTestKey = $mollieTestKey;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMollieTestEnabled(): bool
+    {
+        return $this->mollieTestEnabled;
+    }
+
+    /**
+     * @param bool $mollieTestEnabled
+     */
+    public function setMollieTestEnabled(bool $mollieTestEnabled): void
+    {
+        $this->mollieTestEnabled = $mollieTestEnabled;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPaymentMethods(): ?string
+    {
+        return $this->paymentMethods;
+    }
+
+    /**
+     * @param string|null $paymentMethods
+     */
+    public function setPaymentMethods(?string $paymentMethods): void
+    {
+        $this->paymentMethods = $paymentMethods;
+    }
+
 }

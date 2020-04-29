@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { StateService } from '../../core/state/state.service';
-import { Merchant, MerchantService } from '../../core/models/merchant.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MerchantApiService } from '../../core/services/merchant-api.service';
-import { Category } from '../../core/models/category.model';
-import { Country } from '../../core/models/country.model';
-import { ToastService } from '../../core/services/toast.service';
-import { switchMap, take } from 'rxjs/operators';
-import { merge, of} from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
+import {Component, OnInit} from '@angular/core';
+import {StateService} from '../../core/state/state.service';
+import {Merchant, MerchantService} from '../../core/models/merchant.model';
+import {PaymentMethod} from '../../core/models/paymentmethod.model';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MerchantApiService} from '../../core/services/merchant-api.service';
+import {Category} from '../../core/models/category.model';
+import {Country} from '../../core/models/country.model';
+import {ToastService} from '../../core/services/toast.service';
+import {switchMap, take} from 'rxjs/operators';
+import {merge, of} from 'rxjs';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'portal-merchant-details',
@@ -18,11 +19,13 @@ import { TranslateService } from '@ngx-translate/core';
 export class MerchantDetailsComponent implements OnInit {
   merchant: Merchant;
   profileForm: FormGroup;
+  paymentsForm: FormGroup;
   merchantLoaded = false;
   categoriesLoaded = false;
   services: MerchantService[];
-
+  paymentmethods: PaymentMethod[];
   categories: Category[];
+  paymentmethodsLoaded = false;
 
   constructor(
     private readonly stateService: StateService,
@@ -30,7 +33,10 @@ export class MerchantDetailsComponent implements OnInit {
     private readonly merchantApiService: MerchantApiService,
     private readonly toastService: ToastService,
     private readonly translateService: TranslateService
-  ) {}
+  ) {
+
+
+  }
 
   countries: Country[] = [];
 
@@ -39,6 +45,7 @@ export class MerchantDetailsComponent implements OnInit {
       this.merchant = merchant;
       this.merchantLoaded = true;
       this.createForm();
+      this.createPaymentForm();
     }, () => {
       this.toastService.error(
         this.translateService.instant('MERCHANT.DETAILS.TOAST_MESSAGES.MERCHANT_LOAD_ERROR_HEADLINE')
@@ -61,6 +68,15 @@ export class MerchantDetailsComponent implements OnInit {
       .getCountries()
       .subscribe((countries: { data: Country[] }) => {
         this.countries = countries.data;
+      });
+
+    this.paymentmethods = [];
+    this.merchantApiService
+      .getPaymentMethods()
+      .subscribe((methods: { data: PaymentMethod[] }) => {
+        this.addPaymentMethodsToForm(methods.data);
+        this.paymentmethods = methods.data;
+        this.paymentmethodsLoaded = true;
       });
   }
 
@@ -122,15 +138,15 @@ export class MerchantDetailsComponent implements OnInit {
         if (result === true) {
           return this.merchantApiService.getMerchant()
         }
-        return  of(result);
+        return of(result);
       })
     ).subscribe((merchant: Merchant) => {
-      this.merchant = merchant;
-      this.stateService.setMerchant(merchant);
-      this.toastService.success(
-        this.translateService.instant('MERCHANT.DETAILS.TOAST_MESSAGES.UPDATE_MERCHANT_SUCCESS_HEADLINE')
-      );
-    },
+        this.merchant = merchant;
+        this.stateService.setMerchant(merchant);
+        this.toastService.success(
+          this.translateService.instant('MERCHANT.DETAILS.TOAST_MESSAGES.UPDATE_MERCHANT_SUCCESS_HEADLINE')
+        );
+      },
       () => {
         this.toastService.error(
           this.translateService.instant('MERCHANT.DETAILS.TOAST_MESSAGES.UPDATE_MERCHANT_ERROR_HEADLINE'),
@@ -138,6 +154,56 @@ export class MerchantDetailsComponent implements OnInit {
         );
       });
   }
+
+  savePayment() {
+    const newData = this.paymentsForm.getRawValue();
+
+    // build our list of selected
+    // payment method ids
+    const selectedPaymentMethods = [];
+    for (let method of this.paymentmethods) {
+      const formValue = this.paymentsForm.get('paymentmethods').get(method.id).value;
+      if (formValue === true) {
+        selectedPaymentMethods.push(
+          {
+            id: method.id
+          }
+        )
+      }
+    }
+
+    const merchantPaymentMethods = JSON.stringify(selectedPaymentMethods);
+
+    // update data
+    const updatedData = {
+      mollieProdKey: newData.mollieProdKey,
+      mollieTestKey: newData.mollieTestKey,
+      mollieTestEnabled: newData.mollieTestEnabled,
+      paymentMethods: merchantPaymentMethods
+    } as Merchant;
+
+    this.merchantApiService.updateMerchant(updatedData).pipe(
+      switchMap((result: true | Merchant) => {
+        if (result === true) {
+          return this.merchantApiService.getMerchant()
+        }
+        return of(result);
+      })
+    ).subscribe((merchant: Merchant) => {
+        this.merchant = merchant;
+        this.stateService.setMerchant(merchant);
+        this.toastService.success(
+          this.translateService.instant('MERCHANT.DETAILS.TOAST_MESSAGES.UPDATE_MERCHANT_SUCCESS_HEADLINE')
+        );
+      },
+      () => {
+        this.toastService.error(
+          this.translateService.instant('MERCHANT.DETAILS.TOAST_MESSAGES.UPDATE_MERCHANT_ERROR_HEADLINE'),
+          this.translateService.instant('MERCHANT.DETAILS.TOAST_MESSAGES.UPDATE_MERCHANT_ERROR_TEXT')
+        );
+      });
+  }
+
 
   private createForm(): void {
     this.profileForm = this.formBuilder.group({
@@ -181,6 +247,39 @@ export class MerchantDetailsComponent implements OnInit {
     });
   }
 
+  /**
+   *
+   */
+  private createPaymentForm(): void {
+    this.paymentsForm = this.formBuilder.group({
+      mollieProdKey: this.merchant.mollieProdKey,
+      mollieTestKey: this.merchant.mollieTestKey,
+      mollieTestEnabled: this.merchant.mollieTestEnabled
+    });
+  }
+
+  /**
+   *
+   * @param methods
+   */
+  private addPaymentMethodsToForm(methods: PaymentMethod[]): void {
+
+    let assignedMethods = [];
+
+    if (this.merchant.paymentMethods) {
+      assignedMethods = JSON.parse(this.merchant.paymentMethods);
+    }
+
+    const methodsForm = this.formBuilder.group({});
+
+    for (let method of methods) {
+      const active = undefined !== assignedMethods.find((m: PaymentMethod) => m.id === method.id);
+      methodsForm.addControl(method.id, this.formBuilder.control(active));
+    }
+
+    this.paymentsForm.addControl('paymentmethods', methodsForm);
+  }
+
   imageSelected(value: File): void {
     this.profileForm.get('cover').setValue(value);
   }
@@ -207,4 +306,6 @@ export class MerchantDetailsComponent implements OnInit {
     }
     this.profileForm.addControl('services', servicesForm);
   }
+
+
 }

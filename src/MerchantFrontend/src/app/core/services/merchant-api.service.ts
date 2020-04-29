@@ -17,6 +17,7 @@ import { environment } from '../../../environments/environment';
 import { Order, OrderListData } from '../models/order.model';
 import { Organization, OrganizationAuthority, OrganizationLoginResult } from '../models/organization.model';
 import { Voucher, VoucherListData } from '../models/voucher.model';
+import {PaymentMethod} from "../models/paymentmethod.model";
 
 @Injectable({
   providedIn: 'root'
@@ -85,6 +86,10 @@ export class MerchantApiService {
             cover: merchantData.cover,
             availability: merchantData.availability,
             availabilityText: merchantData.availabilityText,
+            mollieProdKey: merchantData.mollieProdKey,
+            mollieTestKey: merchantData.mollieTestKey,
+            mollieTestEnabled: merchantData.mollieTestEnabled,
+            paymentMethods: merchantData.paymentMethods,
             tos: merchantData.tos,
             privacy: merchantData.privacy,
             imprint: merchantData.imprint,
@@ -171,6 +176,10 @@ export class MerchantApiService {
 
   getCountries(): Observable<{ data: Country[]}> {
     return this.http.get<{ data: Country[]}>(this.apiUrl + '/merchant-api/v1/country', {headers: this.getJsonContentTypeHeaders() });
+  }
+
+  getPaymentMethods(): Observable<{ data: PaymentMethod[]}> {
+    return this.http.get<{ data: PaymentMethod[]}>(this.apiUrl + '/merchant-api/v1/paymentmethods', {headers: this.getJsonContentTypeHeaders() });
   }
 
   resetMerchantPassword(email: PasswordReset): Observable<void> {

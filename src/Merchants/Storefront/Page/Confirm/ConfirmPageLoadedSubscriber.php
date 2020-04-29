@@ -8,10 +8,12 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Production\Merchants\Content\Merchant\MerchantCollection;
 use Shopware\Production\Merchants\Content\Merchant\MerchantEntity;
+use Shopware\Production\Merchants\Events\BlockPaymentMethodsEvent;
 use Shopware\Production\Merchants\Events\BlockShippingMethodsEvent;
 use Shopware\Storefront\Page\Checkout\Confirm\CheckoutConfirmPage;
 use Shopware\Storefront\Page\Checkout\Confirm\CheckoutConfirmPageLoadedEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Shopware\Core\Checkout\Payment\PaymentMethodCollection;
 
 class ConfirmPageLoadedSubscriber
 {
@@ -41,6 +43,8 @@ class ConfirmPageLoadedSubscriber
         $event->getPage()->addExtension('merchant', $merchant);
 
         $this->filterShippingMethods($merchant, $event->getPage()->getShippingMethods(), $event->getSalesChannelContext());
+
+        $this->filterAvailablePaymentMethods($merchant, $event->getPage()->getPaymentMethods(), $event->getSalesChannelContext());
     }
 
     private function getMerchant(CheckoutConfirmPage $page, SalesChannelContext $context): ?MerchantEntity
@@ -86,5 +90,38 @@ class ConfirmPageLoadedSubscriber
 
             $shippingMethods->remove($id);
         }
+    }
+
+    /**
+     * Reduces available payment methods to
+     * only be the one that are also allowed
+     * by the current merchant.
+     *
+     * @param MerchantEntity $merchant
+     * @param PaymentMethodCollection $shippingMethods
+     * @param SalesChannelContext $context
+     */
+    private function filterAvailablePaymentMethods(MerchantEntity $merchant, PaymentMethodCollection $cartPaymentMethods, SalesChannelContext $context): void
+    {
+        $event = new BlockPaymentMethodsEvent($cartPaymentMethods, $merchant, $context);
+        $this->eventDispatcher->dispatch($event);
+
+        /** @var array $allowedIds */
+        $allowedIds = array();
+
+        if (!empty($merchant->getPaymentMethods())) {
+            $list = json_decode($merchant->getPaymentMethods(), true);
+            # build flat list
+            foreach ($list as $entry) {
+                $allowedIds[] = $entry['id'];
+            }
+        }
+
+        foreach ($event->getPaymentMethodCollection() as $id => $paymentMethod) {
+            if (!in_array($id, $allowedIds)) {
+                $cartPaymentMethods->remove($id);
+            }
+        }
+
     }
 }

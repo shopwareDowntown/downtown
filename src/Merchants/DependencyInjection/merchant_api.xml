@@ -42,6 +42,10 @@
             <argument type="service" id="sales_channel.country.repository"/>
         </service>
 
+        <service id="Shopware\Production\Merchants\Content\Merchant\Api\PaymentMethodsController" public="true">
+            <argument type="service" id="sales_channel.payment_method.repository"/>
+        </service>
+
         <service id="Shopware\Production\Merchants\Content\Merchant\Api\LogoutController" public="true">
             <argument type="service" id="merchant_access_token.repository"/>
         </service>
