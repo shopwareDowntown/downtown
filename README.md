@@ -172,6 +172,9 @@ Mollie is the selected payment provider for downtown.
 If you want to enable these payment methods, please install and activate the Mollie plugin.
 Then activate required payment methods and assign it to your sales channel.
 
+Please note, you have to change the APP_URL to be something else then localhost to comply with Mollie API guidelines.
+Use the /etc/hosts entry for local development.
+
 #### Enable Payment Methods for Merchants
 If you sign is as merchant you'll have access to a new payments tab in your account data.
 Here you can set your molli API keys and test modes.
