@@ -270,6 +270,40 @@
       {{'COMMON.PAYMENTS' | translate}}
     </button>
     <clr-tab-content>
+
+      <h4>{{'MERCHANT.PAYMENTS.INSTRUCTIONS.ABOUT_HEADLINE' | translate}}</h4>
+      <p>
+        <span [innerHTML]="'MERCHANT.PAYMENTS.INSTRUCTIONS.ABOUT_TEXT' | translate"></span>
+      </p>
+      <h4>{{'MERCHANT.PAYMENTS.INSTRUCTIONS.SINGLE_CONTRACT_HEADLINE' | translate}}</h4>
+      <p>
+        <span [innerHTML]="'MERCHANT.PAYMENTS.INSTRUCTIONS.SINGLE_CONTRACT_TEXT' | translate"></span>
+      </p>
+      <h4>{{'MERCHANT.PAYMENTS.INSTRUCTIONS.PAYPERTRANSACTION_HEADLINE' | translate}}</h4>
+      <p>
+        <span [innerHTML]="'MERCHANT.PAYMENTS.INSTRUCTIONS.PAYPERTRANSACTION_TEXT' | translate"></span>
+      </p>
+      <h4>{{'MERCHANT.PAYMENTS.INSTRUCTIONS.PAYMENTMETHODS_HEADLINE' | translate}}</h4>
+      <p>
+        <span [innerHTML]="'MERCHANT.PAYMENTS.INSTRUCTIONS.PAYMENTMETHODS_TEXT' | translate"></span>
+      </p>
+      <h4>{{'MERCHANT.PAYMENTS.INSTRUCTIONS.USE_HEADLINE' | translate}}</h4>
+      <p>
+        <span [innerHTML]="'MERCHANT.PAYMENTS.INSTRUCTIONS.USE_TEXT' | translate"></span>
+      </p>
+      <h4>{{'MERCHANT.PAYMENTS.INSTRUCTIONS.KEYS_HEADLINE' | translate}}</h4>
+      <p>
+        <span [innerHTML]="'MERCHANT.PAYMENTS.INSTRUCTIONS.KEYS_TEXT' | translate"></span>
+      </p>
+      <h4>{{'MERCHANT.PAYMENTS.INSTRUCTIONS.QUESTIONS_HEADLINE' | translate}}</h4>
+      <p>
+        <span [innerHTML]="'MERCHANT.PAYMENTS.INSTRUCTIONS.QUESTIONS_TEXT' | translate"></span>
+      </p>
+      <br/>
+
+      <h3>{{'MERCHANT.PAYMENTS.SETTINGS' | translate}}</h3>
+
+      <br/>
       <form clrForm clrLayout="vertical" [formGroup]="paymentsForm" *ngIf="merchantLoaded && paymentmethodsLoaded; else loading">
         <clr-toggle-wrapper>
           <input
