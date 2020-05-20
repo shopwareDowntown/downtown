@@ -81,18 +81,29 @@ docker-compose exec cli bash
 When inside the app container, do a basic install, generate a JWT secret and an App Secret, then exit the container:
 
 ```shell script
+composer install
 bin/console system:setup
-bin/console system:install --create-database --basic-setup --force
+```
+Change the default credentials as listed and confirm those at the end:
+```shell script
+Database user [app]: downtown
+Database password: uptown
+Database host [localhost]: mysql
+Database port [3306]: 3306
+Database name [shopware]: downtown
 ```
 
 ```shell script
+bin/console system:install --create-database --basic-setup --force
 exit
 ```
+Check if your URL to /public folder [http://shopware.local] is set in /etc/hosts
+
 
 
 Please note:
 
-- Administration is available at http://localhost:8000/admin with user `admin` and password `shopware`
+- Administration is available at http://localhost/admin with user `admin` and password `shopware`
 - Each sales channel represents an organisation/local authority
 - Merchants show up in categories after registration and activation
 - Merchants register through the separate Angular Merchant Administration described below
