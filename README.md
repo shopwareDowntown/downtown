@@ -71,42 +71,24 @@ cd downtown
 ```
 
 ```shell script
-docker-compose build
-```
-
-```shell script
 docker-compose up -d
 ```
 
 ```shell script
-docker-compose exec app_server sh
+docker-compose exec cli bash
 ```
 
 When inside the app container, do a basic install, generate a JWT secret and an App Secret, then exit the container:
 
 ```shell script
+bin/console system:setup
 bin/console system:install --create-database --basic-setup --force
-```
-
-```shell script
-bin/console system:generate-jwt-secret --force
-```
-
-```shell script
-bin/console system:generate-app-secret # put into docker-compose.yml
 ```
 
 ```shell script
 exit
 ```
 
-The App Secret is only shown on screen, you have to put it manually into the `docker-compose.yml`, right after `- APP_SECRET=`.
-
-Then regenerate the containers by re-executing up:
-
-```shell script
-docker-compose up -d
-```
 
 Please note:
 

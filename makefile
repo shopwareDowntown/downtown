@@ -12,11 +12,12 @@ help:
 # ------------------------------------------------------------------------------------------------------------
 
 setup: ## Installs Downtown
-	docker-compose build
 	docker-compose up -d
-	docker-compose exec app_server sh -c 'bin/console system:install --create-database --basic-setup --force'
-	docker-compose exec app_server sh -c 'bin/console system:generate-jwt-secret --force'
-	docker-compose exec app_server sh -c 'bin/console system:generate-app-secret'
+	docker-compose exec cli sh -c 'composer install'
+	docker-compose exec cli sh -c 'bin/console system:setup'
+	docker-compose exec cli sh -c 'bin/console system:install --create-database --basic-setup --force'
+	docker-compose exec cli sh -c 'bin/console system:generate-jwt-secret --force'
+	docker-compose exec cli sh -c 'bin/console system:generate-app-secret'
 
 merchant: ## Runs the merchant portal
 	cd src/MerchantFrontend npm install && npm run start

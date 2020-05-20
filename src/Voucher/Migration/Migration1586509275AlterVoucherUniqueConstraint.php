@@ -16,7 +16,7 @@ class Migration1586509275AlterVoucherUniqueConstraint extends MigrationStep
     {
         $sql = <<<SQL
         ALTER TABLE `sold_voucher`
-            DROP INDEX `uniq.merchant_id__code`;
+            DROP INDEX `sold_voucher`;
         
         ALTER TABLE `sold_voucher`
             ADD UNIQUE KEY `uniq.order_line_item__code` (`order_line_item_id`,`code`);

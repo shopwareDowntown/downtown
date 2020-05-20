@@ -1,36 +1,23 @@
-#override defaults for dev
 version: "3.7"
 
 services:
   app_server:
-    image: downtown:local
-    build: .
+    image: shyim/shopware-platform-nginx-production:php74
     depends_on:
       - mysql
     ports:
-      - 8000:8000
-      - 8005:8000
-    environment:
-      # define yourself
-      - DATABASE_URL=mysql://downtown:uptown@mysql:3306/downtown
-      - APP_URL=http://localhost:8000
-      - APP_SECRET=
-      - INSTANCE_ID=
+      - 80:80
     volumes:
-      - "./config/jwt:/sw6/config/jwt"
-      - "./custom:/sw6/custom"
-      - "./public/bundles:/sw6/public/bundles"
-      - "./public/media:/sw6/public/media"
-      - "./public/sitemap:/sw6/public/sitemap"
-      - "./public/theme:/sw6/public/theme"
-      - "./public/thumbnail:/sw6/public/thumbnail"
-      - "./var:/sw6/var"
-      - "./src:/sw6/src"
+      - ".:/var/www/html"
+
+  cli:
+    image: shyim/shopware-cli:php74
+    tty: true
+    volumes:
+      - ".:/var/www/html"
 
   mysql:
     image: mysql:5.7
-    tmpfs:
-      - /var/lib/mysql:uid=999,gid=999
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=downtown
