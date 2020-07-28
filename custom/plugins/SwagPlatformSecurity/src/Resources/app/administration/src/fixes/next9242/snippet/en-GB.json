@@ -1,0 +1,25 @@
+{
+    "sw-profile": {
+        "index": {
+            "labelUseAsAvatar": "Use as avatar",
+            "titleConfirmPasswordModal": "Enter your current password to confirm",
+            "labelConfirmPassword": "Password",
+            "placeholderConfirmPassword": "Please enter your current password.",
+            "labelButtonCancel": "Cancel",
+            "labelButtonConfirm": "Confirm"
+        }
+    },
+    "sw-settings-user": {
+        "user-detail": {
+            "passwordConfirmation": {
+                "titleConfirmPasswordModal": "Enter your current password to confirm",
+                "labelConfirmPassword": "Password",
+                "placeholderConfirmPassword": "Please enter your current password.",
+                "labelButtonCancel": "Cancel",
+                "labelButtonConfirm": "Confirm",
+                "notificationPasswordErrorTitle": "Error",
+                "notificationPasswordErrorMessage": "Please submit your current password correctly."
+            }
+        }
+    }
+}

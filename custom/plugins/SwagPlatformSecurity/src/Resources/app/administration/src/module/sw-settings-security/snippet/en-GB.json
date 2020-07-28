@@ -1,0 +1,43 @@
+{
+    "sw-settings-security": {
+        "notification": {
+            "title": "Security Plugin",
+            "message": "Please update the security plugin to the latest version"
+        },
+        "general": {
+            "cardTitle": "Available fixes",
+            "textHeadline": "Security Plugin",
+            "mainMenuItemGeneral": "Security Plugin",
+            "description": "Fixes known issues in older Shopware versions",
+            "buttonSave": "Save",
+            "noFixes": "Your system is protected against all known vulnerabilities.",
+            "alert": "Caution, these are important security fixes for your shop! Deactivating one or more of these will make your shop vulnerable to these security gaps. Be sure what you are doing when deactivating any of the options and consider doing so only temporarily."
+        },
+        "fixes": {
+            "NEXT-9241": {
+                "label": "NEXT-9241 - Secure session cookie",
+                "tooltip": ""
+            },
+            "NEXT-9240": {
+                "label": "NEXT-9240, NEXT-9176 - Authenticated stored XSS",
+                "tooltip": ""
+            },
+            "NEXT-9175": {
+                "label": "NEXT-9175 - Authenticated Server Side Request Forgery",
+                "tooltip": ""
+            },
+            "NEXT-9242": {
+                "label": "NEXT-9242 - Administration authentication improved",
+                "tooltip": ""
+            },
+            "NEXT-9243": {
+                "label": "NEXT-9243 - Additional security headers",
+                "tooltip": ""
+            },
+            "NEXT-9569": {
+                "label": "NEXT-9569 - Session hijacking vulnerability of customer accounts in the storefront",
+                "tooltip": ""
+            }
+        }
+    }
+}

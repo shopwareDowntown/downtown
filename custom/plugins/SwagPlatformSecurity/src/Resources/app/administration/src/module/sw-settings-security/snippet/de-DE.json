@@ -1,0 +1,43 @@
+{
+    "sw-settings-security": {
+        "notification": {
+            "title": "Sicherheitsplugin",
+            "message": "Bitte aktualisieren Sie das Sicherheits-Plugin auf die neueste Version"
+        },
+        "general": {
+            "cardTitle": "Verfügbare Fixes",
+            "textHeadline": "Sicherheitsplugin",
+            "mainMenuItemGeneral": "Security Plugin",
+            "description": "Behebt bekannte Probleme in älteren Shopware-Versionen",
+            "buttonSave": "Speichern",
+            "noFixes": "Dein System ist geschützt gegen alle bekannten Lücken.",
+            "alert": "Achtung, dies sind wichtige Sicherheitsupdates für Deinen Shop! Deaktivierst du eine oder mehrere der Optionen, öffnet das bekannte Sicherheitslücken. Du solltest Dir also sicher sein, was Du tust und die Sicherheitsupdates nur temporär deaktivieren."
+        },
+        "fixes": {
+            "NEXT-9241": {
+                "label": "NEXT-9241 - Sicheres Sitzungs-Cookie",
+                "tooltip": ""
+            },
+            "NEXT-9240": {
+                "label": "NEXT-9240, NEXT-9176 - Authenticated stored XSS",
+                "tooltip": ""
+            },
+            "NEXT-9175": {
+                "label": "NEXT-9175 - Authenticated Server Side Request Forgery",
+                "tooltip": ""
+            },
+            "NEXT-9242": {
+                "label": "NEXT-9242 - Administrationsauthentifizierung verbessert",
+                "tooltip": ""
+            },
+            "NEXT-9243": {
+                "label": "NEXT-9243 - Zusätzliche Sicherheitskopfzeilen",
+                "tooltip": ""
+            },
+            "NEXT-9569": {
+                "label": "NEXT-9569 - Session Diebstahl von Benutzerkonten in der Storefront",
+                "tooltip": ""
+            }
+        }
+    }
+}

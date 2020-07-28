@@ -1,0 +1,8 @@
+/.gitattributes export-ignore
+/.gitignore export-ignore
+/.bin export-ignore
+/.gitlab-ci.yml export-ignore
+/phpunit.xml export-ignore
+/README.md export-ignore
+/tests export-ignore
+/.php_cs.cache export-ignore

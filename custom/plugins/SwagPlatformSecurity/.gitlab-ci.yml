@@ -1,0 +1,84 @@
+variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: "tcp://docker:2375"
+    MYSQL_ROOT_PASSWORD: app
+    WEB_DOCUMENT_ROOT: $CI_PROJECT_DIR/development/public
+    SHOPWARE_VERSION: 'v6.2.0'
+
+.phpunit_base:
+    image: shopware/development:latest
+    before_script:
+        - zip -rq plugin.zip .
+        - git clone --branch $SHOPWARE_VERSION http://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.shopware.com/shopware/6/product/development.git
+        - rm -rf development/platform
+        - git clone --branch $SHOPWARE_VERSION http://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.shopware.com/shopware/6/product/platform.git development/platform
+        - unzip -q plugin.zip -d development/custom/plugins/SwagPlatformSecurity
+        - cd development
+        - cp -v dev-ops/gitlab/.psh.yaml.override .
+        - /entrypoint supervisord > /dev/null 2>&1 &
+    services:
+        -   name: mariadb:10.3
+            alias: mysql
+    script:
+        - ./psh.phar init
+        - php bin/console plugin:install --activate SwagPlatformSecurity
+        - ./psh.phar init-test-databases
+        - php -d pcov.enabled=1 -d pcov.directory=$CI_PROJECT_DIR
+            vendor/bin/phpunit
+            --configuration custom/plugins/SwagPlatformSecurity/phpunit.xml
+            --log-junit build/artifacts/phpunit.junit.xml
+            --colors=never
+            --coverage-clover build/artifacts/phpunit.clover.xml
+            --coverage-html build/artifacts/phpunit-coverage-html
+            --coverage-text
+    coverage: '/^\s*Lines:\s*(\d+(?:\.\d+)?%)/'
+    artifacts:
+        paths:
+            - development/build/artifacts/phpunit.clover.xml
+            - development/build/artifacts/phpunit-coverage-html
+        reports:
+            junit: development/build/artifacts/phpunit.junit.xml
+
+Build Zip:
+    image:
+        name: friendsofshopware/plugin-uploader:0.3.0
+        entrypoint: ["/bin/sh", "-c"]
+    variables:
+        GIT_DEPTH: 0
+    script:
+        - php /app/bin/pluginupload ext:zip . $CI_COMMIT_SHA
+        - php /app/bin/pluginupload ext:validate SwagPlatformSecurity*.zip
+    artifacts:
+        paths:
+            - SwagPlatformSecurity*.zip
+
+Upload Zip to Store:
+    when: manual
+    image:
+        name: friendsofshopware/plugin-uploader:0.3.0
+        entrypoint: ["/bin/sh", "-c"]
+    variables:
+        GIT_DEPTH: 0
+    script:
+        - php /app/bin/pluginupload ext:zip . $CI_COMMIT_SHA
+        - php /app/bin/pluginupload ext:upload SwagPlatformSecurity*.zip
+
+6.1.0:
+    extends: .phpunit_base
+    variables:
+        SHOPWARE_VERSION: 'v6.1.0'
+
+6.1.6:
+    extends: .phpunit_base
+    variables:
+        SHOPWARE_VERSION: 'v6.1.6'
+
+6.2.0:
+    extends: .phpunit_base
+    variables:
+        SHOPWARE_VERSION: 'v6.2.0'
+
+6.2 Latest:
+    extends: .phpunit_base
+    variables:
+        SHOPWARE_VERSION: '6.2'

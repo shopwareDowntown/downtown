@@ -1,0 +1,4 @@
+src/Resources/app/administration/node_modules/
+.phpunit.result.cache
+vendor
+.php_cs.cache

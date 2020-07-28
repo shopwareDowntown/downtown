@@ -1,0 +1,97 @@
+{% block sw_settings_security_index %}
+    <sw-page class="sw-settings-security">
+
+        {% block sw_settings_security_search_bar %}
+            <template slot="search-bar">
+                <sw-search-bar>
+                </sw-search-bar>
+            </template>
+        {% endblock %}
+
+        {% block sw_settings_security_smart_bar_header %}
+            <template slot="smart-bar-header">
+                {% block sw_settings_security_smart_bar_header_title %}
+                    <h2>
+                        {% block sw_settings_security_smart_bar_header_title_text %}
+                            {{ $tc('sw-settings.index.title') }}
+                            <sw-icon name="small-arrow-medium-right" small>
+                            </sw-icon>
+                            {{ $tc('sw-settings-security.general.textHeadline') }}
+                        {% endblock %}
+                    </h2>
+                {% endblock %}
+            </template>
+        {% endblock %}
+
+        {% block sw_settings_security_smart_bar_actions %}
+            <template slot="smart-bar-actions">
+                {% block sw_settings_security_actions_save %}
+                    <sw-button-process
+                        v-if="fixes.availableFixes && fixes.availableFixes.length"
+                        class="sw-settings-security__save-action"
+                        :isLoading="isLoading"
+                        :processSuccess="isSaveSuccessful"
+                        :disabled="isLoading"
+                        variant="primary"
+                        @process-finish="saveFinish"
+                        @click="onSave">
+                        {{ $tc('sw-settings-security.general.buttonSave') }}
+                    </sw-button-process>
+                {% endblock %}
+            </template>
+        {% endblock %}
+
+        {% block sw_settings_security_content %}
+            <template slot="content">
+                <sw-card-view>
+                    <sw-card :title="$tc('sw-settings-security.general.cardTitle')" :isLoading="isLoading" v-if="isLoading || fixes.availableFixes.length">
+                        <sw-alert variant="warning">{{ $tc('sw-settings-security.general.alert') }}</sw-alert>
+
+                        <div v-for="fix in fixes.availableFixes" v-if="fixes">
+                            <sw-field
+                                type="checkbox"
+                                :name="fix"
+                                :label="$tc('sw-settings-security.fixes.' + fix + '.label')"
+                                v-model="config[fix]"
+                                :helpText="$tc('sw-settings-security.fixes.' + fix + '.tooltip')"
+                            />
+                        </div>
+                    </sw-card>
+
+                    <sw-empty-state v-else
+                                    :title="$tc('sw-settings-security.general.noFixes')">
+                    </sw-empty-state>
+                </sw-card-view>
+
+                <sw-modal v-if="confirmPasswordModal"
+                          @modal-close="onCloseConfirmPasswordModal"
+                          :title="$tc('sw-profile.index.titleConfirmPasswordModal')"
+                          variant="small">
+                    <sw-password-field
+                        class="sw-settings-user-detail__confirm-password"
+                        v-model="confirmPassword"
+                        required
+                        name="sw-field--confirm-password"
+                        :passwordToggleAble="true"
+                        :copyAble="false"
+                        :label="$tc('sw-profile.index.labelConfirmPassword')"
+                        :placeholder="$tc('sw-profile.index.placeholderConfirmPassword')">
+                    </sw-password-field>
+
+                    <template #modal-footer>
+                        <sw-button @click="onCloseConfirmPasswordModal"
+                                   size="small">
+                            {{ $tc('sw-profile.index.labelButtonCancel') }}
+                        </sw-button>
+                        <sw-button @click="onVerifiedSave"
+                                   variant="primary"
+                                   :disabled="!confirmPassword"
+                                   size="small">
+                            {{ $tc('sw-profile.index.labelButtonConfirm') }}
+                        </sw-button>
+                    </template>
+                </sw-modal>
+            </template>
+        {% endblock %}
+    </sw-page>
+{% endblock %}
