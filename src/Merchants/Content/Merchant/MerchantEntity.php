@@ -637,4 +637,9 @@ class MerchantEntity extends Entity
         $this->paymentMethods = $paymentMethods;
     }
 
+    public function getParentId()
+    {
+        return null;
+    }
+
 }

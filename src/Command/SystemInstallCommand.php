@@ -104,12 +104,25 @@ class SystemInstallCommand extends Command
         $commands = [
             [
                 'command' =>'database:migrate',
-                'identifier' => 'Shopware\\',
+                '--all'  => true,
+            ],
+            [
+                'command' =>'database:migrate',
+                'identifier' => 'Merchant',
+                '--all'  => true,
+            ],
+            [
+                'command' =>'database:migrate',
+                'identifier' => 'Organization',
+                '--all'  => true,
+            ],
+            [
+                'command' =>'database:migrate',
+                'identifier' => 'Voucher',
                 '--all'  => true,
             ],
             [
                 'command' => 'database:migrate-destructive',
-                'identifier' => 'Shopware\\',
                 '--all'  => true,
             ],
             [
@@ -146,7 +159,6 @@ class SystemInstallCommand extends Command
 
         array_push($commands, [
             'command' => 'assets:install',
-            '--no-cleanup' => true,
         ], [
             'command' => 'cache:clear'
         ]);
@@ -165,9 +177,9 @@ class SystemInstallCommand extends Command
     private function runCommands(array $commands, OutputInterface $output): int
     {
         foreach($commands as $parameters) {
-            $command = $this->getApplication()->find($parameters['command']);
+            $command = $this->getApplication()->get($parameters['command']);
             unset($parameters['command']);
-            $returnCode = $command->run(new ArrayInput($parameters, $command->getDefinition()), $output);
+            $returnCode = $command->run(new ArrayInput($parameters, null), $output);
             if ($returnCode !== 0) {
                 return $returnCode;
             }

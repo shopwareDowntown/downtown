@@ -3,13 +3,13 @@
 namespace Shopware\Production\Merchants\Content\Merchant\Extensions;
 
 use Shopware\Core\Content\Product\ProductDefinition;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityExtensionInterface;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityExtension;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\ManyToManyAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\FieldCollection;
 use Shopware\Production\Merchants\Content\Merchant\Aggregate\MerchantProduct\MerchantProductDefinition;
 use Shopware\Production\Merchants\Content\Merchant\MerchantDefinition;
 
-class ProductEntityExtension implements EntityExtensionInterface
+class ProductEntityExtension extends EntityExtension
 {
     public function getDefinitionClass(): string
     {

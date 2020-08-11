@@ -41,19 +41,6 @@ class MerchantPageSeoUrlRoute implements SeoUrlRouteInterface
     {
     }
 
-    public function extractIdsToUpdate(EntityWrittenContainerEvent $event): SeoUrlExtractIdResult
-    {
-        $ids = [];
-
-        // check if a product was written. If this is the case, its Seo Url must be updated.
-        $merchantEvent = $event->getEventByEntityName(MerchantDefinition::ENTITY_NAME);
-        if ($merchantEvent) {
-            $ids = $merchantEvent->getIds();
-        }
-
-        return new SeoUrlExtractIdResult($ids);
-    }
-
     public function getMapping(Entity $entity, ?SalesChannelEntity $salesChannel): SeoUrlMapping
     {
         if (!$entity instanceof MerchantEntity) {

@@ -58,7 +58,7 @@
 
                     {% block component_merchant_availability %}
                         <div class="col-12">
-                            {% sw_include '@Storefront/storefront/component/merchant/availability-badge.html.twig' with {'availability': page.merchant.availability, 'availabilityText': page.merchant.availabilityText} %}
+                            {% sw_include 'storefront/component/merchant/availability-badge.html.twig' with {'availability': page.merchant.availability, 'availabilityText': page.merchant.availabilityText} %}
                         </div>
                     {% endblock %}
 
@@ -150,7 +150,7 @@
 
                     {% if page.merchant.services is not empty %}
                         <div class="col-12">
-                            {% sw_include '@Storefront/storefront/component/merchant/service-items.html.twig' with {
+                            {% sw_include 'storefront/component/merchant/service-items.html.twig' with {
                                 scope: 'detail',
                                 services: page.merchant.services
                             } %}
@@ -301,6 +301,6 @@
 {% endblock %}
 
 {% block base_footer_inner %}
-    {% sw_include '@Storefront/storefront/component/merchant/banner.html.twig' %}
+    {% sw_include 'storefront/component/merchant/banner.html.twig' %}
     {{ parent() }}
 {% endblock %}

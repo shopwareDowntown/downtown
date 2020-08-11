@@ -16,6 +16,11 @@ services:
     volumes:
       - ".:/var/www/html"
 
+  adminer:
+      image: adminer
+      ports:
+          - 8080:8080
+
   mysql:
     image: mysql:5.7
     environment:

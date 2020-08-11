@@ -15,6 +15,7 @@
             <argument type="service" id="merchant.repository"/>
             <argument type="service" id="Shopware\Core\Framework\Validation\DataValidator"/>
             <argument type="service" id="Shopware\Production\Portal\Hacks\StorefrontMediaUploader"/>
+            <argument type="service" id="Shopware\Core\System\SalesChannel\Api\StructEncoder"/>
         </service>
 
         <service id="Shopware\Production\Organization\System\Organization\Api\ResetPasswordController" public="true">

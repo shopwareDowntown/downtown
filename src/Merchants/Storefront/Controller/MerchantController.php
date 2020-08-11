@@ -69,7 +69,7 @@ class MerchantController extends StorefrontController
             'page' => $page
         ];
 
-        return $this->renderStorefront('@Merchant/storefront/page/merchant/detail.html.twig', $vars);
+        return $this->renderStorefront('storefront/page/merchant/detail.html.twig', $vars);
     }
 
     private function loadMerchant(string $id, SalesChannelContext $context): MerchantEntity

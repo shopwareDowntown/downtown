@@ -4,7 +4,7 @@
   "views": [
      "@Storefront",
      "@Plugins",
-     "@Portal"
+     "@PortalBundle"
   ],
   "style": [
     "app/storefront/src/scss/overrides.scss",

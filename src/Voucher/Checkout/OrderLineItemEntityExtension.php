@@ -3,12 +3,12 @@
 namespace Shopware\Production\Voucher\Checkout;
 
 use Shopware\Core\Checkout\Order\Aggregate\OrderLineItem\OrderLineItemDefinition;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityExtensionInterface;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityExtension;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\OneToManyAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\FieldCollection;
 use Shopware\Production\Voucher\Checkout\SoldVoucher\SoldVoucherDefinition;
 
-class OrderLineItemEntityExtension implements EntityExtensionInterface
+class OrderLineItemEntityExtension extends EntityExtension
 {
     public function getDefinitionClass(): string
     {

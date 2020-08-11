@@ -92,7 +92,7 @@ class SystemUpdateFinishCommand extends Command
     private function installAssets(InputInterface $input, OutputInterface $output): int
     {
         $command = $this->getApplication()->find('assets:install');
-        return $command->run(new ArrayInput(['--no-cleanup' => true], $command->getDefinition()), $output);
+        return $command->run(new ArrayInput([], $command->getDefinition()), $output);
     }
 
     private function rebootKernelWithoutPlugins(): ContainerInterface

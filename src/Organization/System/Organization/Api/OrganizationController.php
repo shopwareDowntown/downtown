@@ -13,6 +13,8 @@ use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Shopware\Core\Framework\Validation\DataValidationDefinition;
 use Shopware\Core\Framework\Validation\DataValidator;
+use Shopware\Core\System\SalesChannel\Api\ResponseFields;
+use Shopware\Core\System\SalesChannel\Api\StructEncoder;
 use Shopware\Core\System\SalesChannel\SalesChannelCollection;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Core\System\SalesChannel\SalesChannelEntity;
@@ -54,18 +56,25 @@ class OrganizationController
      */
     private $storefrontMediaUploader;
 
+    /**
+     * @var StructEncoder
+     */
+    private $structEncoder;
+
     public function __construct(
         EntityRepositoryInterface $salesChannelRepository,
         EntityRepositoryInterface $organizationRepository,
         EntityRepositoryInterface $merchantRepository,
         DataValidator $dataValidator,
-        StorefrontMediaUploader $storefrontMediaUploader
+        StorefrontMediaUploader $storefrontMediaUploader,
+        StructEncoder $structEncoder
     ) {
         $this->salesChannelRepository = $salesChannelRepository;
         $this->organizationRepository = $organizationRepository;
         $this->merchantRepository = $merchantRepository;
         $this->dataValidator = $dataValidator;
         $this->storefrontMediaUploader = $storefrontMediaUploader;
+        $this->structEncoder = $structEncoder;
     }
 
     /**
@@ -321,7 +330,7 @@ class OrganizationController
         $merchants = $this->merchantRepository->search($merchantCriteria, Context::createDefaultContext());
 
         return new JsonResponse([
-            'data' => $merchants,
+            'data' => $this->structEncoder->encode($merchants->getEntities(), 3, new ResponseFields([])),
             'total' => $merchants->getTotal()
         ]);
     }

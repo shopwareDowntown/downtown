@@ -3,12 +3,12 @@
 namespace Shopware\Production\Organization\System\Organization\Extensions;
 
 use Shopware\Core\Content\Media\MediaDefinition;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityExtensionInterface;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityExtension;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\OneToManyAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\FieldCollection;
 use Shopware\Production\Organization\System\Organization\OrganizationDefinition;
 
-class MediaEntityExtension implements EntityExtensionInterface
+class MediaEntityExtension extends EntityExtension
 {
     public function extendFields(FieldCollection $collection): void
     {

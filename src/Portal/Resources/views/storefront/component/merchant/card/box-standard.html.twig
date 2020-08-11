@@ -60,7 +60,7 @@
                         <div class="product-info">
 
                             {% block component_merchant_availability %}
-                                {% sw_include '@Storefront/storefront/component/merchant/availability-badge.html.twig' with {'availability': merchant.availability, 'availabilityText': merchant.availabilityText} %}
+                                {% sw_include 'storefront/component/merchant/availability-badge.html.twig' with {'availability': merchant.availability, 'availabilityText': merchant.availabilityText} %}
                             {% endblock %}
 
                             {% block component_merchant_box_name %}
@@ -110,7 +110,7 @@
 
                             {% if merchant.services is not empty %}
                                 {% block component_merchant_box_service %}
-                                    {% sw_include '@Storefront/storefront/component/merchant/service-items.html.twig' with {
+                                    {% sw_include 'storefront/component/merchant/service-items.html.twig' with {
                                         scope: 'listing',
                                         services: merchant.services
                                     } %}

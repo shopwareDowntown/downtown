@@ -27,6 +27,11 @@
             <tag name="shopware.seo_url.route"/>
         </service>
 
+        <service id="Shopware\Production\Merchants\Storefront\SeoUrlRoute\MerchantListener">
+            <argument type="service" id="Shopware\Core\Content\Seo\SeoUrlUpdater"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
         <service id="Shopware\Production\Merchants\Storefront\Pagelet\Footer\FooterPageletSubscriber">
             <tag name="kernel.event_listener"/>
         </service>

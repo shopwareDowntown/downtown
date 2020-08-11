@@ -3,12 +3,12 @@
 namespace Shopware\Production\Merchants\Content\Merchant\Extensions;
 
 use Shopware\Core\Content\Category\CategoryDefinition;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityExtensionInterface;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityExtension;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\OneToManyAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\FieldCollection;
 use Shopware\Production\Merchants\Content\Merchant\MerchantDefinition;
 
-class CategoryEntityExtension implements EntityExtensionInterface
+class CategoryEntityExtension extends EntityExtension
 {
     public function getDefinitionClass(): string
     {

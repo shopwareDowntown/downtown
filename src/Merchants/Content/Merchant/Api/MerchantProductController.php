@@ -586,7 +586,8 @@ class MerchantProductController
             'price' => $firstPrice->getGross(),
             'tax' => $taxEntity->getTaxRate(),
             'active' => $product->getActive(),
-            'productType' => $product->getCustomFields()['productType']
+            'productType' => $product->getCustomFields()['productType'],
+            'media' => []
         ];
 
         $productMediaCollection = $product->getMedia();
