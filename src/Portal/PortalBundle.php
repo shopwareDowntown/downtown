@@ -50,5 +50,17 @@ class PortalBundle extends Bundle implements ThemeInterface
         }
 
         $container->getCompilerPassConfig()->setBeforeOptimizationPasses($config);
+        $container->setParameter('shopware.routing.registered_api_prefixes', [
+            '_wdt',
+            '_profiler',
+            '_error',
+            'api',
+            'sales-channel-api',
+            'store-api',
+            'admin',
+            'api',
+            'merchant-api',
+            'organization-api',
+        ]);
     }
 }
