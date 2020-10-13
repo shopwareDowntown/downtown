@@ -85,9 +85,10 @@ class NavigationLoader extends ShopwareNavigationLoader
             $activeId = $rootId;
         }
 
-        // Load the first two levels without using the activeId in the query, so this can be cached
+        // Load the first two levels without using the activeId in the query, so this can be cached   (int) $root['level']
         $categories = $this->loadLevels($rootId, (int) $root['level'], $context, $depth);
 
+        print "<br>";
         // If the active category is part of the provided root id, we have to load the children and the parents of the active id
         $categories = $this->loadChildren($activeId, $context, $rootId, $metaInfo, $categories);
 
@@ -122,7 +123,7 @@ class NavigationLoader extends ShopwareNavigationLoader
         $categories = $this->categoryRepository->search($criteria, $context)->getEntities();
         $categories->add($active);
 
-        $navigation = $this->getTree($active->getId(), $categories, $active);
+        $navigation = $this->getTree($categoryId, $categories, $active);
 
         $event = new NavigationLoadedEvent($navigation, $context);
 
@@ -151,7 +152,7 @@ class NavigationLoader extends ShopwareNavigationLoader
                 continue;
             }
 
-            unset($categories[$key]);
+            #unset($categories[$key]);
 
             $children->add($category);
         }
@@ -161,10 +162,6 @@ class NavigationLoader extends ShopwareNavigationLoader
         $items = [];
         foreach ($children as $child) {
             if (!$child->getActive() || !$child->getVisible()) {
-                continue;
-            }
-
-            if (!$child->hasExtension('merchants')) {
                 continue;
             }
 
@@ -178,9 +175,24 @@ class NavigationLoader extends ShopwareNavigationLoader
             $router = $this->router;
 
             $merchantCollection = $child->getExtension('merchants');
+
             if ($merchantCollection === null) {
+                $rec = $this->buildTree($child->getId(), $categories);
+
+                if(empty($rec)){
+                    continue;
+                }
+
+                $item->setCategory($child);
+                $item->setChildren(
+                    $this->buildTree($child->getId(), $categories)
+                );
+                $items[$child->getId()] = $item;
+
                 continue;
+
             }
+
 
             $merchants = array_map(static function (MerchantEntity $merchantEntity) use ($router) {
                 $c = new CategoryEntity();
@@ -247,7 +259,7 @@ class NavigationLoader extends ShopwareNavigationLoader
         $result = $this->connection->fetchAll('
             SELECT LOWER(HEX(`id`)), `path`, `level`
             FROM `category`
-            WHERE `id` = :activeId OR `parent_id` = :activeId OR `id` = :rootId
+            WHERE `id` = :activeId OR `parent_id` = :activeId OR `id` = :rootId OR `parent_id` = :rootId
         ', ['activeId' => Uuid::fromHexToBytes($activeId), 'rootId' => Uuid::fromHexToBytes($rootId)]);
 
         if (!$result) {
@@ -290,7 +302,6 @@ class NavigationLoader extends ShopwareNavigationLoader
     private function getMissingIds(string $activeId, ?string $path, array $childIds, CategoryCollection $alreadyLoaded): array
     {
         $parentIds = array_filter(explode('|', $path ?? ''));
-
         $haveToBeIncluded = array_merge($childIds, $parentIds, [$activeId]);
         $included = array_flip($alreadyLoaded->getIds());
 
