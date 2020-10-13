@@ -301,7 +301,6 @@ class NavigationLoader extends ShopwareNavigationLoader
     private function getMissingIds(string $activeId, ?string $path, array $childIds, CategoryCollection $alreadyLoaded): array
     {
         $parentIds = array_filter(explode('|', $path ?? ''));
-        
         $haveToBeIncluded = array_merge($childIds, $parentIds, [$activeId]);
         $included = array_flip($alreadyLoaded->getIds());
 
