@@ -21,6 +21,7 @@
 
         <service id="Shopware\Production\Merchants\Storefront\Listing\MerchantListingSortingRegistry">
             <argument type="tagged" tag="shopware.merchant.merchant_listing.sorting" />
+            <argument type="service" id="translator" />
         </service>
 
         <service id="merchant_listing.sorting.name_ascending" class="Shopware\Production\Merchants\Storefront\Listing\MerchantListingSorting">
