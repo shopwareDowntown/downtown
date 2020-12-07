@@ -31,6 +31,7 @@ class MerchantListingFeaturesSubscriber extends ProductListingFeaturesSubscriber
 
         $criteria = $event->getCriteria();
         $this->removeFilter($criteria);
+        $criteria->resetSorting();
         $criteria->resetGroupFields();
         $criteria->resetAggregations();
     }
