@@ -188,7 +188,7 @@ class NavigationLoader extends ShopwareNavigationLoader
                 $c->setActive(true);
                 $c->setId($merchantEntity->getId());
                 $c->setChildCount(1);
-                $c->setType('page');
+                $c->setType('link');
                 $c->setTranslated(['name' => $merchantEntity->getPublicCompanyName()]);
 
                 $c->setExternalLink($router->generate('storefront.merchant.detail', ['id' => $merchantEntity->getId()]));
