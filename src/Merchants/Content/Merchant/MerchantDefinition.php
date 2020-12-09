@@ -92,10 +92,10 @@ class MerchantDefinition extends EntityDefinition
             (new PasswordField('password', 'password'))->addFlags(new Required(), new ReadProtected(SalesChannelApiSource::class)),
             (new StringField('phone_number', 'phoneNumber')),
 
-            (new StringField('imprint', 'imprint')),
-            (new StringField('tos', 'tos')),
-            (new StringField('privacy', 'privacy')),
-            (new StringField('revocation', 'revocation')),
+            (new LongTextField('imprint', 'imprint')),
+            (new LongTextField('tos', 'tos')),
+            (new LongTextField('privacy', 'privacy')),
+            (new LongTextField('revocation', 'revocation')),
 
 
             (new StringField('mollie_prod_key', 'mollieProdKey')),
