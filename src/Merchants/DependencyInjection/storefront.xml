@@ -47,5 +47,9 @@
             <argument type="service" id="Shopware\Production\Merchants\Storefront\Cms\SalesChannelCmsPageLoader.inner"/>
             <argument type="service" id="Shopware\Core\Content\Cms\DataResolver\CmsSlotsDataResolver"/>
         </service>
+
+        <service id="Shopware\Production\Merchants\Storefront\Page\Product\Subscriber\ProductPageCriteriaSubscriber">
+            <tag name="kernel.event_subscriber"/>
+        </service>
     </services>
 </container>
