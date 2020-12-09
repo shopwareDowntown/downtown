@@ -8,6 +8,7 @@
         <service id="Shopware\Production\Organization\Storefront\Controller\StaticPageController" public="true">
             <argument type="service" id="organization.repository"/>
             <argument type="service" id="Shopware\Storefront\Page\GenericPageLoader"/>
+            <argument type="service" id="Shopware\Core\Framework\Adapter\Translation\Translator"/>
         </service>
     </services>
 </container>

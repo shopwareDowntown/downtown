@@ -10,6 +10,7 @@ use Shopware\Core\Content\Cms\Aggregate\CmsSlot\CmsSlotCollection;
 use Shopware\Core\Content\Cms\Aggregate\CmsSlot\CmsSlotEntity;
 use Shopware\Core\Content\Cms\CmsPageEntity;
 use Shopware\Core\Content\Cms\SalesChannel\Struct\TextStruct;
+use Shopware\Core\Framework\Adapter\Translation\Translator;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
@@ -40,12 +41,19 @@ class StaticPageController extends StorefrontController
      */
     private $genericPageLoader;
 
+    /**
+     * @var Translator
+     */
+    private $translator;
+
     public function __construct(
         EntityRepositoryInterface $organizationRepository,
-        GenericPageLoader $genericPageLoader
+        GenericPageLoader $genericPageLoader,
+        Translator $translator
     ) {
         $this->organizationRepository = $organizationRepository;
         $this->genericPageLoader = $genericPageLoader;
+        $this->translator = $translator;
     }
 
     /**
@@ -83,8 +91,12 @@ class StaticPageController extends StorefrontController
 
     private function addCmsPage(OrganizationEntity $organization, NavigationPage $page, string $field): void
     {
+        $headline = $this->translator->trans("page.{$field}");
+
         $textStructure = new TextStruct();
-        $textStructure->setContent($organization->jsonSerialize()[$field] ?? '');
+        $textStructure->setContent(
+            "<h2>{$headline}</h2>\n" . nl2br($organization->jsonSerialize()[$field] ?? '')
+        );
 
         $slot = new CmsSlotEntity();
         $slot->setId(Uuid::randomHex());
