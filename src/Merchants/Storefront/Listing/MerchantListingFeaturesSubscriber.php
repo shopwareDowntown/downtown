@@ -30,18 +30,8 @@ class MerchantListingFeaturesSubscriber extends ProductListingFeaturesSubscriber
         }
 
         $criteria = $event->getCriteria();
-        $this->removeFilter($criteria);
+        $criteria->resetSorting();
         $criteria->resetGroupFields();
         $criteria->resetAggregations();
-    }
-
-    private function removeFilter(Criteria $criteria): void
-    {
-        $filters = $criteria->getFilters();
-
-        $criteria->resetFilters();
-        array_pop($filters);
-
-        $criteria->addFilter(...$filters);
     }
 }

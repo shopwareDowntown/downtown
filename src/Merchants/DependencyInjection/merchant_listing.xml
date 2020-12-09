@@ -14,8 +14,10 @@
         <service id="Shopware\Production\Merchants\Storefront\Listing\MerchantListingFeaturesSubscriber">
             <argument type="service" id="Doctrine\DBAL\Connection"/>
             <argument type="service" id="property_group_option.repository"/>
+            <argument type="service" id="product_sorting.repository"/>
+            <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
             <argument type="service" id="Shopware\Production\Merchants\Storefront\Listing\MerchantListingSortingRegistry"/>
-
+            <argument type="service" id="event_dispatcher"/>
             <tag name="kernel.event_subscriber"/>
         </service>
 
