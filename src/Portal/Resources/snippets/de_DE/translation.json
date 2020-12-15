@@ -12,7 +12,10 @@
         "imprint": "Impressum",
         "tos": "Allgemeine Geschäftsbedingungen",
         "privacy": "Datenschutz",
-        "revocation": "Wiederrufsrecht"
+        "revocation": "Wiederrufsrecht",
+        "modal": {
+            "closeModal": "Schließen"
+        }
     },
     "checkout": {
         "cartContainsMultipleMerchants": "Es können nur Produkte von einem Händler gleichzeitig gekauft werden",

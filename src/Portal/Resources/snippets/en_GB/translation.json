@@ -12,7 +12,10 @@
         "imprint": "Imprint",
         "tos": "Terms of Service",
         "privacy": "Privacy",
-        "revocation": "Revocation"
+        "revocation": "Revocation",
+        "modal": {
+            "closeModal": "Close"
+        }
     },
     "checkout": {
         "cartContainsMultipleMerchants": "Products can be purchased from only one merchant at a time",

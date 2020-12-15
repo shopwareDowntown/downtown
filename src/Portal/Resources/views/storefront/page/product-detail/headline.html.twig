@@ -1,0 +1,16 @@
+{% sw_extends '@Storefront/storefront/page/product-detail/headline.html.twig' %}
+
+{% block page_product_detail_manufacturer %}
+    {% set merchant = page.product.extensions.merchants.first() %}
+    {% if merchant %}
+        <div class="col-md-auto product-detail-merchant">
+            <a href="{{ seoUrl('storefront.merchant.detail', {'id': merchant.id}) }}"
+               class="product-detail-merchant-link"
+               title="{{ merchant.publicCompanyName }}">
+                {{ merchant.publicCompanyName }}
+            </a>
+        </div>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
