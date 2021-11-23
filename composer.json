@@ -9,20 +9,20 @@
     "minimum-stability": "stable",
     "scripts": {
         "pre-install-cmd": [
-            "[ ! -f vendor\/autoload.php ] || bin\/console system:update:prepare"
+            "[ ! -f vendor/autoload.php ] || $PHP_BINARY bin/console system:update:prepare"
         ],
         "pre-update-cmd": [
-            "[ ! -f vendor\/autoload.php ] || bin\/console system:update:prepare"
+            "[ ! -f vendor/autoload.php ] || $PHP_BINARY bin/console system:update:prepare"
         ],
         "post-install-cmd": [
-            "@composer install --working-dir vendor\/shopware\/recovery --ignore-platform-reqs --no-interaction --no-scripts",
-            "@composer install --working-dir=vendor\/shopware\/recovery\/Common --ignore-platform-reqs --no-interaction --optimize-autoloader --no-suggest",
-            "[ ! -f install.lock ] || bin\/console system:update:finish"
+            "@composer install --working-dir vendor/shopware/recovery --no-interaction --no-scripts",
+            "@composer install --working-dir=vendor/shopware/recovery/Common --no-interaction --optimize-autoloader --no-suggest",
+            "[ ! -f vendor/autoload.php ] || $PHP_BINARY bin/console system:update:finish"
         ],
         "post-update-cmd": [
-            "@composer install --working-dir vendor\/shopware\/recovery --ignore-platform-reqs --no-interaction --no-scripts",
-            "@composer install --working-dir=vendor\/shopware\/recovery\/Common --ignore-platform-reqs --no-interaction --optimize-autoloader --no-suggest",
-            "[ ! -f install.lock ] || bin\/console system:update:finish"
+            "@composer install --working-dir vendor/shopware/recovery --no-interaction --no-scripts",
+            "@composer install --working-dir=vendor/shopware/recovery/Common --no-interaction --optimize-autoloader --no-suggest",
+            "[ ! -f vendor/autoload.php ] || $PHP_BINARY bin/console system:update:finish"
         ]
     },
     "autoload": {
@@ -40,34 +40,35 @@
         }
     ],
     "require": {
-        "php": "~7.2",
+        "php": "^7.4.3 || ^8.0",
+        "composer-runtime-api": "^2.0",
         "composer/package-versions-deprecated": "*",
-        "shopware\/core": "v6.3.*",
-        "shopware\/administration": "v6.3.*",
-        "shopware\/storefront": "v6.3.*",
-        "shopware\/elasticsearch": "v6.3.*",
-        "shopware\/recovery": "v6.3.*",
+        "shopware\/core": "v6.4.*",
+        "shopware\/administration": "v6.4.*",
+        "shopware\/storefront": "v6.4.*",
+        "shopware\/elasticsearch": "v6.4.*",
+        "shopware\/recovery": "v6.4.*",
         "ext-json": "*",
         "ext-openssl": "*"
     },
-    "require-dev": {
-        "ext-tokenizer": "*",
-        "ext-xmlwriter": "*",
-        "ext-openssl": "*",
-        "bheller\/images-generator": "~1.0.1",
-        "fzaninotto\/faker": "~1.8.0",
-        "johnkary\/phpunit-speedtrap": "~3.1.0",
-        "league\/flysystem-memory": "~1.0.2",
-        "mbezhanov\/faker-provider-collection": "~1.2.1",
-        "phpunit\/phpunit": "~8.3.4",
-        "smalot\/pdfparser": "~0.14.0",
-        "symfony\/browser-kit": "~4.4",
-        "symfony\/dependency-injection": "~4.4",
-        "symfony\/phpunit-bridge": "~4.4",
-        "symfony\/stopwatch": "~4.4",
-        "symfony\/var-dumper": "~4.4",
-        "symfony\/web-profiler-bundle": "~4.4",
-        "defuse\/php-encryption": "~2.2.1",
-        "symfony\/dom-crawler": "~4.4"
+      "require-dev": {
+        "ext-tokenizer": "*"
+        "ext-xmlwriter": "*"
+        "ext-openssl": "*"
+        "bheller\/images-generator": "~1.0.1"
+        "fzaninotto/faker": "~1.9.1"
+        "johnkary/phpunit-speedtrap": "~3.3.0"
+        "league\/flysystem-memory": "~1.0.2"
+        "mbezhanov\/faker-provider-collection": "~1.2.1"
+        "phpunit/phpunit": "~9.5.2"
+        "smalot\/pdfparser": "~0.14.0"
+        "symfony/browser-kit": "~4.4 || ~5.2.3 || ~5.3.0"
+        "symfony/dependency-injection": "~4.4 || ~5.2.3 || ~5.3.0"
+        "symfony/phpunit-bridge": "~4.4 || ~5.2.3 || ~5.3.0"
+        "symfony/stopwatch": "~4.4 || ~5.2.3 || ~5.3.0"
+        "symfony/var-dumper": "~4.4 || ~5.2.3 || ~5.3.0"
+        "symfony/web-profiler-bundle": "~4.4 || ~5.2.3 || ~5.3.0"
+        "defuse\/php-encryption": "~2.2.1"
+        "symfony/dom-crawler": "~4.4 || ~5.2.3 || ~5.3.0"
     }
 }
