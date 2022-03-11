@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   app_server:
-    image: shyim/shopware-platform-nginx-production:php74
+    image: ghcr.io/shyim/shopware-docker/6/nginx-production:php74
     depends_on:
       - mysql
     ports:
@@ -11,7 +11,7 @@ services:
       - ".:/var/www/html"
 
   cli:
-    image: shyim/shopware-cli:php74
+    image: ghcr.io/shyim/shopware-docker/cli:php74
     tty: true
     volumes:
       - ".:/var/www/html"
