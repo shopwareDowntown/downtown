@@ -1,30 +1,45 @@
+#override defaults for dev
 version: "3.7"
 
 services:
   app_server:
-    image: ghcr.io/shyim/shopware-docker/6/nginx-production:php74
+    image: shopware-production:local
+    build: .
     depends_on:
       - mysql
+      - elasticsearch
     ports:
-      - 80:80
+      - 8000:8000
+      - 8005:8000
+    extra_hosts:
+      - "docker.vm:127.0.0.1"
+    environment:
+      # define yourself
+      #- DATABASE_URL
+      - APP_URL=http://docker.vm:8000
+      - INSTANCE_ID=
+      - SHOPWARE_ES_ENABLED=1
+      - SHOPWARE_ES_HOSTS=elasticsearch:9200
+      - SHOPWARE_ES_INDEXING_ENABLED=1
+      - SHOPWARE_ES_INDEX_PREFIX=sw
+      - SHOPWARE_CDN_STRATEGY_DEFAULT=id
+      - MAILER_URL=smtp://localhost:25?encryption=&auth_mode=
     volumes:
-      - ".:/var/www/html"
-
-  cli:
-    image: ghcr.io/shyim/shopware-docker/cli:php74
-    tty: true
-    volumes:
-      - ".:/var/www/html"
-
-  adminer:
-      image: adminer
-      ports:
-          - 8080:8080
+      - "./config/jwt:/sw6/config/jwt"
+      - "./public/bundles:/sw6/public/bundles"
+      - "./public/media:/sw6/public/media"
+      - "./public/sitemap:/sw6/public/sitemap"
+      - "./public/theme:/sw6/public/theme"
+      - "./public/thumbnail:/sw6/public/thumbnail"
+      - "./var:/sw6/var"
 
   mysql:
     image: mysql:5.7
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=downtown
-      - MYSQL_USER=downtown
-      - MYSQL_PASSWORD=uptown
+
+  elasticsearch:
+    image: elastic/elasticsearch:7.8.0
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node

@@ -1,10 +1,10 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 set -e
 
-if [ -z $1 ]; then
+if [ -z "$1" ]; then
     bin/console theme:compile || true
-    /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+    exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 else
-    bin/console $@
+    exec bin/console "$@"
 fi

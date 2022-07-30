@@ -1,0 +1,7 @@
+vendor
+
+.envrc
+.env
+.env.test
+
+deploy

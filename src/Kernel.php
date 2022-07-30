@@ -1,61 +1,45 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Shopware\Production;
 
-use ReflectionMethod;
-use Shopware\Core\Kernel as ShopwareKernel;
+use Doctrine\DBAL\Connection;
+use Shopware\Core\DevOps\Environment\EnvironmentHelper;
+use Shopware\Core\Framework\Plugin\KernelPluginLoader\KernelPluginLoader;
 use Shopware\Core\Profiling\Doctrine\DebugStack;
-use Shopware\Production\Merchants\MerchantBundle;
-use Shopware\Production\Organization\OrganizationBundle;
-use Shopware\Production\Portal\PortalBundle;
-use Shopware\Production\Voucher\VoucherBundle;
-use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
-class Kernel extends ShopwareKernel
+class Kernel extends \Shopware\Core\Kernel
 {
     public const PLACEHOLDER_DATABASE_URL = 'mysql://_placeholder.test';
 
     public function __construct(
         string $environment,
         bool $debug,
-        BundleInterface $pluginLoader,
+        KernelPluginLoader $pluginLoader,
         ?string $cacheId = null,
-        ?string $version = self::SHOPWARE_FALLBACK_VERSION
+        ?string $version = self::SHOPWARE_FALLBACK_VERSION,
+        ?Connection $connection = null
     ) {
         $cacheId = $cacheId ?? $environment;
-        parent::__construct($environment, $debug, $pluginLoader, $cacheId, $version);
+        parent::__construct($environment, $debug, $pluginLoader, $cacheId, $version, $connection);
     }
 
     protected function initializeDatabaseConnectionVariables(): void
     {
-        $url = $_ENV['DATABASE_URL']
-            ?? $_SERVER['DATABASE_URL']
-            ?? getenv('DATABASE_URL');
+        $url = EnvironmentHelper::getVariable('DATABASE_URL', getenv('DATABASE_URL'));
 
-        if (isset($_SERVER['INSTALL']) || $url === self::PLACEHOLDER_DATABASE_URL) {
+        if (EnvironmentHelper::hasVariable('INSTALL') || $url === self::PLACEHOLDER_DATABASE_URL) {
             return;
         }
 
         if ($this->getEnvironment() === 'dev') {
-            self::getConnection()->getConfiguration()->setSQLLogger(
-                new DebugStack()
-            );
+            self::getConnection()->getConfiguration()->setSQLLogger(new DebugStack());
         }
 
-        $reflection = new ReflectionMethod(\Shopware\Core\Kernel::class, 'initializeDatabaseConnectionVariables');
+        $reflection = new \ReflectionMethod(\Shopware\Core\Kernel::class, 'initializeDatabaseConnectionVariables');
         if (!$reflection->isPrivate()) {
             parent::initializeDatabaseConnectionVariables();
         }
-    }
-
-    public function registerBundles()
-    {
-        yield from parent::registerBundles();
-
-        yield new MerchantBundle();
-        yield new PortalBundle();
-        yield new VoucherBundle();
-        yield new OrganizationBundle();
-//        yield new LocalDeliveryBundle();
     }
 }

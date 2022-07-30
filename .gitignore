@@ -1,3 +1,7 @@
+/auth.json
+
+!custom/plugins/.gitkeep
+!custom/static-plugins/
 
 /vendor/
 /bin/vendor/
@@ -8,6 +12,7 @@
 /config/packages/local.yaml
 /config/packages/local.yml
 
+/public/recovery
 /public/fonts/*
 !/public/fonts/.gitkeep
 /public/img/*
@@ -45,7 +50,3 @@
 !/var/cache/.gitkeep
 !/var/queue/.gitkeep
 !/var/test/.gitkeep
-
-/install.lock
-/.php_cs.cache
-.DS_Store

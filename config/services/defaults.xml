@@ -11,46 +11,17 @@
 
         <parameter key="elasticsearch.enabled">%env(bool:default:default_whitespace:SHOPWARE_ES_ENABLED)%</parameter>
         <parameter key="elasticsearch.indexing_enabled">%env(bool:default:default_whitespace:SHOPWARE_ES_INDEXING_ENABLED)%</parameter>
-        <parameter key="elasticsearch.hosts">%env(default:default_whitespace:SHOPWARE_ES_HOSTS)%</parameter>
-        <parameter key="elasticsearch.index_prefix">%env(default:default_elasticsearch_prefix:SHOPWARE_ES_INDEX_PREFIX)%</parameter>
+        <parameter key="elasticsearch.hosts">%env(string:default:default_whitespace:SHOPWARE_ES_HOSTS)%</parameter>
+        <parameter key="elasticsearch.index_prefix">%env(string:default:default_elasticsearch_prefix:SHOPWARE_ES_INDEX_PREFIX)%</parameter>
 
         <parameter key="shopware.store.frw">true</parameter>
 
         <parameter key="default_cdn_strategy">physical_filename</parameter>
         <parameter key="shopware.cdn.strategy">%env(default:default_cdn_strategy:SHOPWARE_CDN_STRATEGY_DEFAULT)%</parameter>
+        <parameter key="env(INSTANCE_ID)">install</parameter>
     </parameters>
 
     <services>
-        <service id="Shopware\Production\Command\SystemInstallCommand">
-            <argument type="string">%kernel.project_dir%</argument>
-            <tag name="console.command"/>
-        </service>
-
-        <service id="Shopware\Production\Command\SystemSetupCommand">
-            <argument type="string">%kernel.project_dir%</argument>
-            <tag name="console.command"/>
-        </service>
-        <service id="Shopware\Production\Command\SystemUpdatePrepareCommand">
-            <argument type="service" id="service_container" />
-            <argument type="service" id="event_dispatcher"/>
-            <tag name="console.command"/>
-        </service>
-
-        <service id="Shopware\Production\Command\SystemUpdateFinishCommand">
-            <argument type="service" id="service_container" />
-            <tag name="console.command"/>
-        </service>
-
-        <service id="Shopware\Production\Command\SystemGenerateAppSecretCommand">
-            <argument type="string">%kernel.project_dir%</argument>
-            <tag name="console.command"/>
-        </service>
-
-        <service id="Shopware\Production\Command\SystemGenerateJwtSecretCommand">
-            <argument type="string">%kernel.project_dir%</argument>
-            <tag name="console.command"/>
-        </service>
-
         <service class="League\OAuth2\Server\CryptKey" id="shopware.private_key">
             <argument>%kernel.project_dir%/config/jwt/private.pem</argument>
             <argument>%env(string:default:jwt_private_key_passphrase_default:JWT_PRIVATE_KEY_PASSPHRASE)%</argument>
