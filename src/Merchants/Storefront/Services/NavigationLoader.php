@@ -164,10 +164,6 @@ class NavigationLoader extends ShopwareNavigationLoader
                 continue;
             }
 
-            if (!$child->hasExtension('merchants')) {
-                continue;
-            }
-
             $item = clone $this->treeItem;
             $item->setCategory($child);
 
@@ -178,9 +174,24 @@ class NavigationLoader extends ShopwareNavigationLoader
             $router = $this->router;
 
             $merchantCollection = $child->getExtension('merchants');
+
             if ($merchantCollection === null) {
+                $rec = $this->buildTree($child->getId(), $categories);
+
+                if(empty($rec)){
+                    continue;
+                }
+
+                $item->setCategory($child);
+                $item->setChildren(
+                    $this->buildTree($child->getId(), $categories)
+                );
+                $items[$child->getId()] = $item;
+
                 continue;
+
             }
+
 
             $merchants = array_map(static function (MerchantEntity $merchantEntity) use ($router) {
                 $c = new CategoryEntity();
@@ -247,7 +258,7 @@ class NavigationLoader extends ShopwareNavigationLoader
         $result = $this->connection->fetchAll('
             SELECT LOWER(HEX(`id`)), `path`, `level`
             FROM `category`
-            WHERE `id` = :activeId OR `parent_id` = :activeId OR `id` = :rootId
+            WHERE `id` = :activeId OR `parent_id` = :activeId OR `id` = :rootId OR `parent_id` = :rootId
         ', ['activeId' => Uuid::fromHexToBytes($activeId), 'rootId' => Uuid::fromHexToBytes($rootId)]);
 
         if (!$result) {
@@ -290,7 +301,6 @@ class NavigationLoader extends ShopwareNavigationLoader
     private function getMissingIds(string $activeId, ?string $path, array $childIds, CategoryCollection $alreadyLoaded): array
     {
         $parentIds = array_filter(explode('|', $path ?? ''));
-
         $haveToBeIncluded = array_merge($childIds, $parentIds, [$activeId]);
         $included = array_flip($alreadyLoaded->getIds());
 
